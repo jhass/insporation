@@ -57,6 +57,12 @@ class Client {
     return _fetchPosts(_apiCall("search/posts", query: {'tag': tag}, page: page));
   }
 
+  Future<Page<Comment>> fetchComments(Post post, {String page}) async {
+    final response = await _apiCall("posts/${post.guid}/comments", page: page),
+      comments = await compute(_parseCommentsJson, response.body);
+    return _makePage(comments, response);
+  }
+
   Future<Page<Post>> _fetchPosts(Future<http.Response> request) async {
     final response = await request,
       posts = await compute(_parsePostsJson, {"body": response.body, "currentUser": getCurrentUser()});
@@ -179,6 +185,11 @@ class Client {
     final List<Map<String, dynamic>> posts = jsonDecode(json).cast<Map<String, dynamic>>();
     return Post.fromList(posts, currentUser: currentUser);
   }
+
+  static List<Comment> _parseCommentsJson(String json) {
+    final List<Map<String, dynamic>> comments = jsonDecode(json).cast<Map<String, dynamic>>();
+    return Comment.fromList(comments);
+  }
 }
 
 class _Host {
@@ -267,6 +278,7 @@ class Person {
 }
 
 class Post {
+  final String guid;
   final String body;
   final Person author;
   final bool public;
@@ -277,12 +289,13 @@ class Post {
   final DateTime createdAt;
   final bool ownPost;
 
-  Post({this.body, this.author, this.public, this.root, this.photos,
+  Post({this.guid, this.body, this.author, this.public, this.root, this.photos,
     this.mentionedPeople, this.interactions, this.createdAt, this.ownPost});
 
   factory Post.from(Map<String, dynamic> object, {String currentUser}) {
     var author = Person.from(object["author"]);
     return Post(
+      guid: object["guid"],
       body: object["body"],
       author: author,
       public: object["public"],
@@ -360,5 +373,25 @@ class PhotoSizes {
       medium: object["medium"],
       small: object["small"]
     );
+  }
+}
+
+class Comment {
+  final String body;
+  final Person author;
+  final DateTime createdAt;
+
+  Comment({this.body, this.author, this.createdAt});
+
+  factory Comment.from(Map<String, dynamic> object) {
+    return Comment(
+      body: object["body"],
+      author: Person.from(object["author"]),
+      createdAt: DateTime.parse(object["created_at"])
+    );
+  }
+
+  static fromList(List<Map<String, dynamic>> objects) {
+    return objects.map((object) => Comment.from(object)).toList();
   }
 }
