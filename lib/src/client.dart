@@ -13,17 +13,11 @@ class Client {
   _Session _currentSession;
   _Host _currentHost;
 
-  bool hasSession() {
-    return _currentSession?.diasporaId != null;
-  }
+  bool hasSession() => _currentSession?.diasporaId != null;
 
-  String getCurrentUser() {
-    return _currentSession?.diasporaId;
-  }
+  String getCurrentUser() => _currentSession?.diasporaId;
 
-  bool  isAuthorized() {
-    return  _currentSession.authorized;
-  }
+  bool  isAuthorized() => _currentSession.authorized;
 
   Future<void> switchToUser(String diasporaId) async {
     final parts = diasporaId.split("@"),
@@ -45,22 +39,43 @@ class Client {
     await _persistCurrentSession();
   }
 
-  Future<Page<Post>> fetchMainStream({String page}) {
-    return _fetchPosts(_apiCall('streams/main', page: page));
-  }
+  Future<Page<Post>> fetchMainStream({String page}) =>
+    _fetchPosts(_call("GET", "streams/main", page: page));
 
-  Future<Page<Post>> fetchActivityStream({String page}) {
-    return _fetchPosts(_apiCall('streams/activity', page: page));
-  }
+  Future<Page<Post>> fetchActivityStream({String page}) =>
+    _fetchPosts(_call("GET", "streams/activity", page: page));
 
-  Future<Page<Post>> fetchTagStream(String tag, {String page}) {
-    return _fetchPosts(_apiCall("search/posts", query: {'tag': tag}, page: page));
-  }
+  Future<Page<Post>> fetchTagStream(String tag, {String page}) =>
+    _fetchPosts(_call("GET", "search/posts", query: {'tag': tag}, page: page));
 
   Future<Page<Comment>> fetchComments(Post post, {String page}) async {
-    final response = await _apiCall("posts/${post.guid}/comments", page: page),
+    final response = await _call("GET", "posts/${post.guid}/comments", page: page),
       comments = await compute(_parseCommentsJson, response.body);
     return _makePage(comments, response);
+  }
+
+  Future<void> likePost(Post post) async {
+    try {
+      await _call("POST", "posts/${post.guid}/likes");
+    } on ClientException catch (e) {
+      if (e.code != 409) {
+        throw e;
+      }
+
+      // already liked, ignore
+    }
+  }
+
+  Future<void> unlikePost(Post post) async {
+    try {
+      await _call("DELETE", "posts/${post.guid}/likes");
+    } on ClientException catch (e) {
+      if (e.code != 410) {
+        throw e;
+      }
+
+      // already disliked, ignore
+    }
   }
 
   Future<Page<Post>> _fetchPosts(Future<http.Response> request) async {
@@ -69,16 +84,23 @@ class Client {
     return _makePage(posts, response);
   }
 
-  Future<http.Response> _apiCall(String endpoint, {Map<String, String> query = const {}, page}) async {
+  Future<http.Response> _call(String method, String endpoint, {Map<String, String> query = const {}, body, page}) async {
     final token = await _getAccessToken(),
       uri = _computeUri(endpoint, query: query, page: page),
-      response =  await http.get(uri, headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+      request = http.Request(method, uri);
+    request.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
 
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        return response;
-      } else {
-        throw "Failed to fetch ${uri.path}: ${response.statusCode} - ${response.reasonPhrase}";
-      }
+    if (body != null) {
+      request.body = body;
+    }
+
+    final response = await _client.send(request).then(http.Response.fromStream);
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return response;
+    } else {
+      throw ClientException.fromResponse(response);
+    }
   }
 
   Uri _computeUri(String endpoint, {Map<String, String> query, page}) {
@@ -192,6 +214,43 @@ class Client {
   }
 }
 
+class Page<T> {
+  final List<T> content;
+  final String firstPage;
+  final String previousPage;
+  final String nextPage;
+  final String lastPage;
+
+  Page({this.content, this.firstPage,  this.previousPage, this.nextPage, this.lastPage});
+}
+
+class ClientException implements Exception {
+  final int code;
+  final String message;
+  final String requestPath;
+  final String requestMethod;
+
+  ClientException({@required this.code, @required this.message,
+    @required this.requestPath, @required this.requestMethod});
+
+  factory ClientException.fromResponse(http.Response response) {
+    var message = response.reasonPhrase;
+    if (response.contentLength > 0 && response.headers[HttpHeaders.contentTypeHeader].startsWith("application/json")) {
+      message = jsonDecode(response.body)["body"];
+    }
+    return ClientException(
+      code: response.statusCode,
+      message: message,
+      requestPath: response.request.url.path,
+      requestMethod: response.request.method.toLowerCase()
+    );
+  }
+
+  @override
+  String toString() =>
+    "Failed to $requestMethod $requestPath: $code - $message";
+}
+
 class _Host {
   final Uri baseUri;
   String authState;
@@ -210,13 +269,12 @@ class _Host {
     );
   }
 
-  String toJson() {
-    return jsonEncode({
+  String toJson() =>
+     jsonEncode({
       "baseUrl": baseUri.toString(),
       "authState": authState,
       "registered": registered
     });
-  }
 }
 
 class _Session {
@@ -237,24 +295,16 @@ class _Session {
     );
   }
 
-  String toJson() {
-    return jsonEncode({
+  String toJson() =>
+    jsonEncode({
       "diasporaId": diasporaId,
       "authState": authState,
       "authorized": authorized
     });
-  }
 }
 
 
-class Page<T> {
-  final List<T> content;
-  final String firstPage;
-  final String previousPage;
-  final String nextPage;
-  final String lastPage;
 
-  Page({this.content, this.firstPage,  this.previousPage, this.nextPage, this.lastPage});
 }
 
 class Person {
@@ -272,9 +322,8 @@ class Person {
     );
   }
 
-  static List<Person> fromList(List<Map<String, dynamic>> objects) {
-    return objects.map((object) => Person.from(object)).toList();
-  }
+  static List<Person> fromList(List<Map<String, dynamic>> objects) =>
+    objects.map((object) => Person.from(object)).toList();
 }
 
 class Post {
@@ -293,13 +342,14 @@ class Post {
     this.mentionedPeople, this.interactions, this.createdAt, this.ownPost});
 
   factory Post.from(Map<String, dynamic> object, {String currentUser}) {
-    var author = Person.from(object["author"]);
+    final author = Person.from(object["author"]),
+      root = object["root"] != null ? Post.from(object["root"]) : null;
     return Post(
       guid: object["guid"],
       body: object["body"],
       author: author,
       public: object["public"],
-      root: object["root"] != null ? Post.from(object["root"]) : null,
+      root: root,
       photos: object["photos"] != null ? Photo.fromList(object["photos"].cast<Map<String, dynamic>>()) : null,
       mentionedPeople: object["mentioned_people"] != null ? Map.fromIterable(
         Person.fromList(object["mentioned_people"].cast<Map<String, dynamic>>()),
@@ -307,27 +357,29 @@ class Post {
       ) : null,
       interactions: PostInteractions.from(object["interaction_counters"], object["own_interaction_state"]),
       createdAt: DateTime.parse(object["created_at"]),
-      ownPost: author.diasporaId == currentUser
+      ownPost: author.diasporaId == currentUser || (root != null && root.author.diasporaId == currentUser)
     );
   }
 
-  static List<Post> fromList(List<Map<String, dynamic>> objects, {String currentUser}) {
-    return objects.map((object) => Post.from(object, currentUser: currentUser)).toList();
-  }
+  static List<Post> fromList(List<Map<String, dynamic>> objects, {String currentUser}) =>
+    objects.map((object) => Post.from(object, currentUser: currentUser)).toList();
+
+
+  bool canReshare() => public && !ownPost && !interactions.reshared;
 }
 
 class PostInteractions {
-  final int comments;
-  final int reshares;
-  final int likes;
-  final bool liked;
-  final bool reshared;
-  final bool subscribed;
+  int comments;
+  int reshares;
+  int likes;
+  bool liked;
+  bool reshared;
+  bool subscribed;
 
   PostInteractions({this.comments, this.reshares, this.likes, this.liked, this.reshared, this.subscribed});
 
-  factory PostInteractions.from(Map<String, dynamic> counters, Map<String, dynamic> ownState) {
-    return PostInteractions(
+  factory PostInteractions.from(Map<String, dynamic> counters, Map<String, dynamic> ownState) =>
+    PostInteractions(
       comments: counters["comments"],
       reshares: counters["reshares"],
       likes: counters["likes"],
@@ -335,7 +387,6 @@ class PostInteractions {
       reshared: ownState["reshared"],
       subscribed: ownState["subscribed"]
     );
-  }
 }
 
 class Photo {
@@ -345,17 +396,15 @@ class Photo {
 
   Photo({this.width, this.height, this.sizes});
 
-  factory Photo.from(Map<String, dynamic> object) {
-    return Photo(
+  factory Photo.from(Map<String, dynamic> object) =>
+    Photo(
       width: object["dimensions"]["width"],
       height: object["dimensions"]["height"],
       sizes: PhotoSizes.from(object["sizes"])
     );
-  }
 
-  static List<Photo> fromList(List<Map<String, dynamic>> objects) {
-    return objects.map((object) => Photo.from(object)).toList();
-  }
+  static List<Photo> fromList(List<Map<String, dynamic>> objects) =>
+    objects.map((object) => Photo.from(object)).toList();
 }
 
 class PhotoSizes {
@@ -366,14 +415,13 @@ class PhotoSizes {
 
   PhotoSizes({this.raw, this.large, this.medium, this.small});
 
-  factory PhotoSizes.from(Map<String, dynamic> object) {
-    return PhotoSizes(
+  factory PhotoSizes.from(Map<String, dynamic> object) =>
+    PhotoSizes(
       raw: object["raw"],
       large: object["large"],
       medium: object["medium"],
       small: object["small"]
     );
-  }
 }
 
 class Comment {
@@ -383,15 +431,13 @@ class Comment {
 
   Comment({this.body, this.author, this.createdAt});
 
-  factory Comment.from(Map<String, dynamic> object) {
-    return Comment(
+  factory Comment.from(Map<String, dynamic> object) =>
+    Comment(
       body: object["body"],
       author: Person.from(object["author"]),
       createdAt: DateTime.parse(object["created_at"])
     );
-  }
 
-  static fromList(List<Map<String, dynamic>> objects) {
-    return objects.map((object) => Comment.from(object)).toList();
-  }
+  static fromList(List<Map<String, dynamic>> objects) =>
+    objects.map((object) => Comment.from(object)).toList();
 }

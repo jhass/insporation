@@ -289,54 +289,22 @@ class PostView extends StatelessWidget {
             Divider(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              child: ButtonTheme(
-                  minWidth: 1,
-                  padding: const EdgeInsets.all(0),
-                  height: 24,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right: 4.0),
-                        child: Icon(
-                            post.public ? Icons.public : Icons.lock,
-                            size: 14,
-                            color: Colors.grey[600]
-                        ),
-                      ),
-                      Timeago(post.createdAt, textStyle: TextStyle(fontSize: 10, fontStyle: FontStyle.italic)),
-                      Spacer(),
-                      FlatButton.icon(
-                        icon: Icon(Icons.comment, size: 16),
-                        label: Text(post.interactions.comments.toString()),
-                        textColor: Colors.grey[600],
-                        onPressed: () =>
-                          showModalBottomSheet(context: context, builder: (context) => CommentSheet(post: post)),
-                      ),
-                      FlatButton.icon(
-                        icon: Icon(
-                            Icons.repeat,
-                            size: 16,
-                            color: post.interactions.reshared ? Colors.blue[500] : null
-                        ),
-                        label: Text(post.interactions.reshares.toString()),
-                        textColor: Colors.grey[600],
-                        onPressed: post.ownPost || post.interactions.reshared ? null : () {},
-                      ),
-                      FlatButton.icon(
-                        icon: Icon(
-                            Icons.favorite,
-                            size: 16,
-                            color: post.interactions.liked ? Colors.red[900] : Colors.grey[600]
-                        ),
-                        label: Text(post.interactions.likes.toString()),
-                        textColor: Colors.grey[600],
-                        onPressed: () {},
-                      )
-                    ],
-                  )
-              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 4.0),
+                    child: Icon(
+                        post.public ? Icons.public : Icons.lock,
+                        size: 14,
+                        color: Colors.grey[600]
+                    ),
+                  ),
+                  Timeago(post.createdAt, textStyle: TextStyle(fontSize: 10, fontStyle: FontStyle.italic)),
+                  Spacer(),
+                  _PostInteractionsView(post: post)
+                ],
+              )
             )
           ],
         ),
@@ -423,6 +391,95 @@ class Message extends StatelessWidget {
         }
       }
     );
+  }
+}
+
+class _PostInteractionsView extends StatefulWidget {
+  _PostInteractionsView({Key key, this.post}) : super(key: key);
+
+  final Post post;
+
+  @override
+  State<StatefulWidget> createState() => _PostInteractionsViewState();
+}
+
+class _PostInteractionsViewState extends State<_PostInteractionsView> {
+  bool _updatingLike = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ButtonTheme(
+      minWidth: 1,
+      padding: const EdgeInsets.all(0),
+      height: 24,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      child: Row(
+        children: <Widget>[
+          FlatButton.icon(
+            icon: Icon(Icons.comment, size: 16),
+            label: Text(widget.post.interactions.comments.toString()),
+            textColor: Colors.grey[600],
+            onPressed: () =>
+              showModalBottomSheet(context: context, builder: (context) => CommentSheet(post: widget.post)),
+          ),
+          FlatButton.icon(
+            icon: Icon(
+                Icons.repeat,
+                size: 16,
+                color: widget.post.interactions.reshared ? Colors.blue[500] : null
+            ),
+            label: Text(widget.post.interactions.reshares.toString()),
+            textColor: Colors.grey[600],
+            onPressed: !widget.post.canReshare() ? null : () {},
+          ),
+          FlatButton.icon(
+            icon: Icon(
+                Icons.favorite,
+                size: 16,
+                color: widget.post.interactions.liked ? Colors.red[900] : Colors.grey[600]
+            ),
+            label: Text(widget.post.interactions.likes.toString()),
+            textColor: Colors.grey[600],
+            onPressed: _updatingLike ? null : () => _toggleLike(context)
+          )
+        ]
+      ),
+    );
+  }
+
+  _toggleLike(BuildContext context) async {
+    final client = Provider.of<Client>(context, listen: false);
+    final current = widget.post.interactions.liked;
+    final currentCount = widget.post.interactions.likes;
+    setState(() {
+      _updatingLike = true;
+      widget.post.interactions.liked = !current;
+      widget.post.interactions.likes = currentCount + (current ? -1 : 1);
+    });
+    try {
+      if (!current) {
+        await client.likePost(widget.post);
+      } else {
+        await client.unlikePost(widget.post);
+      }
+      setState(() => _updatingLike = false);
+    } catch (e, s) {
+      debugPrintStack(label: e.toString(), stackTrace: s);
+
+      setState(() {
+        _updatingLike = false;
+        widget.post.interactions.liked = current;
+        widget.post.interactions.likes = currentCount;
+      });
+
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(
+          "Failed to ${current ? "unlike" : "like"} post: $e",
+          style: TextStyle(color: Colors.white)
+        ),
+        backgroundColor: Colors.red
+      ));
+    }
   }
 }
 
