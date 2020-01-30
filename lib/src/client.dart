@@ -8,8 +8,10 @@ import 'package:http/http.dart' as http;
 
 class Client {
   static const _appauth = const MethodChannel("insporation/appauth");
+  static const _scopes = "openid profile public:read private:read contacts:read interactions";
   static final _linkHeaderPattern = RegExp(r'<([^>]+)>;\s*rel="([^"]+)"');
 
+  final http.Client _client = http.Client();
   _Session _currentSession;
   _Host _currentHost;
 
@@ -17,7 +19,7 @@ class Client {
 
   String getCurrentUser() => _currentSession?.diasporaId;
 
-  bool  isAuthorized() => _currentSession.authorized;
+  bool isAuthorized() => _currentSession.authorized;
 
   Future<void> switchToUser(String diasporaId) async {
     final parts = diasporaId.split("@"),
@@ -160,7 +162,8 @@ class Client {
     try {
       return await _appauth.invokeMethod("authorize", <String, dynamic>{
         "authState": authState,
-        "username": username
+        "username": username,
+        "scopes": _scopes
       });
     } on PlatformException catch (e) {
       throw "Failed to authorize client: ${e.message}";
@@ -279,10 +282,12 @@ class _Host {
 
 class _Session {
   final String diasporaId;
+  String scopes;
   String authState;
-  var authorized = false;
+  var _authorized = false;
 
-  _Session({this.diasporaId, this.authState, this.authorized});
+  _Session({@required this.diasporaId, @required this.scopes, @required this.authState,
+    @required authorized}) : _authorized = authorized;
 
   _Session.forUser(this.diasporaId);
 
@@ -290,21 +295,37 @@ class _Session {
     final object = jsonDecode(json);
     return _Session(
         diasporaId: object["diasporaId"],
+        scopes: object["scopes"],
         authState: object["authState"],
         authorized: object["authorized"]
     );
   }
 
+  bool get authorized => _authorized && _normalizeScopes(Client._scopes) == _normalizeScopes(scopes);
+
+  set authorized(authorized) {
+    _authorized = authorized;
+    if (_authorized) {
+      scopes = Client._scopes;
+    }
+  }
+
   String toJson() =>
     jsonEncode({
       "diasporaId": diasporaId,
+      "scopes": scopes,
       "authState": authState,
-      "authorized": authorized
-    });
-}
+      "authorized": authorized});
 
+  static String _normalizeScopes(String scopes) {
+    if (scopes == null) {
+      return null;
+    }
 
-
+    final splitted = scopes.split(" ");
+    splitted.sort();
+    return splitted.join(" ");
+  }
 }
 
 class Person {

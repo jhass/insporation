@@ -48,7 +48,9 @@ class MainActivity: FlutterActivity() {
                         }
                     }
                     "authorize" -> {
-                        if (call.hasArgument("authState") && call.hasArgument("username")) {
+                        if (call.hasArgument("authState") &&
+                            call.hasArgument("username") &&
+                            call.hasArgument("scopes")) {
                             handleAuthorize(call, result, authorizationService)
                         } else {
                             result.notImplemented()
@@ -120,7 +122,8 @@ class MainActivity: FlutterActivity() {
                 APP_AUTH_REDIRECT_URI
             )
                 .setLoginHint(call.argument("username"))
-                .setScope("openid email profile public:read private:read contacts:read")
+                .setPrompt("login")
+                .setScope(call.argument<String>("scopes"))
                 .build()
 
         currentAppAuthResult = result
