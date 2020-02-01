@@ -14,6 +14,101 @@ import 'src/timeago.dart';
 
 enum StreamType { main, activity, tag }
 
+class PostStream extends ChangeNotifier {
+  final StreamType type;
+  final String tag;
+  bool loading = false;
+  Page<Post> _lastPage;
+  List<Post> _posts;
+
+  PostStream({this.type, this.tag});
+
+  int get length => _posts?.length ?? 0;
+
+  Post operator [](int index) => _posts[index];
+
+  addMock(Post post) {
+    assert(post.mock, "Post is not a mock!");
+    if (_posts == null) {
+      _posts = [post];
+    } else {
+      _posts.insert(0, post);
+    }
+    notifyListeners();
+  }
+
+  removeMock(Post post) {
+    assert(post.mock, "Post is not a mock!");
+    assert(_posts != null, "No stream created!");
+    if (_posts != null) {
+      final removed = _posts.remove(post);
+      assert(removed, "Post was not in stream!");
+      if (removed) {
+        notifyListeners();
+      }
+    }
+  }
+
+  replaceMock({@required Post mock, @required Post replacement}) {
+    assert(_posts != null, "No stream created!");
+    if (_posts == null) {
+      _posts = [replacement];
+      notifyListeners();
+      return;
+    }
+
+    final mockIndex = _posts.indexOf(mock);
+    assert(mockIndex >= 0, "Mock post not in stream!");
+    if (mockIndex >= 0) {
+      _posts[mockIndex] = replacement;
+    } else {
+      _posts.insert(0, replacement);
+    }
+    notifyListeners();
+  }
+
+  Future<void> load(Client client, {bool reset = false}) {
+    if (loading) {
+      return Future.value();
+    } else if (reset) {
+      _lastPage = null;
+      _posts = null;
+    } else if (_lastPage != null && _lastPage.nextPage == null) {
+      return Future.value();
+    }
+
+    return _load(client, page: _lastPage?.nextPage);
+  }
+
+  Future<void> _load(Client client, {page}) async {
+    loading = true;
+
+    try {
+      Page<Post> newPage;
+      switch (type) {
+        case StreamType.main:
+          newPage = await client.fetchMainStream(page: page);
+          break;
+        case StreamType.activity:
+          newPage = await client.fetchActivityStream(page: page);
+          break;
+        case StreamType.tag:
+          newPage = await client.fetchTagStream(tag, page: page);
+          break;
+      }
+      _lastPage = newPage;
+      if (_posts == null || page == null) {
+        _posts = newPage.content;
+      } else {
+        _posts.addAll(newPage.content);
+      }
+      notifyListeners();
+    } finally {
+      loading = false;
+    }
+  }
+}
+
 class StreamPage extends StatefulWidget {
   StreamPage({Key key, this.type, this.tag}) : super(key: key);
 
@@ -39,16 +134,16 @@ class StreamPage extends StatefulWidget {
 
 class _StreamPageState extends State<StreamPage> {
   final _refreshIndicator = GlobalKey<RefreshIndicatorState>();
-  var _loading = true;
+  PostStream _posts;
   String _lastError;
-  Page<Post> _lastPage;
-  List<Post> _posts;
   ScrollController _listScrollController = ScrollController();
   var _upButtonVisibility = false;
 
   @override
   void initState() {
     super.initState();
+    _posts = PostStream(type: widget.type, tag: widget.tag);
+
     WidgetsBinding.instance.addPostFrameCallback((_) =>
         _refreshIndicator.currentState.show());
     _listScrollController.addListener(() {
@@ -58,7 +153,7 @@ class _StreamPageState extends State<StreamPage> {
       }
 
       if (_listScrollController.offset >= _listScrollController.position.maxScrollExtent - 200)  {
-        _loadMorePosts();
+        _loadPosts();
       }
     });
   }
@@ -89,57 +184,62 @@ class _StreamPageState extends State<StreamPage> {
         ) : null,
         body: RefreshIndicator(
           key: _refreshIndicator,
-          onRefresh: _loadPosts,
+          onRefresh: () => _loadPosts(reset: true),
           child: Container(
             padding: const EdgeInsets.all(8.0),
-            child: Visibility(
-              visible: _posts != null && _posts.length > 0,
-              child: Stack(
-                children: <Widget>[
-                  ListView.builder(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    itemCount: _posts != null ? _posts.length + 2 : 0,
-                    controller: _listScrollController,
-                    itemBuilder: (context, position) =>
-                      position == 0 ? _StreamTypeSelector(currentType: widget.type, error: _lastError) :
-                        position > _posts.length ?
-                          Visibility(
-                            visible: _loading,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Center(child: CircularProgressIndicator()),
-                            )
-                          ) :
-                          PostView(post: _posts[position - 1]),
-                  ),
-                  Positioned(
-                    right: 8,
-                    top: 48,
-                    child: AnimatedSwitcher(
-                      transitionBuilder: (child, animation) => FadeTransition(child: child, opacity: animation),
-                      duration: Duration(milliseconds: 300),
-                      child: !_upButtonVisibility ? SizedBox.shrink() : ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: Container(
-                          color: Colors.black38,
-                          child: IconButton(
-                            color: Colors.white,
-                            padding: const EdgeInsets.all(0),
-                            iconSize: 48,
-                            icon: Icon(Icons.keyboard_arrow_up),
-                            onPressed: () =>
-                              _listScrollController.animateTo(1, duration: Duration(seconds: 1), curve: Curves.easeOut),
+            child: ChangeNotifierProvider.value(
+              value: _posts,
+              child: Consumer<PostStream>(
+                builder: (context, posts, _) => Visibility(
+                  visible:  posts.length > 0,
+                  child: Stack(
+                    children: <Widget>[
+                      ListView.builder(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        itemCount: posts.length > 0 ? posts.length + 2 : 0,
+                        controller: _listScrollController,
+                        itemBuilder: (context, position) =>
+                          position == 0 ? _StreamTypeSelector(currentType: widget.type, error: _lastError) :
+                            position > posts.length ?
+                              Visibility(
+                                visible: posts.loading,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Center(child: CircularProgressIndicator()),
+                                )
+                              ) :
+                              PostView(post: posts[position - 1]),
+                      ),
+                      Positioned(
+                        right: 8,
+                        top: 48,
+                        child: AnimatedSwitcher(
+                          transitionBuilder: (child, animation) => FadeTransition(child: child, opacity: animation),
+                          duration: Duration(milliseconds: 300),
+                          child: !_upButtonVisibility ? SizedBox.shrink() : ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Container(
+                              color: Colors.black38,
+                              child: IconButton(
+                                color: Colors.white,
+                                padding: const EdgeInsets.all(0),
+                                iconSize: 48,
+                                icon: Icon(Icons.keyboard_arrow_up),
+                                onPressed: () =>
+                                  _listScrollController.animateTo(1, duration: Duration(seconds: 1), curve: Curves.easeOut),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  )
-                ]
+                      )
+                    ]
+                  ),
+                  replacement: _StreamFallback(error: _lastError, loading: _posts.loading)
+                ),
               ),
-              replacement: _StreamFallback(error: _lastError, loading: _loading)
-              ),
-            )
+          )
         )
+      )
     );
   }
 
@@ -149,51 +249,26 @@ class _StreamPageState extends State<StreamPage> {
     super.dispose();
   }
 
-  _loadMorePosts() {
-    if (_loading || _lastPage == null || _lastPage.nextPage == null) {
-      return;
-    }
-
-    _loadPosts(page: _lastPage.nextPage);
-  }
-
-  Future<void> _loadPosts({page}) async {
-    setState(() {
-      _loading = true;
-      _lastError = null;
-    });
-
+  _loadPosts({bool reset = false}) async {
     try {
       final client = Provider.of<Client>(context, listen: false);
-      Page<Post> newPage;
-      switch (widget.type) {
-        case StreamType.main:
-          newPage = await client.fetchMainStream(page: page);
-          break;
-        case StreamType.activity:
-          newPage = await client.fetchActivityStream(page: page);
-          break;
-        case StreamType.tag:
-          newPage = await client.fetchTagStream(widget.tag, page: page);
-          break;
-      }
+      Future<void> progress;
       setState(() {
-        _loading = false;
-        _lastPage = newPage;
-        if (_posts == null || page == null) {
-          _posts = newPage.content;
-        } else {
-          _posts.addAll(newPage.content);
-        }
+        _lastError = null;
+        progress = _posts.load(client, reset: reset);
       });
+      await progress;
+      if (mounted) {
+        setState(() {});
+      }
     } catch (e, s) {
       debugPrintStack(label: e.toString(), stackTrace:  s);
-      setState(() {
-        _loading = false;
-        _lastError = e.toString();
-      });
+      if (mounted) {
+        setState(() {
+          _lastError = e.toString();
+        });
+      }
     }
-
   }
 }
 
@@ -419,7 +494,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
             icon: Icon(Icons.comment, size: 16),
             label: Text(widget.post.interactions.comments.toString()),
             textColor: Colors.grey[600],
-            onPressed: () =>
+            onPressed: !widget.post.canComment ? null : () =>
               showModalBottomSheet(context: context, builder: (context) => CommentSheet(post: widget.post)),
           ),
           FlatButton.icon(
@@ -430,7 +505,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
             ),
             label: Text(widget.post.interactions.reshares.toString()),
             textColor: Colors.grey[600],
-            onPressed: !widget.post.canReshare() ? null : () {},
+            onPressed: !widget.post.canReshare ? null : () => _promptReshare(context),
           ),
           FlatButton.icon(
             icon: Icon(
@@ -440,7 +515,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
             ),
             label: Text(widget.post.interactions.likes.toString()),
             textColor: Colors.grey[600],
-            onPressed: _updatingLike ? null : () => _toggleLike(context)
+            onPressed: _updatingLike || !widget.post.canLike ? null : () => _toggleLike(context)
           )
         ]
       ),
@@ -462,19 +537,89 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
       } else {
         await client.unlikePost(widget.post);
       }
-      setState(() => _updatingLike = false);
+      if (mounted) {
+        setState(() => _updatingLike = false);
+      }
     } catch (e, s) {
       debugPrintStack(label: e.toString(), stackTrace: s);
 
-      setState(() {
-        _updatingLike = false;
-        widget.post.interactions.liked = current;
-        widget.post.interactions.likes = currentCount;
-      });
+      widget.post.interactions.liked = current;
+      widget.post.interactions.likes = currentCount;
+
+      if (mounted) {
+        setState(() {
+          _updatingLike = false;
+        });
+      }
 
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(
           "Failed to ${current ? "unlike" : "like"} post: $e",
+          style: TextStyle(color: Colors.white)
+        ),
+        backgroundColor: Colors.red
+      ));
+    }
+  }
+
+  _promptReshare(BuildContext context) {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (dialogContext) => AlertDialog(
+        title: Text("Reshare post?"),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("Cancel"),
+            onPressed: () => Navigator.of(dialogContext).pop(),
+          ),
+          FlatButton(
+            child: Text("Reshare"),
+            onPressed: () {
+              _createReshare(context);
+              Navigator.of(dialogContext).pop();
+            },
+          )
+        ]
+      )
+    );
+  }
+
+  _createReshare(BuildContext context) async {
+    final client = Provider.of<Client>(context, listen: false);
+    final postStream = Provider.of<PostStream>(context, listen: false);
+    setState(() {
+      widget.post.interactions.reshared = true;
+      widget.post.interactions.reshares++;
+    });
+
+    var mockReshare;
+    try {
+      final author = await client.currentUser;
+      mockReshare = widget.post.mockReshare(author.person);
+      postStream.addMock(mockReshare);
+
+      final reshare = await client.resharePost(widget.post);
+      if (reshare != null) {
+        postStream.replaceMock(mock: widget.post, replacement: reshare);
+      } else {
+        postStream.removeMock(mockReshare);
+      }
+    } catch (e, s) {
+      debugPrintStack(label: e.toString(), stackTrace: s);
+
+      setState(() {
+        widget.post.interactions.reshared = false;
+        widget.post.interactions.reshares--;
+      });
+
+      if (mockReshare != null) {
+        postStream.removeMock(mockReshare);
+      }
+
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(
+          "Failed to reshare post: $e",
           style: TextStyle(color: Colors.white)
         ),
         backgroundColor: Colors.red

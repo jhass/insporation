@@ -8,18 +8,28 @@ import 'package:http/http.dart' as http;
 
 class Client {
   static const _appauth = const MethodChannel("insporation/appauth");
-  static const _scopes = "openid profile public:read private:read contacts:read interactions";
+  static const _scopes = "openid profile public:read private:read contacts:read public:modify interactions";
   static final _linkHeaderPattern = RegExp(r'<([^>]+)>;\s*rel="([^"]+)"');
 
   final http.Client _client = http.Client();
   _Session _currentSession;
   _Host _currentHost;
+  Profile _currentUser;
 
-  bool hasSession() => _currentSession?.diasporaId != null;
+  bool get hasSession => _currentSession?.diasporaId != null;
 
-  String getCurrentUser() => _currentSession?.diasporaId;
+  String get currentUserId => _currentSession?.diasporaId;
 
-  bool isAuthorized() => _currentSession.authorized;
+  bool get authorized => _currentSession.authorized;
+
+  Future<Profile> get currentUser async {
+    if (_currentUser != null && _currentUser.person.diasporaId == currentUserId) {
+      return _currentUser;
+    }
+
+    final response = await _call("GET", "user");
+    return Profile.from(jsonDecode(response.body));
+  }
 
   Future<void> switchToUser(String diasporaId) async {
     final parts = diasporaId.split("@"),
@@ -80,9 +90,24 @@ class Client {
     }
   }
 
+  Future<Post> resharePost(Post post) async {
+    try {
+      final response = await _call("POST", "posts/${post.guid}/reshares");
+      return Post.from(jsonDecode(response.body));
+    } on ClientException catch (e) {
+      if (e.code != 409) {
+        throw e;
+      }
+
+      // already reshared, ignore
+    }
+
+    return null;
+  }
+
   Future<Page<Post>> _fetchPosts(Future<http.Response> request) async {
     final response = await request,
-      posts = await compute(_parsePostsJson, {"body": response.body, "currentUser": getCurrentUser()});
+      posts = await compute(_parsePostsJson, {"body": response.body, "currentUser": currentUserId});
     return _makePage(posts, response);
   }
 
@@ -239,7 +264,7 @@ class ClientException implements Exception {
   factory ClientException.fromResponse(http.Response response) {
     var message = response.reasonPhrase;
     if (response.contentLength > 0 && response.headers[HttpHeaders.contentTypeHeader].startsWith("application/json")) {
-      message = jsonDecode(response.body)["body"];
+      message = jsonDecode(response.body)["message"];
     }
     return ClientException(
       code: response.statusCode,
@@ -333,7 +358,7 @@ class Person {
   final String name;
   final String avatar;
 
-  Person({this.diasporaId, this.name, this.avatar});
+  Person({@required this.diasporaId, @required this.name, @required this.avatar});
 
   factory Person.from(Map<String, dynamic> object) {
     return Person(
@@ -347,6 +372,27 @@ class Person {
     objects.map((object) => Person.from(object)).toList();
 }
 
+class Profile {
+  final Person person;
+  final PhotoSizes avatar;
+  final List<String> tags;
+
+  Profile({@required this.person, @required this.avatar, @required this.tags});
+
+  factory Profile.from(Map<String, dynamic> object) {
+    final PhotoSizes avatar = PhotoSizes.from(object["avatar"] ?? {});
+    return Profile(
+      person: Person(
+        diasporaId: object["diaspora_id"],
+        name: object["name"],
+        avatar: avatar.medium
+      ),
+      avatar: avatar,
+      tags: object["tags"].cast<String>().toList()
+    );
+  }
+}
+
 class Post {
   final String guid;
   final String body;
@@ -358,9 +404,11 @@ class Post {
   final PostInteractions interactions;
   final DateTime createdAt;
   final bool ownPost;
+  final bool mock;
 
-  Post({this.guid, this.body, this.author, this.public, this.root, this.photos,
-    this.mentionedPeople, this.interactions, this.createdAt, this.ownPost});
+  Post({@required this.guid, @required this.body, @required this.author, @required this.public, @required this.root,
+    @required this.photos, @required this.mentionedPeople, @required this.interactions, @required this.createdAt,
+    @required this.ownPost, this.mock});
 
   factory Post.from(Map<String, dynamic> object, {String currentUser}) {
     final author = Person.from(object["author"]),
@@ -378,7 +426,8 @@ class Post {
       ) : null,
       interactions: PostInteractions.from(object["interaction_counters"], object["own_interaction_state"]),
       createdAt: DateTime.parse(object["created_at"]),
-      ownPost: author.diasporaId == currentUser || (root != null && root.author.diasporaId == currentUser)
+      ownPost: author.diasporaId == currentUser || (root != null && root.author.diasporaId == currentUser),
+      mock: false
     );
   }
 
@@ -386,7 +435,26 @@ class Post {
     objects.map((object) => Post.from(object, currentUser: currentUser)).toList();
 
 
-  bool canReshare() => public && !ownPost && !interactions.reshared;
+  bool get canReshare => !mock && public && !ownPost && !interactions.reshared;
+
+  bool get canLike => !mock;
+
+  bool get canComment => !mock;
+
+  Post mockReshare(Person author) =>
+    Post(
+      guid: null,
+      body: body,
+      author: author,
+      public: public,
+      root: this,
+      photos: photos,
+      mentionedPeople: mentionedPeople,
+      interactions: PostInteractions(subscribed: true),
+      createdAt: DateTime.now(),
+      ownPost: true,
+      mock: true
+    );
 }
 
 class PostInteractions {
@@ -397,7 +465,8 @@ class PostInteractions {
   bool reshared;
   bool subscribed;
 
-  PostInteractions({this.comments, this.reshares, this.likes, this.liked, this.reshared, this.subscribed});
+  PostInteractions({this.comments = 0, this.reshares = 0, this.likes = 0,
+    this.liked = false, this.reshared = false, this.subscribed = false});
 
   factory PostInteractions.from(Map<String, dynamic> counters, Map<String, dynamic> ownState) =>
     PostInteractions(

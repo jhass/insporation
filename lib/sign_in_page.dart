@@ -117,8 +117,8 @@ class _SignInPageState extends State<SignInPage> {
     }).then((_) {
       setState(() {
         _loading = false;
-        if (client.hasSession()) {
-          if (client.isAuthorized()) {
+        if (client.hasSession) {
+          if (client.authorized) {
             _loading = true;
             Navigator.pushReplacementNamed(context, '/stream/main');
           }
