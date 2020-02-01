@@ -398,6 +398,7 @@ class Post {
   final String body;
   final Person author;
   final bool public;
+  final bool nsfw;
   final Post root;
   final List<Photo> photos;
   final Map<String, Person> mentionedPeople;
@@ -406,9 +407,9 @@ class Post {
   final bool ownPost;
   final bool mock;
 
-  Post({@required this.guid, @required this.body, @required this.author, @required this.public, @required this.root,
-    @required this.photos, @required this.mentionedPeople, @required this.interactions, @required this.createdAt,
-    @required this.ownPost, this.mock});
+  Post({@required this.guid, @required this.body, @required this.author, @required this.public, @required this.nsfw,
+    @required this.root, @required this.photos, @required this.mentionedPeople, @required this.interactions,
+    @required this.createdAt, @required this.ownPost, this.mock});
 
   factory Post.from(Map<String, dynamic> object, {String currentUser}) {
     final author = Person.from(object["author"]),
@@ -418,6 +419,7 @@ class Post {
       body: object["body"],
       author: author,
       public: object["public"],
+      nsfw: object["nsfw"],
       root: root,
       photos: object["photos"] != null ? Photo.fromList(object["photos"].cast<Map<String, dynamic>>()) : null,
       mentionedPeople: object["mentioned_people"] != null ? Map.fromIterable(
@@ -447,6 +449,7 @@ class Post {
       body: body,
       author: author,
       public: public,
+      nsfw: nsfw,
       root: this,
       photos: photos,
       mentionedPeople: mentionedPeople,

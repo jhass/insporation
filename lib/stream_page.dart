@@ -138,6 +138,7 @@ class _StreamPageState extends State<StreamPage> {
   String _lastError;
   ScrollController _listScrollController = ScrollController();
   var _upButtonVisibility = false;
+  ValueNotifier<bool> _showNsfw = ValueNotifier(false);
 
   @override
   void initState() {
@@ -187,12 +188,16 @@ class _StreamPageState extends State<StreamPage> {
           onRefresh: () => _loadPosts(reset: true),
           child: Container(
             padding: const EdgeInsets.all(8.0),
-            child: ChangeNotifierProvider.value(
-              value: _posts,
+            child: MultiProvider(
+              providers: [
+                ChangeNotifierProvider.value(value: _posts),
+                ChangeNotifierProvider.value(value: _showNsfw)
+              ],
               child: Consumer<PostStream>(
                 builder: (context, posts, _) => Visibility(
                   visible:  posts.length > 0,
                   child: Stack(
+                    fit: StackFit.expand,
                     children: <Widget>[
                       ListView.builder(
                         physics: AlwaysScrollableScrollPhysics(),
@@ -257,6 +262,9 @@ class _StreamPageState extends State<StreamPage> {
         _lastError = null;
         progress = _posts.load(client, reset: reset);
       });
+      if (reset) {
+        _showNsfw.value = false;
+      }
       await progress;
       if (mounted) {
         setState(() {});
@@ -333,56 +341,61 @@ class PostView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Row(
+      child: Stack(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                PersonHeader(person: post.root != null ? post.root.author : post.author),
-                Visibility(
-                    visible: post.root != null,
-                    child: Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Icon(Icons.repeat, size: 18),
-                        ),
-                        PersonHeader(person: post.author)
-                      ],
+                Row(
+                  children: <Widget>[
+                    PersonHeader(person: post.root != null ? post.root.author : post.author),
+                    Visibility(
+                        visible: post.root != null,
+                        child: Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Icon(Icons.repeat, size: 18),
+                            ),
+                            PersonHeader(person: post.author)
+                          ],
+                        )
                     )
+                  ],
+                ),
+                Divider(),
+                Visibility(
+                  visible: post.photos != null && post.photos.length > 0,
+                  child: _PhotoSlider(photos: post.photos ?? const <Photo>[])
+                ),
+                Message(body: post.body, mentionedPeople: post.mentionedPeople),
+                Divider(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 4.0),
+                        child: Icon(
+                            post.public ? Icons.public : Icons.lock,
+                            size: 14,
+                            color: Colors.grey[600]
+                        ),
+                      ),
+                      Timeago(post.createdAt, textStyle: TextStyle(fontSize: 10, fontStyle: FontStyle.italic)),
+                      Spacer(),
+                      _PostInteractionsView(post: post)
+                    ],
+                  )
                 )
               ],
             ),
-            Divider(),
-            Visibility(
-              visible: post.photos != null && post.photos.length > 0,
-              child: _PhotoSlider(photos: post.photos ?? const <Photo>[])
-            ),
-            Message(body: post.body, mentionedPeople: post.mentionedPeople),
-            Divider(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 4.0),
-                    child: Icon(
-                        post.public ? Icons.public : Icons.lock,
-                        size: 14,
-                        color: Colors.grey[600]
-                    ),
-                  ),
-                  Timeago(post.createdAt, textStyle: TextStyle(fontSize: 10, fontStyle: FontStyle.italic)),
-                  Spacer(),
-                  _PostInteractionsView(post: post)
-                ],
-              )
-            )
-          ],
-        ),
+          ),
+          Positioned.fill(child: NsfwShield(author: post.author, nsfwPost: post.nsfw))
+        ]
       ),
     );
   }
@@ -808,6 +821,79 @@ class _PhotoSliderState extends State<_PhotoSlider> {
           ),
         )
       ],
+    );
+  }
+}
+
+class NsfwShield extends StatefulWidget {
+  NsfwShield({@required this.author, @required this.nsfwPost});
+
+  final Person author;
+  final bool nsfwPost;
+
+  @override
+  State<StatefulWidget> createState() => _NsfwShieldState();
+}
+
+class _NsfwShieldState extends State<NsfwShield> {
+  bool _hide = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _hide = widget.nsfwPost;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final showNsfw = Provider.of<ValueNotifier<bool>>(context);
+    return Visibility(
+        visible: _hide && !showNsfw.value,
+        child: Container(
+          alignment: Alignment.center,
+          color: Colors.black.withOpacity(0.95),
+          padding: EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "NSFW post by ${widget.author.name}",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                        child: FlatButton(
+                          child: Text(
+                            "Show all NSFW posts",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.blue)
+                          ),
+                          onPressed: () => showNsfw.value = true
+                        ),
+                      ),
+                      SizedBox(height: 32, child: VerticalDivider(color: Colors.white)),
+                      Flexible(
+                        child: FlatButton(
+                          child: Text(
+                            "Show this post",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.blue)
+                          ),
+                          onPressed: () => setState(() => _hide = false),
+                        )
+                      )
+                    ],
+                  )
+                )
+            ],
+          )
+      )
     );
   }
 }
