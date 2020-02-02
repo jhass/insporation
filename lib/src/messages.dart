@@ -1,8 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -23,22 +23,15 @@ class PersonHeader extends StatelessWidget {
           child: Container(
             width: 24,
             height: 24,
-            child: Stack(
-              children: <Widget>[
-                Center(child: Icon(Icons.person)),
-                Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: FadeInImage(
-                      fadeInDuration: Duration(milliseconds: 250),
-                      image: person.avatar != null ?
-                        NetworkImage(person.avatar) : MemoryImage(kTransparentImage),
-                      placeholder: MemoryImage(kTransparentImage)
-                    ),
-                  )
-                )
-              ]
-            ),
+            child: person.avatar != null ? ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: CachedNetworkImage(
+                placeholder: (context, url) => Icon(Icons.person),
+                imageUrl: person.avatar,
+                fadeInDuration: Duration(milliseconds: 250),
+                fit: BoxFit.cover,
+              )
+            ) : Icon(Icons.person),
           )
         ),
         Text(
@@ -72,8 +65,7 @@ class Message extends StatelessWidget {
           md.AutolinkExtensionSyntax(),
           mde.TagLinkSyntax(),
           mde.MentionLinkSyntax((diasporaId, inlineName) =>
-            (mentionedPeople != null ?
-              mentionedPeople[diasporaId].name  : null) ?? inlineName)
+            mentionedPeople != null ? mentionedPeople[diasporaId]?.name : null)
         ]
       ),
       onLinkTap: (url) {

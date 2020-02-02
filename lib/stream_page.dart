@@ -63,7 +63,7 @@ class _StreamPageState extends State<StreamPage> {
           currentIndex: 0,
           onTap: (item) {
             if (item == 1) {
-              //Navigator.pushReplacementNamed(context, '/switch_user');
+              Navigator.pushReplacementNamed(context, '/switch_user');
             }
           },
           items: <BottomNavigationBarItem>[

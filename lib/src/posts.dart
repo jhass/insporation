@@ -1,9 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import 'client.dart';
 import 'comments.dart';
@@ -354,17 +354,10 @@ class _PhotoSliderState extends State<_PhotoSlider> {
       children: <Widget>[
         CarouselSlider.builder(
           itemCount: widget.photos.length,
-          itemBuilder: (context, index) => Stack(
-            children: <Widget>[
-              Center(child: CircularProgressIndicator()),
-              Center(
-                child: FadeInImage.memoryNetwork(
-                  fadeInDuration: Duration(milliseconds: 250),
-                  image: widget.photos[index].sizes.large,
-                  placeholder: kTransparentImage,
-                )
-              )
-            ]
+          itemBuilder: (context, index) => CachedNetworkImage(
+            placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+            imageUrl: widget.photos[index].sizes.large,
+            fadeInDuration: Duration(milliseconds: 250),
           ),
           height: 300,
           viewportFraction: 1.0,

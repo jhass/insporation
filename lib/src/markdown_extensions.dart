@@ -51,10 +51,14 @@ class MentionLinkSyntax extends InlineSyntax {
   bool onMatch(InlineParser parser, Match match) {
     final diasporaId = match[2].trim(), inlineName = _presence(match[1]?.trim()),
         url = 'eu.jhass.insporation://people/$diasporaId';
-    final name = lookup(diasporaId, inlineName) ?? diasporaId;
-    final anchor = Element.text('a', parser.document.encodeHtml ? HtmlEscape(HtmlEscapeMode.element).convert(name) : name);
-    anchor.attributes['href'] = Uri.encodeFull(url);
-    parser.addNode(anchor);
+    final name = lookup(diasporaId, inlineName);
+    if (name != null) {
+      final anchor = Element.text('a', parser.document.encodeHtml ? HtmlEscape(HtmlEscapeMode.element).convert(name) : name);
+      anchor.attributes['href'] = Uri.encodeFull(url);
+      parser.addNode(anchor);
+    } else {
+      parser.addNode(Element.text('span', inlineName ?? diasporaId));
+    }
 
     return true;
   }

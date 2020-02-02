@@ -17,6 +17,7 @@ dependencies:
   flutter_html: ^1.0.0-pre.1
   url_launcher: ^5.4.1
   carousel_slider: ^1.4.1
+  cached_network_image: ^2.0.0
 
 dev_dependencies:
   flutter_test:
