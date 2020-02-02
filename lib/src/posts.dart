@@ -145,7 +145,21 @@ class PostView extends StatelessWidget {
                   visible: post.photos != null && post.photos.length > 0,
                   child: _PhotoSlider(photos: post.photos ?? const <Photo>[])
                 ),
-                Message(body: post.body, mentionedPeople: post.mentionedPeople),
+                !post.reshareOfDeleted ? Message(body: post.body, mentionedPeople: post.mentionedPeople) :
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    color: Colors.black87,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          child: Icon(Icons.warning, color: Colors.white)
+                        ),
+                        Text("Reshare of a deleted post", style: TextStyle(color: Colors.white))
+                     ]
+                    )
+                  ),
                 _PollView(post: post),
                 Divider(),
                 Padding(

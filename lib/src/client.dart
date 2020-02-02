@@ -406,8 +406,13 @@ class Profile {
   }
 }
 
+enum PostType { status, reshare }
+
 class Post {
+  static const _typeMap = {"StatusMessage": PostType.status, "Reshare": PostType.reshare};
+
   final String guid;
+  final PostType type;
   final String body;
   final Person author;
   final bool public;
@@ -421,15 +426,17 @@ class Post {
   final bool ownPost;
   final bool mock;
 
-  Post({@required this.guid, @required this.body, @required this.author, @required this.public, @required this.nsfw,
-    @required this.root, @required this.photos, @required this.poll, @required this.mentionedPeople,
-    @required this.interactions, @required this.createdAt, @required this.ownPost, this.mock});
+  Post({@required this.guid, @required this.type, @required this.body, @required this.author,
+    @required this.public, @required this.nsfw, @required this.root, @required this.photos,
+    @required this.poll, @required this.mentionedPeople, @required this.interactions,
+    @required this.createdAt, @required this.ownPost, this.mock});
 
   factory Post.from(Map<String, dynamic> object, {String currentUser}) {
     final author = Person.from(object["author"]),
       root = object["root"] != null ? Post.from(object["root"]) : null;
     return Post(
       guid: object["guid"],
+      type: _typeMap[object["post_type"]],
       body: object["body"],
       author: author,
       public: object["public"],
@@ -451,6 +458,7 @@ class Post {
   static List<Post> fromList(List<Map<String, dynamic>> objects, {String currentUser}) =>
     objects.map((object) => Post.from(object, currentUser: currentUser)).toList();
 
+  bool get reshareOfDeleted => type == PostType.reshare && root == null;
 
   bool get canReshare => !mock && public && !ownPost && !interactions.reshared;
 
@@ -461,6 +469,7 @@ class Post {
   Post mockReshare(Person author) =>
     Post(
       guid: null,
+      type: PostType.reshare,
       body: body,
       author: author,
       public: public,

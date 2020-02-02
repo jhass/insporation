@@ -93,19 +93,13 @@ class NsfwShield extends StatefulWidget {
 }
 
 class _NsfwShieldState extends State<NsfwShield> {
-  bool _hide = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _hide = widget.nsfwPost;
-  }
+  bool _hide;
 
   @override
   Widget build(BuildContext context) {
     final showNsfw = Provider.of<ValueNotifier<bool>>(context);
     return Visibility(
-        visible: _hide && !showNsfw.value,
+        visible: widget.nsfwPost == true && _hide != false && showNsfw.value == false,
         child: Container(
           alignment: Alignment.center,
           color: Colors.black.withOpacity(0.95),
