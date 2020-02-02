@@ -105,6 +105,18 @@ class Client {
     return null;
   }
 
+  Future<void> vote(Post post, PollAnswer answer) async {
+    try {
+      await _call("POST", "posts/${post.guid}/vote", body: {"poll_answer": answer.id});
+    } on ClientException catch(e) {
+      if (e.code != 409) {
+        throw e;
+      }
+
+      // already voted here, ignore
+    }
+  }
+
   Future<Page<Post>> _fetchPosts(Future<http.Response> request) async {
     final response = await request,
       posts = await compute(_parsePostsJson, {"body": response.body, "currentUser": currentUserId});
@@ -118,7 +130,8 @@ class Client {
     request.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
 
     if (body != null) {
-      request.body = body;
+      request.headers[HttpHeaders.contentTypeHeader] = "application/json; charset=utf-8";
+      request.body = jsonEncode(body);
     }
 
     final response = await _client.send(request).then(http.Response.fromStream);
@@ -401,6 +414,7 @@ class Post {
   final bool nsfw;
   final Post root;
   final List<Photo> photos;
+  final Poll poll;
   final Map<String, Person> mentionedPeople;
   final PostInteractions interactions;
   final DateTime createdAt;
@@ -408,8 +422,8 @@ class Post {
   final bool mock;
 
   Post({@required this.guid, @required this.body, @required this.author, @required this.public, @required this.nsfw,
-    @required this.root, @required this.photos, @required this.mentionedPeople, @required this.interactions,
-    @required this.createdAt, @required this.ownPost, this.mock});
+    @required this.root, @required this.photos, @required this.poll, @required this.mentionedPeople,
+    @required this.interactions, @required this.createdAt, @required this.ownPost, this.mock});
 
   factory Post.from(Map<String, dynamic> object, {String currentUser}) {
     final author = Person.from(object["author"]),
@@ -422,6 +436,7 @@ class Post {
       nsfw: object["nsfw"],
       root: root,
       photos: object["photos"] != null ? Photo.fromList(object["photos"].cast<Map<String, dynamic>>()) : null,
+      poll: object["poll"] != null ? Poll.from(object["poll"]) : null,
       mentionedPeople: object["mentioned_people"] != null ? Map.fromIterable(
         Person.fromList(object["mentioned_people"].cast<Map<String, dynamic>>()),
         key: (person) => person.diasporaId
@@ -452,6 +467,7 @@ class Post {
       nsfw: nsfw,
       root: this,
       photos: photos,
+      poll: poll,
       mentionedPeople: mentionedPeople,
       interactions: PostInteractions(subscribed: true),
       createdAt: DateTime.now(),
@@ -517,6 +533,44 @@ class PhotoSizes {
     );
 }
 
+class Poll {
+  final String question;
+  bool alreadyParticipated;
+  int participationCount;
+  List<PollAnswer> answers;
+
+  Poll({@required this.question, @required this.alreadyParticipated, @required this.participationCount,
+    @required this.answers});
+
+  factory Poll.from(Map<String, dynamic> object) =>
+    Poll(
+      question: object["question"],
+      alreadyParticipated: object["already_participated"],
+      participationCount: object["participation_count"],
+      answers: PollAnswer.fromList(object["poll_answers"].cast<Map<String, dynamic>>())
+    );
+}
+
+class PollAnswer {
+  final int id;
+  final String answer;
+  bool own;
+  int voteCount;
+
+  PollAnswer({@required this.id, @required this.answer, @required this.own, @required this.voteCount});
+
+  factory PollAnswer.from(Map<String, dynamic> object) =>
+    PollAnswer(
+      id: object["id"],
+      answer: object["answer"],
+      own: object["own_answer"],
+      voteCount: object["vote_count"]
+    );
+
+  static List<PollAnswer> fromList(List<Map<String, dynamic>> objects) =>
+    objects.map((object) => PollAnswer.from(object)).toList();
+}
+
 class Comment {
   final String body;
   final Person author;
@@ -531,6 +585,6 @@ class Comment {
       createdAt: DateTime.parse(object["created_at"])
     );
 
-  static fromList(List<Map<String, dynamic>> objects) =>
+  static List<Comment> fromList(List<Map<String, dynamic>> objects) =>
     objects.map((object) => Comment.from(object)).toList();
 }

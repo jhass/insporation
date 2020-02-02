@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'src/client.dart';
 import 'sign_in_page.dart';
+import 'src/posts.dart';
 import 'stream_page.dart';
 
 void main() => runApp(MultiProvider(
