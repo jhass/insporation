@@ -59,86 +59,86 @@ class _StreamPageState extends State<StreamPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: widget.type != StreamType.tag ? BottomNavigationBar(
-          currentIndex: 0,
-          onTap: (item) {
-            if (item == 1) {
+      bottomNavigationBar: widget.type != StreamType.tag ? BottomNavigationBar(
+        currentIndex: 0,
+        onTap: (item) {
+          if (item == 1) {
               Navigator.pushReplacementNamed(context, '/switch_user');
             }
           },
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.view_stream),
-              title: Text("Stream")
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.arrow_forward),
-              title: Text("Leave")
-            )
-          ],
-        ) : null,
-        appBar: widget.type == StreamType.tag ? AppBar(
-          title: Text(widget.title),
-        ) : null,
-        body: RefreshIndicator(
-          key: _refreshIndicator,
-          onRefresh: () => _loadPosts(reset: true),
-          child: Container(
-            padding: const EdgeInsets.all(8.0),
-            child: MultiProvider(
-              providers: [
-                ChangeNotifierProvider.value(value: _posts),
-                ChangeNotifierProvider.value(value: _showNsfw)
-              ],
-              child: Consumer<PostStream>(
-                builder: (context, posts, _) => Visibility(
-                  visible:  posts.length > 0,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      ListView.builder(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        itemCount: posts.length > 0 ? posts.length + 2 : 0,
-                        controller: _listScrollController,
-                        itemBuilder: (context, position) =>
-                          position == 0 ? _StreamTypeSelector(currentType: widget.type, error: _lastError) :
-                            position > posts.length ?
-                              Visibility(
-                                visible: posts.loading,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Center(child: CircularProgressIndicator()),
-                                )
-                              ) :
-                              PostView(post: posts[position - 1]),
-                      ),
-                      Positioned(
-                        right: 8,
-                        top: 48,
-                        child: AnimatedSwitcher(
-                          transitionBuilder: (child, animation) => FadeTransition(child: child, opacity: animation),
-                          duration: Duration(milliseconds: 300),
-                          child: !_upButtonVisibility ? SizedBox.shrink() : ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Container(
-                              color: Colors.black38,
-                              child: IconButton(
-                                color: Colors.white,
-                                padding: const EdgeInsets.all(0),
-                                iconSize: 48,
-                                icon: Icon(Icons.keyboard_arrow_up),
-                                onPressed: () =>
-                                  _listScrollController.animateTo(1, duration: Duration(seconds: 1), curve: Curves.easeOut),
-                              ),
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.view_stream),
+            title: Text("Stream")
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.arrow_forward),
+            title: Text("Leave")
+          )
+        ],
+      ) : null,
+      appBar: widget.type == StreamType.tag ? AppBar(
+        title: Text(widget.title),
+      ) : null,
+      body: RefreshIndicator(
+        key: _refreshIndicator,
+        onRefresh: () => _loadPosts(reset: true),
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          child: MultiProvider(
+            providers: [
+              ChangeNotifierProvider.value(value: _posts),
+              ChangeNotifierProvider.value(value: _showNsfw)
+            ],
+            child: Consumer<PostStream>(
+              builder: (context, posts, _) => Visibility(
+                visible:  posts.length > 0,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    ListView.builder(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      itemCount: posts.length > 0 ? posts.length + 2 : 0,
+                      controller: _listScrollController,
+                      itemBuilder: (context, position) =>
+                        position == 0 ? _StreamTypeSelector(currentType: widget.type, error: _lastError) :
+                          position > posts.length ?
+                            Visibility(
+                              visible: posts.loading,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Center(child: CircularProgressIndicator()),
+                              )
+                            ) :
+                            PostView(post: posts[position - 1]),
+                    ),
+                    Positioned(
+                      right: 8,
+                      top: 48,
+                      child: AnimatedSwitcher(
+                        transitionBuilder: (child, animation) => FadeTransition(child: child, opacity: animation),
+                        duration: Duration(milliseconds: 300),
+                        child: !_upButtonVisibility ? SizedBox.shrink() : ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Container(
+                            color: Colors.black38,
+                            child: IconButton(
+                              color: Colors.white,
+                              padding: const EdgeInsets.all(0),
+                              iconSize: 48,
+                              icon: Icon(Icons.keyboard_arrow_up),
+                              onPressed: () =>
+                                _listScrollController.animateTo(1, duration: Duration(seconds: 1), curve: Curves.easeOut),
                             ),
                           ),
                         ),
-                      )
-                    ]
-                  ),
-                  replacement: _StreamFallback(error: _lastError, loading: _posts.loading)
+                      ),
+                    )
+                  ]
                 ),
+                replacement: _StreamFallback(error: _lastError, loading: _posts.loading)
               ),
+            ),
           )
         )
       )

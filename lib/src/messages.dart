@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:gesture_zoom_box/gesture_zoom_box.dart';
 import 'package:provider/provider.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:url_launcher/url_launcher.dart';
@@ -17,6 +18,7 @@ class PersonHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.fromLTRB(4, 4, 8, 4),
@@ -77,7 +79,43 @@ class Message extends StatelessWidget {
         } else {
           launch(url);
         }
-      }
+      },
+      onImageTap: (url) => Photobox.show(context, url)
+    );
+  }
+}
+
+class Photobox extends StatelessWidget {
+  static show(BuildContext context, String url) => Navigator.of(context).push(
+    PageRouteBuilder(
+      pageBuilder: (context, _, __) => Photobox(url),
+      opaque: false,
+      transitionDuration: Duration(milliseconds: 400),
+      transitionsBuilder: (context, animation, _, child) => FadeTransition(opacity: animation, child: child),
+      barrierColor: Colors.black54,
+      barrierDismissible: true,
+      maintainState: true,
+      fullscreenDialog: false,
+    )
+  );
+
+  Photobox(this.imageUrl);
+
+  final String imageUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureZoomBox(
+      maxScale: 3,
+      doubleTapScale: 2,
+      onPressed: () => Navigator.of(context).pop(),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: CachedNetworkImage(
+          imageUrl: imageUrl,
+          placeholder: (context, url) => Center(child: CircularProgressIndicator())
+        )
+      )
     );
   }
 }

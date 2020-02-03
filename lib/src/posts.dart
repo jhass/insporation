@@ -122,13 +122,16 @@ class PostView extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
+                Wrap(
+                  direction: Axis.horizontal,
                   children: <Widget>[
                     PersonHeader(person: post.root != null ? post.root.author : post.author),
                     Visibility(
                         visible: post.root != null,
                         child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -368,10 +371,13 @@ class _PhotoSliderState extends State<_PhotoSlider> {
       children: <Widget>[
         CarouselSlider.builder(
           itemCount: widget.photos.length,
-          itemBuilder: (context, index) => CachedNetworkImage(
-            placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-            imageUrl: widget.photos[index].sizes.large,
-            fadeInDuration: Duration(milliseconds: 250),
+          itemBuilder: (context, index) => GestureDetector(
+            onTap: () => Photobox.show(context, widget.photos[index].sizes.large),
+            child: CachedNetworkImage(
+              placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+              imageUrl: widget.photos[index].sizes.large,
+              fadeInDuration: Duration(milliseconds: 250),
+            )
           ),
           height: 300,
           viewportFraction: 1.0,
