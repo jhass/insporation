@@ -99,7 +99,7 @@ class Photobox extends StatelessWidget {
     )
   );
 
-  Photobox(this.imageUrl);
+  Photobox(this.imageUrl, {Key key}) : super(key: key);
 
   final String imageUrl;
 
@@ -121,7 +121,7 @@ class Photobox extends StatelessWidget {
 }
 
 class NsfwShield extends StatefulWidget {
-  NsfwShield({@required this.author, @required this.nsfwPost});
+  NsfwShield({Key key, @required this.author, @required this.nsfwPost}) : super(key: key);
 
   final Person author;
   final bool nsfwPost;

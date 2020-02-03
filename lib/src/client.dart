@@ -422,6 +422,7 @@ class Post {
   final Poll poll;
   final Map<String, Person> mentionedPeople;
   final PostInteractions interactions;
+  final OpenGraphObject openGraphObject;
   final DateTime createdAt;
   final bool ownPost;
   final bool mock;
@@ -429,7 +430,7 @@ class Post {
   Post({@required this.guid, @required this.type, @required this.body, @required this.author,
     @required this.public, @required this.nsfw, @required this.root, @required this.photos,
     @required this.poll, @required this.mentionedPeople, @required this.interactions,
-    @required this.createdAt, @required this.ownPost, this.mock});
+    @required this.openGraphObject, @required this.createdAt, @required this.ownPost, this.mock});
 
   factory Post.from(Map<String, dynamic> object, {String currentUser}) {
     final author = Person.from(object["author"]),
@@ -449,6 +450,7 @@ class Post {
         key: (person) => person.diasporaId
       ) : null,
       interactions: PostInteractions.from(object["interaction_counters"], object["own_interaction_state"]),
+      openGraphObject: object["open_graph_object"] != null ? OpenGraphObject.from(object["open_graph_object"]) : null,
       createdAt: DateTime.parse(object["created_at"]),
       ownPost: author.diasporaId == currentUser || (root != null && root.author.diasporaId == currentUser),
       mock: false
@@ -479,6 +481,7 @@ class Post {
       poll: poll,
       mentionedPeople: mentionedPeople,
       interactions: PostInteractions(subscribed: true),
+      openGraphObject: openGraphObject,
       createdAt: DateTime.now(),
       ownPost: true,
       mock: true
@@ -504,6 +507,23 @@ class PostInteractions {
       liked: ownState["liked"],
       reshared: ownState["reshared"],
       subscribed: ownState["subscribed"]
+    );
+}
+
+class OpenGraphObject {
+  final String url;
+  final String title;
+  final String image;
+  final String description;
+
+  OpenGraphObject({@required this.url, @required this.title, @required this.image, this.description});
+
+  factory OpenGraphObject.from(Map<String, dynamic> object) =>
+    OpenGraphObject(
+      url: object["url"],
+      title: object["title"],
+      image: object["image"],
+      description: object["description"]
     );
 }
 

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'client.dart';
 import 'comments.dart';
@@ -164,6 +165,7 @@ class PostView extends StatelessWidget {
                     )
                   ),
                 _PollView(post: post),
+                _OpenGraphView(object: post.openGraphObject),
                 Divider(),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -414,7 +416,7 @@ class _PhotoSliderState extends State<_PhotoSlider> {
 }
 
 class _PollView extends StatefulWidget {
-  _PollView({@required this.post}) : poll = post.poll;
+  _PollView({Key key, @required this.post}) : poll = post.poll, super(key: key);
 
   final Post post;
   final Poll poll;
@@ -548,4 +550,80 @@ class _PollViewState extends State<_PollView> {
   }
 
   static _percentFormat(double percentage) => (percentage * 100).toStringAsFixed(0) + "%";
+}
+
+class _OpenGraphView extends StatelessWidget {
+  _OpenGraphView({Key key, this.object}) : super(key: key);
+
+  final OpenGraphObject object;
+
+  @override
+  Widget build(BuildContext context) {
+    if (object == null || (object.title == null && object.image == null && object.description == null)) {
+      return SizedBox.shrink();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Divider(),
+        _handleTap(
+          child: Padding(
+            padding: EdgeInsets.all(8),
+            child: Row(
+              //crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                object.image != null ?
+                  SizedBox(
+                    width: 56,
+                    height: 56,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: CachedNetworkImage(imageUrl: object.image, fit: BoxFit.cover)
+                    )
+                  ) : SizedBox.shrink(),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: object.image != null ? 8 : 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        object.title != null ?
+                          Padding(
+                            padding: EdgeInsets.only(bottom: object.description != null ? 4 : 0),
+                            child: Text(
+                              object.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontWeight: FontWeight.w500)
+                            )
+                          ) : SizedBox.shrink(),
+                        object.description != null ?
+                          Text(
+                            object.description,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ) : SizedBox.shrink()
+                      ],
+                    )
+                  )
+                )
+              ],
+            )
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _handleTap({Widget child}) {
+    if (object.url == null) {
+      return child;
+    }
+
+    return InkWell(
+      child: child,
+      onTap: () => launch(object.url)
+    );
+  }
 }
