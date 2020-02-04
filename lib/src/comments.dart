@@ -118,7 +118,7 @@ class CommentView extends StatelessWidget {
           children: <Widget>[
             PersonHeader(person: comment.author),
             Divider(),
-            Message(body: comment.body, mentionedPeople: null) // TODO
+            Message(body: comment.body, mentionedPeople: comment.mentionedPeople)
           ],
         ),
       ),

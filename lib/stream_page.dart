@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:insporation/src/navigation.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
@@ -59,27 +60,14 @@ class _StreamPageState extends State<StreamPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: widget.type != StreamType.tag ? BottomNavigationBar(
-        currentIndex: 0,
-        onTap: (item) {
-          if (item == 1) {
-              Navigator.pushReplacementNamed(context, '/switch_user');
-            }
-          },
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.view_stream),
-            title: Text("Stream")
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.arrow_forward),
-            title: Text("Leave")
-          )
-        ],
-      ) : null,
+      bottomNavigationBar: widget.type != StreamType.tag ? NavigationBar(currentPage: PageType.stream) : null,
       appBar: widget.type == StreamType.tag ? AppBar(
         title: Text(widget.title),
       ) : null,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => Navigator.pushNamed(context, "/publisher")
+      ),
       body: RefreshIndicator(
         key: _refreshIndicator,
         onRefresh: () => _loadPosts(reset: true),

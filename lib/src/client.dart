@@ -603,14 +603,19 @@ class PollAnswer {
 class Comment {
   final String body;
   final Person author;
+  final Map<String, Person> mentionedPeople;
   final DateTime createdAt;
 
-  Comment({this.body, this.author, this.createdAt});
+  Comment({@required this.body, @required this.author, @required this.mentionedPeople, @required this.createdAt});
 
   factory Comment.from(Map<String, dynamic> object) =>
     Comment(
       body: object["body"],
       author: Person.from(object["author"]),
+      mentionedPeople: object["mentioned_people"] != null ? Map.fromIterable(
+        Person.fromList(object["mentioned_people"].cast<Map<String, dynamic>>()),
+        key: (person) => person.diasporaId
+      ) : null,
       createdAt: DateTime.parse(object["created_at"])
     );
 

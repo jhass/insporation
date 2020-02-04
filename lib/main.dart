@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'contacts_page.dart';
+import 'conversations_page.dart';
+import 'edit_profile_page.dart';
+import 'notifications_page.dart';
+import 'post_view_page.dart';
+import 'profile_page.dart';
+import 'publisher_page.dart';
+import 'search_page.dart';
 import 'src/client.dart';
 import 'sign_in_page.dart';
 import 'src/posts.dart';
@@ -30,6 +38,20 @@ class Insporation extends StatelessWidget {
         '/stream/tag': (context) {
           final String tag = ModalRoute.of(context).settings.arguments;
           return StreamPage(type: StreamType.tag, tag: tag);
+        },
+        '/publisher': (context) => PublisherPage(),
+        '/conversations': (context) => ConversationsPage(),
+        '/search': (context) => SearchPage(),
+        '/notifications': (context) => NotificationsPage(),
+        '/contacts': (context) => ContactsPage(),
+        '/edit_profile': (context) => EditProfilePage(),
+        '/post': (context) {
+          final Post post = ModalRoute.of(context).settings.arguments;
+          return PostViewPage(post: post);
+        },
+        '/profile': (context) {
+          final Person person = ModalRoute.of(context).settings.arguments;
+          return ProfilePage(person: person);
         }
       },
     );
