@@ -422,6 +422,7 @@ class Post {
   final Poll poll;
   final Map<String, Person> mentionedPeople;
   final PostInteractions interactions;
+  final OEmbed oEmbed;
   final OpenGraphObject openGraphObject;
   final DateTime createdAt;
   final bool ownPost;
@@ -429,7 +430,7 @@ class Post {
 
   Post({@required this.guid, @required this.type, @required this.body, @required this.author,
     @required this.public, @required this.nsfw, @required this.root, @required this.photos,
-    @required this.poll, @required this.mentionedPeople, @required this.interactions,
+    @required this.poll, @required this.mentionedPeople, @required this.interactions, @required this.oEmbed,
     @required this.openGraphObject, @required this.createdAt, @required this.ownPost, this.mock});
 
   factory Post.from(Map<String, dynamic> object, {String currentUser}) {
@@ -451,6 +452,7 @@ class Post {
       ) : null,
       interactions: PostInteractions.from(object["interaction_counters"], object["own_interaction_state"]),
       openGraphObject: object["open_graph_object"] != null ? OpenGraphObject.from(object["open_graph_object"]) : null,
+      oEmbed: object["oembed"] != null ? OEmbed.from(object["oembed"]) : null,
       createdAt: DateTime.parse(object["created_at"]),
       ownPost: author.diasporaId == currentUser || (root != null && root.author.diasporaId == currentUser),
       mock: false
@@ -481,6 +483,7 @@ class Post {
       poll: poll,
       mentionedPeople: mentionedPeople,
       interactions: PostInteractions(subscribed: true),
+      oEmbed: oEmbed,
       openGraphObject: openGraphObject,
       createdAt: DateTime.now(),
       ownPost: true,
@@ -508,6 +511,80 @@ class PostInteractions {
       reshared: ownState["reshared"],
       subscribed: ownState["subscribed"]
     );
+}
+
+abstract class OEmbed {
+  final String provider;
+  final String author;
+  final String url;
+
+  OEmbed({@required this.provider, @required this.author, @required this.url});
+
+  factory OEmbed.from(Map<String, dynamic> object) {
+    final provider = object["provider_name"];
+    if (provider == "YouTube") {
+      return YoutubeOEmbed.from(object);
+    } else if (provider == "Twitter") {
+      return TwitterOEmbed.from(object);
+    } else {
+      return null;
+    }
+  }
+}
+
+abstract class ThumbnailOEmbed extends OEmbed {
+  final String thumbnail;
+  final String title;
+
+  ThumbnailOEmbed({@required String provider, @required String author,
+    @required String url, @required this.thumbnail, @required this.title}) : super(provider: provider, author: author, url: url);
+}
+
+abstract class HtmlTextOEmbed extends OEmbed {
+  final String html;
+
+  HtmlTextOEmbed({@required String provider, @required String author,
+    @required String url, @required this.html}) : super(provider: provider, author: author, url: url);
+}
+
+class YoutubeOEmbed extends ThumbnailOEmbed {
+  static RegExp _embedUrlPattern = RegExp(r'https://www.youtube.com/embed/([a-zA-Z0-9]+)');
+  static String _urlTemplate = "https://www.youtube.com/watch?v=ID";
+
+  YoutubeOEmbed({@required String provider, @required String author, @required String title,
+    @required String thumbnail, @required String url}) : super(provider: provider, author: author,
+    title: title, thumbnail: thumbnail, url: url);
+
+  factory YoutubeOEmbed.from(Map<String, dynamic> object) {
+    final id = _embedUrlPattern.allMatches(object["html"]).first.group(1);
+    return YoutubeOEmbed(
+      provider: object["provider_name"],
+      author: object["author_name"],
+      title: object["title"],
+      thumbnail: object["thumbnail_url"],
+      url: _urlTemplate.replaceFirst("ID", id)
+    );
+  }
+}
+
+class TwitterOEmbed extends HtmlTextOEmbed {
+  static RegExp _scriptTagPattern = RegExp(r'<script [^>]+></script>');
+
+  TwitterOEmbed({@required String provider, @required String author, @required String html,
+    @required String url}) : super(provider: provider, author: author,
+    html: html, url: url);
+
+  factory TwitterOEmbed.from(Map<String, dynamic> object) {
+    String html = object["html"];
+    html = html.replaceAll(_scriptTagPattern, '');
+
+    return TwitterOEmbed(
+      provider: object["provider_name"],
+      author: object["author_name"],
+      html: html,
+      url: object["url"]
+    );
+  }
 }
 
 class OpenGraphObject {

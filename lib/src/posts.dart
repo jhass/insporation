@@ -3,6 +3,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -165,6 +167,7 @@ class PostView extends StatelessWidget {
                     )
                   ),
                 _PollView(post: post),
+                _OEmbedView(oEmbed: post.oEmbed),
                 _OpenGraphView(object: post.openGraphObject),
                 Divider(),
                 Padding(
@@ -550,6 +553,108 @@ class _PollViewState extends State<_PollView> {
   }
 
   static _percentFormat(double percentage) => (percentage * 100).toStringAsFixed(0) + "%";
+}
+
+class _OEmbedView extends StatelessWidget {
+  _OEmbedView({Key key, this.oEmbed}) : super(key: key);
+
+  final OEmbed oEmbed;
+
+  @override
+  Widget build(BuildContext context) {
+    if (oEmbed is ThumbnailOEmbed) {
+      return _buildThumbnail(context);
+    } else if (oEmbed is HtmlTextOEmbed) {
+      return _buildHtmlText(context);
+    } else {
+      return SizedBox.shrink();
+    }
+  }
+
+  Widget _buildThumbnail(BuildContext context) {
+    final ThumbnailOEmbed oEmbed = this.oEmbed;
+    return Center(
+      child: GestureDetector(
+        onTap: () => launch(oEmbed.url),
+        child: Stack(
+          children: <Widget>[
+            CachedNetworkImage(
+              imageUrl: oEmbed.thumbnail,
+              height: 300
+            ),
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.circular(32)
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: 16),
+                        child: Icon(Icons.play_arrow, size: 32, color: Colors.white)
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              oEmbed.title,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)
+                            ),
+                            Text(
+                              "by ${oEmbed.author}",
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(color: Colors.white)
+                            )
+                          ],
+                        )
+                      )
+                    ],
+                  ),
+                ),
+              )
+            )
+          ],
+        ),
+      )
+    );
+  }
+
+  Widget _buildHtmlText(BuildContext context) {
+    final HtmlTextOEmbed oEmbed = this.oEmbed;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.all(8),
+          child: GestureDetector(
+            onTap: () => launch(oEmbed.url),
+            child: Text(
+              "${oEmbed.author} on ${oEmbed.provider}:",
+              style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+            )
+          )
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 16),
+          decoration: BoxDecoration(border: Border(left: BorderSide(color: Colors.black54))),
+          child: Html(
+            onLinkTap: launch,
+            data: oEmbed.html,
+            style: {"blockquote": Style(margin: EdgeInsets.only(left: 8))},
+          )
+        )
+      ]
+    );
+  }
 }
 
 class _OpenGraphView extends StatelessWidget {

@@ -267,7 +267,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.2"
+    version: "4.0.3"
   quiver:
     dependency: transitive
     description:
@@ -377,7 +377,7 @@ packages:
       name: timeago
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.25"
+    version: "2.0.26"
   transparent_image:
     dependency: "direct main"
     description:
@@ -419,7 +419,7 @@ packages:
       name: url_launcher_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0+2"
+    version: "0.1.1"
   uuid:
     dependency: transitive
     description:
@@ -440,7 +440,7 @@ packages:
       name: video_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.5+2"
+    version: "0.10.6"
   video_player_platform_interface:
     dependency: transitive
     description:
@@ -454,14 +454,14 @@ packages:
       name: video_player_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.1+1"
+    version: "0.1.2"
   webview_flutter:
     dependency: transitive
     description:
       name: webview_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.19+5"
+    version: "0.3.19+6"
   xml:
     dependency: transitive
     description:
