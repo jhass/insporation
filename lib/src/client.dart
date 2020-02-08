@@ -6,6 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+typedef AuthorizationSuccess = void Function();
+typedef AuthorizationFailed = void Function(String);
+typedef AuthorizingUser = Future<String> Function();
+
 class Client {
   static const _appauth = const MethodChannel("insporation/appauth");
   static const _scopes = "openid profile public:read private:read contacts:read public:modify private:modify interactions";
@@ -15,6 +19,42 @@ class Client {
   _Session _currentSession;
   _Host _currentHost;
   Profile _currentUser;
+
+  void listenToAuthorizationResponse({
+    @required AuthorizingUser authorizingUser,
+    AuthorizationSuccess success,
+    AuthorizationFailed failed}) {
+    _appauth.setMethodCallHandler((call) async {
+      switch (call.method) {
+        case "fetchAuthState":
+          final id = await authorizingUser(),
+            session = id != null ? await _loadSession(id) : null;
+          return session?.authState ?? _currentSession?.authState ?? _currentHost?.authState;
+        case "authorizationSuccess":
+          final id = await authorizingUser();
+          _currentSession = id != null ? await _loadSession(id) : _currentSession;
+          _currentSession.authState = call.arguments;
+          _currentSession.authorized = true;
+          await _persistCurrentSession();
+
+          if (success != null) {
+            success();
+          }
+          break;
+        case "authorizationFailed":
+          if (failed != null) {
+            failed(call.arguments);
+          }
+          break;
+      }
+
+      return null;
+    });
+  }
+
+  void stopListeningToAuthorizationResponse() {
+    _appauth.setMethodCallHandler(null);
+  }
 
   bool get hasSession => _currentSession?.diasporaId != null;
 
@@ -264,7 +304,12 @@ class Client {
         "scopes": _scopes
       });
     } on PlatformException catch (e) {
-      throw "Failed to authorize client: ${e.message}";
+      if (e.code == "concurrent_request") {
+        // probably returning after dieing in the background, ignore
+        return authState;
+      } else {
+        throw "Failed to authorize client: ${e.message}";
+      }
     }
   }
 
@@ -281,7 +326,9 @@ class Client {
         throw "Failed to fetch access token: Got no token!";
       }
     } on PlatformException catch (e) {
-      throw "Failed fetch access token: ${e.message}";
+      // our session is probably not worth anything anymore, destroy it
+      _currentSession.authorized = false;
+      throw "Failed to fetch access token: ${e.message}";
     }
   }
 
@@ -399,7 +446,7 @@ class _Session {
     );
   }
 
-  bool get authorized => _authorized && _normalizeScopes(Client._scopes) == _normalizeScopes(scopes);
+  bool get authorized => _authorized && authState != null && _normalizeScopes(Client._scopes) == _normalizeScopes(scopes);
 
   set authorized(authorized) {
     _authorized = authorized;

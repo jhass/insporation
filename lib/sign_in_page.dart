@@ -24,12 +24,30 @@ class _SignInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormState>();
   final _diasporaIdController = TextEditingController();
   final _initialFocus = FocusNode();
+  var _client;
   var _loading = true;
   String _lastError;
 
   @override
   void initState() {
     super.initState();
+
+    _client = Provider.of<Client>(context, listen: false);
+    _client.listenToAuthorizationResponse(
+      authorizingUser: () => SharedPreferences.getInstance().then((preferences) => preferences.getString(_last_diaspora_id_pref)),
+      success: () {
+        setState(() {
+          _loading = true;
+        });
+
+        Navigator.pushReplacementNamed(context, "/stream/main");
+      },
+      failed: (error) => setState(() {
+        _lastError = error;
+        _loading = false;
+      })
+    );
+
     if (widget.resumeLastSession) {
       _resumeLastSession();
     } else {
@@ -41,6 +59,12 @@ class _SignInPageState extends State<SignInPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_initialFocus);
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _client = Provider.of<Client>(context, listen: false);
   }
 
   @override
@@ -108,17 +132,22 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _client.stopListeningToAuthorizationResponse();
+  }
+
   _resumeLastSession() {
-    final client = Provider.of<Client>(context, listen: false);
     SharedPreferences.getInstance().then((sharedPreferences) {
       final lastDiasporaId = sharedPreferences.getString(_last_diaspora_id_pref);
       _diasporaIdController.text = lastDiasporaId;
-      return lastDiasporaId != null ? client.switchToUser(lastDiasporaId) : null;
+      return lastDiasporaId != null ? _client.switchToUser(lastDiasporaId) : null;
     }).then((_) {
       setState(() {
         _loading = false;
-        if (client.hasSession) {
-          if (client.authorized) {
+        if (_client.hasSession) {
+          if (_client.authorized) {
             _loading = true;
             Navigator.pushReplacementNamed(context, '/stream/main');
           }

@@ -28,8 +28,10 @@ fun Throwable.fullMessage() : String {
 }
 
 class MainActivity: FlutterActivity() {
+    private var methodChannel : MethodChannel? = null
     private var currentAuthState : AuthState = AuthState()
     private var currentAppAuthResult : MethodChannel.Result? = null
+    private var returningFromAuthorization = false;
 
     private val authorizationService: AuthorizationService
         get() = AuthorizationService(context)
@@ -37,8 +39,8 @@ class MainActivity: FlutterActivity() {
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine)
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, APP_AUTH_CHANNEL)
-            .setMethodCallHandler { call, result ->
+        methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, APP_AUTH_CHANNEL)
+        methodChannel?.setMethodCallHandler { call, result ->
                 when (call.method) {
                     "registerClient" -> {
                         if (call.hasArgument("url")) {
@@ -110,7 +112,7 @@ class MainActivity: FlutterActivity() {
     }
 
     private fun handleAuthorize(call: MethodCall, result: MethodChannel.Result, authorizationService: AuthorizationService) {
-        if (currentAppAuthResult != null) {
+        if (currentAppAuthResult != null || returningFromAuthorization) {
             result.error("concurrent_request", "Authorization in progress", null)
             return
         }
@@ -145,31 +147,66 @@ class MainActivity: FlutterActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == APP_AUTH_REQUEST_CODE) {
+            returningFromAuthorization = true
+
             val authorizationResponse = AuthorizationResponse.fromIntent(data!!)
             val exception = AuthorizationException.fromIntent(data)
-            currentAuthState.update(authorizationResponse, exception)
 
             val result = currentAppAuthResult
+            val channel = methodChannel
             if (result != null) {
+                currentAuthState.update(authorizationResponse, exception)
                 when {
                     authorizationResponse != null -> exchangeAuthorizationCode(authorizationResponse, result)
                     exception != null -> result.error("failed_authorization", "Failed to authorize: ${exception.fullMessage()}", null)
                     else -> result.error("failed_authorization",  "Failed to authorize and no error", null)
                 }
                 currentAppAuthResult = null
+            } else {
+                // We died in between, try to update auth state from flutter app
+                channel?.invokeMethod("fetchAuthState", null, object : MethodChannel.Result {
+                    override fun success(result: Any?) {
+                        if (result is String) {
+                            currentAuthState = AuthState.jsonDeserialize(result)
+                            currentAuthState.update(authorizationResponse, exception)
+                            when {
+                                authorizationResponse != null -> exchangeAuthorizationCode(authorizationResponse, null)
+                                exception != null -> channel.invokeMethod("authorizationFailed", "Failed to authorize: ${exception.fullMessage()}")
+                                else -> channel.invokeMethod("authorizationFailed", "Failed to authorize and no error")
+                            }
+                        }
+                    }
+
+                    override fun error(errorCode: String?, errorMessage: String?, errorDetails: Any?) {
+                        throw Error("Failed to fetch auth state: $errorMessage")
+                    }
+
+                    override fun notImplemented() {
+                        throw NotImplementedError("fetching auth state is not implemented by the client")
+                    }
+                })
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
-    private fun exchangeAuthorizationCode(authorizationResponse: AuthorizationResponse, result: MethodChannel.Result) {
+    private fun exchangeAuthorizationCode(authorizationResponse: AuthorizationResponse, result: MethodChannel.Result?) {
         authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), currentAuthState.clientAuthentication) { tokenResponse, exception ->
             currentAuthState.update(tokenResponse, exception)
-            when {
-                tokenResponse != null -> result.success(currentAuthState.jsonSerializeString())
-                exception != null -> result.error("failed_token_fetch", "Failed to exchange authorization code: ${exception.fullMessage()}", null)
-                else -> result.error("failed_token_fetch", "Failed to exchange authorization code and got no error", null)
+            val channel = methodChannel
+            if (result != null) {
+                when {
+                    tokenResponse != null -> result.success(currentAuthState.jsonSerializeString())
+                    exception != null -> result.error("failed_token_fetch", "Failed to exchange authorization code: ${exception.fullMessage()}", null)
+                    else -> result.error("failed_token_fetch", "Failed to exchange authorization code and got no error", null)
+                }
+            } else if (channel != null) {
+                when {
+                    tokenResponse != null -> channel.invokeMethod("authorizationSuccess", currentAuthState.jsonSerializeString())
+                    exception != null -> channel.invokeMethod("authorizationFailed", exception.fullMessage())
+                    else -> channel.invokeMethod("authorizationFailed", "No error")
+                }
             }
         }
     }
