@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 class Client {
   static const _appauth = const MethodChannel("insporation/appauth");
-  static const _scopes = "openid profile public:read private:read contacts:read public:modify interactions";
+  static const _scopes = "openid profile public:read private:read contacts:read public:modify private:modify interactions";
   static final _linkHeaderPattern = RegExp(r'<([^>]+)>;\s*rel="([^"]+)"');
 
   final http.Client _client = http.Client();
@@ -108,12 +108,72 @@ class Client {
   Future<void> vote(Post post, PollAnswer answer) async {
     try {
       await _call("POST", "posts/${post.guid}/vote", body: {"poll_answer": answer.id});
-    } on ClientException catch(e) {
+    } on ClientException catch (e) {
       if (e.code != 409) {
         throw e;
       }
 
       // already voted here, ignore
+    }
+  }
+
+  Future<void> subscribeToPost(Post post) async {
+    try {
+      await _call("POST", "posts/${post.guid}/subscribe");
+    } on ClientException catch (e) {
+      if (e.code != 409) {
+        throw e;
+      }
+
+      // already subscribed, ignore
+    }
+  }
+
+  Future<void> unsubscribeFromPost(Post post) async {
+    try {
+      await _call("POST", "posts/${post.guid}/mute");
+    } on ClientException catch (e) {
+      if (e.code != 410) {
+        throw e;
+      }
+
+      // not subscribed already, ignore
+    }
+  }
+
+  Future<void> reportPost(Post post, String reason) async {
+    try {
+      await _call("POST", "posts/${post.guid}/report", body: {"reason": reason});
+    } on ClientException catch (e) {
+      if (e.code != 409) {
+        throw e;
+      }
+
+      // already reported, ignore
+    }
+  }
+
+  Future<void> deletePost(Post post) async {
+    try {
+      await _call("DELETE", "posts/${post.guid}");
+    } on ClientException catch (e) {
+      if (e.code != 404) {
+        throw e;
+      }
+
+      // already deleted, ignore
+    }
+  }
+
+  Future<void> hidePost(Post post) async {
+    try {
+      await _call("POST", "posts/${post.guid}/hide", body: {"hide": true});
+    } on ClientException catch (e) {
+      if (e.code != 409) {
+        throw e;
+      }
+
+      // already hidden, ignore
     }
   }
 
@@ -498,9 +558,10 @@ class PostInteractions {
   bool liked;
   bool reshared;
   bool subscribed;
+  bool reported;
 
   PostInteractions({this.comments = 0, this.reshares = 0, this.likes = 0,
-    this.liked = false, this.reshared = false, this.subscribed = false});
+    this.liked = false, this.reshared = false, this.subscribed = false, this.reported = false});
 
   factory PostInteractions.from(Map<String, dynamic> counters, Map<String, dynamic> ownState) =>
     PostInteractions(
@@ -509,7 +570,8 @@ class PostInteractions {
       likes: counters["likes"],
       liked: ownState["liked"],
       reshared: ownState["reshared"],
-      subscribed: ownState["subscribed"]
+      subscribed: ownState["subscribed"],
+      reported: false // TODO ownState["reported"]
     );
 }
 

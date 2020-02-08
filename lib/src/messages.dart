@@ -75,7 +75,7 @@ class Message extends StatelessWidget {
           final tag = Uri.decodeFull(url.split(r'/').last);
           Navigator.pushNamed(context, '/stream/tag', arguments: tag);
         } else if (url.startsWith('eu.jhass.insporation://people/')) {
-          // TODO
+          Navigator.pushNamed(context, '/profile', arguments: url.split('/').last);
         } else {
           launch(url);
         }

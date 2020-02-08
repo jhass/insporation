@@ -98,7 +98,7 @@ class _StreamPageState extends State<StreamPage> {
                                 child: Center(child: CircularProgressIndicator()),
                               )
                             ) :
-                            PostView(post: posts[position - 1]),
+                            PostStreamItem(post: posts[position - 1]),
                     ),
                     Positioned(
                       right: 8,

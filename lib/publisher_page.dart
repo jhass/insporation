@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:insporation/src/navigation.dart';
 
 class PublisherPage extends StatelessWidget {
   @override

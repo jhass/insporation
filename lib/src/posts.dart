@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -28,6 +29,36 @@ class PostStream extends ChangeNotifier {
   int get length => _posts?.length ?? 0;
 
   Post operator [](int index) => _posts[index];
+
+  insert(int position, Post post) {
+    if (_posts == null && position == 0) {
+      _posts = [post];
+    } else if (_posts != null) {
+      _posts.insert(position, post);
+    } else {
+      throw ArgumentError("position outside range");
+    }
+
+    notifyListeners();
+  }
+
+  int remove(Post post) {
+    assert(_posts != null, "Tried to remove post from empty stream!");
+    if (_posts == null) {
+      return 0;
+    }
+
+    final index = _posts.indexOf(post);
+
+    assert(index >= 0, "Post to remove not found in stream");
+    if (index < 0) {
+      return 0;
+    }
+
+    _posts.removeAt(index);
+    notifyListeners();
+    return index;
+  }
 
   addMock(Post post) {
     assert(post.mock, "Post is not a mock!");
@@ -108,6 +139,21 @@ class PostStream extends ChangeNotifier {
     } finally {
       loading = false;
     }
+  }
+}
+
+class PostStreamItem extends StatelessWidget {
+  PostStreamItem({Key key, @required this.post})  : super(key: key);
+
+  final Post post;
+
+  @override
+  Widget build(BuildContext context) {
+    return Slidable(
+      child: PostView(post: post),
+      actionPane: SlidableDrawerActionPane(),
+      actions: <Widget>[_PostActionsView(post: post)],
+    );
   }
 }
 
@@ -235,7 +281,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
             ),
             label: Text(widget.post.interactions.reshares.toString()),
             textColor: Colors.grey[600],
-            onPressed: !widget.post.canReshare ? null : () => _promptReshare(context),
+            onPressed: !widget.post.canReshare ? null : _promptReshare,
           ),
           FlatButton.icon(
             icon: Icon(
@@ -245,17 +291,18 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
             ),
             label: Text(widget.post.interactions.likes.toString()),
             textColor: Colors.grey[600],
-            onPressed: _updatingLike || !widget.post.canLike ? null : () => _toggleLike(context)
+            onPressed: _updatingLike || !widget.post.canLike ? null : _toggleLike
           )
         ]
       ),
     );
   }
 
-  _toggleLike(BuildContext context) async {
-    final client = Provider.of<Client>(context, listen: false);
-    final current = widget.post.interactions.liked;
-    final currentCount = widget.post.interactions.likes;
+  _toggleLike() async {
+    final scaffold = Scaffold.of(context),
+      client = Provider.of<Client>(context, listen: false),
+      current = widget.post.interactions.liked,
+      currentCount = widget.post.interactions.likes;
     setState(() {
       _updatingLike = true;
       widget.post.interactions.liked = !current;
@@ -277,23 +324,23 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
       widget.post.interactions.likes = currentCount;
 
       if (mounted) {
-        setState(() {
-          _updatingLike = false;
-        });
+        setState(() => _updatingLike = false);
       }
 
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text(
-          "Failed to ${current ? "unlike" : "like"} post: $e",
-          style: TextStyle(color: Colors.white)
-        ),
-        backgroundColor: Colors.red
-      ));
+      if (scaffold.mounted) {
+        scaffold.showSnackBar(SnackBar(
+          content: Text(
+            "Failed to ${current ? "unlike" : "like"} post: $e",
+            style: TextStyle(color: Colors.white)
+          ),
+          backgroundColor: Colors.red
+        ));
+      }
     }
   }
 
-  _promptReshare(BuildContext context) {
-    return showDialog(
+  _promptReshare() {
+    showDialog(
       context: context,
       barrierDismissible: true,
       builder: (dialogContext) => AlertDialog(
@@ -301,13 +348,13 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
         actions: <Widget>[
           FlatButton(
             child: Text("Cancel"),
-            onPressed: () => Navigator.of(dialogContext).pop(),
+            onPressed: () => Navigator.pop(dialogContext),
           ),
           FlatButton(
             child: Text("Reshare"),
             onPressed: () {
-              _createReshare(context);
-              Navigator.of(dialogContext).pop();
+              _createReshare();
+              Navigator.pop(dialogContext);
             },
           )
         ]
@@ -315,9 +362,10 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
     );
   }
 
-  _createReshare(BuildContext context) async {
-    final client = Provider.of<Client>(context, listen: false);
-    final postStream = Provider.of<PostStream>(context, listen: false);
+  _createReshare() async {
+    final scaffold = Scaffold.of(context),
+      client = Provider.of<Client>(context, listen: false),
+      postStream = Provider.of<PostStream>(context, listen: false);
     setState(() {
       widget.post.interactions.reshared = true;
       widget.post.interactions.reshares++;
@@ -347,13 +395,214 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
         postStream.removeMock(mockReshare);
       }
 
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text(
-          "Failed to reshare post: $e",
-          style: TextStyle(color: Colors.white)
+      if (scaffold.mounted) {
+        scaffold.showSnackBar(SnackBar(
+          content: Text(
+            "Failed to reshare post: $e",
+            style: TextStyle(color: Colors.white)
+          ),
+          backgroundColor: Colors.red
+        ));
+      }
+    }
+  }
+}
+
+class _PostActionsView extends StatefulWidget {
+  _PostActionsView({Key key, @required this.post}) : super(key: key);
+
+  final Post post;
+
+  @override
+  State<StatefulWidget> createState() => _PostActionsViewState();
+}
+
+class _PostActionsViewState extends State<_PostActionsView> {
+  final _reportField = TextEditingController();
+  bool _updatingSubscription = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final actions = <Widget>[
+      IconButton(
+        icon: Icon(Icons.notifications, color: widget.post.interactions.subscribed ? Colors.blue : null),
+        onPressed: _updatingSubscription ? null : _toggleSubscription,
+      ),
+      IconButton(
+        icon: Icon(widget.post.ownPost ? Icons.delete : Icons.visibility_off),
+        onPressed: widget.post.ownPost ? _promptDelete : _removePost
+      )
+    ];
+    if (!widget.post.ownPost && !widget.post.interactions.reported) {
+      actions.add(IconButton(icon: Icon(Icons.flag), onPressed: _promptReport));
+    }
+
+    return Column(children: actions);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _reportField.dispose();
+  }
+
+  _toggleSubscription() async {
+    final scaffold = Scaffold.of(context),
+      client = Provider.of<Client>(context, listen: false),
+      current = widget.post.interactions.subscribed;
+    setState(() {
+      _updatingSubscription = true;
+      widget.post.interactions.subscribed = !current;
+    });
+    Slidable.of(context).close();
+
+    try {
+      if (!current) {
+        await client.subscribeToPost(widget.post);
+      } else {
+        await client.unsubscribeFromPost(widget.post);
+      }
+
+      if (mounted) {
+        setState(() => _updatingSubscription = false);
+      }
+    } catch (e, s) {
+      debugPrintStack(label: e.toString(), stackTrace: s);
+
+      widget.post.interactions.subscribed = current;
+
+      if (mounted) {
+        setState(() => _updatingSubscription = false);
+      }
+
+      if (scaffold.mounted) {
+        scaffold.showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            "Failed to ${current ? "unsubscribe from" : "subscribe to"} post: $e",
+            style: TextStyle(color: Colors.white)),
+        ));
+      }
+    }
+  }
+
+  _promptDelete() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (dialogContext) => AlertDialog(
+        title: Text("Delete post?"),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("No"),
+            onPressed: () => Navigator.pop(dialogContext),
+          ),
+          FlatButton(
+            child: Text("Yes"),
+            onPressed: () {
+              _removePost();
+              Navigator.pop(dialogContext);
+            },
+          )
+        ],
+      )
+    );
+  }
+
+  _removePost() async {
+    final scaffold = Scaffold.of(context),
+      client = Provider.of<Client>(context, listen: false),
+      postStream = Provider.of<PostStream>(context, listen: false);
+
+    Slidable.of(context).close();
+
+    final position = postStream.remove(widget.post);
+
+    try {
+      if (widget.post.ownPost) {
+        await client.deletePost(widget.post);
+      } else {
+        await client.hidePost(widget.post);
+      }
+    } catch (e, s) {
+      debugPrintStack(label: e.toString(), stackTrace: s);
+
+      postStream.insert(position, widget.post);
+
+      if (scaffold.mounted) {
+        scaffold.showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            "Failed to ${widget.post.ownPost ? "delete" : "hide"} post: $e",
+            style: TextStyle(color: Colors.white)
+          )
+        ));
+      }
+    }
+  }
+
+  _promptReport() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (dialogContext) => AlertDialog(
+        title: Text("Report post"),
+        content: TextField(
+          controller: _reportField,
+          minLines: 1,
+          decoration: InputDecoration(
+            hintText: "Please describe the issue"
+          )
         ),
-        backgroundColor: Colors.red
-      ));
+        actions: <Widget>[
+          FlatButton(
+            child: Text("Cancel"),
+            onPressed: () => Navigator.pop(dialogContext),
+          ),
+          FlatButton(
+            child: Text("Submit"),
+            onPressed: () {
+              if (_reportField.text.isNotEmpty) {
+                _createReport(_reportField.text);
+                Navigator.pop(dialogContext);
+              }
+            },
+          )
+        ],
+      )
+    );
+  }
+
+  _createReport(String report) async {
+    final scaffold = Scaffold.of(context),
+      client = Provider.of<Client>(context, listen: false);
+    setState(() => widget.post.interactions.reported = true);
+    Slidable.of(context).close();
+
+    try {
+      await client.reportPost(widget.post, report);
+
+      if (scaffold.mounted) {
+        scaffold.showSnackBar(SnackBar(
+          content: Text("Report sent.")
+        ));
+      }
+    } catch(e, s) {
+      debugPrintStack(label: e.toString(), stackTrace: s);
+
+      widget.post.interactions.reported = false;
+      if (mounted) {
+        setState(() {});
+      }
+
+      if (scaffold.mounted) {
+        scaffold.showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            "Failed to create report: $e",
+            style: TextStyle(color: Colors.white))
+        ));
+      }
     }
   }
 }

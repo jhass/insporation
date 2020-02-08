@@ -50,8 +50,14 @@ class Insporation extends StatelessWidget {
           return PostViewPage(post: post);
         },
         '/profile': (context) {
-          final Person person = ModalRoute.of(context).settings.arguments;
-          return ProfilePage(person: person);
+          final argument = ModalRoute.of(context).settings.arguments;
+          if (argument is Person) {
+            return ProfilePage.forPerson(person: argument);
+          } else if (argument is String) {
+            return ProfilePage.forId(diasporaId: argument);
+          } else {
+            throw "Unsupported argument type";
+          }
         }
       },
     );
