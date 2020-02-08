@@ -12,7 +12,7 @@ typedef AuthorizingUser = Future<String> Function();
 
 class Client {
   static const _appauth = const MethodChannel("insporation/appauth");
-  static const _scopes = "openid profile public:read private:read contacts:read public:modify private:modify interactions";
+  static const _scopes = "openid profile public:read private:read contacts:read public:modify private:modify notifications interactions";
   static final _linkHeaderPattern = RegExp(r'<([^>]+)>;\s*rel="([^"]+)"');
 
   final http.Client _client = http.Client();
@@ -217,6 +217,16 @@ class Client {
     }
   }
 
+  Future<Page<Notification>> fetchNotifications({bool onlyUnread = false, String page}) async {
+    final query = onlyUnread ? {"only_unread": onlyUnread.toString()} : const <String, String>{}, // TODO
+      response = await _call("GET", "notifications", query: query, page: page);
+    return _makePage(await compute(_parseNotificationsJson, response.body), response);
+  }
+
+  Future<void> setNotificationRead(Notification notification, {isRead = true}) async {
+    await _call("PATCH", "notifications/${notification.guid}", body: {"read": isRead});
+  }
+
   Future<Page<Post>> _fetchPosts(Future<http.Response> request) async {
     final response = await request,
       posts = await compute(_parsePostsJson, {"body": response.body, "currentUser": currentUserId});
@@ -360,6 +370,11 @@ class Client {
     final List<Map<String, dynamic>> comments = jsonDecode(json).cast<Map<String, dynamic>>();
     return Comment.fromList(comments);
   }
+
+  static List<Notification> _parseNotificationsJson(String json) {
+    final List<Map<String, dynamic>> notifications = jsonDecode(json).cast<Map<String, dynamic>>();
+    return Notification.fromList(notifications);
+  }
 }
 
 class Page<T> {
@@ -474,17 +489,19 @@ class _Session {
 }
 
 class Person {
+  final String guid;
   final String diasporaId;
   final String name;
   final String avatar;
 
-  Person({@required this.diasporaId, @required this.name, @required this.avatar});
+  Person({@required this.guid, @required this.diasporaId, @required this.name, @required this.avatar});
 
   factory Person.from(Map<String, dynamic> object) {
     return Person(
-        diasporaId: object["diaspora_id"],
-        name: object["name"],
-        avatar: object["avatar"]
+      guid: object["guid"],
+      diasporaId: object["diaspora_id"],
+      name: object["name"],
+      avatar: object["avatar"]
     );
   }
 
@@ -503,6 +520,7 @@ class Profile {
     final PhotoSizes avatar = PhotoSizes.from(object["avatar"] ?? {});
     return Profile(
       person: Person(
+        guid: object["guid"],
         diasporaId: object["diaspora_id"],
         name: object["name"],
         avatar: avatar.medium
@@ -657,7 +675,7 @@ abstract class HtmlTextOEmbed extends OEmbed {
 }
 
 class YoutubeOEmbed extends ThumbnailOEmbed {
-  static RegExp _embedUrlPattern = RegExp(r'https://www.youtube.com/embed/([a-zA-Z0-9]+)');
+  static RegExp _embedUrlPattern = RegExp(r'https://www.youtube.com/embed/([^?/]+)');
   static String _urlTemplate = "https://www.youtube.com/watch?v=ID";
 
   YoutubeOEmbed({@required String provider, @required String author, @required String title,
@@ -807,4 +825,54 @@ class Comment {
 
   static List<Comment> fromList(List<Map<String, dynamic>> objects) =>
     objects.map((object) => Comment.from(object)).toList();
+}
+
+enum NotificationType {
+  alsoCommented,
+  commentOnPost,
+  liked,
+  mentioned,
+  mentionedInComment,
+  reshared,
+  startedSharing,
+  contactsBirthday
+}
+
+class Notification {
+  static const _typeMap = {
+    "also_commented": NotificationType.alsoCommented,
+    "comment_on_post": NotificationType.commentOnPost,
+    "liked": NotificationType.liked,
+    "mentioned": NotificationType.mentioned,
+    "mentioned_in_comment": NotificationType.mentionedInComment,
+    "reshared": NotificationType.reshared,
+    "started_sharing": NotificationType.startedSharing,
+    "contacts_birthday": NotificationType.contactsBirthday,
+  };
+  final String guid;
+  final NotificationType type;
+  bool read;
+  final String targetGuid;
+  final Person targetAuthor;
+  final List<Person> eventCreators;
+  final DateTime createdAt;
+
+  Notification({@required this.guid, @required this.type, @required this.read, @required this.targetGuid,
+    @required this.targetAuthor, @required this.eventCreators, @required this.createdAt});
+
+  factory Notification.from(Map<String, dynamic> object) {
+    Map<String, dynamic> target = object["target"];
+    return Notification(
+      guid: object["guid"],
+      type: _typeMap[object["type"]],
+      read: object["read"],
+      targetGuid: target != null ? target["guid"] : null,
+      targetAuthor: target != null ? Person.from(target["author"]) : null,
+      eventCreators: Person.fromList(object["event_creators"].cast<Map<String, dynamic>>()),
+      createdAt: DateTime.parse(object["created_at"])
+    );
+  }
+
+  static List<Notification> fromList(List<Map<String, dynamic>> objects) =>
+    objects.map((object) => Notification.from(object)).toList();
 }

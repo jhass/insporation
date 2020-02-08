@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:gesture_zoom_box/gesture_zoom_box.dart';
 import 'package:provider/provider.dart';
@@ -130,12 +129,16 @@ class NsfwShield extends StatefulWidget {
   State<StatefulWidget> createState() => _NsfwShieldState();
 }
 
+class ShowNsfwPosts extends ValueNotifier<bool> {
+  ShowNsfwPosts() : super(false);
+}
+
 class _NsfwShieldState extends State<NsfwShield> {
   bool _hide;
 
   @override
   Widget build(BuildContext context) {
-    final showNsfw = Provider.of<ValueNotifier<bool>>(context);
+    final showNsfw = Provider.of<ShowNsfwPosts>(context);
     return Visibility(
         visible: widget.nsfwPost == true && _hide != false && showNsfw.value == false,
         child: Container(

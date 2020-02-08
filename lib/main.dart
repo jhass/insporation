@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,12 +14,17 @@ import 'publisher_page.dart';
 import 'search_page.dart';
 import 'src/client.dart';
 import 'sign_in_page.dart';
+import 'src/notifications.dart';
 import 'src/posts.dart';
 import 'stream_page.dart';
 
 void main() => runApp(MultiProvider(
   providers: [
-    Provider(create: (_) => Client())
+    Provider(create: (_) => Client()),
+    ChangeNotifierProxyProvider<Client, UnreadNotificationsCount>(
+      create: (context) => UnreadNotificationsCount(),
+      update: (context, client, count) => count..update(client)
+    )
   ],
   child: Insporation(),
 ));
@@ -46,15 +54,21 @@ class Insporation extends StatelessWidget {
         '/contacts': (context) => ContactsPage(),
         '/edit_profile': (context) => EditProfilePage(),
         '/post': (context) {
-          final Post post = ModalRoute.of(context).settings.arguments;
-          return PostViewPage(post: post);
+          final argument = ModalRoute.of(context).settings.arguments;
+          if (argument is Post) {
+            return PostViewPage.forPost(post: argument);
+          } else if (argument is String) {
+            return PostViewPage.forId(postId: argument);
+          } else {
+            throw "Unsupported argument type";
+          }
         },
         '/profile': (context) {
           final argument = ModalRoute.of(context).settings.arguments;
           if (argument is Person) {
             return ProfilePage.forPerson(person: argument);
           } else if (argument is String) {
-            return ProfilePage.forId(diasporaId: argument);
+            return ProfilePage.forId(personId: argument);
           } else {
             throw "Unsupported argument type";
           }

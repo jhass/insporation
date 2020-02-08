@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:insporation/src/navigation.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
 import 'src/error_message.dart';
+import 'src/item_stream.dart';
+import 'src/messages.dart';
+import 'src/navigation.dart';
 import 'src/posts.dart';
 
 class StreamPage extends StatefulWidget {
@@ -30,32 +32,11 @@ class StreamPage extends StatefulWidget {
   }
 }
 
-class _StreamPageState extends State<StreamPage> {
-  final _refreshIndicator = GlobalKey<RefreshIndicatorState>();
-  PostStream _posts;
-  String _lastError;
-  ScrollController _listScrollController = ScrollController();
-  var _upButtonVisibility = false;
-  ValueNotifier<bool> _showNsfw = ValueNotifier(false);
+class _StreamPageState extends ItemStreamState<Post, StreamPage> {
+  ShowNsfwPosts _showNsfw = ShowNsfwPosts();
 
   @override
-  void initState() {
-    super.initState();
-    _posts = PostStream(type: widget.type, tag: widget.tag);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) =>
-        _refreshIndicator.currentState.show());
-    _listScrollController.addListener(() {
-      final newVisibility = _listScrollController.offset >= 800;
-      if (newVisibility != _upButtonVisibility) {
-        setState(() => _upButtonVisibility = newVisibility);
-      }
-
-      if (_listScrollController.offset >= _listScrollController.position.maxScrollExtent - 200)  {
-        _loadPosts();
-      }
-    });
-  }
+  ItemStream<Post> createStream() => PostStream(type: widget.type, tag: widget.tag);
 
   @override
   Widget build(BuildContext context) {
@@ -68,100 +49,24 @@ class _StreamPageState extends State<StreamPage> {
         child: Icon(Icons.add),
         onPressed: () => Navigator.pushNamed(context, "/publisher")
       ),
-      body: RefreshIndicator(
-        key: _refreshIndicator,
-        onRefresh: () => _loadPosts(reset: true),
-        child: Container(
-          padding: const EdgeInsets.all(8.0),
-          child: MultiProvider(
-            providers: [
-              ChangeNotifierProvider.value(value: _posts),
-              ChangeNotifierProvider.value(value: _showNsfw)
-            ],
-            child: Consumer<PostStream>(
-              builder: (context, posts, _) => Visibility(
-                visible:  posts.length > 0,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: <Widget>[
-                    ListView.builder(
-                      physics: AlwaysScrollableScrollPhysics(),
-                      itemCount: posts.length > 0 ? posts.length + 2 : 0,
-                      controller: _listScrollController,
-                      itemBuilder: (context, position) =>
-                        position == 0 ? _StreamTypeSelector(currentType: widget.type, error: _lastError) :
-                          position > posts.length ?
-                            Visibility(
-                              visible: posts.loading,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Center(child: CircularProgressIndicator()),
-                              )
-                            ) :
-                            PostStreamItem(post: posts[position - 1]),
-                    ),
-                    Positioned(
-                      right: 8,
-                      top: 48,
-                      child: AnimatedSwitcher(
-                        transitionBuilder: (child, animation) => FadeTransition(child: child, opacity: animation),
-                        duration: Duration(milliseconds: 300),
-                        child: !_upButtonVisibility ? SizedBox.shrink() : ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: Container(
-                            color: Colors.black38,
-                            child: IconButton(
-                              color: Colors.white,
-                              padding: const EdgeInsets.all(0),
-                              iconSize: 48,
-                              icon: Icon(Icons.keyboard_arrow_up),
-                              onPressed: () =>
-                                _listScrollController.animateTo(1, duration: Duration(seconds: 1), curve: Curves.easeOut),
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ]
-                ),
-                replacement: _StreamFallback(error: _lastError, loading: _posts.loading)
-              ),
-            ),
-          )
-        )
+      body: ChangeNotifierProvider.value(
+        value: _showNsfw,
+        child: buildStream(context)
       )
     );
   }
 
   @override
-  dispose() {
-    _listScrollController.dispose();
-    super.dispose();
-  }
+  Widget buildHeader(BuildContext context, String lastError) =>
+    _StreamTypeSelector(currentType: widget.type, error: lastError);
 
-  _loadPosts({bool reset = false}) async {
-    try {
-      final client = Provider.of<Client>(context, listen: false);
-      Future<void> progress;
-      setState(() {
-        _lastError = null;
-        progress = _posts.load(client, reset: reset);
-      });
-      if (reset) {
-        _showNsfw.value = false;
-      }
-      await progress;
-      if (mounted) {
-        setState(() {});
-      }
-    } catch (e, s) {
-      debugPrintStack(label: e.toString(), stackTrace:  s);
-      if (mounted) {
-        setState(() {
-          _lastError = e.toString();
-        });
-      }
-    }
+  @override
+  Widget buildItem(BuildContext context, Post post) =>
+    PostStreamItem(post: post);
+
+  @override
+  void onReset() {
+    _showNsfw.value = false;
   }
 }
 
@@ -214,45 +119,6 @@ class _StreamTypeSelector extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _StreamFallback extends StatelessWidget {
-  _StreamFallback({Key key, this.error, this.loading = false}) : super(key: key);
-
-  final String error;
-  final bool loading;
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, viewportConstraints) =>
-        SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: viewportConstraints.maxHeight
-          ),
-          child: SafeArea(
-            child: Column(
-              children: <Widget>[
-                ErrorMessage(error),
-                Visibility(
-                  visible: !loading,
-                  replacement: SizedBox( // We need to take up some space so the refresh indicator renders
-                    width: viewportConstraints.maxWidth,
-                    height: viewportConstraints.maxHeight
-                  ),
-                  child: Center(
-                    child: Text("Darn, no posts!"),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        )
-      )
     );
   }
 }

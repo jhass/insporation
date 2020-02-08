@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -11,134 +9,50 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'client.dart';
 import 'comments.dart';
+import 'item_stream.dart';
 import 'messages.dart';
 import 'timeago.dart';
 
 enum StreamType { main, activity, tag }
 
-class PostStream extends ChangeNotifier {
-
+class PostStream extends ItemStream<Post> {
   final StreamType type;
   final String tag;
   bool loading = false;
-  Page<Post> _lastPage;
-  List<Post> _posts;
 
   PostStream({this.type, this.tag});
 
-  int get length => _posts?.length ?? 0;
-
-  Post operator [](int index) => _posts[index];
-
-  insert(int position, Post post) {
-    if (_posts == null && position == 0) {
-      _posts = [post];
-    } else if (_posts != null) {
-      _posts.insert(position, post);
-    } else {
-      throw ArgumentError("position outside range");
-    }
-
-    notifyListeners();
-  }
-
-  int remove(Post post) {
-    assert(_posts != null, "Tried to remove post from empty stream!");
-    if (_posts == null) {
-      return 0;
-    }
-
-    final index = _posts.indexOf(post);
-
-    assert(index >= 0, "Post to remove not found in stream");
-    if (index < 0) {
-      return 0;
-    }
-
-    _posts.removeAt(index);
-    notifyListeners();
-    return index;
-  }
-
   addMock(Post post) {
     assert(post.mock, "Post is not a mock!");
-    if (_posts == null) {
-      _posts = [post];
-    } else {
-      _posts.insert(0, post);
-    }
-    notifyListeners();
+    insert(0, post);
   }
 
   removeMock(Post post) {
     assert(post.mock, "Post is not a mock!");
-    assert(_posts != null, "No stream created!");
-    if (_posts != null) {
-      final removed = _posts.remove(post);
-      assert(removed, "Post was not in stream!");
-      if (removed) {
-        notifyListeners();
-      }
-    }
+    assert(length > 0, "No stream created!");
+    assert(contains(post), "Post was not in stream!");
+    remove(post);
   }
 
   replaceMock({@required Post mock, @required Post replacement}) {
-    assert(_posts != null, "No stream created!");
-    if (_posts == null) {
-      _posts = [replacement];
-      notifyListeners();
-      return;
-    }
+    assert(length > 0, "No stream created!");
+    assert(contains(mock), "Mock not in stream!");
 
-    final mockIndex = _posts.indexOf(mock);
-    assert(mockIndex >= 0, "Mock post not in stream!");
-    if (mockIndex >= 0) {
-      _posts[mockIndex] = replacement;
-    } else {
-      _posts.insert(0, replacement);
-    }
-    notifyListeners();
+    replace(toRemove: mock, replacement: replacement);
   }
 
-  Future<void> load(Client client, {bool reset = false}) {
-    if (loading) {
-      return Future.value();
-    } else if (reset) {
-      _lastPage = null;
-      _posts = null;
-    } else if (_lastPage != null && _lastPage.nextPage == null) {
-      return Future.value();
-    }
-
-    return _load(client, page: _lastPage?.nextPage);
-  }
-
-  Future<void> _load(Client client, {page}) async {
-    loading = true;
-
-    try {
-      Page<Post> newPage;
+  @override
+  Future<Page<Post>> loadPage({Client client, String page}) {
       switch (type) {
         case StreamType.main:
-          newPage = await client.fetchMainStream(page: page);
-          break;
+          return client.fetchMainStream(page: page);
         case StreamType.activity:
-          newPage = await client.fetchActivityStream(page: page);
-          break;
+          return client.fetchActivityStream(page: page);
         case StreamType.tag:
-          newPage = await client.fetchTagStream(tag, page: page);
-          break;
+          return client.fetchTagStream(tag, page: page);
       }
-      _lastPage = newPage;
-      if (_posts == null || page == null) {
-        _posts = newPage.content;
-      } else {
-        _posts.addAll(newPage.content);
-      }
-      notifyListeners();
-    } finally {
-      loading = false;
-    }
+
+      throw "Unimplemented stream type: $type";
   }
 }
 

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../main.dart';
+import 'notifications.dart';
 
 enum PageType {
   stream,
@@ -34,7 +38,7 @@ class NavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentIndex = _mainItems.indexWhere((item) => item.page == currentPage);
-    final items = _mainItems.map((item) => BottomNavigationBarItem(icon: Icon(item.icon), title: Text(item.title))).toList();
+    final items = _mainItems.map(_buildMainItem).toList();
     items.add(BottomNavigationBarItem(title: Text(""), icon: Icon(Icons.more_horiz)));
 
     return BottomNavigationBar(
@@ -71,6 +75,11 @@ class NavigationBar extends StatelessWidget {
       items: items
     );
   }
+
+  BottomNavigationBarItem _buildMainItem(_BarItem item) => BottomNavigationBarItem(
+    icon: item.page == PageType.notifications ? NotificationsItemIcon(item.icon) : Icon(item.icon),
+    title: Text(item.title)
+  );
 }
 
 class _BarItem {

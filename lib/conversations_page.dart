@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:insporation/src/navigation.dart';
+
+import 'src/navigation.dart';
 
 class ConversationsPage extends StatelessWidget {
   @override
