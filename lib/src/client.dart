@@ -77,11 +77,11 @@ class Client {
     return _currentUser;
   }
 
-  Future<List<Aspect>> get  currentUserAspects async {
-    _fetch() async {
-      final response = await _call("GET", "aspects");
-      return Aspect.fromList(jsonDecode(response.body).cast<Map<String, dynamic>>());
-    }
+  Future<List<Aspect>> get currentUserAspects async {
+    _fetch() => _fetchAllPages((page) async {
+      final response = await _call("GET", "aspects", page: page);
+      return _makePage(Aspect.fromList(jsonDecode(response.body).cast<Map<String, dynamic>>()), response);
+    }).then((page) => page.content);
 
     if (_currentUserAspects == null) {
       _currentUserAspects = _fetch();
@@ -301,10 +301,26 @@ class Client {
     }
   }
 
+  Future<Page<Person>> fetchAspectContacts(Aspect aspect, {String page}) async {
+    final response = await _call("GET", "aspects/${aspect.id}/contacts", page: page);
+    return _makePage(await compute(_parsePeopleJson, response.body), response);
+  }
+
   Future<Page<Post>> _fetchPosts(Future<http.Response> request) async {
     final response = await request,
       posts = await compute(_parsePostsJson, {"body": response.body, "currentUser": currentUserId});
     return _makePage(posts, response);
+  }
+
+  Future<Page<T>> _fetchAllPages<T>(Future<Page<T>> Function(String page) fetcher) async {
+    final initialPage = await fetcher(null);
+    var currentPage = initialPage;
+    while (currentPage.nextPage != null) {
+      currentPage = await fetcher(currentPage.nextPage);
+      initialPage.content.addAll(currentPage.content);
+    }
+
+    return initialPage;
   }
 
   Future<http.Response> _call(String method, String endpoint, {Map<String, String> query = const {}, body, page}) async {
@@ -449,6 +465,11 @@ class Client {
   static List<Notification> _parseNotificationsJson(String json) {
     final List<Map<String, dynamic>> notifications = jsonDecode(json).cast<Map<String, dynamic>>();
     return Notification.fromList(notifications);
+  }
+
+  static List<Person> _parsePeopleJson(String json) {
+    final List<Map<String, dynamic>> people = jsonDecode(json).cast<Map<String, dynamic>>();
+    return Person.fromList(people);
   }
 }
 
