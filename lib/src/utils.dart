@@ -8,3 +8,10 @@ T tryProvide<T>(BuildContext context) {
     return null;
   }
 }
+bool containSameElements(Iterable a, Iterable b) {
+  if (a.length != b.length) {
+    return false;
+  }
+
+  return a.toSet().containsAll(b);
+}

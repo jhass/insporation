@@ -58,6 +58,7 @@ class Message extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Html(
+      shrinkWrap: true,
       data: md.markdownToHtml(
         body,
         blockSyntaxes: [const md.TableSyntax(), const md.FencedCodeBlockSyntax()],

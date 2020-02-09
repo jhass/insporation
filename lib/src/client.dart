@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -14,13 +13,14 @@ typedef AuthorizingUser = Future<String> Function();
 
 class Client {
   static const _appauth = const MethodChannel("insporation/appauth");
-  static const _scopes = "openid profile public:read private:read contacts:read public:modify private:modify notifications interactions";
+  static const _scopes = "openid profile public:read private:read contacts:read contacts:modify public:modify private:modify notifications interactions";
   static final _linkHeaderPattern = RegExp(r'<([^>]+)>;\s*rel="([^"]+)"');
 
   final http.Client _client = http.Client();
   _Session _currentSession;
   _Host _currentHost;
-  Profile _currentUser;
+  Future<Profile> _currentUser;
+  Future<List<Aspect>> _currentUserAspects;
 
   void listenToAuthorizationResponse({
     @required AuthorizingUser authorizingUser,
@@ -64,16 +64,36 @@ class Client {
 
   bool get authorized => _currentSession.authorized;
 
-  Future<Profile> get currentUser async {
-    if (_currentUser != null && _currentUser.person.diasporaId == currentUserId) {
-      return _currentUser;
+  Future<Profile> get currentUser {
+    _fetch() async {
+      final response = await _call("GET", "user");
+      return Profile.from(jsonDecode(response.body), currentUser: currentUserId);
     }
 
-    final response = await _call("GET", "user");
-    return Profile.from(jsonDecode(response.body));
+    if (_currentUser == null) {
+      _currentUser = _fetch();
+    }
+
+    return _currentUser;
+  }
+
+  Future<List<Aspect>> get  currentUserAspects async {
+    _fetch() async {
+      final response = await _call("GET", "aspects");
+      return Aspect.fromList(jsonDecode(response.body).cast<Map<String, dynamic>>());
+    }
+
+    if (_currentUserAspects == null) {
+      _currentUserAspects = _fetch();
+    }
+
+    return _currentUserAspects;
   }
 
   Future<void> switchToUser(String diasporaId) async {
+    _currentUser = null;
+    _currentUserAspects = null;
+
     final parts = diasporaId.split("@"),
         user = parts[0], hostname = parts[1];
 
@@ -223,8 +243,7 @@ class Client {
   }
 
   Future<Page<Notification>> fetchNotifications({bool onlyUnread = false, String page}) async {
-    final query = onlyUnread ? {"only_unread": onlyUnread.toString()} : const <String, String>{}, // TODO remove ternary once server fix is deployed
-      response = await _call("GET", "notifications", query: query, page: page);
+    final response = await _call("GET", "notifications", query: {"only_unread": onlyUnread.toString()}, page: page);
     return _makePage(await compute(_parseNotificationsJson, response.body), response);
   }
 
@@ -239,7 +258,47 @@ class Client {
 
   Future<Profile> fetchProfile(String guid) async {
     final response = await _call("GET", "users/$guid");
-    return Profile.from(jsonDecode(response.body));
+    return Profile.from(jsonDecode(response.body), currentUser: currentUserId);
+  }
+
+  Future<void> updateAspectMemberships(Person person, List<Aspect> oldAspects, List<Aspect> newAspects) async {
+    final toRemove = oldAspects.where((aspect) => !newAspects.contains(aspect)),
+      toAdd = newAspects.where((aspect) => !oldAspects.contains(aspect));
+
+    assert(toAdd.isNotEmpty || toRemove.isNotEmpty, "Don't call updateAspectMemberships with an empty update");
+
+    // Add first so we don't accidentially stop sharing
+    if (toAdd.isNotEmpty) {
+      await Future.wait(toAdd.map((aspect) => addToAspect(person, aspect)));
+    }
+
+    if (toRemove.isNotEmpty) {
+      await Future.wait(toRemove.map((aspect) => removeFromAspect(person, aspect)));
+    }
+  }
+
+  Future<void> addToAspect(Person person, Aspect aspect) async {
+    try {
+      await _call("POST", "aspects/${aspect.id}/contacts", body: {"person_guid": person.guid});
+    } on ClientException catch (e) {
+      if (e.code != 409) {
+        throw e;
+      }
+
+      // already added, ignore
+    }
+  }
+
+  Future<void> removeFromAspect(Person person, Aspect aspect) async {
+    try {
+      await _call("DELETE", "aspects/${aspect.id}/contacts/${person.guid}");
+    } on ClientException catch (e) {
+      if (e.code != 410) {
+        throw e;
+      }
+
+      // already deleted, ignore
+    }
   }
 
   Future<Page<Post>> _fetchPosts(Future<http.Response> request) async {
@@ -353,7 +412,8 @@ class Client {
     } on PlatformException catch (e) {
       // our session is probably not worth anything anymore, destroy it
       _currentSession.authorized = false;
-      throw "Failed to fetch access token: ${e.message}";
+      await _persistCurrentSession();
+      throw InvalidSessionError("Failed to fetch access token: ${e.message}");
     }
   }
 
@@ -427,6 +487,12 @@ class ClientException implements Exception {
   @override
   String toString() =>
     "Failed to $requestMethod $requestPath: $code - $message";
+}
+
+class InvalidSessionError implements Exception {
+  InvalidSessionError(this.message);
+
+  final String message;
 }
 
 class _Host {
@@ -535,17 +601,20 @@ class Profile {
   final String gender;
   final String location;
   final DateTime birthday;
-  bool isSharingWith;
-  bool isReceivingFrom;
+  bool sharing;
+  bool receiving;
   bool blocked;
   final List<String> tags;
+  final List<Aspect> aspects;
+  final bool ownProfile;
 
   Profile({@required this.person, @required this.avatar, @required this.bio, @required this.gender,
-    @required this.location, @required this.birthday, @required this.isSharingWith, @required this.isReceivingFrom,
-    @required this.blocked, @required this.tags});
+    @required this.location, @required this.birthday, @required this.sharing, @required this.receiving,
+    @required this.blocked, @required this.tags, @required this.aspects, @required this.ownProfile});
 
-  factory Profile.from(Map<String, dynamic> object) {
+  factory Profile.from(Map<String, dynamic> object, {currentUser}) {
     final PhotoSizes avatar = PhotoSizes.from(object["avatar"] ?? {});
+    final relationship = object["relationship"];
     return Profile(
       person: Person(
         guid: object["guid"],
@@ -558,12 +627,16 @@ class Profile {
       gender: object["gender"],
       location: object["location"],
       birthday: object["birthday"] != null ? DateTime.parse(object["birthday"]) : null,
-      isSharingWith: false, // TODO missing server implementation
-      isReceivingFrom: false, // TODO missing server implementation
-      blocked: false, // TODO missing server implementation
-      tags: object["tags"].cast<String>().toList()
+      sharing: relationship != null ? relationship["sharing"] : false,
+      receiving: relationship != null ? relationship["receiving"] : false,
+      blocked: object["blocked"] ?? false,
+      tags: object["tags"].cast<String>().toList(),
+      aspects: object["aspects"] != null ? Aspect.fromList(object["aspects"].cast<Map<String, dynamic>>()) : const <Aspect>[],
+      ownProfile: object["diaspora_id"] == currentUser
     );
   }
+
+  bool get canMessage => !blocked && sharing && receiving;
 
   String get formattedBirthday {
     if (birthday == null) {
@@ -576,6 +649,26 @@ class Profile {
       return DateFormat.yMMMMd().format(birthday);
     }
   }
+}
+
+class Aspect {
+  final int id;
+  final String name;
+
+  Aspect({@required this.id, @required this.name});
+
+  factory Aspect.from(Map<String, dynamic> object) => Aspect(
+    id: object["id"],
+    name: object["name"]
+  );
+
+  static List<Aspect> fromList(List<Map<String, dynamic>> objects) =>
+    objects.map((object) => Aspect.from(object)).toList();
+
+  bool operator ==(other) => other is Aspect && other.id == id;
+
+  @override
+  int get hashCode => id.hashCode;
 }
 
 enum PostType { status, reshare }
@@ -683,7 +776,7 @@ class PostInteractions {
       liked: ownState["liked"],
       reshared: ownState["reshared"],
       subscribed: ownState["subscribed"],
-      reported: false // TODO ownState["reported"]
+      reported: ownState["reported"]
     );
 }
 

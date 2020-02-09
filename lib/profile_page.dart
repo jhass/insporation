@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:insporation/src/item_stream.dart';
 import 'package:insporation/src/posts.dart';
+import 'package:insporation/src/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
@@ -75,10 +76,10 @@ class _ProfilePageState extends State<ProfilePage> {
         setState(() => _profile = profile);
       }
     } catch(e, s) {
-      debugPrintStack(label: e.message, stackTrace: s);
+      debugPrintStack(label: e.toString(), stackTrace: s);
 
       if (mounted) {
-        setState(() => _lastError = e.message);
+        setState(() => _lastError = e.toString());
       }
     }
   }
@@ -100,11 +101,41 @@ class _UserPostStreamView extends StatefulWidget {
   final Profile profile;
 
   @override
-  State<StatefulWidget> createState() => _UserPostStreamViewState();
+  State<StatefulWidget> createState() => _UserPostStreamViewState(profile);
+}
+
+class _ProfileNotifier extends ValueNotifier<Profile> {
+  _ProfileNotifier(Profile value) : super(value);
+
+  void updated() => notifyListeners();
 }
 
 class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView>
   with PostStreamState<_UserPostStreamView> {
+  _UserPostStreamViewState(Profile initialProfile) : _profile = _ProfileNotifier(initialProfile);
+
+  final _ProfileNotifier _profile;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _profile.value = widget.profile;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider.value(
+      value: _profile,
+      child: super.build(context)
+    );
+  }
+
+  @override
+  void dispose() {
+    _profile.dispose();
+    super.dispose();
+  }
+
   @override
   ItemStream<Post> createStream() => _UserPostStream(widget.profile.person);
 
@@ -121,48 +152,11 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
         Card(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    children: <Widget>[
-                      widget.profile.avatar?.medium != null ? ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: CachedNetworkImage(
-                          width: 64,
-                          height: 64,
-                          fit: BoxFit.cover,
-                          imageUrl: widget.profile.avatar.medium,
-                          placeholder: (context, url) => Center(child: Icon(Icons.person)),
-                        ) ,
-                      ) : SizedBox.shrink(),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Wrap(
-                            spacing: 4,
-                            runSpacing: 4,
-                            crossAxisAlignment: WrapCrossAlignment.start,
-                            children: widget.profile.tags.map((tag) => Chip(
-                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              label: Text(
-                                "#$tag",
-                                style: TextStyle(fontSize: 10)
-                              )
-                            )).toList(),
-                          ),
-                        )
-                      )
-                    ],
-                  ),
+            child: Consumer<_ProfileNotifier>(
+                builder: (context, profile, _) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _infoCardContent(context, profile.value),
                 ),
-                widget.profile.bio == null ? SizedBox.shrink() : Message(body: widget.profile.bio),
-                _buildField("Gender", widget.profile.gender),
-                _buildField("Location", widget.profile.location),
-                _buildField("Birthday", widget.profile.formattedBirthday)
-              ],
             ),
           )
         ),
@@ -174,14 +168,333 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
     );
   }
 
-  Widget _buildField(String label, String value) =>
-    value == null || value.isEmpty ? SizedBox.shrink() : Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      child: Text.rich(TextSpan(
-        children: <TextSpan>[
-          TextSpan(text: "$label: ", style: TextStyle(fontWeight: FontWeight.bold)),
-          TextSpan(text: value)
-        ]
-      ))
+  List<Widget> _infoCardContent(BuildContext context, Profile profile) {
+    final content = <Widget>[], headRow = <Widget>[];
+
+    if (profile.avatar?.medium != null) {
+      headRow.add(ClipRRect(
+        borderRadius: BorderRadius.circular(5),
+        child: CachedNetworkImage(
+          width: 64,
+          height: 64,
+          fit: BoxFit.cover,
+          imageUrl: profile.avatar.medium,
+          placeholder: (context, url) => Center(child: Icon(Icons.person)),
+        ) ,
+      ));
+    }
+
+    if (profile.ownProfile) {
+      headRow.add(Expanded(
+        child: Container(
+          alignment: Alignment.centerRight,
+          child: OutlineButton(
+            child: Text("Edit profile"),
+            onPressed: () => Navigator.pushNamed(context, "/edit_profile"),
+          )
+        )
+      ));
+    } else {
+      headRow.add(Expanded(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  IconButton(
+                    icon: Padding(padding: EdgeInsets.only(bottom: 2), child: Text(
+                      "@",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      )
+                    )),
+                    tooltip: "Mention user",
+                    onPressed: () {},
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.mail),
+                    tooltip: "Message",
+                    onPressed: profile.canMessage ? () {} : null,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.block, color: profile.blocked? Colors.red : Colors.black),
+                    tooltip: profile.blocked ? "Unblock" : "Block",
+                    onPressed: () {
+                      profile.blocked = !profile.blocked;
+                      // TODO for real
+                      Provider.of<_ProfileNotifier>(context, listen: false).updated(); // trigger update
+                    },
+                  )
+                ]
+              ),
+              _AspectMembershipView(profile: profile)
+            ],
+          ),
+        ),
+      ));
+    }
+
+    content.add(Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: headRow,
+      ),
+    ));
+
+    if (profile.tags.isNotEmpty) {
+      content.add(Container(
+        padding: const EdgeInsets.all(8.0),
+        alignment: Alignment.center,
+        child: Wrap(
+          spacing: 4,
+          runSpacing: 4,
+          alignment: WrapAlignment.center,
+          runAlignment: WrapAlignment.center,
+          children: profile.tags.map((tag) => Chip(
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            label: Text(
+              "#$tag",
+              style: TextStyle(fontSize: 10)
+            )
+          )).toList(),
+        ),
+      ));
+    }
+
+    if (profile.bio != null) {
+      content.add(Divider());
+      content.add(Message(body: profile.bio));
+    }
+
+    final infos = <Widget>[
+      // display diaspora ID only if not in appbar already
+      _buildInfo(Icons.person, profile.person.name != null ? profile.person.diasporaId : null),
+      _buildInfo(Icons.perm_identity, profile.gender),
+      _buildInfo(Icons.location_on, profile.location),
+      _buildInfo(Icons.cake, profile.formattedBirthday)
+    ].where((info) => info != null).toList();
+
+    if (infos.isNotEmpty) {
+      content.add(Divider());
+      content.add(Wrap(children: infos));
+    }
+
+    return content;
+  }
+
+  Widget _buildInfo(IconData icon, String value) =>
+    value == null || value.isEmpty ? null : Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Icon(icon),
+        Flexible(child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: Message(body: value)
+        ))
+      ]
     );
+}
+
+class _AspectMembershipView extends StatefulWidget {
+  _AspectMembershipView({Key key, @required this.profile}) : super(key: key);
+
+  final Profile profile;
+
+  @override
+  State<StatefulWidget> createState() => _AspectMembershipViewState();
+}
+
+class _AspectMembershipViewState extends State<_AspectMembershipView> {
+  @override
+  Widget build(BuildContext context) {
+    if (widget.profile.blocked) {
+      return SizedBox.shrink();
+    }
+
+    return Tooltip(
+      message: _shareStatus,
+      child: OutlineButton(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              width: 8,
+              height: 8,
+              margin: EdgeInsets.only(right: 8),
+              decoration: BoxDecoration(
+                border: Border.all(color: widget.profile.receiving ? Colors.green : Colors.grey),
+                shape: BoxShape.circle,
+                color: widget.profile.sharing && widget.profile.receiving ? Colors.green :
+                  widget.profile.sharing ? Colors.grey : Colors.transparent
+              ),
+            ),
+            Text(_label),
+          ],
+        ),
+        onPressed: _updateAspects
+      ),
+    );
+  }
+
+  String get _label {
+    final aspects = widget.profile.aspects;
+
+    if (aspects.length == 0) {
+      return "Add contact";
+    } else if (aspects.length == 1) {
+      return aspects.first.name;
+    } else {
+      return "In ${aspects.length} aspects";
+    }
+  }
+
+  String get _shareStatus {
+    final profile = widget.profile;
+    if (profile.blocked) {
+      return "You blocked them";
+    } else if (profile.receiving && profile.sharing) {
+      return "You are sharing with each other";
+    } else if (profile.receiving) {
+      return "They are sharing with you.";
+    } else if (profile.sharing) {
+      return "You are sharing with them.";
+    } else {
+      return "You are not sharing with each other.";
+    }
+  }
+
+  void _updateAspects() async {
+    final client = Provider.of<Client>(context, listen: false),
+      profile = Provider.of<_ProfileNotifier>(context, listen: false),
+      oldAspects = List.of(profile.value.aspects);
+
+    List<Aspect> newAspects = await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        final newAspects = List.of(oldAspects);
+        return AlertDialog(
+          content: _AspectMembershipList(selectedAspects: newAspects),
+          title: Text("Select aspects for ${profile.value.person.nameOrId}"),
+          actions: <Widget>[
+            FlatButton(onPressed: () => Navigator.pop(context), child: Text("Cancel")),
+            FlatButton(onPressed: () => Navigator.pop(context, newAspects), child: Text("Save"))
+          ],
+        );
+      }
+    );
+
+    if (newAspects == null) {
+      return; // canceled
+    }
+
+    if (containSameElements(newAspects, oldAspects)) {
+      return;
+    }
+
+    final startedSharing = oldAspects.isEmpty && newAspects.isNotEmpty,
+      stoppedSharing = oldAspects.isNotEmpty && newAspects.isEmpty;
+
+    profile.value.sharing = newAspects.isNotEmpty;
+    profile.value.aspects.clear();
+    profile.value.aspects.addAll(newAspects);
+    profile.updated();
+
+    try {
+      await client.updateAspectMemberships(profile.value.person, oldAspects, newAspects);
+
+      if (mounted) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          backgroundColor: startedSharing ? Colors.green : stoppedSharing ? Colors.redAccent : null,
+          content: Text(
+            startedSharing ? "Started sharing with ${profile.value.person.nameOrId}." :
+              stoppedSharing ? "Stopped sharing with ${profile.value.person.nameOrId}." :
+                "Aspects updated.",
+            style: TextStyle(color: Colors.white)
+          )
+        ));
+      }
+    } catch (e, s) {
+      debugPrintStack(label: e.toString(), stackTrace: s);
+
+      profile.value.sharing = oldAspects.isNotEmpty;
+      profile.value.aspects.clear();
+      profile.value.aspects.addAll(oldAspects);
+      profile.updated();
+
+      if (mounted) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(
+            "Failed to update aspects: $e",
+            style: TextStyle(color: Colors.white)
+          ),
+        ));
+      }
+    }
+
+  }
+}
+
+class _AspectMembershipList extends StatefulWidget {
+  _AspectMembershipList({Key key, @required this.selectedAspects}) : super(key: key);
+
+  final List<Aspect> selectedAspects;
+
+  @override
+  State<StatefulWidget> createState() => _AspectMembershipListState();
+}
+
+class _AspectMembershipListState extends State<_AspectMembershipList> {
+  List<Aspect> _userAspects;
+
+  @override
+  void initState() {
+    super.initState();
+    final client = Provider.of<Client>(context, listen: false);
+    client.currentUserAspects.then((aspects) => setState(() => _userAspects = aspects));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_userAspects == null) {
+      return Container(
+        width: 100,
+        height: 100,
+        alignment: Alignment.center,
+        child: CircularProgressIndicator()
+      );
+    }
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.66),
+      child: ListView.builder(
+        padding: EdgeInsets.all(0),
+        itemCount: _userAspects.length,
+        itemBuilder: (context, position) => Container(
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.grey[200]))
+          ),
+          child: CheckboxListTile(
+            title: Text(_userAspects[position].name),
+            value: widget.selectedAspects.contains(_userAspects[position]),
+            onChanged: (selected) {
+              setState(() {
+              if (selected) {
+                  widget.selectedAspects.add(_userAspects[position]);
+               } else {
+                 widget.selectedAspects.remove(_userAspects[position]);
+               }
+                });
+            },
+          ),
+        )
+      ),
+    );
+  }
 }
