@@ -227,6 +227,11 @@ class Client {
     await _call("PATCH", "notifications/${notification.guid}", body: {"read": isRead});
   }
 
+  Future<Post> fetchPost(String guid) async {
+    final response = await _call("GET", "posts/$guid");
+    return Post.from(jsonDecode(response.body));
+  }
+
   Future<Page<Post>> _fetchPosts(Future<http.Response> request) async {
     final response = await request,
       posts = await compute(_parsePostsJson, {"body": response.body, "currentUser": currentUserId});

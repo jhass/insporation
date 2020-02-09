@@ -1,105 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:insporation/src/item_stream.dart';
+import 'package:insporation/src/timeago.dart';
 
 import 'client.dart';
 import 'error_message.dart';
 import 'messages.dart';
 
-class CommentSheet extends StatefulWidget {
-  CommentSheet({Key key, @required this.post}) : super(key: key);
+class CommentStream extends ItemStream<Comment> {
+  CommentStream(this.post);
 
   final Post post;
 
   @override
-  State<StatefulWidget> createState() => _CommentSheetState();
+  Future<Page<Comment>> loadPage({Client client, String page}) =>
+    client.fetchComments(post, page: page);
 }
 
-class _CommentSheetState extends State<CommentSheet> {
-  var _loading = true;
-  String _lastError;
-  Page<Comment> _lastPage;
-  List<Comment> _comments;
-  final _listScrollController = ScrollController();
+class CommentListView extends StatefulWidget {
+  CommentListView({Key key, @required this.post}) : super(key: key);
+
+  final Post post;
 
   @override
-  void initState() {
-    super.initState();
-    _fetchComments();
+  State<StatefulWidget> createState() => CommentListViewState();
+}
 
-    _listScrollController.addListener(() {
-      if (_listScrollController.offset >= _listScrollController.position.maxScrollExtent - 200) {
-        _fetchMoreComments();
-      }
-    });
-  }
+class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
+  CommentListViewState() : super(enableUpButton: false);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListView.builder(
-        controller: _listScrollController,
-        itemCount: _comments != null ? _comments.length + 2 : 2,
-        itemBuilder: (context, position) =>
-          position == 0 ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Text("Comments", style: TextStyle(fontSize: 18)),
-              ),
-              ErrorMessage(_lastError)
-            ]
-          ) :
-          _comments == null || position > _comments.length ?
-            Visibility(
-              visible: _loading,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Center(child: CircularProgressIndicator())
-              ),
-            ) :
-            CommentView(comment: _comments[position - 1])
+  ItemStream<Comment> createStream() => CommentStream(widget.post);
+
+  @override
+  Widget buildItem(BuildContext context, Comment item) =>
+    CommentView(comment: item);
+
+  @override
+  Widget buildHeader(BuildContext context, String lastError) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Text("Comments", style: TextStyle(fontSize: 18)),
       ),
-    );
-  }
-
-  _fetchMoreComments() {
-    if (_loading == null || _lastPage == null || _lastPage.nextPage == null) {
-      return;
-    }
-
-    _fetchComments(page: _lastPage.nextPage);
-  }
-
-  _fetchComments({page}) async {
-    setState(() {
-      _lastError = null;
-      _loading = true;
-    });
-
-    try {
-      final client = Provider.of<Client>(context, listen: false),
-        newComments = await client.fetchComments(widget.post, page: page);
-
-      setState(() {
-        _loading = false;
-        _lastPage = newComments;
-        if (_comments == null || page == null) {
-          _comments = newComments.content;
-        } else {
-          _comments.addAll(newComments.content);
-        }
-      });
-    } catch (e, s) {
-      setState(() {
-        debugPrintStack(label: e.toString(), stackTrace: s);
-        _lastError = e.toString();
-        _loading = false;
-      });
-    }
-
-  }
+      ErrorMessage(lastError)
+    ]
+  );
 }
 
 class CommentView extends StatelessWidget {
@@ -115,7 +61,15 @@ class CommentView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            PersonHeader(person: comment.author),
+            Row(
+              children: <Widget>[
+                Expanded(child: PersonHeader(person: comment.author)),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4),
+                  child: Timeago(comment.createdAt, textStyle: TextStyle(fontSize: 10))
+                )
+              ],
+            ),
             Divider(),
             Message(body: comment.body, mentionedPeople: comment.mentionedPeople)
           ],

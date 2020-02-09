@@ -12,6 +12,7 @@ import 'comments.dart';
 import 'item_stream.dart';
 import 'messages.dart';
 import 'timeago.dart';
+import 'utils.dart';
 
 enum StreamType { main, activity, tag }
 
@@ -72,9 +73,10 @@ class PostStreamItem extends StatelessWidget {
 }
 
 class PostView extends StatelessWidget {
-  PostView({Key key, @required this.post})  : super(key: key);
+  PostView({Key key, @required this.post, this.enableCommentsSheet = true})  : super(key: key);
 
   final Post post;
+  final bool enableCommentsSheet;
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +147,7 @@ class PostView extends StatelessWidget {
                       ),
                       Timeago(post.createdAt, textStyle: TextStyle(fontSize: 10, fontStyle: FontStyle.italic)),
                       Spacer(),
-                      _PostInteractionsView(post: post)
+                      _PostInteractionsView(post: post, enableCommentsSheet: enableCommentsSheet)
                     ],
                   )
                 )
@@ -160,9 +162,10 @@ class PostView extends StatelessWidget {
 }
 
 class _PostInteractionsView extends StatefulWidget {
-  _PostInteractionsView({Key key, this.post}) : super(key: key);
+  _PostInteractionsView({Key key, this.post, this.enableCommentsSheet = true}) : super(key: key);
 
   final Post post;
+  final bool enableCommentsSheet;
 
   @override
   State<StatefulWidget> createState() => _PostInteractionsViewState();
@@ -184,8 +187,8 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
             icon: Icon(Icons.comment, size: 16),
             label: Text(widget.post.interactions.comments.toString()),
             textColor: Colors.grey[600],
-            onPressed: !widget.post.canComment ? null : () =>
-              showModalBottomSheet(context: context, builder: (context) => CommentSheet(post: widget.post)),
+            onPressed: !widget.enableCommentsSheet || !widget.post.canComment ? null : () =>
+              showModalBottomSheet(context: context, builder: (context) => CommentListView(post: widget.post)),
           ),
           FlatButton.icon(
             icon: Icon(
@@ -279,7 +282,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
   _createReshare() async {
     final scaffold = Scaffold.of(context),
       client = Provider.of<Client>(context, listen: false),
-      postStream = Provider.of<PostStream>(context, listen: false);
+      postStream = tryProvide<PostStream>(context);
     setState(() {
       widget.post.interactions.reshared = true;
       widget.post.interactions.reshares++;
@@ -289,13 +292,13 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
     try {
       final author = await client.currentUser;
       mockReshare = widget.post.mockReshare(author.person);
-      postStream.addMock(mockReshare);
+      postStream?.addMock(mockReshare);
 
       final reshare = await client.resharePost(widget.post);
       if (reshare != null) {
-        postStream.replaceMock(mock: widget.post, replacement: reshare);
+        postStream?.replaceMock(mock: widget.post, replacement: reshare);
       } else {
-        postStream.removeMock(mockReshare);
+        postStream?.removeMock(mockReshare);
       }
     } catch (e, s) {
       debugPrintStack(label: e.toString(), stackTrace: s);
@@ -306,7 +309,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
       });
 
       if (mockReshare != null) {
-        postStream.removeMock(mockReshare);
+        postStream?.removeMock(mockReshare);
       }
 
       if (scaffold.mounted) {

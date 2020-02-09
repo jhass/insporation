@@ -100,6 +100,9 @@ abstract class ItemStream<T> extends ChangeNotifier {
 }
 
 abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
+  ItemStreamState({this.enableUpButton = true});
+
+  final enableUpButton;
   final _refreshIndicator = GlobalKey<RefreshIndicatorState>();
   ItemStream<T> _items;
   String _lastError;
@@ -133,6 +136,9 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
     });
   }
 
+  @override
+  Widget build(BuildContext context) => buildStream(context);
+
   Widget buildStream(BuildContext context) {
     return RefreshIndicator(
       key: _refreshIndicator,
@@ -143,7 +149,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
           value: _items,
           child: Consumer<ItemStream<T>>(
             builder: (context, items, _) => Visibility(
-              visible:  items.length > 0,
+              visible: items.length > 0,
               child: Stack(
                 fit: StackFit.expand,
                 children: <Widget>[
@@ -169,7 +175,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
                     child: AnimatedSwitcher(
                       transitionBuilder: (child, animation) => FadeTransition(child: child, opacity: animation),
                       duration: Duration(milliseconds: 300),
-                      child: !_upButtonVisibility ? SizedBox.shrink() : ClipRRect(
+                      child: !_upButtonVisibility || !enableUpButton ? SizedBox.shrink() : ClipRRect(
                         borderRadius: BorderRadius.circular(5),
                         child: Container(
                           color: Colors.black38,
@@ -187,7 +193,10 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
                   )
                 ]
               ),
-              replacement: _StreamFallback(error: _lastError, loading: _items.loading)
+              replacement: _StreamFallback(
+                header: buildHeader(context, _lastError),
+                loading: _items.loading
+              )
             ),
           ),
         )
@@ -229,9 +238,9 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
 }
 
 class _StreamFallback extends StatelessWidget {
-  _StreamFallback({Key key, this.error, this.loading = false}) : super(key: key);
+  _StreamFallback({Key key, this.header, this.loading = false}) : super(key: key);
 
-  final String error;
+  final Widget header;
   final bool loading;
 
   @override
@@ -246,8 +255,9 @@ class _StreamFallback extends StatelessWidget {
           ),
           child: SafeArea(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                ErrorMessage(error),
+                header,
                 Visibility(
                   visible: !loading,
                   replacement: SizedBox( // We need to take up some space so the refresh indicator renders
