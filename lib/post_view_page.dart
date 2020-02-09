@@ -30,15 +30,12 @@ class PostViewPage extends StatefulWidget {
 }
 
 class _PostViewPageState extends State<PostViewPage> {
-  ShowNsfwPosts _showNsfwPosts = ShowNsfwPosts();
   Post _post;
   String _lastError;
 
   @override
   void initState() {
     super.initState();
-
-    _showNsfwPosts.value = true; // TODO depend on profile info? app setting? rework to remove the shield in this view?
 
     if (widget.post != null) {
       _post = widget.post;
@@ -52,11 +49,8 @@ class _PostViewPageState extends State<PostViewPage> {
     return Scaffold(
       appBar: AppBar(),
       body: _loading ? Center(child: CircularProgressIndicator()) :
-        _lastError != null ? ErrorMessage(_lastError) :
-          ChangeNotifierProvider.value(
-            value: _showNsfwPosts,
-            child: _PostWithCommentsView(post: _post)
-          )
+        _lastError != null ? Center(child: ErrorMessage(_lastError)) :
+           _PostWithCommentsView(post: _post)
     );
   }
 
@@ -88,13 +82,24 @@ class _PostWithCommentsView extends CommentListView {
 }
 
 class _PostWithCommentsViewState extends CommentListViewState {
+  final ShowNsfwPosts _showNsfwPosts = ShowNsfwPosts(initial: true); // TODO make optional in PostView?
+
   @override
   Widget buildHeader(BuildContext context, String lastError) =>
     Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        PostView(post: widget.post, enableCommentsSheet: false),
+        ChangeNotifierProvider.value(
+          value: _showNsfwPosts,
+          child: PostView(post: widget.post, enableCommentsSheet: false),
+        ),
         super.buildHeader(context, lastError)
       ],
     );
+
+  @override
+  void dispose() {
+    _showNsfwPosts.dispose();
+    super.dispose();
+  }
 }

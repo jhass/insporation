@@ -20,6 +20,7 @@ dependencies:
   cached_network_image: ^2.0.0
   gesture_zoom_box: ^0.0.2
   flutter_slidable: ^0.5.4
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:

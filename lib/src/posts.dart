@@ -57,6 +57,30 @@ class PostStream extends ItemStream<Post> {
   }
 }
 
+mixin PostStreamState<W extends StatefulWidget> on ItemStreamState<Post, W> {
+  final ShowNsfwPosts _showNsfw = ShowNsfwPosts();
+
+  @override
+  Widget buildStream(BuildContext context) {
+    return ChangeNotifierProvider.value(
+      value: _showNsfw,
+      child: super.buildStream(context)
+    );
+  }
+
+  @override
+  Widget buildItem(BuildContext context, Post post) => PostStreamItem(post: post);
+
+  @override
+  void onReset() => _showNsfw.value = false;
+
+  @override
+  void dispose() {
+    _showNsfw.dispose();
+    super.dispose();
+  }
+}
+
 class PostStreamItem extends StatelessWidget {
   PostStreamItem({Key key, @required this.post})  : super(key: key);
 

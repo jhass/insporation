@@ -16,32 +16,35 @@ class PersonHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(4, 4, 8, 4),
-          child: Container(
-            width: 24,
-            height: 24,
-            child: person.avatar != null ? ClipRRect(
-              borderRadius: BorderRadius.circular(5),
-              child: CachedNetworkImage(
-                placeholder: (context, url) => Icon(Icons.person),
-                imageUrl: person.avatar,
-                fadeInDuration: Duration(milliseconds: 250),
-                fit: BoxFit.cover,
-              )
-            ) : Icon(Icons.person),
+    return InkWell(
+      onTap: () => Navigator.pushNamed(context, "/profile", arguments: person),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(4, 4, 8, 4),
+            child: Container(
+              width: 24,
+              height: 24,
+              child: person.avatar != null ? ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: CachedNetworkImage(
+                  placeholder: (context, url) => Icon(Icons.person),
+                  imageUrl: person.avatar,
+                  fadeInDuration: Duration(milliseconds: 250),
+                  fit: BoxFit.cover,
+                )
+              ) : Icon(Icons.person),
+            )
+          ),
+          Text(
+            person.name ?? person.diasporaId,
+            style: TextStyle(
+              fontSize: 12
+            )
           )
-        ),
-        Text(
-          person.name ?? person.diasporaId,
-          style: TextStyle(
-            fontSize: 12
-          )
-        )
-      ],
+        ],
+      ),
     );
   }
 }
@@ -66,7 +69,7 @@ class Message extends StatelessWidget {
           md.AutolinkExtensionSyntax(),
           mde.TagLinkSyntax(),
           mde.MentionLinkSyntax((diasporaId, inlineName) =>
-            mentionedPeople != null ? mentionedPeople[diasporaId]?.name : null)
+            mentionedPeople != null ? mentionedPeople[diasporaId] : null)
         ]
       ),
       onLinkTap: (url) {
@@ -130,7 +133,7 @@ class NsfwShield extends StatefulWidget {
 }
 
 class ShowNsfwPosts extends ValueNotifier<bool> {
-  ShowNsfwPosts() : super(false);
+  ShowNsfwPosts({bool initial = false}) : super(initial);
 }
 
 class _NsfwShieldState extends State<NsfwShield> {

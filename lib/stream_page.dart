@@ -1,11 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'src/client.dart';
 import 'src/error_message.dart';
 import 'src/item_stream.dart';
-import 'src/messages.dart';
 import 'src/navigation.dart';
 import 'src/posts.dart';
 
@@ -32,9 +30,7 @@ class StreamPage extends StatefulWidget {
   }
 }
 
-class _StreamPageState extends ItemStreamState<Post, StreamPage> {
-  ShowNsfwPosts _showNsfw = ShowNsfwPosts();
-
+class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStreamState<StreamPage> {
   @override
   ItemStream<Post> createStream() => PostStream(type: widget.type, tag: widget.tag);
 
@@ -49,25 +45,13 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> {
         child: Icon(Icons.add),
         onPressed: () => Navigator.pushNamed(context, "/publisher")
       ),
-      body: ChangeNotifierProvider.value(
-        value: _showNsfw,
-        child: buildStream(context)
-      )
+      body: buildStream(context)
     );
   }
 
   @override
   Widget buildHeader(BuildContext context, String lastError) =>
     _StreamTypeSelector(currentType: widget.type, error: lastError);
-
-  @override
-  Widget buildItem(BuildContext context, Post post) =>
-    PostStreamItem(post: post);
-
-  @override
-  void onReset() {
-    _showNsfw.value = false;
-  }
 }
 
 class _StreamTypeSelector extends StatelessWidget {

@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -99,6 +101,9 @@ class Client {
 
   Future<Page<Post>> fetchTagStream(String tag, {String page}) =>
     _fetchPosts(_call("GET", "search/posts", query: {'tag': tag}, page: page));
+
+  Future<Page<Post>> fetchUserStream(Person person, {String page}) =>
+    _fetchPosts(_call("GET", "users/${person.guid}/posts", page: page));
 
   Future<Page<Comment>> fetchComments(Post post, {String page}) async {
     final response = await _call("GET", "posts/${post.guid}/comments", page: page),
@@ -218,7 +223,7 @@ class Client {
   }
 
   Future<Page<Notification>> fetchNotifications({bool onlyUnread = false, String page}) async {
-    final query = onlyUnread ? {"only_unread": onlyUnread.toString()} : const <String, String>{}, // TODO
+    final query = onlyUnread ? {"only_unread": onlyUnread.toString()} : const <String, String>{}, // TODO remove ternary once server fix is deployed
       response = await _call("GET", "notifications", query: query, page: page);
     return _makePage(await compute(_parseNotificationsJson, response.body), response);
   }
@@ -230,6 +235,11 @@ class Client {
   Future<Post> fetchPost(String guid) async {
     final response = await _call("GET", "posts/$guid");
     return Post.from(jsonDecode(response.body));
+  }
+
+  Future<Profile> fetchProfile(String guid) async {
+    final response = await _call("GET", "users/$guid");
+    return Profile.from(jsonDecode(response.body));
   }
 
   Future<Page<Post>> _fetchPosts(Future<http.Response> request) async {
@@ -512,14 +522,27 @@ class Person {
 
   static List<Person> fromList(List<Map<String, dynamic>> objects) =>
     objects.map((object) => Person.from(object)).toList();
+
+  String get nameOrId => name ?? diasporaId;
 }
 
 class Profile {
+  static const _birthdayYearThreshold = 1004;
+
   final Person person;
   final PhotoSizes avatar;
+  final String bio;
+  final String gender;
+  final String location;
+  final DateTime birthday;
+  bool isSharingWith;
+  bool isReceivingFrom;
+  bool blocked;
   final List<String> tags;
 
-  Profile({@required this.person, @required this.avatar, @required this.tags});
+  Profile({@required this.person, @required this.avatar, @required this.bio, @required this.gender,
+    @required this.location, @required this.birthday, @required this.isSharingWith, @required this.isReceivingFrom,
+    @required this.blocked, @required this.tags});
 
   factory Profile.from(Map<String, dynamic> object) {
     final PhotoSizes avatar = PhotoSizes.from(object["avatar"] ?? {});
@@ -531,8 +554,27 @@ class Profile {
         avatar: avatar.medium
       ),
       avatar: avatar,
+      bio: object["bio"],
+      gender: object["gender"],
+      location: object["location"],
+      birthday: object["birthday"] != null ? DateTime.parse(object["birthday"]) : null,
+      isSharingWith: false, // TODO missing server implementation
+      isReceivingFrom: false, // TODO missing server implementation
+      blocked: false, // TODO missing server implementation
       tags: object["tags"].cast<String>().toList()
     );
+  }
+
+  String get formattedBirthday {
+    if (birthday == null) {
+      return null;
+    }
+
+    if (birthday.year <= _birthdayYearThreshold) {
+      return DateFormat.MMMMd().format(birthday);
+    } else {
+      return DateFormat.yMMMMd().format(birthday);
+    }
   }
 }
 

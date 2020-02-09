@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:markdown/markdown.dart';
 
+import 'client.dart';
 import 'posix_bracket_expressions.dart' as pbe;
 
 
@@ -40,7 +41,7 @@ class TagLinkSyntax extends InlineSyntax  {
   }
 }
 
-typedef MentionNameLookup = String Function(String diasporaId, String inlineName);
+typedef MentionNameLookup = Person Function(String diasporaId, String inlineName);
 
 class MentionLinkSyntax extends InlineSyntax {
   final MentionNameLookup lookup;
@@ -49,11 +50,11 @@ class MentionLinkSyntax extends InlineSyntax {
 
   @override
   bool onMatch(InlineParser parser, Match match) {
-    final diasporaId = match[2].trim(), inlineName = _presence(match[1]?.trim()),
-        url = 'eu.jhass.insporation://people/$diasporaId';
-    final name = lookup(diasporaId, inlineName);
-    if (name != null) {
-      final anchor = Element.text('a', parser.document.encodeHtml ? HtmlEscape(HtmlEscapeMode.element).convert(name) : name);
+    final diasporaId = match[2].trim(), inlineName = _presence(match[1]?.trim());
+    final person = lookup(diasporaId, inlineName);
+    if (person != null) {
+      final url = 'eu.jhass.insporation://people/${person.guid}',
+        anchor = Element.text('a', parser.document.encodeHtml ? HtmlEscape(HtmlEscapeMode.element).convert(person.nameOrId) : person.nameOrId);
       anchor.attributes['href'] = Uri.encodeFull(url);
       parser.addNode(anchor);
     } else {
