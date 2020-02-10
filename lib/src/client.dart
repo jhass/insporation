@@ -13,7 +13,7 @@ typedef AuthorizingUser = Future<String> Function();
 
 class Client {
   static const _appauth = const MethodChannel("insporation/appauth");
-  static const _scopes = "openid profile public:read private:read contacts:read contacts:modify public:modify private:modify notifications interactions";
+  static const _scopes = "openid profile public:read private:read contacts:read contacts:modify public:modify private:modify interactions notifications conversations";
   static final _linkHeaderPattern = RegExp(r'<([^>]+)>;\s*rel="([^"]+)"');
 
   final http.Client _client = http.Client();
@@ -306,6 +306,28 @@ class Client {
     return _makePage(await compute(_parsePeopleJson, response.body), response);
   }
 
+  Future<Page<Conversation>> fetchConversations({bool onlyUnread = false, String page}) async {
+    final response  = await _call("GET", "conversations", query: {"only_unread":  onlyUnread ? "true" : null}, page: page); // TODO
+    return _makePage(await compute(_parseConversationsJson, response.body), response);
+  }
+
+  Future<Page<ConversationMessage>> fetchConversationMessages(Conversation conversation, {String page}) async {
+    final response = await _call("GET", "conversations/${conversation.guid}/messages", page: page);
+    return _makePage(await compute(_parseConversationMessagesJson, response.body), response);
+  }
+
+  Future<void> hideConversation(Conversation conversation) async {
+    try {
+      await  _call("DELETE", "conversations/${conversation.guid}");
+    } on ClientException catch (e) {
+      if (e.code != 404) {
+        throw e;
+      }
+
+      // conversation is already gone, ignore
+    }
+  }
+
   Future<Page<Post>> _fetchPosts(Future<http.Response> request) async {
     final response = await request,
       posts = await compute(_parsePostsJson, {"body": response.body, "currentUser": currentUserId});
@@ -426,6 +448,10 @@ class Client {
         throw "Failed to fetch access token: Got no token!";
       }
     } on PlatformException catch (e) {
+      if (e.message?.toLowerCase()?.contains("network") == true) {
+        throw e.message; // probably bad network
+      }
+
       // our session is probably not worth anything anymore, destroy it
       _currentSession.authorized = false;
       await _persistCurrentSession();
@@ -470,6 +496,16 @@ class Client {
   static List<Person> _parsePeopleJson(String json) {
     final List<Map<String, dynamic>> people = jsonDecode(json).cast<Map<String, dynamic>>();
     return Person.fromList(people);
+  }
+
+  static List<Conversation> _parseConversationsJson(String json) {
+    final List<Map<String, dynamic>> conversations = jsonDecode(json).cast<Map<String, dynamic>>();
+    return Conversation.fromList(conversations);
+  }
+
+  static List<ConversationMessage> _parseConversationMessagesJson(String json) {
+    final List<Map<String, dynamic>> messages = jsonDecode(json).cast<Map<String, dynamic>>();
+    return ConversationMessage.fromList(messages);
   }
 }
 
@@ -1039,4 +1075,45 @@ class Notification {
 
   static List<Notification> fromList(List<Map<String, dynamic>> objects) =>
     objects.map((object) => Notification.from(object)).toList();
+}
+
+class Conversation {
+  final String guid;
+  final String subject;
+  bool read;
+  final List<Person> participants;
+  final DateTime createdAt;
+
+  Conversation({@required this.guid, @required this.subject, @required this.read,
+    @required this.participants, @required this.createdAt});
+
+  factory Conversation.from(Map<String, dynamic> object) => Conversation(
+    guid: object["guid"],
+    subject: object["subject"],
+    read: object["read"],
+    participants: Person.fromList(object["participants"].cast<Map<String, dynamic>>()),
+    createdAt: DateTime.parse(object["created_at"])
+  );
+
+  static List<Conversation> fromList(List<Map<String, dynamic>> objects) =>
+    objects.map((object) => Conversation.from(object)).toList();
+}
+
+class ConversationMessage {
+  final String guid;
+  final String body;
+  final Person author;
+  final DateTime createdAt;
+
+  ConversationMessage({@required this.guid, @required this.body, @required this.author, @required this.createdAt});
+
+  factory ConversationMessage.from(Map<String, dynamic> object) => ConversationMessage(
+    guid: object["guid"],
+    body: object["body"],
+    author: Person.from(object["author"]),
+    createdAt: DateTime.parse(object["created_at"])
+  );
+
+  static fromList(List<Map<String, dynamic>> objects) =>
+    objects.map((object) => ConversationMessage.from(object)).toList();
 }

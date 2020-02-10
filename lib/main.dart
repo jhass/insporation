@@ -11,7 +11,7 @@ import 'publisher_page.dart';
 import 'search_page.dart';
 import 'src/client.dart';
 import 'sign_in_page.dart';
-import 'src/notifications.dart';
+import 'src/navigation.dart';
 import 'src/posts.dart';
 import 'stream_page.dart';
 
@@ -20,6 +20,10 @@ void main() => runApp(MultiProvider(
     Provider(create: (_) => Client()),
     ChangeNotifierProxyProvider<Client, UnreadNotificationsCount>(
       create: (context) => UnreadNotificationsCount(),
+      update: (context, client, count) => count..update(client)
+    ),
+    ChangeNotifierProxyProvider<Client, UnreadConversationsCount>(
+      create: (context) => UnreadConversationsCount(),
       update: (context, client, count) => count..update(client)
     )
   ],

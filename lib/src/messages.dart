@@ -37,10 +37,14 @@ class PersonHeader extends StatelessWidget {
               ) : Icon(Icons.person),
             )
           ),
-          Text(
-            person.name ?? person.diasporaId,
-            style: TextStyle(
-              fontSize: 12
+          Flexible(
+            child: Text(
+              person.name ?? person.diasporaId,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: TextStyle(
+                fontSize: 12
+              )
             )
           )
         ],
@@ -70,7 +74,8 @@ class Message extends StatelessWidget {
           md.AutolinkExtensionSyntax(),
           mde.TagLinkSyntax(),
           mde.MentionLinkSyntax((diasporaId, inlineName) =>
-            mentionedPeople != null ? mentionedPeople[diasporaId] : null)
+            mentionedPeople != null ? mentionedPeople[diasporaId] : null),
+          mde.DiasporaAutolinkSyntax()
         ]
       ),
       onLinkTap: (url) {
@@ -79,6 +84,8 @@ class Message extends StatelessWidget {
           Navigator.pushNamed(context, '/stream/tag', arguments: tag);
         } else if (url.startsWith('eu.jhass.insporation://people/')) {
           Navigator.pushNamed(context, '/profile', arguments: url.split('/').last);
+        } else if (url.startsWith('eu.jhass.insporation://posts/')) {
+          Navigator.pushNamed(context, '/post', arguments: url.split('/').last);
         } else {
           launch(url);
         }

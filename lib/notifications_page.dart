@@ -1,13 +1,10 @@
-import 'dart:math';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide Notification;
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
 import 'src/item_stream.dart';
 import 'src/navigation.dart';
-import 'src/notifications.dart';
+import 'src/widgets.dart';
 
 class NotificationStream extends ItemStream<Notification> {
   @override
@@ -47,47 +44,23 @@ class _NotificationListItem extends StatefulWidget {
 
 class _NotificationListItemState extends State<_NotificationListItem> {
   @override
-  Widget build(BuildContext context) {
-    final actors = widget.notification.eventCreators.where((actor) => actor.avatar != null).toList(),
-      displayActorsCount = min(3, actors.length);
-
-    return InkWell(
-      onTap: _canGoToTarget ? _goToTarget : null,
-      child: Container(
-        decoration:  BoxDecoration(
-          color: widget.notification.read ? Colors.transparent : Colors.lightBlue[50],
-          border: Border(
-            left: widget.notification.read ? BorderSide.none : BorderSide(color: Colors.blueAccent, width: 2),
-            bottom: BorderSide(color: widget.notification.read ? Colors.grey[200] : Colors.blueGrey[100])
-          )
-        ),
-        padding: EdgeInsets.only(top: 8),
-        child: ListTile(
-          leading: SizedBox.fromSize(
-            size: Size.square(54),
-            child: displayActorsCount > 0 ? Stack(
-              children: List.generate(min(3, actors.length), (index) =>
-                Positioned(
-                  top: 4.0 * (displayActorsCount - index - 1),
-                  left: 4.0 * (displayActorsCount - index - 1),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: CachedNetworkImage(
-                      width: 46,
-                      height: 46,
-                      fit: BoxFit.cover,
-                      imageUrl: actors[displayActorsCount - index -1].avatar
-                    )
-                  )
-                )
-              ),
-            ) : Center(child: Icon(Icons.person, size: 46))
-          ),
-          title: Text(_title),
-        ),
+  Widget build(BuildContext context) => InkWell(
+    onTap: _canGoToTarget ? _goToTarget : null,
+    child: Container(
+      decoration:  BoxDecoration(
+        color: widget.notification.read ? Colors.transparent : Colors.lightBlue[50],
+        border: Border(
+          left: widget.notification.read ? BorderSide.none : BorderSide(color: Colors.blueAccent, width: 2),
+          bottom: BorderSide(color: widget.notification.read ? Colors.grey[200] : Colors.blueGrey[100])
+        )
       ),
-    );
-  }
+      padding: EdgeInsets.symmetric(vertical: 4),
+      child: ListTile(
+        leading: AvatarStack(people: widget.notification.eventCreators),
+        title: Text(_title),
+      ),
+    ),
+  );
 
   String get _title {
     switch (widget.notification.type) {

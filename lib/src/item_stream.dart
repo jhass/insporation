@@ -96,6 +96,7 @@ abstract class ItemStream<T> extends ChangeNotifier {
     }
   }
 
+  @protected
   Future<Page<T>> loadPage({Client client, String page});
 }
 
@@ -108,6 +109,9 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
   String _lastError;
   ScrollController _listScrollController = ScrollController();
   var _upButtonVisibility = false;
+
+  @protected
+  ItemStream<T> get items => _items;
 
   ItemStream<T> createStream();
 

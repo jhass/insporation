@@ -259,23 +259,13 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
         setState(() => _updatingLike = false);
       }
     } catch (e, s) {
-      debugPrintStack(label: e.toString(), stackTrace: s);
+      showErrorSnackBar(scaffold, "Failed to ${current ? "unlike" : "like"} post", e, s);
 
       widget.post.interactions.liked = current;
       widget.post.interactions.likes = currentCount;
 
       if (mounted) {
         setState(() => _updatingLike = false);
-      }
-
-      if (scaffold.mounted) {
-        scaffold.showSnackBar(SnackBar(
-          content: Text(
-            "Failed to ${current ? "unlike" : "like"} post: $e",
-            style: TextStyle(color: Colors.white)
-          ),
-          backgroundColor: Colors.red
-        ));
       }
     }
   }
@@ -325,7 +315,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
         postStream?.removeMock(mockReshare);
       }
     } catch (e, s) {
-      debugPrintStack(label: e.toString(), stackTrace: s);
+      showErrorSnackBar(scaffold, "Failed to reshare post", e, s);
 
       setState(() {
         widget.post.interactions.reshared = false;
@@ -334,16 +324,6 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
 
       if (mockReshare != null) {
         postStream?.removeMock(mockReshare);
-      }
-
-      if (scaffold.mounted) {
-        scaffold.showSnackBar(SnackBar(
-          content: Text(
-            "Failed to reshare post: $e",
-            style: TextStyle(color: Colors.white)
-          ),
-          backgroundColor: Colors.red
-        ));
       }
     }
   }
@@ -411,21 +391,13 @@ class _PostActionsViewState extends State<PostActionsView> {
         setState(() => _updatingSubscription = false);
       }
     } catch (e, s) {
+      showErrorSnackBar(scaffold, "Failed to ${current ? "unsubscribe from" : "subscribe to"} post", e, s);
       debugPrintStack(label: e.toString(), stackTrace: s);
 
       widget.post.interactions.subscribed = current;
 
       if (mounted) {
         setState(() => _updatingSubscription = false);
-      }
-
-      if (scaffold.mounted) {
-        scaffold.showSnackBar(SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(
-            "Failed to ${current ? "unsubscribe from" : "subscribe to"} post: $e",
-            style: TextStyle(color: Colors.white)),
-        ));
       }
     }
   }
@@ -474,19 +446,9 @@ class _PostActionsViewState extends State<PostActionsView> {
         Navigator.pop(context);
       }
     } catch (e, s) {
-      debugPrintStack(label: e.toString(), stackTrace: s);
+      showErrorSnackBar(scaffold, "Failed to ${widget.post.ownPost ? "delete" : "hide"} post", e, s);
 
       postStream?.insert(position, widget.post);
-
-      if (scaffold.mounted) {
-        scaffold.showSnackBar(SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(
-            "Failed to ${widget.post.ownPost ? "delete" : "hide"} post: $e",
-            style: TextStyle(color: Colors.white)
-          )
-        ));
-      }
     }
   }
 
@@ -537,20 +499,11 @@ class _PostActionsViewState extends State<PostActionsView> {
         ));
       }
     } catch(e, s) {
-      debugPrintStack(label: e.toString(), stackTrace: s);
+      showErrorSnackBar(scaffold, "Failed to create report", e, s);
 
       widget.post.interactions.reported = false;
       if (mounted) {
         setState(() {});
-      }
-
-      if (scaffold.mounted) {
-        scaffold.showSnackBar(SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(
-            "Failed to create report: $e",
-            style: TextStyle(color: Colors.white))
-        ));
       }
     }
   }
@@ -734,18 +687,14 @@ class _PollViewState extends State<_PollView> {
     try {
       await client.vote(widget.post, answer);
     } catch(e, s) {
-      debugPrintStack(label: e.message, stackTrace: s);
+      tryShowErrorSnackBar(this, "Failed to vote on post", e, s);
+
       setState(() {
         widget.poll.alreadyParticipated = false;
         widget.poll.participationCount--;
         answer.voteCount--;
         answer.own = false;
       });
-
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to vote on post: ${e.message}", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.red,
-      ));
     }
 
   }

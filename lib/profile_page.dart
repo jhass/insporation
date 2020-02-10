@@ -420,24 +420,13 @@ class _AspectMembershipViewState extends State<_AspectMembershipView> {
         ));
       }
     } catch (e, s) {
-      debugPrintStack(label: e.toString(), stackTrace: s);
+      tryShowErrorSnackBar(this, "Failed to update aspects", e, s);
 
       profile.value.sharing = oldAspects.isNotEmpty;
       profile.value.aspects.clear();
       profile.value.aspects.addAll(oldAspects);
       profile.updated();
-
-      if (mounted) {
-        Scaffold.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(
-            "Failed to update aspects: $e",
-            style: TextStyle(color: Colors.white)
-          ),
-        ));
-      }
     }
-
   }
 }
 

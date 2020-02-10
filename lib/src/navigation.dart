@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Notification;
 
-import 'notifications.dart';
+import 'client.dart';
+import 'widgets.dart';
 
 enum PageType {
   stream,
@@ -74,10 +75,24 @@ class NavigationBar extends StatelessWidget {
     );
   }
 
-  BottomNavigationBarItem _buildMainItem(_BarItem item) => BottomNavigationBarItem(
-    icon: item.page == PageType.notifications ? NotificationsItemIcon(item.icon) : Icon(item.icon),
-    title: Text(item.title)
-  );
+  BottomNavigationBarItem _buildMainItem(_BarItem item) {
+    var icon;
+    switch (item.page) {
+      case PageType.notifications:
+        icon = UnreadItemsIndicatorIcon<UnreadNotificationsCount>(item.icon);
+        break;
+      case PageType.conversations:
+        icon = UnreadItemsIndicatorIcon<UnreadConversationsCount>(item.icon);
+        break;
+      default:
+        icon = Icon(item.icon);
+    }
+
+    return BottomNavigationBarItem(
+      icon: icon,
+      title: Text(item.title)
+    );
+  }
 }
 
 class _BarItem {
@@ -87,4 +102,16 @@ class _BarItem {
   final String route;
 
   _BarItem(this.page, this.icon, this.title, this.route);
+}
+
+class UnreadNotificationsCount extends ItemCountNotifier<Notification> {
+  @override
+  Future<Page<Notification>> fetchFirstPage(Client client) async =>
+    client.fetchNotifications(onlyUnread: true);
+}
+
+class UnreadConversationsCount extends ItemCountNotifier<Conversation> {
+  @override
+  Future<Page<Conversation>> fetchFirstPage(Client client) async =>
+    client.fetchConversations(onlyUnread: true);
 }

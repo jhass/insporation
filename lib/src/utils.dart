@@ -1,5 +1,7 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'widgets.dart';
 
 T tryProvide<T>(BuildContext context) {
   try {
@@ -14,4 +16,30 @@ bool containSameElements(Iterable a, Iterable b) {
   }
 
   return a.toSet().containsAll(b);
+}
+
+void tryShowErrorSnackBar(State widget, String message, exception, stack) {
+  if (widget.mounted) {
+    showErrorSnackBar(Scaffold.of(widget.context), message, exception, stack);
+  } else {
+    _debugPrintError(message, exception, stack);
+  }
+}
+
+void showErrorSnackBar(ScaffoldState scaffold, String message, exception, stack) {
+  final exceptionMessage = _debugPrintError(message, exception, stack);
+  if (scaffold.mounted) {
+    scaffold.showSnackBar(ErrorSnackBar("$message: $exceptionMessage"));
+  }
+}
+
+String _debugPrintError(String message, exception, stack) {
+  var exceptionMessage = exception.toString();
+  try {
+    exceptionMessage  = exception.message;
+  } on NoSuchMethodError {}
+
+  debugPrintStack(label: "$message: $exceptionMessage", stackTrace: stack);
+
+  return exceptionMessage;
 }

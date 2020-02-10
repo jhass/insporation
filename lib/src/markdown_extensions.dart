@@ -72,3 +72,18 @@ String _presence(String string) {
     return string;
   }
 }
+
+class DiasporaAutolinkSyntax extends InlineSyntax {
+  DiasporaAutolinkSyntax() : super(r'diaspora://([\w.]+@[\w.]+)/post/(\w+)\b');
+
+  @override
+  bool onMatch(InlineParser parser, Match match) {
+    final diasporaId = match[1], postGuid = match[2],
+      anchor = Element.text('a', "$diasporaId/$postGuid");
+
+    anchor.attributes["href"] = "eu.jhass.insporation://posts/$postGuid";
+    parser.addNode(anchor);
+
+    return true;
+  }
+}
