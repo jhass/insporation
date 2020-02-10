@@ -136,7 +136,7 @@ class MainActivity: FlutterActivity() {
         currentAuthState = AuthState.jsonDeserialize(call.argument<String>("authState")!!)
         currentAuthState.performActionWithFreshTokens(authorizationService, currentAuthState.clientAuthentication) { accessToken, idToken, exception ->
             if (exception != null) {
-                result.error("failed_token_fetch", "Failed to obtain access token: ${exception}", null)
+                result.error("failed_token_fetch", "Failed to obtain access token: ${exception.error} - ${exception.errorDescription}", null)
             } else if (accessToken != null || idToken != null) {
                 result.success(mapOf("accessToken" to accessToken, "idToken" to idToken, "authState" to currentAuthState.jsonSerializeString()))
             } else {

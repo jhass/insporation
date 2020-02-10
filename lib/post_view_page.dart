@@ -85,17 +85,21 @@ class _PostWithCommentsViewState extends CommentListViewState {
   final ShowNsfwPosts _showNsfwPosts = ShowNsfwPosts(initial: true); // TODO make optional in PostView?
 
   @override
-  Widget buildHeader(BuildContext context, String lastError) =>
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        ChangeNotifierProvider.value(
-          value: _showNsfwPosts,
-          child: PostView(post: widget.post, enableCommentsSheet: false),
+  Widget buildHeader(BuildContext context, String lastError) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      ChangeNotifierProvider.value(
+        value: _showNsfwPosts,
+        child: Column(
+          children: <Widget>[
+            Align(alignment: Alignment.topRight, child: PostActionsView(post: widget.post, orientation: Axis.horizontal)),
+            PostView(post: widget.post, enableCommentsSheet: false),
+          ],
         ),
-        super.buildHeader(context, lastError)
-      ],
-    );
+      ),
+      super.buildHeader(context, lastError)
+    ],
+  );
 
   @override
   void dispose() {

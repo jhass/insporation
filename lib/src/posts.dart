@@ -91,7 +91,7 @@ class PostStreamItem extends StatelessWidget {
     return Slidable(
       child: PostView(post: post),
       actionPane: SlidableDrawerActionPane(),
-      actions: <Widget>[_PostActionsView(post: post)],
+      actions: <Widget>[PostActionsView(post: post)],
     );
   }
 }
@@ -349,16 +349,17 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
   }
 }
 
-class _PostActionsView extends StatefulWidget {
-  _PostActionsView({Key key, @required this.post}) : super(key: key);
+class PostActionsView extends StatefulWidget {
+  PostActionsView({Key key, @required this.post, this.orientation = Axis.vertical}) : super(key: key);
 
   final Post post;
+  final Axis orientation;
 
   @override
   State<StatefulWidget> createState() => _PostActionsViewState();
 }
 
-class _PostActionsViewState extends State<_PostActionsView> {
+class _PostActionsViewState extends State<PostActionsView> {
   final _reportField = TextEditingController();
   bool _updatingSubscription = false;
 
@@ -368,17 +369,19 @@ class _PostActionsViewState extends State<_PostActionsView> {
       IconButton(
         icon: Icon(Icons.notifications, color: widget.post.interactions.subscribed ? Colors.blue : null),
         onPressed: _updatingSubscription ? null : _toggleSubscription,
+        tooltip: widget.post.interactions.subscribed ? "Stop notifications" : "Enable notifications"
       ),
       IconButton(
         icon: Icon(widget.post.ownPost ? Icons.delete : Icons.visibility_off),
-        onPressed: widget.post.ownPost ? _promptDelete : _removePost
+        onPressed: widget.post.ownPost ? _promptDelete : _removePost,
+        tooltip: widget.post.ownPost ? "Delete" : "Hide",
       )
     ];
     if (!widget.post.ownPost && !widget.post.interactions.reported) {
-      actions.add(IconButton(icon: Icon(Icons.flag), onPressed: _promptReport));
+      actions.add(IconButton(icon: Icon(Icons.flag), onPressed: _promptReport, tooltip: "Report"));
     }
 
-    return Column(children: actions);
+    return widget.orientation ==  Axis.vertical ? Column(children: actions) : Row(mainAxisSize: MainAxisSize.min, children: actions);
   }
 
   @override
@@ -395,7 +398,7 @@ class _PostActionsViewState extends State<_PostActionsView> {
       _updatingSubscription = true;
       widget.post.interactions.subscribed = !current;
     });
-    Slidable.of(context).close();
+    Slidable.of(context)?.close();
 
     try {
       if (!current) {
@@ -453,11 +456,11 @@ class _PostActionsViewState extends State<_PostActionsView> {
   _removePost() async {
     final scaffold = Scaffold.of(context),
       client = Provider.of<Client>(context, listen: false),
-      postStream = Provider.of<PostStream>(context, listen: false);
+      postStream = tryProvide<PostStream>(context);
 
-    Slidable.of(context).close();
+    Slidable.of(context)?.close();
 
-    final position = postStream.remove(widget.post);
+    final position = postStream?.remove(widget.post);
 
     try {
       if (widget.post.ownPost) {
@@ -465,10 +468,15 @@ class _PostActionsViewState extends State<_PostActionsView> {
       } else {
         await client.hidePost(widget.post);
       }
+
+      if (postStream == null && mounted) {
+        // we're inside SPV, pop
+        Navigator.pop(context);
+      }
     } catch (e, s) {
       debugPrintStack(label: e.toString(), stackTrace: s);
 
-      postStream.insert(position, widget.post);
+      postStream?.insert(position, widget.post);
 
       if (scaffold.mounted) {
         scaffold.showSnackBar(SnackBar(
@@ -518,7 +526,7 @@ class _PostActionsViewState extends State<_PostActionsView> {
     final scaffold = Scaffold.of(context),
       client = Provider.of<Client>(context, listen: false);
     setState(() => widget.post.interactions.reported = true);
-    Slidable.of(context).close();
+    Slidable.of(context)?.close();
 
     try {
       await client.reportPost(widget.post, report);

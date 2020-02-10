@@ -229,7 +229,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
     } on InvalidSessionError catch (e) {
       debugPrint("Invalid session: ${e.message}");
       if (mounted) {
-        Navigator.pushNamedAndRemoveUntil(context, "/", (_) => true);
+        Navigator.pushNamedAndRemoveUntil(context, "/switch_user", (_) => true);
       }
     } catch (e, s) {
       debugPrintStack(label: e.toString(), stackTrace:  s);

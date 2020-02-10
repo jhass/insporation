@@ -514,6 +514,9 @@ class InvalidSessionError implements Exception {
   InvalidSessionError(this.message);
 
   final String message;
+
+  @override
+  String toString() => "Invalid session: $message";
 }
 
 class _Host {
