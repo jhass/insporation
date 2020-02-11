@@ -1,78 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:insporation/src/item_stream.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
+import 'src/item_stream.dart';
 import 'src/navigation.dart';
+import 'src/search.dart';
 
 class SearchPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _SearchPageState();
 }
 
-enum _SearchType { people, peopleByTag, tags }
-
-class _SearchResult {
-  final Person person;
-  final String tag;
-
-  _SearchResult(this.person, this.tag);
-
-  factory _SearchResult.forPerson(Person person) => _SearchResult(person, null);
-  factory _SearchResult.forTag(String tag) => _SearchResult(null, tag);
-}
-
-class _SearchResultStream extends ItemStream<_SearchResult> {
-  var _type = _SearchType.people;
-  String _query;
-
-  _SearchType get type => _type;
-
-  set type(_SearchType type) {
-    _type = type;
-    reset();
-  }
-
-  String get query => _query;
-
-  set query(String query) {
-    _query = query;
-    reset();
-  }
-
-  @override
-  Future<Page<_SearchResult>> loadPage({Client client, String page}) async {
-    if (_query == null || _query.isEmpty)  {
-      return Page.empty();
-    }
-
-    switch (_type) {
-      case _SearchType.people:
-        final result = await client.searchPeopleByName(query, page: page);
-        return result.map((person) => _SearchResult.forPerson(person));
-      case _SearchType.peopleByTag:
-        final result = await client.searchPeopleByTag(query, page: page);
-        return result.map((person) => _SearchResult.forPerson(person));
-      case _SearchType.tags:
-        final query = _query.startsWith('#') ? _query.substring(1) : _query,
-          result = await client.searchTags(query, page: page);
-        return result.map((tag) => _SearchResult.forTag(tag));
-    }
-
-    return null; // case is exhaustive, never happens
-  }
-
-}
-
-class _SearchPageState extends ItemStreamState<_SearchResult, SearchPage> {
+class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> {
   final _search = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final _SearchResultStream items = this.items;
+    final SearchResultStream items = this.items;
 
     return Scaffold(
       bottomNavigationBar: NavigationBar(currentPage: PageType.search),
@@ -86,12 +32,12 @@ class _SearchPageState extends ItemStreamState<_SearchResult, SearchPage> {
                 selectedColor: Colors.grey[800],
                 pressedColor: Colors.grey[800],
                 children: {
-                  _SearchType.people: Text("People"),
-                  _SearchType.peopleByTag: Padding(
+                  SearchType.people: Text("People"),
+                  SearchType.peopleByTag: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                     child: Text("People by tag")
                   ),
-                  _SearchType.tags: Text("Tags")
+                  SearchType.tags: Text("Tags")
                 },
                 groupValue: items.type,
                 onValueChanged: (type) => setState(() {
@@ -126,10 +72,10 @@ class _SearchPageState extends ItemStreamState<_SearchResult, SearchPage> {
   }
 
   @override
-  ItemStream<_SearchResult> createStream() => _SearchResultStream();
+  ItemStream<SearchResult> createStream() => SearchResultStream();
 
   @override
-  Widget buildItem(BuildContext context, _SearchResult item) => InkWell(
+  Widget buildItem(BuildContext context, SearchResult item) => InkWell(
     onTap: () => _launchItem(item),
     child: Container(
       decoration: BoxDecoration(border: Border(bottom: BorderSide(color:  Colors.grey[300]))),
@@ -140,20 +86,20 @@ class _SearchPageState extends ItemStreamState<_SearchResult, SearchPage> {
     ),
   );
 
-  String _hintText(_SearchType type) {
+  String _hintText(SearchType type) {
     switch (type) {
-      case _SearchType.people:
+      case SearchType.people:
         return "Start typing a name or diaspora* ID";
-      case _SearchType.peopleByTag:
+      case SearchType.peopleByTag:
         return "Enter a tag";
-      case _SearchType.tags:
+      case SearchType.tags:
         return "Start typing tag";
     }
 
     return null; // case is exhaustive, never reached
   }
 
-  Widget _buildLeading(_SearchResult item) {
+  Widget _buildLeading(SearchResult item) {
     if (item.person == null) {
       return null;
     } else {
@@ -174,9 +120,9 @@ class _SearchPageState extends ItemStreamState<_SearchResult, SearchPage> {
     }
   }
 
-  String _formatTitle(_SearchResult item) => item.tag != null ? "#${item.tag}" : item.person.nameOrId;
+  String _formatTitle(SearchResult item) => item.tag != null ? "#${item.tag}" : item.person.nameOrId;
 
-  void _launchItem(_SearchResult item) {
+  void _launchItem(SearchResult item) {
     if (item.person != null) {
       Navigator.pushNamed(context, "/profile", arguments: item.person);
     } else {

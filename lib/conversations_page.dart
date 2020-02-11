@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:insporation/src/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
 import 'src/item_stream.dart';
 import 'src/messages.dart';
 import 'src/navigation.dart';
+import 'src/utils.dart';
 import 'src/widgets.dart';
 
 class ConversationsPage extends StatefulWidget {

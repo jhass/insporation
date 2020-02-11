@@ -155,6 +155,11 @@ class Client {
     }
   }
 
+  Future<Comment> commentPost(Post post, String comment) async {
+    final response = await _call("POST", "posts/${post.guid}/comments", body: {"body": comment});
+    return Comment.from(jsonDecode(response.body));
+  }
+
   Future<Post> resharePost(Post post) async {
     try {
       final response = await _call("POST", "posts/${post.guid}/reshares");
@@ -675,6 +680,12 @@ class Person {
     objects.map((object) => Person.from(object)).toList();
 
   String get nameOrId => name ?? diasporaId;
+
+  @override
+  bool operator ==(other) => other is Person && guid == other.guid;
+
+  @override
+  int get hashCode => guid.hashCode;
 }
 
 class Profile {

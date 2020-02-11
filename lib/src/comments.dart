@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:insporation/src/item_stream.dart';
-import 'package:insporation/src/timeago.dart';
+import 'package:insporation/src/search.dart';
+import 'package:provider/provider.dart';
 
 import 'client.dart';
+import 'composer.dart';
 import 'error_message.dart';
+import 'item_stream.dart';
 import 'messages.dart';
+import 'timeago.dart';
+import 'utils.dart';
 
 class CommentStream extends ItemStream<Comment> {
   CommentStream(this.post);
@@ -17,9 +21,10 @@ class CommentStream extends ItemStream<Comment> {
 }
 
 class CommentListView extends StatefulWidget {
-  CommentListView({Key key, @required this.post}) : super(key: key);
+  CommentListView({Key key, @required this.post, this.controller}) : super(key: key);
 
   final Post post;
+  final ScrollController controller;
 
   @override
   State<StatefulWidget> createState() => CommentListViewState();
@@ -27,6 +32,9 @@ class CommentListView extends StatefulWidget {
 
 class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
   CommentListViewState() : super(enableUpButton: false);
+
+  @override
+  ScrollController get scrollController => widget.controller ?? super.scrollController;
 
   @override
   ItemStream<Comment> createStream() => CommentStream(widget.post);
@@ -46,6 +54,48 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
       ErrorMessage(lastError)
     ]
   );
+
+
+  @override
+  Widget buildFooter(BuildContext context) => ConstrainedBox(
+    constraints: BoxConstraints(maxHeight: 400),
+    child: Padding(
+      padding: EdgeInsets.all(8),
+      child: SimpleComposer(
+        submitButtonContent: Text("Comment"),
+        mentionablePeople: _mentionablePeople(),
+        onSubmit: _insertComment,
+      ),
+    ),
+  );
+
+  SearchablePeople _mentionablePeople() {
+    if (widget.post.public) {
+      return SearchablePeople.all();
+    } else if (items == null) {
+      return SearchablePeople.none();
+    } else {
+      return SearchablePeople.list(
+        (items as CommentStream).map((comment) => comment.author).toSet().toList()
+      );
+    }
+  }
+
+  Future<bool> _insertComment(String value) async {
+    final client = Provider.of<Client>(context, listen: false);
+
+    try {
+      final comment = await client.commentPost(widget.post, value);
+      items.add(comment);
+       // TODO invalidate other widgets depending on the post
+      widget.post.interactions.comments++;
+      widget.post.interactions.subscribed = true;
+      return true;
+    } catch (e, s) {
+      tryShowErrorSnackBar(this, "Failed to post comment", e, s);
+      return false;
+    }
+  }
 }
 
 class CommentView extends StatelessWidget {
@@ -54,28 +104,25 @@ class CommentView extends StatelessWidget {
   final Comment comment;
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(child: PersonHeader(person: comment.author)),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  child: Timeago(comment.createdAt, textStyle: TextStyle(fontSize: 10))
-                )
-              ],
-            ),
-            Divider(),
-            Message(body: comment.body, mentionedPeople: comment.mentionedPeople)
-          ],
-        ),
+  Widget build(BuildContext context) => Card(
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(child: PersonHeader(person: comment.author)),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4),
+                child: Timeago(comment.createdAt, textStyle: TextStyle(fontSize: 10))
+              )
+            ],
+          ),
+          Divider(),
+          Message(body: comment.body, mentionedPeople: comment.mentionedPeople)
+        ],
       ),
-    );
-  }
-
+    ),
+  );
 }

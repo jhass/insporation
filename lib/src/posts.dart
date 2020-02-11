@@ -212,7 +212,28 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
             label: Text(widget.post.interactions.comments.toString()),
             textColor: Colors.grey[600],
             onPressed: !widget.enableCommentsSheet || !widget.post.canComment ? null : () =>
-              showModalBottomSheet(context: context, builder: (context) => CommentListView(post: widget.post)),
+              Navigator.push(context, PageRouteBuilder(
+                pageBuilder: (context, _, __) =>  FractionallySizedBox(
+                  alignment: Alignment.bottomCenter,
+                  heightFactor: 0.65,
+                  child: BottomSheet(
+                    onClosing: () {},
+                    builder: (context) => Scaffold(
+                      body: CommentListView(post: widget.post)
+                    )
+                  )
+                ),
+                opaque: false,
+                transitionDuration: Duration(milliseconds: 400),
+                transitionsBuilder: (context, animation, _, child) => FadeTransition(
+                  opacity: animation, child: child
+                ),
+                barrierColor: Colors.black54,
+                barrierDismissible: true,
+                maintainState: true,
+                fullscreenDialog: false,
+              )
+            )
           ),
           FlatButton.icon(
             icon: Icon(

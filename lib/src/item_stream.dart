@@ -13,7 +13,21 @@ abstract class ItemStream<T> extends ChangeNotifier {
 
   int get length => _items?.length ?? 0;
 
+  bool get hasMore => _lastPage == null || _lastPage.nextPage != null;
+
   T operator [](int index) => _items[index];
+
+  Iterable<R> map<R>(R Function(T) mapper) => _items?.map(mapper) ?? [];
+
+  void add(T item) {
+    if (_items == null) {
+      _items = [item];
+    } else {
+      _items.add(item);
+    }
+
+    notifyListeners();
+  }
 
   void insert(int position, T item) {
     if (_items == null && position == 0) {
@@ -105,6 +119,15 @@ abstract class ItemStream<T> extends ChangeNotifier {
         _items.addAll(newPage.content);
       }
       notifyListeners();
+
+      if (length < 10 && _lastPage?.nextPage != null) {
+        // We likely have less than one page of data. This is often not enough
+        // to trigger the next load on the next scroll event.
+        // So prefetch the next page to turn hasMore into false, displaying the footer
+        // TODO: check if we can make the backend return nothing for nextPage in all
+        // cases where there's less items in the response than the limit
+        return _load(client, page: _lastPage.nextPage);
+      }
     } on _FutureCancelledError {
       //  ignore
     } finally {
@@ -150,11 +173,16 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
   @protected
   ItemStream<T> get items => _items;
 
+  @protected
+  ScrollController get scrollController => _listScrollController;
+
   ItemStream<T> createStream();
 
   Widget buildHeader(BuildContext context, String lastError) => ErrorMessage(lastError);
 
   Widget buildItem(BuildContext context, T item);
+
+  Widget buildFooter(BuildContext context) => null;
 
   void onReset() {}
 
@@ -165,13 +193,13 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) =>
         _refreshIndicator.currentState.show());
-    _listScrollController.addListener(() {
-      final newVisibility = _listScrollController.offset >= 800;
+    scrollController.addListener(() {
+      final newVisibility = scrollController.offset >= 800;
       if (newVisibility != _upButtonVisibility) {
         setState(() => _upButtonVisibility = newVisibility);
       }
 
-      if (_listScrollController.offset >= _listScrollController.position.maxScrollExtent - 200)  {
+      if (scrollController.offset >= scrollController.position.maxScrollExtent - 200)  {
         _loadItems();
       }
     });
@@ -197,16 +225,16 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
                   ListView.builder(
                     physics: AlwaysScrollableScrollPhysics(),
                     itemCount: items.length > 0 ? items.length + 2 : 0,
-                    controller: _listScrollController,
+                    controller: scrollController,
                     itemBuilder: (context, position) =>
                       position == 0 ? buildHeader(context, _lastError):
                         position > items.length ?
                           Visibility(
-                            visible: items.loading,
-                            child: Padding(
+                            visible: items.loading || !items.hasMore,
+                            child: items.hasMore ? Padding(
                               padding: const EdgeInsets.all(16),
                               child: Center(child: CircularProgressIndicator()),
-                            )
+                            ) : buildFooter(context) ?? SizedBox.shrink()
                           ) :
                           buildItem(context, items[position -1])
                   ),
@@ -226,7 +254,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
                             iconSize: 48,
                             icon: Icon(Icons.keyboard_arrow_up),
                             onPressed: () =>
-                              _listScrollController.animateTo(1, duration: Duration(seconds: 1), curve: Curves.easeOut),
+                              scrollController.animateTo(1, duration: Duration(seconds: 1), curve: Curves.easeOut),
                           ),
                         ),
                       ),
@@ -236,6 +264,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
               ),
               replacement: _StreamFallback(
                 header: buildHeader(context, _lastError),
+                footer: (_lastError == null ? buildFooter(context) : null) ?? SizedBox.shrink(),
                 loading: _items.loading
               )
             ),
@@ -284,9 +313,10 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
 }
 
 class _StreamFallback extends StatelessWidget {
-  _StreamFallback({Key key, this.header, this.loading = false}) : super(key: key);
+  _StreamFallback({Key key, this.header, this.footer, this.loading = false}) : super(key: key);
 
   final Widget header;
+  final Widget footer;
   final bool loading;
 
   @override
@@ -301,6 +331,7 @@ class _StreamFallback extends StatelessWidget {
           ),
           child: SafeArea(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 header,
@@ -314,6 +345,7 @@ class _StreamFallback extends StatelessWidget {
                     child: Text("Darn, nothing to display!"),
                   ),
                 ),
+                Flexible(child: footer)
               ],
             ),
           ),

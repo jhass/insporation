@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'src/client.dart';
 import 'src/error_message.dart';
 import 'src/messages.dart';
+import 'src/widgets.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key key, this.person, @required this.personId}) {
@@ -205,13 +206,7 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   IconButton(
-                    icon: Padding(padding: EdgeInsets.only(bottom: 2), child: Text(
-                      "@",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      )
-                    )),
+                    icon: TextIcon(character: "@"),
                     tooltip: "Mention user",
                     onPressed: () {},
                   ),

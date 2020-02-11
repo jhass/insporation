@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:insporation/src/item_stream.dart';
 
 import 'src/client.dart';
+import 'src/item_stream.dart';
 
 class ContactsPage extends StatefulWidget {
   @override

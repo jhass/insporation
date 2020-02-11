@@ -2,9 +2,7 @@
 
 A native [diaspora\*](https://diasporafoundation.org) client powered by Flutter.
 
-> This is still in early development. You will need a pod on the latest develop branch.
-> Contributions are welcome, please open an issue if you work on something bigger to avoid
-> duplicated effort :)
+> This is still in early development. You will need a pod on the latest develop branch. Contributions are welcome, please open an issue if you work on something bigger to avoid duplicated effort :)
 
 ## Installation
 
@@ -20,14 +18,16 @@ In case you want to dare anyways:
 ## Implementation status
 
 * Android support
-* Mostly usable for content browsing
+* Mostly usable for content browsing and basic content creation
 
 ## Roadmap
 
 Roughly in order of priority, but contributions towards any of these goals are always welcome.
 
-* Complete features
+* Edit profile
+* Feature complete publisher (image upload, polls, location, preview)
 * Dark mode & Proper themeing
+* Code cleanup (extract any copy paste programming into properly abstracted classes & widgets)
 * Polish design
 * System notifications
 * iOS support

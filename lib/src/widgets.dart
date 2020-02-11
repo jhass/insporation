@@ -144,3 +144,30 @@ abstract class ItemCountNotifier<T> extends ChangeNotifier {
     super.dispose();
   }
 }
+
+
+class TextIcon extends StatelessWidget {
+  TextIcon({Key key, @required this.character}) : super(key: key) {
+    assert(character != null);
+    assert(character.length == 1);
+  }
+
+  final String character;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = IconTheme.of(context),
+      fontSize = theme.size -2;
+    return Padding(
+      padding: EdgeInsets.only(bottom: 2),
+      child: Text(
+        character,
+        style: TextStyle(
+          fontSize: fontSize,
+          fontWeight: FontWeight.bold,
+          color: theme.color
+        )
+      )
+    );
+  }
+}
