@@ -9,6 +9,7 @@ abstract class ItemStream<T> extends ChangeNotifier {
   bool loading = false;
   Page<T> _lastPage;
   List<T> _items;
+  _CancelableFuture<Page<T>> _currentLoad;
 
   int get length => _items?.length ?? 0;
 
@@ -70,8 +71,7 @@ abstract class ItemStream<T> extends ChangeNotifier {
     if (loading) {
       return Future.value();
     } else if (reset) {
-      _lastPage = null;
-      _items = null;
+      this.reset();
     } else if (_lastPage != null && _lastPage.nextPage == null) {
       return Future.value();
     }
@@ -79,11 +79,25 @@ abstract class ItemStream<T> extends ChangeNotifier {
     return _load(client, page: _lastPage?.nextPage);
   }
 
+  @protected
+  void reset() {
+    loading = false;
+    _lastPage = null;
+    _items = null;
+    if (_currentLoad  != null) {
+      _currentLoad.cancel();
+    }
+    notifyListeners();
+  }
+
   Future<void> _load(Client client, {page}) async {
     loading = true;
 
     try {
-      Page<T> newPage = await loadPage(client: client, page: page);
+      _currentLoad = _CancelableFuture(loadPage(client: client, page: page));
+      Page<T> newPage = await _currentLoad.get();
+      _currentLoad = null;
+
       _lastPage = newPage;
       if (_items == null || page == null) {
         _items = newPage.content;
@@ -91,6 +105,8 @@ abstract class ItemStream<T> extends ChangeNotifier {
         _items.addAll(newPage.content);
       }
       notifyListeners();
+    } on _FutureCancelledError {
+      //  ignore
     } finally {
       loading = false;
     }
@@ -99,6 +115,27 @@ abstract class ItemStream<T> extends ChangeNotifier {
   @protected
   Future<Page<T>> loadPage({Client client, String page});
 }
+
+class _CancelableFuture<T> {
+  final Future<T> _future;
+  bool _canceled = false;
+
+  _CancelableFuture(Future<T> future) : _future = future;
+
+  Future<T> get() async {
+    T result = await _future;
+
+    if  (_canceled) {
+      throw _FutureCancelledError();
+    }
+
+    return result;
+  }
+
+  void cancel() => _canceled = true;
+}
+
+class _FutureCancelledError implements Exception {}
 
 abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
   ItemStreamState({this.enableUpButton = true});

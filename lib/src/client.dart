@@ -328,6 +328,21 @@ class Client {
     }
   }
 
+  Future<Page<Person>> searchPeopleByName(String query, {String page}) async {
+    final response = await _call("GET", "search/users", query: {"name_or_handle": query}, page: page);
+    return _makePage(await compute(_parsePeopleJson, response.body), response);
+  }
+
+  Future<Page<Person>> searchPeopleByTag(String query, {String page}) async {
+    final response = await _call("GET", "search/users", query: {"tag": query}, page: page);
+    return _makePage(await compute(_parsePeopleJson, response.body), response);
+  }
+
+  Future<Page<String>> searchTags(String query, {String page}) async {
+    final response = await _call("GET", "search/tags", query: {"query": query}, page: page);
+    return _makePage(jsonDecode(response.body).cast<String>(), response);
+  }
+
   Future<Page<Post>> _fetchPosts(Future<http.Response> request) async {
     final response = await request,
       posts = await compute(_parsePostsJson, {"body": response.body, "currentUser": currentUserId});
@@ -517,6 +532,16 @@ class Page<T> {
   final String lastPage;
 
   Page({this.content, this.firstPage,  this.previousPage, this.nextPage, this.lastPage});
+
+  factory Page.empty() => Page(content: []);
+
+  Page<U> map<U>(U Function(T) mapper) => Page(
+    content:  content.map(mapper).toList(),
+    firstPage: firstPage,
+    previousPage: previousPage,
+    nextPage: nextPage,
+    lastPage: lastPage
+  );
 }
 
 class ClientException implements Exception {
