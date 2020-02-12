@@ -820,25 +820,28 @@ class Post {
 
   bool get canComment => !mock;
 
-  Post mockReshare(Person author) =>
-    Post(
+  Post mockReshare(Person author) {
+    final post = root != null ? root : this;
+
+    return Post(
       guid: null,
       type: PostType.reshare,
-      body: body,
+      body: post.body,
       author: author,
-      public: public,
-      nsfw: nsfw,
-      root: this,
-      photos: photos,
-      poll: poll,
-      mentionedPeople: mentionedPeople,
+      public: post.public,
+      nsfw: post.nsfw,
+      root: post,
+      photos: post.photos,
+      poll: post.poll,
+      mentionedPeople: post.mentionedPeople,
       interactions: PostInteractions(subscribed: true),
-      oEmbed: oEmbed,
-      openGraphObject: openGraphObject,
+      oEmbed: post.oEmbed,
+      openGraphObject: post.openGraphObject,
       createdAt: DateTime.now(),
       ownPost: true,
       mock: true
     );
+  }
 }
 
 class PostInteractions {
