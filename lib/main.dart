@@ -69,7 +69,11 @@ class Insporation extends StatelessWidget {
           if (argument is Person) {
             return ProfilePage.forPerson(person: argument);
           } else if (argument is String) {
-            return ProfilePage.forId(personId: argument);
+            if (argument.contains('@')) {
+              return ProfilePage.forDiasporaId(diasporaId: argument);
+            } else {
+              return ProfilePage.forId(personId: argument);
+            }
           } else {
             throw "Unsupported argument type";
           }

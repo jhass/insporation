@@ -5,7 +5,6 @@ import 'package:markdown/markdown.dart';
 import 'client.dart';
 import 'posix_bracket_expressions.dart' as pbe;
 
-
 class SubscriptSyntax extends TagSyntax {
   SubscriptSyntax() : super(r'~(?!~)');
 
@@ -25,7 +24,6 @@ class SuperscriptSyntax extends TagSyntax {
     return true;
   }
 }
-
 
 class TagLinkSyntax extends InlineSyntax  {
   TagLinkSyntax() : super(r'(?<=^|\s)#([' + pbe.word +  r'\u055b\u055c\u055e\u058a_\-]+|<3)\b');

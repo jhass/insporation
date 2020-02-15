@@ -65,7 +65,10 @@ class Message extends StatelessWidget {
       shrinkWrap: true,
       data: md.markdownToHtml(
         body,
-        blockSyntaxes: [const md.TableSyntax(), const md.FencedCodeBlockSyntax()],
+        blockSyntaxes: [
+          md.TableSyntax(),
+          md.FencedCodeBlockSyntax()
+        ],
         inlineSyntaxes: [
           md.InlineHtmlSyntax(),
           mde.SuperscriptSyntax(),
@@ -76,7 +79,7 @@ class Message extends StatelessWidget {
           mde.MentionLinkSyntax((diasporaId, inlineName) =>
             mentionedPeople != null ? mentionedPeople[diasporaId] : null),
           mde.DiasporaAutolinkSyntax()
-        ]
+        ],
       ),
       onLinkTap: (url) {
         if (url.startsWith('eu.jhass.insporation://tags/')) {
@@ -84,8 +87,15 @@ class Message extends StatelessWidget {
           Navigator.pushNamed(context, '/stream/tag', arguments: tag);
         } else if (url.startsWith('eu.jhass.insporation://people/')) {
           Navigator.pushNamed(context, '/profile', arguments: url.split('/').last);
+        } else if (url.startsWith("/people?q=")) {
+          Navigator.pushNamed(context, '/profile', arguments: url.split("q=").last);
         } else if (url.startsWith('eu.jhass.insporation://posts/')) {
           Navigator.pushNamed(context, '/post', arguments: url.split('/').last);
+        } else if (url.startsWith("/posts/")) {
+          final guid = url.split('/').last;
+          if (guid.length >= 16) {
+            Navigator.pushNamed(context, '/post', arguments: guid);
+          }
         } else {
           launch(url);
         }

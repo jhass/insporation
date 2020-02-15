@@ -2,23 +2,23 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:insporation/src/item_stream.dart';
-import 'package:insporation/src/posts.dart';
-import 'package:insporation/src/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
 import 'src/error_message.dart';
+import 'src/item_stream.dart';
 import 'src/messages.dart';
+import 'src/posts.dart';
+import 'src/utils.dart';
 import 'src/widgets.dart';
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({Key key, this.person, @required this.personId}) {
-    if (person != null && personId != null && person.guid != personId) {
-      throw "Conflicting person and person id given!";
-    } else if (person == null && personId == null) {
-      throw "No person or person id given!";
+  ProfilePage({Key key, this.person, this.personId, this.diasporaId}) {
+    if (person != null && personId != null) {
+      assert(person.guid == personId, "Conflicting person and person ID given!");
     }
+    assert(person != null || personId != null || diasporaId != null,
+      "No person, person ID or diaspora ID given!");
   }
 
   factory ProfilePage.forPerson({Key key, @required Person person}) =>
@@ -27,7 +27,11 @@ class ProfilePage extends StatefulWidget {
   factory ProfilePage.forId({Key key, @required String personId}) =>
     ProfilePage(key: key, personId: personId);
 
+  factory ProfilePage.forDiasporaId({Key key, @required String diasporaId}) =>
+    ProfilePage(key: key, diasporaId: diasporaId);
+
   final String personId;
+  final String diasporaId;
   final Person person;
 
   @override
@@ -72,7 +76,18 @@ class _ProfilePageState extends State<ProfilePage> {
     final client = Provider.of<Client>(context, listen: false);
 
     try {
-      final profile = await client.fetchProfile(widget.personId);
+      var personId = widget.personId;
+
+      if (personId == null) {
+        final result = await client.searchPeopleByName(widget.diasporaId);
+        personId = result?.content?.first?.guid;
+
+        if (personId == null) {
+          throw "Couldn't find ${widget.diasporaId}";
+        }
+      }
+
+      final profile = await client.fetchProfile(personId);
       if (mounted) {
         setState(() => _profile = profile);
       }
