@@ -317,7 +317,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
   _createReshare() async {
     final scaffold = Scaffold.of(context),
       client = Provider.of<Client>(context, listen: false),
-      postStream = tryProvide<PostStream>(context);
+      postStream = tryProvide<ItemStream<Post>>(context) as PostStream;
     setState(() {
       widget.post.interactions.reshared = true;
       widget.post.interactions.reshares++;
@@ -449,7 +449,7 @@ class _PostActionsViewState extends State<PostActionsView> {
   _removePost() async {
     final scaffold = Scaffold.of(context),
       client = Provider.of<Client>(context, listen: false),
-      postStream = tryProvide<PostStream>(context);
+      postStream = tryProvide<ItemStream<Post>>(context);
 
     Slidable.of(context)?.close();
 

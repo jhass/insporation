@@ -131,6 +131,11 @@ class Client {
     return _makePage(comments, response);
   }
 
+  Future<Post> createPost(PublishablePost post) async {
+    final response = await _call("POST", "/posts", body: post);
+    return Post.from(jsonDecode(response.body), currentUser: currentUserId);
+  }
+
   Future<void> likePost(Post post) async {
     try {
       await _call("POST", "posts/${post.guid}/likes");
@@ -1155,4 +1160,21 @@ class ConversationMessage {
 
   static fromList(List<Map<String, dynamic>> objects) =>
     objects.map((object) => ConversationMessage.from(object)).toList();
+}
+
+class PublishablePost {
+  final String body;
+  final bool public;
+  final List<Aspect> aspects;
+
+  PublishablePost.public(this.body) : public = true, aspects = null;
+  PublishablePost.private(this.body, this.aspects) : public = false;
+
+  Map<String, dynamic> toJson() {
+    if (public) {
+      return {"body": body, "public": true};
+    } else {
+      return {"body": body, "public": false, "aspects": aspects.map((aspect) => aspect.id).toList()};
+    }
+  }
 }

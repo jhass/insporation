@@ -63,67 +63,67 @@ class _ComposerState extends State<Composer> {
             IconButton(
               icon: Icon(Icons.format_italic),
               tooltip: "Italic",
-              onPressed: () => _insertInlineWrap("*")
+              onPressed: widget.enabled ? () => _insertInlineWrap("*") : null
             ),
             IconButton(
               icon: Icon(Icons.format_bold),
               tooltip: "Bold",
-              onPressed: () => _insertInlineWrap("**")
+              onPressed: widget.enabled ? () => _insertInlineWrap("**") : null
             ),
             IconButton(
               icon: Icon(Icons.format_strikethrough),
               tooltip: "Strikethrough",
-              onPressed: () => _insertInlineWrap("~~")
+              onPressed: widget.enabled ? () => _insertInlineWrap("~~") : null
             ),
             IconButton(
               icon: TextIcon(character: "H"),
               tooltip: "Heading",
-              onPressed: () => _insertHeadline()
+              onPressed: widget.enabled ? () => _insertHeadline() : null
             ),
             IconButton(
               icon: Icon(Icons.format_list_bulleted),
               tooltip: "Bulleted list",
-              onPressed: () => _insertPrefixedBlock("* ")
+              onPressed: widget.enabled ? () => _insertPrefixedBlock("* ") : null
             ),
             IconButton(
               icon: Icon(Icons.format_list_numbered),
               tooltip: "Numbered list",
-              onPressed: () => _insertPrefixedBlock("1. ")
+              onPressed: widget.enabled ? () => _insertPrefixedBlock("1. ") : null
             ),
             IconButton(
               icon: Icon(Icons.format_quote),
               tooltip: "Quote",
-              onPressed: () => _insertPrefixedBlock(">  ")
+              onPressed: widget.enabled ? () => _insertPrefixedBlock(">  ") : null
             ),
             IconButton(
               icon: Icon(Icons.code),
               tooltip: "Code",
-              onPressed: () => _insertInlineWrap("`")
+              onPressed: widget.enabled ? () => _insertInlineWrap("`") : null
             ),
             IconButton(
               icon: Stack(children: <Widget>[Icon(Icons.code),  Positioned(top: 4, left: 4, child: Icon(Icons.short_text, size:  16))]), // TODO proper icon
               tooltip: "Code block",
-              onPressed: () =>  _insertBlockWrap("```"),
+              onPressed: widget.enabled ? () =>  _insertBlockWrap("```") : null
             ),
             IconButton(
               icon: Icon(Icons.link),
               tooltip: "Link",
-              onPressed: () => _insertLink()
+              onPressed: widget.enabled ? () => _insertLink() : null
             ),
             IconButton(
               icon: Icon(Icons.image),
               tooltip: "Image URL",
-              onPressed: () => _insertImage()
+              onPressed: widget.enabled ? () => _insertImage() : null
             ),
             IconButton(
               icon: TextIcon(character: "#"),
               tooltip: "Hashtag",
-              onPressed: () => _insertHashtag()
+              onPressed: widget.enabled ? () => _insertHashtag() : null
             ),
             IconButton(
               icon: TextIcon(character: "@"),
               tooltip: "Mention",
-              onPressed: () => _insertMention()
+              onPressed: widget.enabled ? () => _insertMention() : null
             )
           ],
         ),

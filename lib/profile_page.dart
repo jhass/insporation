@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'publisher_page.dart';
 import 'src/client.dart';
 import 'src/error_message.dart';
 import 'src/item_stream.dart';
@@ -223,7 +224,10 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
                   IconButton(
                     icon: TextIcon(character: "@"),
                     tooltip: "Mention user",
-                    onPressed: () {},
+                    onPressed: () => Navigator.pushNamed(context, "/publisher", arguments: PublisherOptions(
+                      prefill: "@{${profile.person.diasporaId}} ",
+                      target: PublishTarget.aspects(profile.aspects)
+                    )),
                   ),
                   IconButton(
                     icon: Icon(Icons.mail),
@@ -235,7 +239,7 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
                     tooltip: profile.blocked ? "Unblock" : "Block",
                     onPressed: () {
                       profile.blocked = !profile.blocked;
-                      // TODO for real
+                      // TODO for real, backend route missing
                       Provider.of<_ProfileNotifier>(context, listen: false).updated(); // trigger update
                     },
                   )

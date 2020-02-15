@@ -6,10 +6,14 @@ enum SearchType { people, peopleByTag, tags }
 class SearchablePeople {
   final bool all;
   final List<Person> list;
+  final bool contactsOnly;
+  final List<Aspect> inAspects;
 
-  const SearchablePeople.all() : all = true, list = null;
-  SearchablePeople.list(this.list) : all = false;
-  const SearchablePeople.none() : all = false, list = const [];
+  const SearchablePeople.all() : all = true, list = null, contactsOnly = false, inAspects = null;
+  SearchablePeople.list(this.list) : all = false, contactsOnly = false, inAspects = null;
+  const SearchablePeople.contactsOnly() : all = false, list = null, contactsOnly = true, inAspects = null;
+  SearchablePeople.inAspects(this.inAspects) : all = false, list = null, contactsOnly = true;
+  const SearchablePeople.none() : all = false, list = const [], contactsOnly = false, inAspects = null;
 }
 
 class SearchResult {
@@ -63,17 +67,42 @@ class SearchResultStream extends ItemStream<SearchResult> {
       return Page.empty();
     }
 
+    bool _matchPerson(Person person) =>
+      person.nameOrId.contains(_query) || person.diasporaId.contains(RegExp(RegExp.escape(_query), caseSensitive: false));
+
+    Stream<Person> _streamContacts(List<Aspect> aspects) async* {
+      // TODO let's have a proper API endpoint for this
+      final state = aspects.map((aspect) => _AllAspectsContactsStreamState(aspect)).toList();
+      int current = 0;
+      do {
+        Page<Person> lastPage = state[current].lastPage;
+        if (lastPage == null || lastPage.nextPage != null) {
+          final response = await client.fetchAspectContacts(state[current].aspect, page: lastPage?.nextPage);
+          state[current].lastPage = response;
+          yield* Stream.fromIterable(response.content);
+        } else {
+          state.removeAt(current);
+        }
+
+        current++;
+
+        if (current >= aspects.length) {
+          current = 0;
+        }
+      } while (state.length > 0);
+    }
+
     switch (_type) {
       case SearchType.people:
         if (people.all) {
           final result = await client.searchPeopleByName(query, page: page);
           return result.map((person) => SearchResult.forPerson(person));
-        } // else
+        } else if (people.contactsOnly) {
+          final aspects = people.inAspects ?? await client.currentUserAspects;
+          return Page(content: await _streamContacts(aspects).where(_matchPerson).take(5).map((person) => SearchResult.forPerson(person)).toList());
+        } // else if people.list != null
 
-        return Page(content: people.list.where((person) =>
-            person.nameOrId.contains(_query) || person.diasporaId.contains(RegExp(RegExp.escape(_query), caseSensitive: false))
-          ).map((person) => SearchResult.forPerson(person)).toList()
-        );
+        return Page(content: people.list.where(_matchPerson).map((person) => SearchResult.forPerson(person)).toList());
       case SearchType.peopleByTag:
         final result = await client.searchPeopleByTag(query, page: page);
         return result.map((person) => SearchResult.forPerson(person));
@@ -92,5 +121,11 @@ class SearchResultStream extends ItemStream<SearchResult> {
 
     return null; // case is exhaustive, never happens
   }
+}
 
+class _AllAspectsContactsStreamState {
+  final Aspect aspect;
+  Page<Person> lastPage;
+
+  _AllAspectsContactsStreamState(this.aspect);
 }

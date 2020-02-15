@@ -48,7 +48,7 @@ class Insporation extends StatelessWidget {
           final String tag = ModalRoute.of(context).settings.arguments;
           return StreamPage(type: StreamType.tag, tag: tag);
         },
-        '/publisher': (context) => PublisherPage(),
+        '/publisher': (context) => PublisherPage(options: ModalRoute.of(context).settings.arguments ?? PublisherOptions()),
         '/conversations': (context) => ConversationsPage(),
         '/search': (context) => SearchPage(),
         '/notifications': (context) => NotificationsPage(),

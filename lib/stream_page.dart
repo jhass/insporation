@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'publisher_page.dart';
 import 'src/client.dart';
 import 'src/error_message.dart';
 import 'src/item_stream.dart';
@@ -43,7 +44,19 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStream
       ) : null,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => Navigator.pushNamed(context, "/publisher")
+        onPressed: () async {
+          PublisherOptions options;
+          if (widget.type == StreamType.tag) {
+            options = PublisherOptions(prefill: "#${widget.tag} ");
+          }
+          final post = await Navigator.pushNamed(context, "/publisher", arguments: options);
+
+          if (post == null) {
+            return; // user canceled
+          }
+
+          items.insert(0, post);
+        }
       ),
       body: buildStream(context)
     );
