@@ -1,3 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'client.dart';
 import 'item_stream.dart';
 
@@ -128,4 +132,117 @@ class _AllAspectsContactsStreamState {
   Page<Person> lastPage;
 
   _AllAspectsContactsStreamState(this.aspect);
+}
+
+
+abstract class _SearchDialogState<T extends StatefulWidget> extends ItemStreamState<SearchResult, T> {
+  _SearchDialogState({this.hint = "Search"}) : super(enableUpButton: false);
+
+  final String hint;
+
+  final _controller = TextEditingController();
+
+  @protected
+  TextEditingController get controller => _controller;
+
+  String get initialValue => null;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.text = initialValue ?? "";
+  }
+
+  @override
+  Widget build(BuildContext context) => SimpleDialog(
+    title: TextField(
+      controller: _controller,
+      decoration: InputDecoration(hintText: hint),
+      onChanged: (value) {
+        final stream = (items as SearchResultStream);
+        stream.query = value;
+        stream.load(Provider.of<Client>(context, listen: false));
+      },
+    ),
+    children: <Widget>[
+        ConstrainedBox(
+          constraints: BoxConstraints.loose(Size(double.infinity, 400)),
+          child: buildStream(context)
+        ),
+    ],
+  );
+
+  @override
+  Widget buildItem(BuildContext context, SearchResult item) {
+    if (item.person != null) {
+      final placeholder = Container(width: 32, height: 32, alignment: Alignment.center, child: Icon(Icons.person));
+      Widget avatar;
+      if (item.person.avatar != null)  {
+        avatar = ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: CachedNetworkImage(
+            width: 36,
+            height: 36,
+            imageUrl: item.person.avatar,
+            placeholder: (context, url) => placeholder,
+          )
+        );
+      } else {
+        avatar = placeholder;
+      }
+
+      return ListTile(leading: avatar, title: Text(item.person.nameOrId), onTap: () => Navigator.pop(context, item.person));
+    } else {
+      return ListTile(title: Text("#${item.tag}"), onTap: () => Navigator.pop(context, item.tag));
+    }
+  }
+}
+
+class TagSearchDialog extends StatefulWidget {
+  TagSearchDialog({Key key, this.initialValue}) : super(key: key);
+
+  final String initialValue;
+
+  @override
+  State<StatefulWidget> createState() => _TagSearchDialogState();
+}
+
+class _TagSearchDialogState extends _SearchDialogState<TagSearchDialog> {
+  _TagSearchDialogState() : super(hint: "Search for a tag");
+
+  @override
+  String get initialValue => widget.initialValue;
+
+  @override
+  ItemStream<SearchResult> createStream() => SearchResultStream(
+    type: SearchType.tags,
+    query: widget.initialValue,
+    includeQueryAsTag: true
+  );
+}
+
+class PeopleSearchDialog extends StatefulWidget {
+  PeopleSearchDialog({Key key, this.initialValue, this.people = const SearchablePeople.all()}) : super(key: key);
+
+  final String initialValue;
+  final SearchablePeople people;
+
+  @override
+  State<StatefulWidget> createState() => _PeopleSearchDialogState();
+}
+
+class _PeopleSearchDialogState extends _SearchDialogState<PeopleSearchDialog> {
+  _PeopleSearchDialogState() : super(hint: "Search for person");
+
+  @override
+  String get initialValue => widget.initialValue;
+
+  @override
+  ItemStream<SearchResult> createStream() {
+    return SearchResultStream(
+      type: SearchType.people,
+      query: widget.initialValue,
+      people: widget.people
+    );
+  }
 }

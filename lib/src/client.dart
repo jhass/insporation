@@ -321,9 +321,19 @@ class Client {
     return _makePage(await compute(_parseConversationsJson, response.body), response);
   }
 
+  Future<Conversation> createConversation(NewConversation conversation) async {
+    final response = await _call("POST", "/conversations", body: conversation);
+    return Conversation.from(jsonDecode(response.body));
+  }
+
   Future<Page<ConversationMessage>> fetchConversationMessages(Conversation conversation, {String page}) async {
     final response = await _call("GET", "conversations/${conversation.guid}/messages", page: page);
     return _makePage(await compute(_parseConversationMessagesJson, response.body), response);
+  }
+
+  Future<ConversationMessage> createMessage(Conversation conversation, String body) async {
+    final response = await _call("POST", "conversations/${conversation.guid}/messages", body: {"body": body});
+    return ConversationMessage.from(jsonDecode(response.body));
   }
 
   Future<void> hideConversation(Conversation conversation) async {
@@ -1177,4 +1187,18 @@ class PublishablePost {
       return {"body": body, "public": false, "aspects": aspects.map((aspect) => aspect.id).toList()};
     }
   }
+}
+
+class NewConversation {
+  final List<Person> recipients;
+  final String subject;
+  final String body;
+
+  NewConversation({@required this.recipients, @required this.subject, @required this.body});
+
+  Map<String, dynamic> toJson() => {
+    "recipients": recipients.map((person) => person.guid).toList(),
+    "subject": subject,
+    "body": body
+  };
 }

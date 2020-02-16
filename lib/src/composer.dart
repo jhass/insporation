@@ -316,7 +316,7 @@ class _ComposerState extends State<Composer> {
   _insertHashtag() async {
     final selection = _effectiveController.selection,
       initialValue = selection != null && !selection.isCollapsed ? selection.textInside(_effectiveController.text) : null;
-    final String response = await showDialog(context: context, child: _TagSearchDialog(initialValue: initialValue));
+    final String response = await showDialog(context: context, child: TagSearchDialog(initialValue: initialValue));
 
     if (response == null) {
       return; // user canceled dialog
@@ -341,9 +341,9 @@ class _ComposerState extends State<Composer> {
   _insertMention() async {
     final selection = _effectiveController.selection,
       initialValue = selection != null && !selection.isCollapsed ? selection.textInside(_effectiveController.text) : null;
-    final Person response = await showDialog(context: context, child: _MentionSearchDialog(
+    final Person response = await showDialog(context: context, child: PeopleSearchDialog(
       initialValue: initialValue,
-      mentionablePeople: widget.mentionablePeople,
+      people: widget.mentionablePeople,
     ));
 
     if (response == null) {
@@ -435,123 +435,12 @@ class _LinkData {
   _LinkData(this.description, this.url);
 }
 
-abstract class _SearchDialogState<T extends StatefulWidget> extends ItemStreamState<SearchResult, T> {
-  _SearchDialogState({this.hint = "Search"}) : super(enableUpButton: false);
-
-  final String hint;
-
-  final _controller = TextEditingController();
-
-  @protected
-  TextEditingController get controller => _controller;
-
-  String get initialValue => null;
-
-  @override
-  void initState() {
-    super.initState();
-    controller.text = initialValue ?? "";
-  }
-
-  @override
-  Widget build(BuildContext context) => SimpleDialog(
-    title: TextField(
-      controller: _controller,
-      decoration: InputDecoration(hintText: hint),
-      onChanged: (value) {
-        final stream = (items as SearchResultStream);
-        stream.query = value;
-        stream.load(Provider.of<Client>(context, listen: false));
-      },
-    ),
-    children: <Widget>[
-        ConstrainedBox(
-          constraints: BoxConstraints.loose(Size(double.infinity, 400)),
-          child: buildStream(context)
-        ),
-    ],
-  );
-
-  @override
-  Widget buildItem(BuildContext context, SearchResult item) {
-    if (item.person != null) {
-      final placeholder = Container(width: 32, height: 32, alignment: Alignment.center, child: Icon(Icons.person));
-      Widget avatar;
-      if (item.person.avatar != null)  {
-        avatar = ClipRRect(
-          borderRadius: BorderRadius.circular(5),
-          child: CachedNetworkImage(
-            width: 36,
-            height: 36,
-            imageUrl: item.person.avatar,
-            placeholder: (context, url) => placeholder,
-          )
-        );
-      } else {
-        avatar = placeholder;
-      }
-
-      return ListTile(leading: avatar, title: Text(item.person.nameOrId), onTap: () => Navigator.pop(context, item.person));
-    } else {
-      return ListTile(title: Text("#${item.tag}"), onTap: () => Navigator.pop(context, item.tag));
-    }
-  }
-}
-
-class _TagSearchDialog extends StatefulWidget {
-  _TagSearchDialog({Key key, this.initialValue}) : super(key: key);
-
-  final String initialValue;
-
-  @override
-  State<StatefulWidget> createState() => _TagSearchDialogState();
-}
-
-class _TagSearchDialogState extends _SearchDialogState<_TagSearchDialog> {
-  _TagSearchDialogState() : super(hint: "Search for a tag");
-
-  @override
-  String get initialValue => widget.initialValue;
-
-  @override
-  ItemStream<SearchResult> createStream() => SearchResultStream(
-    type: SearchType.tags,
-    query: widget.initialValue,
-    includeQueryAsTag: true
-  );
-}
-
-class _MentionSearchDialog extends StatefulWidget {
-  _MentionSearchDialog({Key key, this.initialValue, this.mentionablePeople = const SearchablePeople.all()}) : super(key: key);
-
-  final String initialValue;
-  final SearchablePeople mentionablePeople;
-
-  @override
-  State<StatefulWidget> createState() => _MentionSearchDialogState();
-}
-
-class _MentionSearchDialogState extends _SearchDialogState<_MentionSearchDialog> {
-  _MentionSearchDialogState() : super(hint: "Search for person");
-
-  @override
-  String get initialValue => widget.initialValue;
-
-  @override
-  ItemStream<SearchResult> createStream() {
-    return SearchResultStream(
-      type: SearchType.people,
-      query: widget.initialValue,
-      people: widget.mentionablePeople
-    );
-  }
-}
-
 class SimpleComposer extends StatefulWidget {
   SimpleComposer({
     Key key,
     this.onSubmit,
     this.controller,
+    this.submittable = true,
     this.submitButtonContent,
     this.focusNode,
     this.mentionablePeople = const SearchablePeople.all()
@@ -559,6 +448,7 @@ class SimpleComposer extends StatefulWidget {
 
   final Future<bool> Function(String value) onSubmit;
   final TextEditingController controller;
+  final bool submittable;
   final Widget submitButtonContent;
   final FocusNode focusNode;
   final SearchablePeople mentionablePeople;
@@ -620,7 +510,7 @@ class _SimpleComposerState extends State<SimpleComposer> {
               alignment: Alignment.centerRight,
               child: RaisedButton(
                 child: widget.submitButtonContent ?? Text("Submit"),
-                onPressed: _submittable ? _submit : null,
+                onPressed: widget.submittable && _submittable ? _submit : null,
               ),
             ),
           )

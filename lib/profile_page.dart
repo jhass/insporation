@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:insporation/new_conversation_page.dart';
 import 'package:provider/provider.dart';
 
 import 'publisher_page.dart';
@@ -232,7 +233,10 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
                   IconButton(
                     icon: Icon(Icons.mail),
                     tooltip: "Message",
-                    onPressed: profile.canMessage ? () {} : null,
+                    onPressed: profile.canMessage ? () =>
+                      Navigator.pushNamed(context, "/conversations/new", arguments: NewConversationOptions(
+                        recipients: [profile.person]
+                      )) : null,
                   ),
                   IconButton(
                     icon: Icon(Icons.block, color: profile.blocked? Colors.red : Colors.black),

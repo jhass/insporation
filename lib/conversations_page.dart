@@ -4,9 +4,12 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
+import 'src/composer.dart';
 import 'src/item_stream.dart';
 import 'src/messages.dart';
 import 'src/navigation.dart';
+import 'src/search.dart';
+import 'src/timeago.dart';
 import 'src/utils.dart';
 import 'src/widgets.dart';
 
@@ -28,7 +31,15 @@ class _ConversationsPageState extends ItemStreamState<Conversation, Conversation
       bottomNavigationBar: NavigationBar(currentPage: PageType.conversations),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => Navigator.push(context, PageRouteBuilder(pageBuilder: (context, _, __) => _NewConversationPage())),
+        onPressed: () async {
+          final Conversation conversation = await Navigator.pushNamed(context, "/conversations/new");
+
+          if (conversation == null) {
+            return; // user didn't submit a conversation
+          }
+
+          items.insert(0, conversation);
+        },
       ),
       body: buildStream(context)
     );
@@ -174,25 +185,42 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          PersonHeader(person: item.author),
+          Row(
+            children: <Widget>[
+              Expanded(child: PersonHeader(person: item.author)),
+              Timeago(item.createdAt, textStyle: TextStyle(
+                fontStyle: FontStyle.italic,
+                color: Colors.grey,
+                fontSize: 12,
+              ))
+            ],
+          ),
           Message(body: item.body)
         ]
       )
     )
   );
-}
 
-class _NewConversationPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _NewConversationPageState();
-}
-
-class _NewConversationPageState extends State<_NewConversationPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("New conversation")),
-      body: Center(child: Text("TODO"))
-    );
-  }
+  Widget buildFooter(BuildContext context) => ConstrainedBox(
+    constraints: BoxConstraints(maxHeight: 400),
+    child: Padding(
+      padding: EdgeInsets.all(8),
+      child: SimpleComposer(
+        submitButtonContent: Text("Reply"),
+        mentionablePeople: SearchablePeople.list(widget.conversation.participants),
+        onSubmit: (body) async {
+        final client = Provider.of<Client>(context, listen: false);
+        try {
+          final message = await client.createMessage(widget.conversation, body);
+          items.add(message);
+          return true;
+        } catch (e, s) {
+          tryShowErrorSnackBar(this, "Failed to reply to conversation", e, s);
+        }
+        return false;
+      },
+      ),
+    ),
+  );
 }

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'contacts_page.dart';
 import 'conversations_page.dart';
 import 'edit_profile_page.dart';
+import 'new_conversation_page.dart';
 import 'notifications_page.dart';
 import 'post_view_page.dart';
 import 'profile_page.dart';
@@ -50,6 +51,7 @@ class Insporation extends StatelessWidget {
         },
         '/publisher': (context) => PublisherPage(options: ModalRoute.of(context).settings.arguments ?? PublisherOptions()),
         '/conversations': (context) => ConversationsPage(),
+        '/conversations/new': (context) => NewConversationPage(options: ModalRoute.of(context).settings.arguments ?? NewConversationOptions()),
         '/search': (context) => SearchPage(),
         '/notifications': (context) => NotificationsPage(),
         '/contacts': (context) => ContactsPage(),
