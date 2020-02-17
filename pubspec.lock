@@ -118,6 +118,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0-pre.1"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.5"
   flutter_slidable:
     dependency: "direct main"
     description:
@@ -177,6 +184,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.4"
+  image_crop:
+    dependency: "direct main"
+    description:
+      name: image_crop
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.2"
+  image_picker:
+    dependency: "direct main"
+    description:
+      name: image_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.3+1"
   intl:
     dependency: "direct main"
     description:

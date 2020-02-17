@@ -126,7 +126,7 @@ class _ComposerState extends State<Composer> {
         ),
       ),
       Flexible(
-        child: TextField(
+        child: TextFormField(
           controller: _effectiveController,
           focusNode: widget.focusNode, // autofocus is broken and raises
           enabled: widget.enabled,
@@ -437,6 +437,7 @@ class SimpleComposer extends StatefulWidget {
     Key key,
     this.onSubmit,
     this.controller,
+    this.enabled = true,
     this.submittable = true,
     this.submitButtonContent,
     this.focusNode,
@@ -445,6 +446,7 @@ class SimpleComposer extends StatefulWidget {
 
   final Future<bool> Function(String value) onSubmit;
   final TextEditingController controller;
+  final bool enabled;
   final bool submittable;
   final Widget submitButtonContent;
   final FocusNode focusNode;
@@ -498,7 +500,7 @@ class _SimpleComposerState extends State<SimpleComposer> {
               controller: _effectiveController,
               focusNode: widget.focusNode,
               mentionablePeople: widget.mentionablePeople,
-              enabled: !_submitting
+              enabled: widget.enabled && !_submitting
             ),
           ),
           Visibility(

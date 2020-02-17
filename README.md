@@ -24,8 +24,8 @@ In case you want to dare anyways:
 
 Roughly in order of priority, but contributions towards any of these goals are always welcome.
 
-* Edit profile
 * Feature complete publisher (image upload, polls, location, preview)
+* Share receiver for text, images & links
 * Dark mode & Proper themeing
 * Code cleanup (extract any copy paste programming into properly abstracted classes & widgets)
 * Polish design

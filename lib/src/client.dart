@@ -430,6 +430,28 @@ class Client {
     }
   }
 
+  Future<Photo> uploadProfilePicture(File picture) async {
+    final response = await _call("POST", "photos", query: {"set_profile_picture": "true"}, body: await _pictureBody(picture));
+    return Photo.from(jsonDecode(response.body));
+  }
+
+  Future<Photo> uploadPictureForPublishing(File picture) async {
+    final response = await _call("POST", "photos", query: {"pending": "true"}, body: await _pictureBody(picture));
+    return Photo.from(jsonDecode(response.body));
+  }
+
+  Future<Profile> updateProfile(ProfileUpdate profile) async {
+    final response = await _call("PATCH", "user", body: profile),
+      newProfile = Profile.from(jsonDecode(response.body));
+    _currentUser = Future.value(newProfile);
+    return newProfile;
+  }
+
+  Future<http.MultipartFile> _pictureBody(File picture) async {
+    final stream = picture.openRead();
+    return http.MultipartFile("image", stream, await picture.length(), filename: picture.uri.pathSegments.last ?? "blob.jpg");
+  }
+
   Future<Page<Post>> _fetchPosts(Future<http.Response> request) async {
     final response = await request,
       posts = await compute(_parsePostsJson, {"body": response.body, "currentUser": currentUserId});
@@ -453,12 +475,20 @@ class Client {
       request = http.Request(method, uri);
     request.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
 
+    http.BaseRequest requestToSend = request;
     if (body != null) {
-      request.headers[HttpHeaders.contentTypeHeader] = "application/json; charset=utf-8";
-      request.body = jsonEncode(body);
+      if (body is http.MultipartFile) {
+        final fileRequest = http.MultipartRequest(method, uri);
+        fileRequest.headers.addAll(request.headers);
+        fileRequest.files.add(body);
+        requestToSend = fileRequest;
+      } else {
+        request.headers[HttpHeaders.contentTypeHeader] = "application/json; charset=utf-8";
+        request.body = jsonEncode(body);
+      }
     }
 
-    final response = await _client.send(request).then(http.Response.fromStream);
+    final response = await _client.send(requestToSend).then(http.Response.fromStream);
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return response;
@@ -771,14 +801,17 @@ class Person {
 }
 
 class Profile {
-  static const _birthdayYearThreshold = 1004;
+  static const birthdayYearThreshold = 1004;
 
   final Person person;
-  final PhotoSizes avatar;
+  PhotoSizes avatar;
   final String bio;
   final String gender;
   final String location;
   final DateTime birthday;
+  final bool public;
+  final bool searchable;
+  final bool nsfw;
   bool sharing;
   bool receiving;
   bool blocked;
@@ -787,8 +820,9 @@ class Profile {
   final bool ownProfile;
 
   Profile({@required this.person, @required this.avatar, @required this.bio, @required this.gender,
-    @required this.location, @required this.birthday, @required this.sharing, @required this.receiving,
-    @required this.blocked, @required this.tags, @required this.aspects, @required this.ownProfile});
+    @required this.location, @required this.birthday, @required this.public, @required this.searchable,
+    @required this.nsfw, @required this.sharing, @required this.receiving, @required this.blocked,
+    @required this.tags, @required this.aspects, @required this.ownProfile});
 
   factory Profile.from(Map<String, dynamic> object, {currentUser}) {
     final PhotoSizes avatar = PhotoSizes.from(object["avatar"] ?? {});
@@ -805,6 +839,9 @@ class Profile {
       gender: object["gender"],
       location: object["location"],
       birthday: object["birthday"] != null ? DateTime.parse(object["birthday"]) : null,
+      public: object["show_profile_info"],
+      searchable: object["searchable"],
+      nsfw: object["nsfw"],
       sharing: relationship != null ? relationship["sharing"] : false,
       receiving: relationship != null ? relationship["receiving"] : false,
       blocked: object["blocked"] ?? false,
@@ -816,15 +853,17 @@ class Profile {
 
   bool get canMessage => !blocked && sharing && receiving;
 
-  String get formattedBirthday {
+  String get formattedBirthday => formatBirthday(birthday);
+
+  static String formatBirthday(DateTime birthday) {
     if (birthday == null) {
       return null;
     }
 
-    if (birthday.year <= _birthdayYearThreshold) {
-      return DateFormat.MMMMd().format(birthday);
-    } else {
+    if (birthday.year > birthdayYearThreshold) {
       return DateFormat.yMMMMd().format(birthday);
+    } else {
+      return DateFormat.MMMMd().format(birthday);
     }
   }
 }
@@ -1270,5 +1309,32 @@ class NewConversation {
     "recipients": recipients.map((person) => person.guid).toList(),
     "subject": subject,
     "body": body
+  };
+}
+
+class ProfileUpdate {
+  final String bio;
+  final DateTime birthday;
+  final String gender;
+  final String location;
+  final String name;
+  final bool nsfw;
+  final bool searchable;
+  final bool public;
+  final List<String> tags;
+
+  ProfileUpdate({@required this.bio, @required this.birthday, @required this.gender, @required this.location,
+    @required this.name, @required this.nsfw, @required this.searchable, @required this.public, @required this.tags});
+
+  Map<String, dynamic> toJson() => {
+    "bio": bio,
+    "birthday": birthday.toIso8601String(),
+    "gender": gender,
+    "location": location,
+    "name": name,
+    "nsfw": nsfw,
+    "searchable": searchable,
+    "show_profile_info": public,
+    "tags": tags
   };
 }
