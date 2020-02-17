@@ -311,6 +311,20 @@ class Client {
     }
   }
 
+  Future<Aspect> createAspect(String name) async {
+    final response = await _call("POST", "aspects", body: {"name": name});
+    return Aspect.from(jsonDecode(response.body));
+  }
+
+  Future<Aspect> renameAspect(Aspect aspect, String newName) async {
+    final response = await _call("PATCH", "aspects/${aspect.id}", body: {"name": newName});
+    return Aspect.from(jsonDecode(response.body));
+  }
+
+  Future<void> deleteAspect(Aspect aspect) async {
+    await _call("DELETE", "aspects/${aspect.id}");
+  }
+
   Future<void> addToAspect(Person person, Aspect aspect) async {
     try {
       await _call("POST", "aspects/${aspect.id}/contacts", body: {"person_guid": person.guid});
@@ -817,9 +831,12 @@ class Profile {
 
 class Aspect {
   final int id;
-  final String name;
+  String name;
+  final bool isMock;
 
-  Aspect({@required this.id, @required this.name});
+  Aspect({@required this.id, @required this.name}) : isMock = false;
+
+  Aspect.mock(this.name) : id = -1, isMock = true;
 
   factory Aspect.from(Map<String, dynamic> object) => Aspect(
     id: object["id"],

@@ -161,9 +161,10 @@ class _CancelableFuture<T> {
 class _FutureCancelledError implements Exception {}
 
 abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
-  ItemStreamState({this.enableUpButton = true});
+  ItemStreamState({this.enableUpButton = true, this.listPadding = const EdgeInsets.all(0)});
 
   final enableUpButton;
+  final listPadding;
   final _refreshIndicator = GlobalKey<RefreshIndicatorState>();
   ItemStream<T> _items;
   String _lastError;
@@ -224,6 +225,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
                 children: <Widget>[
                   ListView.builder(
                     physics: AlwaysScrollableScrollPhysics(),
+                    padding: listPadding,
                     itemCount: items.length > 0 ? items.length + 2 : 0,
                     controller: scrollController,
                     itemBuilder: (context, position) =>
