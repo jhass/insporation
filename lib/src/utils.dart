@@ -11,6 +11,14 @@ T tryProvide<T>(BuildContext context) {
   }
 }
 bool containSameElements(Iterable a, Iterable b) {
+  if ((a == null && b != null) || (a != null && b == null)) {
+    return false;
+  }
+
+  if (a == null && b == null) {
+    return true;
+  }
+
   if (a.length != b.length) {
     return false;
   }

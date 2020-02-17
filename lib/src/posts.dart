@@ -14,14 +14,26 @@ import 'messages.dart';
 import 'timeago.dart';
 import 'utils.dart';
 
-enum StreamType { main, activity, tag }
+enum StreamType { main, activity, aspects, mentions, followedTags, liked, commented, tag }
+
+const streamNames = {
+  StreamType.main: "Stream",
+  StreamType.activity: "Activity",
+  StreamType.aspects: "Aspects",
+  StreamType.followedTags: "Followed tags",
+  StreamType.mentions: "Mentions",
+  StreamType.liked: "Liked",
+  StreamType.commented: "Commented",
+  StreamType.tag: "Tag"
+};
 
 class PostStream extends ItemStream<Post> {
   final StreamType type;
   final String tag;
+  final List<Aspect> aspects;
   bool loading = false;
 
-  PostStream({this.type, this.tag});
+  PostStream({this.type, this.tag, this.aspects});
 
   addMock(Post post) {
     assert(post.mock, "Post is not a mock!");
@@ -49,6 +61,16 @@ class PostStream extends ItemStream<Post> {
           return client.fetchMainStream(page: page);
         case StreamType.activity:
           return client.fetchActivityStream(page: page);
+        case StreamType.aspects:
+          return client.fetchAspectsStream(aspects, page: page);
+        case StreamType.mentions:
+          return client.fetchMentionsStream(page: page);
+        case StreamType.followedTags:
+          return client.fetchFollowedTagsStream(page: page);
+        case StreamType.liked:
+          return client.fetchLikedStream(page: page);
+        case StreamType.commented:
+          return client.fetchCommentedStream(page: page);
         case StreamType.tag:
           return client.fetchTagStream(tag, page: page);
       }

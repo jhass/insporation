@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:insporation/src/error_message.dart';
-import 'package:insporation/src/search.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
 import 'src/composer.dart';
+import 'src/error_message.dart';
+import 'src/search.dart';
 
 class PublisherOptions {
   final String prefill;

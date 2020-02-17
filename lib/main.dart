@@ -45,6 +45,14 @@ class Insporation extends StatelessWidget {
         '/switch_user': (context) => SignInPage(resumeLastSession: false),
         '/stream/main': (context) => StreamPage(type: StreamType.main),
         '/stream/activity': (context) => StreamPage(type: StreamType.activity),
+        '/stream/aspects': (context) {
+          final List<Aspect> aspects = ModalRoute.of(context).settings.arguments;
+          return StreamPage(type: StreamType.aspects, aspects: aspects);
+        },
+        '/stream/mentions': (context) => StreamPage(type: StreamType.mentions),
+        '/stream/followedTags': (context) => StreamPage(type: StreamType.followedTags),
+        '/stream/liked': (context) => StreamPage(type: StreamType.liked),
+        '/stream/commented': (context) => StreamPage(type: StreamType.commented),
         '/stream/tag': (context) {
           final String tag = ModalRoute.of(context).settings.arguments;
           return StreamPage(type: StreamType.tag, tag: tag);

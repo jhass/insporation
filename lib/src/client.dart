@@ -13,7 +13,14 @@ typedef AuthorizingUser = Future<String> Function();
 
 class Client {
   static const _appauth = const MethodChannel("insporation/appauth");
-  static const _scopes = "openid profile public:read private:read contacts:read contacts:modify public:modify private:modify interactions notifications conversations";
+  static const _scopes =
+    "openid "
+    "profile profile:read_private profile:modify "
+    "public:read public:modify "
+    "private:read private:modify "
+    "contacts:read contacts:modify "
+    "tags:read tags:modify "
+    "interactions notifications conversations";
   static final _linkHeaderPattern = RegExp(r'<([^>]+)>;\s*rel="([^"]+)"');
 
   final http.Client _client = http.Client();
@@ -118,6 +125,23 @@ class Client {
 
   Future<Page<Post>> fetchActivityStream({String page}) =>
     _fetchPosts(_call("GET", "streams/activity", page: page));
+
+  Future<Page<Post>> fetchAspectsStream(List<Aspect> aspects, {String page}) =>
+    _fetchPosts(_call("GET", "streams/aspects",
+      query: aspects != null ? {"aspect_ids": jsonEncode(aspects.map((aspect) => aspect.id).toList())} : {},
+      page: page));
+
+  Future<Page<Post>> fetchMentionsStream({String page}) =>
+    _fetchPosts(_call("GET", "streams/mentions", page: page));
+
+  Future<Page<Post>> fetchFollowedTagsStream({String page}) =>
+    _fetchPosts(_call("GET", "streams/tags", page: page));
+
+  Future<Page<Post>> fetchLikedStream({String page}) =>
+    _fetchPosts(_call("GET", "streams/liked", page: page));
+
+  Future<Page<Post>> fetchCommentedStream({String page}) =>
+    _fetchPosts(_call("GET", "streams/commented", page: page));
 
   Future<Page<Post>> fetchTagStream(String tag, {String page}) =>
     _fetchPosts(_call("GET", "search/posts", query: {'tag': tag}, page: page));
@@ -361,6 +385,35 @@ class Client {
   Future<Page<String>> searchTags(String query, {String page}) async {
     final response = await _call("GET", "search/tags", query: {"query": query}, page: page);
     return _makePage(jsonDecode(response.body).cast<String>(), response);
+  }
+
+  Future<List<String>> fetchFollowedTags() async {
+    final response = await _call("GET", "tag_followings");
+    return jsonDecode(response.body).cast<String>().toList();
+  }
+
+  Future<void> followTag(String tag) async {
+    try {
+      await _call("POST", "tag_followings", body: {"name": tag});
+    } on ClientException catch (e) {
+      if (e.code != 409) {
+        throw e;
+      }
+
+      // user already follows tag, ignore
+    }
+  }
+
+  Future<void> unfollowTag(String tag) async {
+    try {
+      await _call("DELETE", "tag_followings/$tag");
+    } on ClientException catch (e) {
+      if (e.code != 410) {
+        throw e;
+      }
+
+      // user was not following tag, ignore
+    }
   }
 
   Future<Page<Post>> _fetchPosts(Future<http.Response> request) async {

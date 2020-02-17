@@ -1,11 +1,10 @@
-import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:insporation/new_conversation_page.dart';
 import 'package:provider/provider.dart';
 
+import 'new_conversation_page.dart';
 import 'publisher_page.dart';
+import 'src/aspects.dart';
 import 'src/client.dart';
 import 'src/error_message.dart';
 import 'src/item_stream.dart';
@@ -394,17 +393,11 @@ class _AspectMembershipViewState extends State<_AspectMembershipView> {
     List<Aspect> newAspects = await showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) {
-        final newAspects = List.of(oldAspects);
-        return AlertDialog(
-          content: _AspectMembershipList(selectedAspects: newAspects),
-          title: Text("Select aspects for ${profile.value.person.nameOrId}"),
-          actions: <Widget>[
-            FlatButton(onPressed: () => Navigator.pop(context), child: Text("Cancel")),
-            FlatButton(onPressed: () => Navigator.pop(context, newAspects), child: Text("Save"))
-          ],
-        );
-      }
+      builder: (context) => AspectSelectionList.buildDialog(
+        context: context,
+        currentSelection: oldAspects,
+        title: "Select aspects for ${profile.value.person.nameOrId}"
+      )
     );
 
     if (newAspects == null) {
@@ -445,63 +438,5 @@ class _AspectMembershipViewState extends State<_AspectMembershipView> {
       profile.value.aspects.addAll(oldAspects);
       profile.updated();
     }
-  }
-}
-
-class _AspectMembershipList extends StatefulWidget {
-  _AspectMembershipList({Key key, @required this.selectedAspects}) : super(key: key);
-
-  final List<Aspect> selectedAspects;
-
-  @override
-  State<StatefulWidget> createState() => _AspectMembershipListState();
-}
-
-class _AspectMembershipListState extends State<_AspectMembershipList> {
-  List<Aspect> _userAspects;
-
-  @override
-  void initState() {
-    super.initState();
-    final client = Provider.of<Client>(context, listen: false);
-    client.currentUserAspects.then((aspects) => setState(() => _userAspects = aspects));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_userAspects == null) {
-      return Container(
-        width: 100,
-        height: 100,
-        alignment: Alignment.center,
-        child: CircularProgressIndicator()
-      );
-    }
-
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.66),
-      child: ListView.builder(
-        padding: EdgeInsets.all(0),
-        itemCount: _userAspects.length,
-        itemBuilder: (context, position) => Container(
-          decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey[200]))
-          ),
-          child: CheckboxListTile(
-            title: Text(_userAspects[position].name),
-            value: widget.selectedAspects.contains(_userAspects[position]),
-            onChanged: (selected) {
-              setState(() {
-              if (selected) {
-                  widget.selectedAspects.add(_userAspects[position]);
-               } else {
-                 widget.selectedAspects.remove(_userAspects[position]);
-               }
-                });
-            },
-          ),
-        )
-      ),
-    );
   }
 }

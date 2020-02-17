@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insporation/src/search.dart';
 import 'package:provider/provider.dart';
 
 import 'client.dart';
@@ -7,6 +6,7 @@ import 'composer.dart';
 import 'error_message.dart';
 import 'item_stream.dart';
 import 'messages.dart';
+import 'search.dart';
 import 'timeago.dart';
 import 'utils.dart';
 
