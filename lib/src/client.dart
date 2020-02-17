@@ -355,7 +355,7 @@ class Client {
   }
 
   Future<Page<Conversation>> fetchConversations({bool onlyUnread = false, String page}) async {
-    final response  = await _call("GET", "conversations", query: {"only_unread":  onlyUnread ? "true" : null}, page: page); // TODO
+    final response  = await _call("GET", "conversations", query: {"only_unread": onlyUnread.toString()}, page: page);
     return _makePage(await compute(_parseConversationsJson, response.body), response);
   }
 

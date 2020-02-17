@@ -161,10 +161,10 @@ class _CancelableFuture<T> {
 class _FutureCancelledError implements Exception {}
 
 abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
-  ItemStreamState({this.enableUpButton = true, this.listPadding = const EdgeInsets.all(0)});
+  ItemStreamState({this.enableUpButton = true, this.listPadding});
 
   final enableUpButton;
-  final listPadding;
+  final EdgeInsetsGeometry listPadding;
   final _refreshIndicator = GlobalKey<RefreshIndicatorState>();
   ItemStream<T> _items;
   String _lastError;

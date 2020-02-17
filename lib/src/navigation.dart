@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Notification;
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 
 import 'client.dart';
 import 'widgets.dart';
@@ -114,4 +115,27 @@ class UnreadConversationsCount extends ItemCountNotifier<Conversation> {
   @override
   Future<Page<Conversation>> fetchFirstPage(Client client) async =>
     client.fetchConversations(onlyUnread: true);
+}
+
+class BadgeUpdater {
+  int _notificationsCount = 0;
+  int _conversationsCount = 0;
+
+  void listenToNotifications(UnreadNotificationsCount count) {
+    count.addListener(() {
+      _notificationsCount = count.count;
+      _updateBadge();
+    });
+  }
+
+  void listenToConversations(UnreadConversationsCount count) {
+    count.addListener(() {
+      _conversationsCount = count.count;
+      _updateBadge();
+    });
+  }
+
+  void _updateBadge() {
+    FlutterAppBadger.updateBadgeCount(_notificationsCount + _conversationsCount);
+  }
 }

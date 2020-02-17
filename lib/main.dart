@@ -26,6 +26,13 @@ void main() => runApp(MultiProvider(
     ChangeNotifierProxyProvider<Client, UnreadConversationsCount>(
       create: (context) => UnreadConversationsCount(),
       update: (context, client, count) => count..update(client)
+    ),
+    ProxyProvider2<UnreadNotificationsCount, UnreadConversationsCount, BadgeUpdater>(
+      create: (context) => BadgeUpdater(),
+      update: (context, notificationsCount, conversationsCount, updater) => updater
+        ..listenToNotifications(notificationsCount)
+        ..listenToConversations(conversationsCount),
+      lazy: false
     )
   ],
   child: Insporation(),
