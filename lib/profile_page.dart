@@ -6,12 +6,12 @@ import 'new_conversation_page.dart';
 import 'publisher_page.dart';
 import 'src/aspects.dart';
 import 'src/client.dart';
-import 'src/error_message.dart';
 import 'src/item_stream.dart';
 import 'src/messages.dart';
 import 'src/posts.dart';
 import 'src/utils.dart';
 import 'src/widgets.dart';
+import 'src/colors.dart' as colors;
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key key, this.person, this.personId, this.diasporaId}) {
@@ -238,7 +238,8 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
                       )) : null,
                   ),
                   IconButton(
-                    icon: Icon(Icons.block, color: profile.blocked? Colors.red : Colors.black),
+                    icon: Icon(Icons.block),
+                    color: profile.blocked?  colors.blocked : null,
                     tooltip: profile.blocked ? "Unblock" : "Block",
                     onPressed: () {
                       profile.blocked = !profile.blocked;
@@ -333,6 +334,7 @@ class _AspectMembershipViewState extends State<_AspectMembershipView> {
       return SizedBox.shrink();
     }
 
+    final borderColor = colors.outlineButtonBorder(Theme.of(context));
     return Tooltip(
       message: _shareStatus,
       child: OutlineButton(
@@ -344,10 +346,10 @@ class _AspectMembershipViewState extends State<_AspectMembershipView> {
               height: 8,
               margin: EdgeInsets.only(right: 8),
               decoration: BoxDecoration(
-                border: Border.all(color: widget.profile.receiving ? Colors.green : Colors.grey),
+                border: Border.all(color: widget.profile.receiving ? colors.sharing : borderColor),
                 shape: BoxShape.circle,
-                color: widget.profile.sharing && widget.profile.receiving ? Colors.green :
-                  widget.profile.sharing ? Colors.grey : Colors.transparent
+                color: widget.profile.sharing && widget.profile.receiving ? colors.sharing :
+                  widget.profile.sharing ? borderColor : Colors.transparent
               ),
             ),
             Text(_label),
@@ -420,13 +422,15 @@ class _AspectMembershipViewState extends State<_AspectMembershipView> {
       await client.updateAspectMemberships(profile.value.person, oldAspects, newAspects);
 
       if (mounted) {
+        final background = startedSharing ? colors.positiveAction : stoppedSharing ? colors.negativeAction : null,
+          text = background != null ? (ThemeData.estimateBrightnessForColor(background) == Brightness.light ? Colors.black : Colors.white) : null;
         Scaffold.of(context).showSnackBar(SnackBar(
-          backgroundColor: startedSharing ? Colors.green : stoppedSharing ? Colors.redAccent : null,
+          backgroundColor: background,
           content: Text(
             startedSharing ? "Started sharing with ${profile.value.person.nameOrId}." :
               stoppedSharing ? "Stopped sharing with ${profile.value.person.nameOrId}." :
                 "Aspects updated.",
-            style: TextStyle(color: Colors.white)
+            style: TextStyle(color: text)
           )
         ));
       }

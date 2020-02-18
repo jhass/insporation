@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 
 import 'src/comments.dart';
 import 'src/client.dart';
-import 'src/error_message.dart';
 import 'src/messages.dart';
 import 'src/posts.dart';
+import 'src/widgets.dart';
 
 class PostViewPage extends StatefulWidget {
   PostViewPage({Key key, this.post, @required this.postId}) {

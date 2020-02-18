@@ -13,6 +13,7 @@ import 'item_stream.dart';
 import 'messages.dart';
 import 'timeago.dart';
 import 'utils.dart';
+import 'colors.dart' as colors;
 
 enum StreamType { main, activity, aspects, mentions, followedTags, liked, commented, tag }
 
@@ -188,7 +189,7 @@ class PostView extends StatelessWidget {
                         child: Icon(
                             post.public ? Icons.public : Icons.lock,
                             size: 14,
-                            color: Colors.grey[600]
+                            color: Theme.of(context).iconTheme.color.withOpacity(0.5)
                         ),
                       ),
                       Timeago(post.createdAt, textStyle: TextStyle(fontSize: 10, fontStyle: FontStyle.italic)),
@@ -222,6 +223,8 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return ButtonTheme(
       minWidth: 1,
       padding: const EdgeInsets.all(0),
@@ -232,7 +235,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
           FlatButton.icon(
             icon: Icon(Icons.comment, size: 16),
             label: Text(widget.post.interactions.comments.toString()),
-            textColor: Colors.grey[600],
+            textColor: colors.postInteractionIcon(theme),
             onPressed: !widget.enableCommentsSheet || !widget.post.canComment ? null : () =>
               Navigator.push(context, PageRouteBuilder(
                 pageBuilder: (context, _, __) =>  FractionallySizedBox(
@@ -250,7 +253,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
                 transitionsBuilder: (context, animation, _, child) => FadeTransition(
                   opacity: animation, child: child
                 ),
-                barrierColor: Colors.black54,
+                barrierColor: colors.barrier,
                 barrierDismissible: true,
                 maintainState: true,
                 fullscreenDialog: false,
@@ -261,20 +264,20 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
             icon: Icon(
                 Icons.repeat,
                 size: 16,
-                color: widget.post.interactions.reshared ? Colors.blue[500] : null
+                color: widget.post.interactions.reshared ? colors.reshared : null
             ),
             label: Text(widget.post.interactions.reshares.toString()),
-            textColor: Colors.grey[600],
+            textColor: colors.postInteractionIcon(theme),
             onPressed: !widget.post.canReshare ? null : _promptReshare,
           ),
           FlatButton.icon(
             icon: Icon(
                 Icons.favorite,
                 size: 16,
-                color: widget.post.interactions.liked ? Colors.red[900] : Colors.grey[600]
+                color: widget.post.interactions.liked ? colors.liked : null
             ),
             label: Text(widget.post.interactions.likes.toString()),
-            textColor: Colors.grey[600],
+            textColor: colors.postInteractionIcon(theme),
             onPressed: _updatingLike || !widget.post.canLike ? null : _toggleLike
           )
         ]
@@ -390,7 +393,7 @@ class _PostActionsViewState extends State<PostActionsView> {
   Widget build(BuildContext context) {
     final actions = <Widget>[
       IconButton(
-        icon: Icon(Icons.notifications, color: widget.post.interactions.subscribed ? Colors.blue : null),
+        icon: Icon(Icons.notifications, color: widget.post.interactions.subscribed ? Theme.of(context).colorScheme.secondary : null),
         onPressed: _updatingSubscription ? null : _toggleSubscription,
         tooltip: widget.post.interactions.subscribed ? "Stop notifications" : "Enable notifications"
       ),
@@ -669,7 +672,7 @@ class _PollViewState extends State<_PollView> {
             Visibility(
               visible: !widget.poll.alreadyParticipated && widget.poll.participationCount > 0 && !_showAnswers,
               child: FlatButton(
-                child: Text("View results", style: TextStyle(color: Colors.blueAccent)),
+                child: Text("View results", style: TextStyle(color: colors.link)),
                 onPressed: () => setState(() => _showAnswers = true)
               )
             ),
@@ -829,13 +832,13 @@ class _OEmbedView extends StatelessWidget {
             onTap: () => launch(oEmbed.url),
             child: Text(
               "${oEmbed.author} on ${oEmbed.provider}:",
-              style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+              style: TextStyle(color: colors.link, decoration: TextDecoration.underline),
             )
           )
         ),
         Container(
           margin: EdgeInsets.only(left: 16),
-          decoration: BoxDecoration(border: Border(left: BorderSide(color: Colors.black54))),
+          decoration: BoxDecoration(border: Border(left: BorderSide(color: Theme.of(context).dividerColor))),
           child: Html(
             onLinkTap: launch,
             data: oEmbed.html,

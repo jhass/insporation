@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'src/colors.dart' as colors;
 import 'contacts_page.dart';
 import 'conversations_page.dart';
 import 'edit_profile_page.dart';
@@ -43,10 +44,8 @@ class Insporation extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'insporation*',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        accentColor: Colors.blueAccent
-      ),
+      theme: ThemeData.from(colorScheme: colors.scheme),
+      darkTheme: ThemeData.from(colorScheme: colors.darkScheme),
       home: SignInPage(),
       routes: {
         '/switch_user': (context) => SignInPage(resumeLastSession: false),

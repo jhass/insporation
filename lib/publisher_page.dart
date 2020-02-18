@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'src/client.dart';
 import 'src/composer.dart';
-import 'src/error_message.dart';
 import 'src/search.dart';
+import 'src/widgets.dart';
 
 class PublisherOptions {
   final String prefill;
@@ -218,7 +218,7 @@ class _PublishTargetSelectionDialogState extends State<_PublishTargetSelectionDi
     ));
 
     options.add(Container(
-      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey))),
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor))),
       child: ListTile(
         title: Text("All aspects"),
         onTap: () => Navigator.pop(context, PublishTarget.allAspects()),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insporation/src/widgets.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
@@ -6,6 +7,7 @@ import 'src/composer.dart';
 import 'src/messages.dart';
 import 'src/search.dart';
 import 'src/utils.dart';
+import 'src/colors.dart' as colors;
 
 class NewConversationOptions {
   final List<Person> recipients;
@@ -69,7 +71,7 @@ class _NewConversationPageState extends State<NewConversationPage> {
             spacing: 4,
             children: _buildRecipients()
           ),
-          Divider(color: Colors.grey),
+          Divider(thickness: 1.0, color: colors.inputBorder(Theme.of(context))),
           Text("Subject", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
           TextField(
             controller: _subject,
@@ -151,11 +153,7 @@ class _NewConversationPageState extends State<NewConversationPage> {
   }
 
   _showError(String message) {
-    _scaffold.currentState.showSnackBar(SnackBar(
-      backgroundColor: Colors.red,
-      content: Text(message, style: TextStyle(color: Colors.white)
-      ),
-    ));
+    _scaffold.currentState.showSnackBar(errorSnackbar(context, message));
   }
 
   Future<bool> _submit(String body) async {

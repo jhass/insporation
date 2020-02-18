@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'client.dart';
-import 'error_message.dart';
+import 'widgets.dart';
 
 abstract class ItemStream<T> extends ChangeNotifier {
 
@@ -210,6 +210,8 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
   Widget build(BuildContext context) => buildStream(context);
 
   Widget buildStream(BuildContext context) {
+    final theme = Theme.of(context);
+
     return RefreshIndicator(
       key: _refreshIndicator,
       onRefresh: () => _loadItems(reset: true),
@@ -249,9 +251,9 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
                       child: !_upButtonVisibility || !enableUpButton ? SizedBox.shrink() : ClipRRect(
                         borderRadius: BorderRadius.circular(5),
                         child: Container(
-                          color: Colors.black38,
+                          color: theme.hintColor.withOpacity(0.25),
                           child: IconButton(
-                            color: Colors.white,
+                            color: Colors.white.withOpacity(0.8),
                             padding: const EdgeInsets.all(0),
                             iconSize: 48,
                             icon: Icon(Icons.keyboard_arrow_up),

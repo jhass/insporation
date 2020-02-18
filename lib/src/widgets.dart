@@ -6,12 +6,34 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'client.dart';
+import 'colors.dart' as colors;
 
+class ErrorMessage extends StatelessWidget {
+  const ErrorMessage(this.message, {Key key,}) : super(key: key);
 
-class ErrorSnackBar extends SnackBar {
-  ErrorSnackBar(String message) : super(
-    content: Text(message, style: TextStyle(color: Colors.white)),
-    backgroundColor: Colors.red
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Visibility(
+      visible: message != null,
+      child: Card(
+        color: theme.colorScheme.error,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(message ?? "", style: TextStyle(color: theme.colorScheme.onError), textAlign: TextAlign.center),
+        ),
+      ),
+    );
+  }
+}
+
+SnackBar errorSnackbar(BuildContext context, String message) {
+  final theme = Theme.of(context);
+  return SnackBar(
+    content: Text(message, style: TextStyle(color: theme.colorScheme.onError)),
+    backgroundColor: theme.colorScheme.error
   );
 }
 
@@ -35,7 +57,7 @@ class AvatarStack extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(5),
               child: Container(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.surface,
                 child: CachedNetworkImage(
                   width: 46,
                   height: 46,
@@ -72,7 +94,7 @@ class _UnreadItemsIndicatorIconState<T extends ItemCountNotifier> extends State<
             builder: (context, unreadCount, child) => Visibility(visible: unreadCount.count > 0, child: child),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.red,
+                color: colors.unreadIndicator,
                 shape: BoxShape.circle
               ),
               width: 10,

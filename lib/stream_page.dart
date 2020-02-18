@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 import 'publisher_page.dart';
 import 'src/aspects.dart';
 import 'src/client.dart';
-import 'src/error_message.dart';
 import 'src/item_stream.dart';
 import 'src/navigation.dart';
 import 'src/posts.dart';
 import 'src/search.dart';
 import 'src/utils.dart';
+import 'src/widgets.dart';
 
 class StreamPage extends StatefulWidget {
   StreamPage({Key key, this.type, this.aspects, this.tag}) : super(key: key);
@@ -132,7 +132,7 @@ class _StreamTypeSelector extends StatelessWidget {
               iconSize: 32,
               style: TextStyle(
                   fontSize: 32,
-                  color: Colors.black
+                  color: Theme.of(context).colorScheme.onSurface
               ),
               underline: SizedBox.shrink(),
               onChanged: (newValue) {

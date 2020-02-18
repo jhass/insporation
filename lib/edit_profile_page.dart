@@ -435,7 +435,7 @@ class _EditProfileState extends State<_EditProfile> {
           }
 
           if (_tags.contains(response)) {
-            Scaffold.of(context).showSnackBar(ErrorSnackBar("Tag already added"));
+            Scaffold.of(context).showSnackBar(errorSnackbar(context, "Tag already added"));
             return;
           }
 

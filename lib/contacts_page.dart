@@ -41,7 +41,7 @@ class _ContactsPageState extends ItemStreamState<Aspect, ContactsPage> {
 
   @override
   Widget buildItem(BuildContext context, Aspect item) => Container(
-    decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey[300]))),
+    decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor))),
     child: ListTile(
       title: Text(item.name),
       trailing: Row(
@@ -172,7 +172,7 @@ class _AspectContactsPageState extends ItemStreamState<Person, _AspectContactsPa
   Widget buildItem(BuildContext context, Person person) {
     final placeholder = Container(width: 32, height: 32, alignment: Alignment.center, child: Icon(Icons.person));
     return Container(
-      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey[300]))),
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor))),
       child: ListTile(
         leading: person.avatar == null ?
         placeholder : ClipRRect(

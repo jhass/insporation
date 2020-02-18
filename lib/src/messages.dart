@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'client.dart';
 import 'markdown_extensions.dart' as mde;
+import 'colors.dart'  as colors;
 
 class PersonHeader extends StatelessWidget {
   const PersonHeader({Key key, @required this.person}) : super(key: key);
@@ -112,7 +113,7 @@ class Photobox extends StatelessWidget {
       opaque: false,
       transitionDuration: Duration(milliseconds: 400),
       transitionsBuilder: (context, animation, _, child) => FadeTransition(opacity: animation, child: child),
-      barrierColor: Colors.black54,
+      barrierColor: colors.barrier,
       barrierDismissible: true,
       maintainState: true,
       fullscreenDialog: false,
@@ -160,6 +161,7 @@ class _NsfwShieldState extends State<NsfwShield> {
   @override
   Widget build(BuildContext context) {
     final showNsfw = Provider.of<ShowNsfwPosts>(context);
+
     return Visibility(
         visible: widget.nsfwPost == true && _hide != false && showNsfw.value == false,
         child: Container(
@@ -185,7 +187,7 @@ class _NsfwShieldState extends State<NsfwShield> {
                           child: Text(
                             "Show all NSFW posts",
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.blue)
+                            style: TextStyle(color: colors.link)
                           ),
                           onPressed: () => showNsfw.value = true
                         ),
@@ -196,7 +198,7 @@ class _NsfwShieldState extends State<NsfwShield> {
                           child: Text(
                             "Show this post",
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.blue)
+                            style: TextStyle(color: colors.link)
                           ),
                           onPressed: () => setState(() => _hide = false),
                         )

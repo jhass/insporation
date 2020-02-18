@@ -26,7 +26,6 @@ Roughly in order of priority, but contributions towards any of these goals are a
 
 * Feature complete publisher (image upload, polls, location, preview)
 * Share receiver for text, images & links
-* Dark mode & Proper themeing
 * Code cleanup (extract any copy paste programming into properly abstracted classes & widgets)
 * Polish design
 * System notifications

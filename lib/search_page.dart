@@ -19,6 +19,7 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> {
   @override
   Widget build(BuildContext context) {
     final SearchResultStream items = this.items;
+    final theme = Theme.of(context);
 
     return Scaffold(
       bottomNavigationBar: NavigationBar(currentPage: PageType.search),
@@ -28,9 +29,8 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> {
             Padding(
               padding: EdgeInsets.only(top: 16),
               child: CupertinoSegmentedControl(
-                borderColor: Colors.grey,
-                selectedColor: Colors.grey[800],
-                pressedColor: Colors.grey[800],
+                selectedColor: theme.brightness == Brightness.light ? theme.colorScheme.primary : theme.colorScheme.onSurface,
+                unselectedColor: theme.colorScheme.surface,
                 children: {
                   SearchType.people: Text("People"),
                   SearchType.peopleByTag: Padding(
@@ -52,10 +52,7 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> {
                 controller: _search,
                 decoration: InputDecoration(
                   hintText: _hintText(items.type),
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.grey[800])),
+                  border: OutlineInputBorder(),
                   filled: true
                 ),
                 onChanged: (query) {
@@ -78,7 +75,7 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> {
   Widget buildItem(BuildContext context, SearchResult item) => InkWell(
     onTap: () => _launchItem(item),
     child: Container(
-      decoration: BoxDecoration(border: Border(bottom: BorderSide(color:  Colors.grey[300]))),
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor))),
       child: ListTile(
         leading: _buildLeading(item),
         title: Text(_formatTitle(item))

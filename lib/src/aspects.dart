@@ -54,7 +54,7 @@ class _AspectSelectionListState extends State<AspectSelectionList> {
         itemCount: _userAspects.length + 1,
         itemBuilder: (context, position) => Container(
           decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey[200]))
+            border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor))
           ),
           child: position == 0 ?
             FlatButton(

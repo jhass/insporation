@@ -3,6 +3,7 @@ import 'package:flutter_app_badger/flutter_app_badger.dart';
 
 import 'client.dart';
 import 'widgets.dart';
+import 'colors.dart' as colors;
 
 enum PageType {
   stream,
@@ -41,9 +42,11 @@ class NavigationBar extends StatelessWidget {
     final items = _mainItems.map(_buildMainItem).toList();
     items.add(BottomNavigationBarItem(title: Text(""), icon: Icon(Icons.more_horiz)));
 
+    final theme = Theme.of(context);
+
     return BottomNavigationBar(
-      unselectedItemColor: Colors.grey,
-      selectedItemColor: Colors.blueAccent,
+      unselectedItemColor: colors.unselectedNavigationItem(theme),
+      selectedItemColor: theme.colorScheme.secondary,
       currentIndex: currentIndex,
       onTap: (index) {
         if (index == currentIndex) {

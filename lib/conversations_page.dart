@@ -12,6 +12,7 @@ import 'src/search.dart';
 import 'src/timeago.dart';
 import 'src/utils.dart';
 import 'src/widgets.dart';
+import 'src/colors.dart' as colors;
 
 class ConversationsPage extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class _ConversationsPageState extends ItemStreamState<Conversation, Conversation
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () async {
-          final Conversation conversation = await Navigator.pushNamed(context, "/conversations/new");
+          final conversation = await Navigator.pushNamed(context, "/conversations/new");
 
           if (conversation == null) {
             return; // user didn't submit a conversation
@@ -49,40 +50,44 @@ class _ConversationsPageState extends ItemStreamState<Conversation, Conversation
   ItemStream<Conversation> createStream() => _ConversationsStream();
 
   @override
-  Widget buildItem(BuildContext context, Conversation conversation) => InkWell(
-    child: Slidable(
-      key: UniqueKey(),
-      actionPane: SlidableStrechActionPane(),
-      dismissal: SlidableDismissal(
-        child: SlidableDrawerDismissal(),
-        onDismissed: (_) => _hide(conversation),
-      ),
-      actions: <Widget>[
-        IconSlideAction(
-          icon: Icons.delete,
-          color: Colors.red,
-          onTap: () => _hide(conversation),
-        )
-      ],
-      child: Container(
-        decoration: BoxDecoration(
-          color: conversation.read ? Colors.transparent : Colors.lightBlue[50],
-          border: Border(
-            left: conversation.read ? BorderSide.none : BorderSide(color: Colors.blueAccent, width: 2),
-            bottom: BorderSide(color: conversation.read ? Colors.grey[200] : Colors.blueGrey[100])
+  Widget buildItem(BuildContext context, Conversation conversation) {
+    final theme = Theme.of(context);
+
+    return InkWell(
+      child: Slidable(
+        key: UniqueKey(),
+        actionPane: SlidableStrechActionPane(),
+        dismissal: SlidableDismissal(
+          child: SlidableDrawerDismissal(),
+          onDismissed: (_) => _hide(conversation),
+        ),
+        actions: <Widget>[
+          IconSlideAction(
+            icon: Icons.delete,
+            color: Colors.red,
+            onTap: () => _hide(conversation),
           )
-        ),
-        padding: EdgeInsets.symmetric(vertical: 4),
-        child: ListTile(
-          leading: AvatarStack(people: conversation.participants),
-          title: Text(conversation.subject)
+        ],
+        child: Container(
+          decoration: BoxDecoration(
+            color: conversation.read ? Colors.transparent : colors.unreadItemBackground(theme),
+            border: Border(
+              left: conversation.read ? BorderSide.none : BorderSide(color: theme.colorScheme.secondary, width: 2),
+              bottom: BorderSide(color: conversation.read ? theme.dividerColor : colors.unreadItemBottomBorder(theme))
+            )
+          ),
+          padding: EdgeInsets.symmetric(vertical: 4),
+          child: ListTile(
+            leading: AvatarStack(people: conversation.participants),
+            title: Text(conversation.subject)
+          ),
         ),
       ),
-    ),
-    onTap: () {
-      _show(conversation);
-    },
-  );
+      onTap: () {
+        _show(conversation);
+      },
+    );
+  }
 
   _show(Conversation conversation) {
     setState(() => conversation.read = true);
@@ -190,7 +195,7 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
               Expanded(child: PersonHeader(person: item.author)),
               Timeago(item.createdAt, textStyle: TextStyle(
                 fontStyle: FontStyle.italic,
-                color: Colors.grey,
+                color: Theme.of(context).hintColor,
                 fontSize: 12,
               ))
             ],

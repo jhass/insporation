@@ -37,7 +37,7 @@ void tryShowErrorSnackBar(State widget, String message, exception, stack) {
 void showErrorSnackBar(ScaffoldState scaffold, String message, exception, stack) {
   final exceptionMessage = _debugPrintError(message, exception, stack);
   if (scaffold.mounted) {
-    scaffold.showSnackBar(ErrorSnackBar("$message: $exceptionMessage"));
+    scaffold.showSnackBar(errorSnackbar(scaffold.context, "$message: $exceptionMessage"));
   }
 }
 

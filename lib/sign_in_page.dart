@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'src/client.dart';
-import 'src/error_message.dart';
+import 'src/widgets.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key key, this.resumeLastSession = true}) : super(key: key);
@@ -72,7 +72,7 @@ class _SignInPageState extends State<SignInPage> {
     return Material(
         child: Container(
           alignment: Alignment.center,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           child: Container(
             width: 300,
             child: Column(

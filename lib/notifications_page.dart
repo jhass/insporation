@@ -5,6 +5,7 @@ import 'src/client.dart';
 import 'src/item_stream.dart';
 import 'src/navigation.dart';
 import 'src/widgets.dart';
+import 'src/colors.dart' as colors;
 
 class NotificationStream extends ItemStream<Notification> {
   @override
@@ -44,23 +45,27 @@ class _NotificationListItem extends StatefulWidget {
 
 class _NotificationListItemState extends State<_NotificationListItem> {
   @override
-  Widget build(BuildContext context) => InkWell(
-    onTap: _canGoToTarget ? _goToTarget : null,
-    child: Container(
-      decoration:  BoxDecoration(
-        color: widget.notification.read ? Colors.transparent : Colors.lightBlue[50],
-        border: Border(
-          left: widget.notification.read ? BorderSide.none : BorderSide(color: Colors.blueAccent, width: 2),
-          bottom: BorderSide(color: widget.notification.read ? Colors.grey[200] : Colors.blueGrey[100])
-        )
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return InkWell(
+      onTap: _canGoToTarget ? _goToTarget : null,
+      child: Container(
+        decoration:  BoxDecoration(
+          color: widget.notification.read ? Colors.transparent : colors.unreadItemBackground(theme),
+          border: Border(
+            left: widget.notification.read ? BorderSide.none : BorderSide(color: theme.colorScheme.secondary, width: 2),
+            bottom: BorderSide(color: widget.notification.read ? theme.dividerColor : colors.unreadItemBottomBorder(theme))
+          )
+        ),
+        padding: EdgeInsets.symmetric(vertical: 4),
+        child: ListTile(
+          leading: AvatarStack(people: widget.notification.eventCreators),
+          title: Text(_title),
+        ),
       ),
-      padding: EdgeInsets.symmetric(vertical: 4),
-      child: ListTile(
-        leading: AvatarStack(people: widget.notification.eventCreators),
-        title: Text(_title),
-      ),
-    ),
-  );
+    );
+  }
 
   String get _title {
     switch (widget.notification.type) {

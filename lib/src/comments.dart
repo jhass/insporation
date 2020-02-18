@@ -3,12 +3,12 @@ import 'package:provider/provider.dart';
 
 import 'client.dart';
 import 'composer.dart';
-import 'error_message.dart';
 import 'item_stream.dart';
 import 'messages.dart';
 import 'search.dart';
 import 'timeago.dart';
 import 'utils.dart';
+import 'widgets.dart';
 
 class CommentStream extends ItemStream<Comment> {
   CommentStream(this.post);
