@@ -1095,14 +1095,16 @@ class OpenGraphObject {
 }
 
 class Photo {
+  final String guid;
   final int width;
   final int height;
   final PhotoSizes sizes;
 
-  Photo({this.width, this.height, this.sizes});
+  Photo({this.guid, this.width, this.height, this.sizes});
 
   factory Photo.from(Map<String, dynamic> object) =>
     Photo(
+      guid: object["guid"],
       width: object["dimensions"]["width"],
       height: object["dimensions"]["height"],
       sizes: PhotoSizes.from(object["sizes"])
@@ -1283,18 +1285,37 @@ class ConversationMessage {
 
 class PublishablePost {
   final String body;
+  final List<String> photos;
   final bool public;
   final List<Aspect> aspects;
 
-  PublishablePost.public(this.body) : public = true, aspects = null;
-  PublishablePost.private(this.body, this.aspects) : public = false;
+  PublishablePost.public({this.body, this.photos}) : public = true, aspects = null { _validate(); }
+  PublishablePost.private(this.aspects, {this.body, this.photos}) : public = false { _validate(); }
+
+  _validate() {
+    assert(body != null || (photos != null && photos.isNotEmpty), "Post must have body or photos!");
+    assert(public || (aspects != null && aspects.isNotEmpty), "Post must be public or have target aspects!");
+  }
 
   Map<String, dynamic> toJson() {
-    if (public) {
-      return {"body": body, "public": true};
-    } else {
-      return {"body": body, "public": false, "aspects": aspects.map((aspect) => aspect.id).toList()};
+    final Map<String, dynamic> post = {};
+
+    if (body != null && body.trim().isNotEmpty) {
+      post["body"] = body;
     }
+
+    if (photos != null && photos.isNotEmpty) {
+      post["photos"] = photos;
+    }
+
+    if (public) {
+      post["public"] = true;
+    } else {
+      post["public"] = false;
+      post["aspects"] =  aspects.map((aspect) => aspect.id).toList();
+    }
+
+    return post;
   }
 }
 

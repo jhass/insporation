@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
 import 'src/composer.dart';
 import 'src/search.dart';
+import 'src/utils.dart';
 import 'src/widgets.dart';
 
 class PublisherOptions {
@@ -33,8 +37,10 @@ class PublisherPage extends StatefulWidget {
 }
 
 class _PublisherPageState extends State<PublisherPage> {
+  final _scaffold = GlobalKey<ScaffoldState>(); // TOOD extract things so this not necessary
   final _initialFocus = FocusNode();
   final _controller = TextEditingController();
+  final List<_AttachedPhoto> _attachedPhotos = [];
   bool _valid = false;
   bool _submitting = false;
   String _lastError;
@@ -55,40 +61,78 @@ class _PublisherPageState extends State<PublisherPage> {
   }
   @override
   Widget build(BuildContext context) => Scaffold(
+    key: _scaffold,
     appBar: AppBar(title: Text("Write a new post")),
     body: Padding(
       padding: EdgeInsets.all(8),
-      child: Column(
-        children: <Widget>[
-          Composer(
-            focusNode: _initialFocus,
-            controller: _controller,
-            enabled: !_submitting,
-            mentionablePeople: _mentionablePeople,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: RaisedButton.icon(
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Composer(
+              focusNode: _initialFocus,
+              controller: _controller,
+              enabled: !_submitting,
+              mentionablePeople: _mentionablePeople,
+            ),
+            Visibility(
+              visible: _attachedPhotos.length > 0,
+              child: ConstrainedBox(
+                constraints: BoxConstraints.loose(Size(double.infinity, 64)),
+                            child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _attachedPhotos.length,
+                  itemBuilder: (context, position) => _AttachedPhotoView(
+                    photo: _attachedPhotos[position],
+                    onDelete: () => setState(() => _attachedPhotos.removeAt(position)),
+                  )
+                ),
+              ),
+            ),
+            ButtonBar(
+              alignment: MainAxisAlignment.start,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.photo_camera),
+                  tooltip: "Take a photo",
+                  onPressed: () => _uploadPhoto(ImageSource.camera)
+                ),
+                IconButton(
+                  icon: Icon(Icons.photo_library),
+                  tooltip: "Upload a photo",
+                  onPressed: () => _uploadPhoto(ImageSource.gallery)
+                ),
+                IconButton(
+                  icon: Icon(Icons.poll),
+                  tooltip: "Add a poll",
+                  onPressed: null
+                ),
+                IconButton(
+                  icon: Icon(Icons.location_on),
+                  tooltip: "Add your location",
+                  onPressed: null
+                )
+              ],
+            ),
+            ButtonBar(
+              children: <Widget>[
+                RaisedButton.icon(
                   icon: Icon(Icons.arrow_drop_down),
                   label: Text(_currentTargetTitle),
                   onPressed: !_submitting ? _selectTarget : null
                 ),
-              ),
-              Visibility(
-                visible: !_submitting,
-                replacement: CircularProgressIndicator(),
-                child: RaisedButton(
-                  child: Text("Publish post"),
-                  onPressed: _valid && !_submitting ? _submit : null
-                ),
-              )
-            ],
-          ),
-          ErrorMessage(_lastError)
-        ],
+                Visibility(
+                  visible: !_submitting,
+                  replacement: CircularProgressIndicator(),
+                  child: RaisedButton(
+                    child: Text("Publish post"),
+                    onPressed: _valid && !_submitting ? _submit : null
+                  ),
+                )
+              ],
+            ),
+            ErrorMessage(_lastError)
+          ],
+        )
       )
     )
   );
@@ -99,9 +143,15 @@ class _PublisherPageState extends State<PublisherPage> {
     _controller.dispose();
   }
 
-  _onTextChanged() {
-    final newValid = _controller.text.trim().isNotEmpty;
-    if (_valid != newValid) {
+  _onTextChanged() => _validate();
+
+  _validate() {
+    final hasText = _controller.text.trim().isNotEmpty,
+      hasPhotos = _attachedPhotos.length > 0,
+      hasPendingPhotos = _attachedPhotos.any((photo) => !photo.uploaded),
+      newValid = (hasText || hasPhotos) && !hasPendingPhotos;
+
+    if (newValid != _valid) {
       setState(() => _valid = newValid);
     }
   }
@@ -128,6 +178,33 @@ class _PublisherPageState extends State<PublisherPage> {
     }
   }
 
+  _uploadPhoto(ImageSource source) async {
+    final picture = await ImagePicker.pickImage(source: source, maxWidth: 700),
+      client = Provider.of<Client>(context, listen: false);
+
+    if (picture == null) {
+      return; // user canceled
+    }
+    final upload = client.uploadPictureForPublishing(picture),
+      attachedPhoto = _AttachedPhoto(picture, upload);
+
+    setState(() => _attachedPhotos.add(attachedPhoto));
+
+    try {
+      final photo = await upload;
+      attachedPhoto.guid = photo.guid;
+      attachedPhoto.uploaded = true;
+    } catch (e, s) {
+      if (mounted) {
+        showErrorSnackBar(_scaffold.currentState, "Failed to upload photo", e, s);
+      }
+
+      setState(() => _attachedPhotos.remove(attachedPhoto));
+    } finally {
+      _validate();
+    }
+  }
+
   _selectTarget() async {
     final PublishTarget response = await showDialog(context: context, builder: (context) =>
       _PublishTargetSelectionDialog(current: _currentTarget));
@@ -140,14 +217,20 @@ class _PublisherPageState extends State<PublisherPage> {
   }
 
   _submit() async {
-    final client = Provider.of<Client>(context, listen: false);
+    final client = Provider.of<Client>(context, listen: false),
+      photos = _attachedPhotos.map((photo) => photo.guid).toList();
 
     setState(() => _submitting = true);
 
     try {
-      final post = _currentTarget.public ? PublishablePost.public(_controller.text) :
-        PublishablePost.private(_controller.text,
-          _currentTarget.allAspects ? await client.currentUserAspects : _currentTarget.aspects);
+      final post = _currentTarget.public ? PublishablePost.public(
+        body: _controller.text,
+        photos: photos
+      ) : PublishablePost.private(
+        _currentTarget.allAspects ? await client.currentUserAspects : _currentTarget.aspects,
+        body: _controller.text,
+        photos: photos
+      );
 
       Navigator.pop(context, await client.createPost(post));
     } catch (e, s) {
@@ -235,5 +318,67 @@ class _PublishTargetSelectionDialogState extends State<_PublishTargetSelectionDi
     ));
 
     return ListView(children: options);
+  }
+}
+
+class _AttachedPhoto {
+  final File picture;
+  final Future<Photo> upload;
+  bool uploaded = false;
+  String guid;
+
+  _AttachedPhoto(this.picture, this.upload);
+}
+
+class _AttachedPhotoView extends StatefulWidget {
+  _AttachedPhotoView({Key key, @required this.photo, @required this.onDelete}) : super(key: key);
+
+  final _AttachedPhoto photo;
+  final Function onDelete;
+
+  @override
+  _AttachedPhotoViewState createState() => _AttachedPhotoViewState();
+}
+
+class _AttachedPhotoViewState extends State<_AttachedPhotoView> {
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    widget.photo.upload.whenComplete(() => setState(() => _loading = false));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        Positioned(
+          child: Image.file(
+            widget.photo.picture,
+            width: 64,
+            height: 64,
+          ),
+        ),
+        Visibility(
+          visible: _loading,
+          child: CircularProgressIndicator(),
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: Visibility(
+            visible: !_loading,
+            child:  IconButton(
+              alignment: Alignment.bottomRight,
+              icon: Icon(Icons.delete),
+              onPressed: widget.onDelete
+            ),
+          )
+        ),
+      ],
+    );
   }
 }
