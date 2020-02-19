@@ -124,6 +124,10 @@ class BadgeUpdater {
   int _notificationsCount = 0;
   int _conversationsCount = 0;
 
+  BadgeUpdater() {
+    _updateBadge();
+  }
+
   void listenToNotifications(UnreadNotificationsCount count) {
     count.addListener(() {
       _notificationsCount = count.count;
