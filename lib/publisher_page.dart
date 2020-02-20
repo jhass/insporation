@@ -41,6 +41,7 @@ class _PublisherPageState extends State<PublisherPage> {
   final _initialFocus = FocusNode();
   final _controller = TextEditingController();
   final List<_AttachedPhoto> _attachedPhotos = [];
+  _Poll _poll;
   bool _valid = false;
   bool _submitting = false;
   String _lastError;
@@ -104,7 +105,8 @@ class _PublisherPageState extends State<PublisherPage> {
                 IconButton(
                   icon: Icon(Icons.poll),
                   tooltip: "Add a poll",
-                  onPressed: null
+                  color: _poll != null ? Theme.of(context).colorScheme.secondary : null,
+                  onPressed: _editPoll
                 ),
                 IconButton(
                   icon: Icon(Icons.location_on),
@@ -205,6 +207,20 @@ class _PublisherPageState extends State<PublisherPage> {
     }
   }
 
+  _editPoll() async {
+    final _Poll poll = await showDialog(context: context, builder: (context) => _PollEditor(poll: _poll));
+
+    if (poll == null) {
+      return; // user canceled
+    }
+
+    if (poll.isEmpty) {
+      setState(() => _poll = null); // Deleted
+    } else {
+      setState(() => _poll = poll);
+    }
+  }
+
   _selectTarget() async {
     final PublishTarget response = await showDialog(context: context, builder: (context) =>
       _PublishTargetSelectionDialog(current: _currentTarget));
@@ -225,11 +241,15 @@ class _PublisherPageState extends State<PublisherPage> {
     try {
       final post = _currentTarget.public ? PublishablePost.public(
         body: _controller.text,
-        photos: photos
+        photos: photos,
+        pollQuestion: _poll?.question,
+        pollAnswers: _poll?.answers
       ) : PublishablePost.private(
         _currentTarget.allAspects ? await client.currentUserAspects : _currentTarget.aspects,
         body: _controller.text,
-        photos: photos
+        photos: photos,
+        pollQuestion: _poll?.question,
+        pollAnswers: _poll?.answers
       );
 
       Navigator.pop(context, await client.createPost(post));
@@ -380,5 +400,126 @@ class _AttachedPhotoViewState extends State<_AttachedPhotoView> {
         ),
       ],
     );
+  }
+}
+
+class _Poll {
+  String question;
+  List<String> answers = [];
+
+  bool get isEmpty => question == null;
+}
+
+class _PollEditor extends StatefulWidget {
+  _PollEditor({Key key, this.poll}) : super(key: key);
+
+  final _Poll poll;
+
+  @override
+  _PollEditorState createState() => _PollEditorState();
+}
+
+class _PollEditorState extends State<_PollEditor> {
+  final _question = TextEditingController();
+  final _answers = <TextEditingController>[];
+  final _discardedAnswers = <TextEditingController>[];
+  _Poll _poll;
+  bool _valid = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _poll = widget.poll ?? _Poll();
+    _question.text = _poll.question ?? "";
+    _answers.addAll(_poll.answers.map((answer) => TextEditingController()..text = answer));
+    _answers.add(TextEditingController());
+    if (_answers.length < 2) {
+      _answers.add(TextEditingController());
+    }
+    _validate();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final actions = <Widget>[
+      FlatButton(child: Text("Cancel"), onPressed: () => Navigator.pop(context)),
+      FlatButton(child: Text("Save"), onPressed: _valid ? () => Navigator.pop(context, _poll) : null)
+    ];
+
+    if (widget.poll != null) {
+      actions.insert(0, Expanded(
+        child: FlatButton(
+          child: Text("Delete"),
+          onPressed: () => Navigator.pop(context, _Poll())
+        )
+      ));
+    }
+
+    final children = <Widget>[
+        SimpleDialogOption(
+          child: TextField(
+            controller: _question,
+            onChanged: (value) {
+              _poll.question = value;
+              _validate();
+            },
+            decoration: InputDecoration(hintText: "Enter a question"),
+          ),
+        ),
+    ];
+
+    children.addAll(List.generate(_answers.length, (position) => SimpleDialogOption(
+      child: TextField(
+        controller: _answers[position],
+        onChanged: (value) => _onAnswerChanged(position, value),
+        decoration: InputDecoration(hintText: "Enter an answer"),
+      )
+    )));
+
+    children.add(Row(mainAxisAlignment: MainAxisAlignment.end, children: actions));
+
+    return SimpleDialog(
+      title: Text(widget.poll == null ? "Create poll" : "Edit poll"),
+      children: children);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _question.dispose();
+    (_answers + _discardedAnswers).forEach((answer) => answer.dispose());
+  }
+
+  _onAnswerChanged(int position, String value) {
+    if (value.trim().isNotEmpty) {
+      if (position < _poll.answers.length) {
+        _poll.answers[position] = value;
+      } else {
+        _poll.answers.add(value);
+      }
+
+      if (position == _answers.length - 1) {
+        setState(() => _answers.add(_discardedAnswers.length > 0 ?
+          (_discardedAnswers.removeLast()..text = "") : TextEditingController()));
+      }
+    } else {
+      if (position < _poll.answers.length) {
+        _poll.answers.removeAt(position);
+      }
+
+      if (position < _answers.length - 1) {
+        setState(() => _discardedAnswers.add(_answers.removeAt(position)));
+      }
+    }
+
+    _validate();
+  }
+
+  _validate() {
+    final newValid = _question.text.trim().isNotEmpty &&
+      _answers.where((answer) => answer.text.trim().isNotEmpty).length >= 2;
+    if (newValid != _valid) {
+      setState(() => _valid = newValid);
+    }
   }
 }

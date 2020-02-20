@@ -1286,15 +1286,25 @@ class ConversationMessage {
 class PublishablePost {
   final String body;
   final List<String> photos;
+  final String pollQuestion;
+  final List<String> pollAnswers;
   final bool public;
   final List<Aspect> aspects;
 
-  PublishablePost.public({this.body, this.photos}) : public = true, aspects = null { _validate(); }
-  PublishablePost.private(this.aspects, {this.body, this.photos}) : public = false { _validate(); }
+  PublishablePost.public({this.body, this.photos, this.pollQuestion, this.pollAnswers})
+    : public = true, aspects = null { _validate(); }
+  PublishablePost.private(this.aspects, {this.body, this.photos, this.pollQuestion, this.pollAnswers})
+    : public = false { _validate(); }
 
   _validate() {
     assert(body != null || (photos != null && photos.isNotEmpty), "Post must have body or photos!");
     assert(public || (aspects != null && aspects.isNotEmpty), "Post must be public or have target aspects!");
+
+    if (pollQuestion != null) {
+      assert(pollAnswers != null && pollAnswers.length >= 2, "Post must have at least two poll answers with a poll question set!");
+    } else {
+      assert(pollAnswers == null, "Post must have a poll question when poll answers are set!");
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -1306,6 +1316,10 @@ class PublishablePost {
 
     if (photos != null && photos.isNotEmpty) {
       post["photos"] = photos;
+    }
+
+    if (pollQuestion != null) {
+      post["poll"] = {"question": pollQuestion, "poll_answers": pollAnswers};
     }
 
     if (public) {
