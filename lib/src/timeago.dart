@@ -22,12 +22,13 @@ class _TimeagoState extends State<Timeago> {
   @override
   void initState() {
     super.initState();
+
     setState(() {
       _currentText = timeago.format(widget.dateTime);
     });
 
     _timer = Timer.periodic(Duration(minutes: 1), (_) => setState(() =>
-    _currentText = timeago.format(widget.dateTime)));
+      _currentText = timeago.format(widget.dateTime)));
   }
 
   @override
@@ -38,6 +39,6 @@ class _TimeagoState extends State<Timeago> {
 
   @override
   Widget build(BuildContext context) {
-    return Text(_currentText, style: widget.textStyle,);
+    return Text(_currentText, style: widget.textStyle);
   }
 }

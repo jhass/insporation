@@ -178,6 +178,7 @@ class PostView extends StatelessWidget {
                 _PollView(post: post),
                 _OEmbedView(oEmbed: post.oEmbed),
                 _OpenGraphView(object: post.openGraphObject),
+                _LocationView(location: post.location),
                 Divider(),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -922,6 +923,47 @@ class _OpenGraphView extends StatelessWidget {
     return InkWell(
       child: child,
       onTap: () => launch(object.url)
+    );
+  }
+}
+
+
+class _LocationView extends StatelessWidget {
+  _LocationView({Key key, this.location}) : super(key: key);
+
+  final Location location;
+
+  @override
+  Widget build(BuildContext context) {
+    if  (location == null) {
+      return SizedBox.shrink();
+    }
+
+    return InkWell(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Divider(),
+          InkWell(
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 4.0, left: 2.0),
+                  child: Icon(Icons.location_on, size: 14, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5)),
+                ),
+                Text(location.address, style: TextStyle(fontSize: 10)),
+              ],
+            ),
+            onTap: () {
+              if (Theme.of(context).platform == TargetPlatform.android) {
+                launch("geo:0,0?q=${location.lat},${location.lng}(${Uri.encodeFull(location.address)})");
+              } else {
+                // TODO handle other platforms
+              }
+            }
+          )
+        ]
+      )
     );
   }
 }

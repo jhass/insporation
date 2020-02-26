@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'client.dart';
+import 'utils.dart';
 import 'widgets.dart';
 
 abstract class ItemStream<T> extends ChangeNotifier {
@@ -9,7 +10,7 @@ abstract class ItemStream<T> extends ChangeNotifier {
   bool loading = false;
   Page<T> _lastPage;
   List<T> _items;
-  _CancelableFuture<Page<T>> _currentLoad;
+  CancelableFuture<Page<T>> _currentLoad;
 
   int get length => _items?.length ?? 0;
 
@@ -108,7 +109,7 @@ abstract class ItemStream<T> extends ChangeNotifier {
     loading = true;
 
     try {
-      _currentLoad = _CancelableFuture(loadPage(client: client, page: page));
+      _currentLoad = CancelableFuture(loadPage(client: client, page: page));
       Page<T> newPage = await _currentLoad.get();
       _currentLoad = null;
 
@@ -128,7 +129,7 @@ abstract class ItemStream<T> extends ChangeNotifier {
         // cases where there's less items in the response than the limit
         return _load(client, page: _lastPage.nextPage);
       }
-    } on _FutureCancelledError {
+    } on FutureCanceledError {
       //  ignore
     } finally {
       loading = false;
@@ -138,27 +139,6 @@ abstract class ItemStream<T> extends ChangeNotifier {
   @protected
   Future<Page<T>> loadPage({Client client, String page});
 }
-
-class _CancelableFuture<T> {
-  final Future<T> _future;
-  bool _canceled = false;
-
-  _CancelableFuture(Future<T> future) : _future = future;
-
-  Future<T> get() async {
-    T result = await _future;
-
-    if  (_canceled) {
-      throw _FutureCancelledError();
-    }
-
-    return result;
-  }
-
-  void cancel() => _canceled = true;
-}
-
-class _FutureCancelledError implements Exception {}
 
 abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
   ItemStreamState({this.enableUpButton = true, this.listPadding});

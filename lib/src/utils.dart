@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,3 +53,27 @@ String _debugPrintError(String message, exception, stack) {
 
   return exceptionMessage;
 }
+
+class CancelableFuture<T> {
+  final Future<T> _future;
+  bool _canceled = false;
+
+  CancelableFuture(Future<T> future) : _future = future;
+
+  CancelableFuture<U> then<U>(FutureOr<U> Function(T) onValue) =>
+    CancelableFuture(get().then(onValue));
+
+  Future<T> get() async {
+    T result = await _future;
+
+    if  (_canceled) {
+      throw FutureCanceledError();
+    }
+
+    return result;
+  }
+
+  void cancel() => _canceled = true;
+}
+
+class FutureCanceledError implements Exception {}

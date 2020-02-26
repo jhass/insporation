@@ -1,8 +1,12 @@
+import 'dart:collection';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geojson/geojson.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 import 'src/client.dart';
 import 'src/composer.dart';
@@ -42,6 +46,7 @@ class _PublisherPageState extends State<PublisherPage> {
   final _controller = TextEditingController();
   final List<_AttachedPhoto> _attachedPhotos = [];
   _Poll _poll;
+  Location _location;
   bool _valid = false;
   bool _submitting = false;
   String _lastError;
@@ -111,7 +116,8 @@ class _PublisherPageState extends State<PublisherPage> {
                 IconButton(
                   icon: Icon(Icons.location_on),
                   tooltip: "Add your location",
-                  onPressed: null
+                  color: _location != null ? Theme.of(context).colorScheme.secondary : null,
+                  onPressed: _editLocation
                 )
               ],
             ),
@@ -221,6 +227,17 @@ class _PublisherPageState extends State<PublisherPage> {
     }
   }
 
+  _editLocation() async {
+    final Location location = await showDialog(context: context, builder: (context) =>
+      _LocationEditor(location: _location));
+
+    if (location == _location) {
+      return; // user canceled
+    }
+
+    setState(() => _location = location);
+  }
+
   _selectTarget() async {
     final PublishTarget response = await showDialog(context: context, builder: (context) =>
       _PublishTargetSelectionDialog(current: _currentTarget));
@@ -243,13 +260,15 @@ class _PublisherPageState extends State<PublisherPage> {
         body: _controller.text,
         photos: photos,
         pollQuestion: _poll?.question,
-        pollAnswers: _poll?.answers
+        pollAnswers: _poll?.answers,
+        location: _location
       ) : PublishablePost.private(
         _currentTarget.allAspects ? await client.currentUserAspects : _currentTarget.aspects,
         body: _controller.text,
         photos: photos,
         pollQuestion: _poll?.question,
-        pollAnswers: _poll?.answers
+        pollAnswers: _poll?.answers,
+        location: _location
       );
 
       Navigator.pop(context, await client.createPost(post));
@@ -447,11 +466,10 @@ class _PollEditorState extends State<_PollEditor> {
     ];
 
     if (widget.poll != null) {
-      actions.insert(0, Expanded(
-        child: FlatButton(
-          child: Text("Delete"),
-          onPressed: () => Navigator.pop(context, _Poll())
-        )
+      actions.insert(0, Spacer());
+      actions.insert(0, FlatButton(
+        child: Text("Remove"),
+        onPressed: () => Navigator.pop(context, _Poll())
       ));
     }
 
@@ -521,5 +539,144 @@ class _PollEditorState extends State<_PollEditor> {
     if (newValid != _valid) {
       setState(() => _valid = newValid);
     }
+  }
+}
+
+
+class _LocationEditor extends StatefulWidget {
+  _LocationEditor({Key key, this.location}) : super(key: key);
+
+  final Location location;
+
+  @override
+  _LocationEditorState createState() => _LocationEditorState();
+}
+
+class _LocationEditorState extends State<_LocationEditor> {
+  static final _apiBase = Uri.parse("https://photon.komoot.de/api/");
+
+  final _controller = TextEditingController();
+  final _results = <Location>[];
+  bool _loading = false;
+  CancelableFuture<GeoJsonFeatureCollection> _currentSearch;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.location != null) {
+      _controller.text = widget.location.address;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final entries = <Widget>[
+        SimpleDialogOption(
+          child: TextField(
+            controller: _controller,
+            decoration: InputDecoration(hintText: "Enter address"),
+            onChanged: _search,
+          )
+        )
+    ];
+
+    if (_loading) {
+      entries.add(SimpleDialogOption(child: Center(child: CircularProgressIndicator())));
+    }
+
+    entries.addAll(_results.map((location) => Container(
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor))),
+      child: SimpleDialogOption(
+        onPressed: () => Navigator.pop(context, location),
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Icon(Icons.location_on),
+            ),
+            Expanded(child: Text(location.address)),
+          ],
+        )
+      )
+    )));
+
+    final actions = <Widget>[
+      FlatButton(child: Text("Close"), onPressed: () => Navigator.pop(context, widget.location)),
+    ];
+
+    if (widget.location != null) {
+      actions.insert(0, Spacer());
+      actions.insert(0, FlatButton(
+        child: Text("Remove"),
+        onPressed: () => Navigator.pop(context),
+      ));
+    }
+
+    entries.add(Row(mainAxisAlignment: MainAxisAlignment.end, children: actions));
+
+    return SimpleDialog(children: entries);
+  }
+
+  _search(String query) async {
+    if (_currentSearch != null)  {
+      _currentSearch.cancel();
+    }
+
+    query = query.trim();
+    if (query.isEmpty) {
+      setState(() {
+        _results.clear();
+        _loading = false;
+      });
+      return;
+    }
+
+    try {
+      setState(() => _loading = true);
+
+      _currentSearch = _fetchFeatures(query);
+      final features = await _currentSearch.get();
+
+      setState(() {
+        _results
+          ..clear()
+          ..addAll(features
+            .collection
+            .cast<GeoJsonFeature<GeoJsonPoint>>()
+            .map((feature) => Location(
+              address: _formatAddress(feature.properties),
+              lat: feature.geometry.geoPoint.latitude,
+              lng: feature.geometry.geoPoint.longitude))
+            .fold<Set<Location>>(LinkedHashSet(), (locations, location) => locations..add(location))
+            .take(15)
+          );
+          _loading = false;
+      });
+    } on FutureCanceledError {
+      // ignore
+    } catch (e, s) {
+      tryShowErrorSnackBar(this, "Failed to query addresses", e, s);
+    }
+  }
+
+  CancelableFuture<GeoJsonFeatureCollection> _fetchFeatures(String query) => CancelableFuture(
+    http.get(_apiBase.replace(queryParameters: {"q": query}))
+  ).then((response) {
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return compute(featuresFromGeoJson, response.body);
+    } else {
+      throw ClientException.fromResponse(response);
+    }
+  });
+
+  _formatAddress(Map<String, dynamic> properties) {
+    return LinkedHashSet.of([
+      properties["name"],
+      properties["street"],
+      properties["city"],
+      properties["state"],
+      properties["country"]]
+      ..removeWhere((element) => element == null)).join(", ");
   }
 }

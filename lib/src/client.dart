@@ -885,6 +885,7 @@ class Aspect {
   static List<Aspect> fromList(List<Map<String, dynamic>> objects) =>
     objects.map((object) => Aspect.from(object)).toList();
 
+  @override
   bool operator ==(other) => other is Aspect && other.id == id;
 
   @override
@@ -909,6 +910,7 @@ class Post {
   final PostInteractions interactions;
   final OEmbed oEmbed;
   final OpenGraphObject openGraphObject;
+  final Location location;
   final DateTime createdAt;
   final bool ownPost;
   final bool mock;
@@ -916,7 +918,7 @@ class Post {
   Post({@required this.guid, @required this.type, @required this.body, @required this.author,
     @required this.public, @required this.nsfw, @required this.root, @required this.photos,
     @required this.poll, @required this.mentionedPeople, @required this.interactions, @required this.oEmbed,
-    @required this.openGraphObject, @required this.createdAt, @required this.ownPost, this.mock});
+    @required this.openGraphObject, @required this.location, @required this.createdAt, @required this.ownPost, this.mock});
 
   factory Post.from(Map<String, dynamic> object, {String currentUser}) {
     final author = Person.from(object["author"]),
@@ -937,6 +939,7 @@ class Post {
       ) : null,
       interactions: PostInteractions.from(object["interaction_counters"], object["own_interaction_state"]),
       openGraphObject: object["open_graph_object"] != null ? OpenGraphObject.from(object["open_graph_object"]) : null,
+      location: object["location"] != null ? Location.from(object["location"]) : null,
       oEmbed: object["oembed"] != null ? OEmbed.from(object["oembed"]) : null,
       createdAt: DateTime.parse(object["created_at"]),
       ownPost: author.diasporaId == currentUser || (root != null && root.author.diasporaId == currentUser),
@@ -972,6 +975,7 @@ class Post {
       interactions: PostInteractions(subscribed: true),
       oEmbed: post.oEmbed,
       openGraphObject: post.openGraphObject,
+      location: post.location,
       createdAt: DateTime.now(),
       ownPost: true,
       mock: true
@@ -1112,6 +1116,32 @@ class Photo {
 
   static List<Photo> fromList(List<Map<String, dynamic>> objects) =>
     objects.map((object) => Photo.from(object)).toList();
+}
+
+class Location {
+  final String address;
+  final double lat;
+  final double lng;
+
+  Location({@required this.address, @required this.lat, @required this.lng});
+
+  factory Location.from(Map<String, dynamic> object) => Location(
+    address: object["address"],
+    lat: object["lat"],
+    lng: object["lng"]
+  );
+
+  Map<String, dynamic> toJson() => {
+    "address": address,
+    "lat": lat,
+    "lng": lng
+  };
+
+  @override
+  bool operator ==(other) => other is Location && other.address == address;
+
+  @override
+  int get hashCode => address.hashCode;
 }
 
 class PhotoSizes {
@@ -1288,12 +1318,13 @@ class PublishablePost {
   final List<String> photos;
   final String pollQuestion;
   final List<String> pollAnswers;
+  final Location location;
   final bool public;
   final List<Aspect> aspects;
 
-  PublishablePost.public({this.body, this.photos, this.pollQuestion, this.pollAnswers})
+  PublishablePost.public({this.body, this.photos, this.pollQuestion, this.pollAnswers, this.location})
     : public = true, aspects = null { _validate(); }
-  PublishablePost.private(this.aspects, {this.body, this.photos, this.pollQuestion, this.pollAnswers})
+  PublishablePost.private(this.aspects, {this.body, this.photos, this.pollQuestion, this.pollAnswers, this.location})
     : public = false { _validate(); }
 
   _validate() {
@@ -1320,6 +1351,10 @@ class PublishablePost {
 
     if (pollQuestion != null) {
       post["poll"] = {"question": pollQuestion, "poll_answers": pollAnswers};
+    }
+
+    if (location != null) {
+      post["location"] = location;
     }
 
     if (public) {
