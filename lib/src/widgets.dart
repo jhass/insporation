@@ -37,6 +37,30 @@ SnackBar errorSnackbar(BuildContext context, String message) {
   );
 }
 
+class Avatar extends StatelessWidget {
+  Avatar({Key key, Person person, String url, this.size = 24}) : this.url = url ?? person?.avatar, super(key: key);
+
+  final String url;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      child: url != null ? ClipRRect(
+        borderRadius: BorderRadius.circular(5),
+        child: CachedNetworkImage(
+          placeholder: (context, url) => Icon(Icons.person),
+          imageUrl: url,
+          fadeInDuration: Duration(milliseconds: 250),
+          fit: BoxFit.cover,
+        )
+      ) : Icon(Icons.person),
+    );
+  }
+}
+
 class AvatarStack extends StatelessWidget {
   AvatarStack({Key key, this.people}) : super(key: key);
 

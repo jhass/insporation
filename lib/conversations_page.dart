@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
@@ -162,19 +161,9 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
             runSpacing: 4,
             children: widget.conversation.participants.map((person) => GestureDetector(
               onTap: () => Navigator.pushNamed(context, "/profile", arguments: person),
-              child: person.avatar == null ?
-                Icon(Icons.person) :
-                Tooltip(
+              child: Tooltip(
                   message: person.nameOrId,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: CachedNetworkImage(
-                      width: 32,
-                      height: 32,
-                      fit: BoxFit.cover,
-                      imageUrl: person.avatar
-                    )
-                  ),
+                  child: Avatar(person: person, size: 32)
                 )
             )).toList()
           ),

@@ -1,10 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:insporation/src/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
 import 'src/item_stream.dart';
+import 'src/utils.dart';
+import 'src/widgets.dart';
 
 class ContactsPage extends StatefulWidget {
   @override
@@ -169,27 +169,14 @@ class _AspectContactsPageState extends ItemStreamState<Person, _AspectContactsPa
   ItemStream<Person> createStream() => _AspectContactsStream(widget.aspect);
 
   @override
-  Widget buildItem(BuildContext context, Person person) {
-    final placeholder = Container(width: 32, height: 32, alignment: Alignment.center, child: Icon(Icons.person));
-    return Container(
-      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor))),
-      child: ListTile(
-        leading: person.avatar == null ?
-        placeholder : ClipRRect(
-          borderRadius: BorderRadius.circular(5),
-          child: CachedNetworkImage(
-            width: 32,
-            height: 32,
-            fit: BoxFit.cover,
-            imageUrl: person.avatar,
-            placeholder: (context, _) => placeholder,
-          )
-        ),
-        title: Text(person.nameOrId),
-        onTap: () => Navigator.pushNamed(context, '/profile', arguments: person),
-      ),
-    );
-  }
+  Widget buildItem(BuildContext context, Person person) => Container(
+    decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor))),
+    child: ListTile(
+      leading: Avatar(person: person, size: 32),
+      title: Text(person.nameOrId),
+      onTap: () => Navigator.pushNamed(context, '/profile', arguments: person),
+    ),
+  );
 }
 
 class _AspectNameDialog extends StatefulWidget {

@@ -119,6 +119,7 @@ abstract class ItemStream<T> extends ChangeNotifier {
       } else {
         _items.addAll(newPage.content);
       }
+      loading = false;
       notifyListeners();
 
       if (length < 10 && _lastPage?.nextPage != null) {

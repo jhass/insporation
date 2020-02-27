@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +6,7 @@ import 'src/client.dart';
 import 'src/item_stream.dart';
 import 'src/navigation.dart';
 import 'src/search.dart';
+import 'src/widgets.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -97,23 +97,10 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> {
   }
 
   Widget _buildLeading(SearchResult item) {
-    if (item.person == null) {
-      return null;
+    if (item.person != null) {
+      return Avatar(person: item.person, size: 36);
     } else {
-      final placeholder = Container(width: 32, height: 32, alignment: Alignment.center, child: Icon(Icons.person));
-      if (item.person.avatar != null)  {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(5),
-          child: CachedNetworkImage(
-            width: 36,
-            height: 36,
-            imageUrl: item.person.avatar,
-            placeholder: (context, url) => placeholder,
-          )
-        );
-      } else {
-        return placeholder;
-      }
+      return null;
     }
   }
 
@@ -122,7 +109,7 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> {
   void _launchItem(SearchResult item) {
     if (item.person != null) {
       Navigator.pushNamed(context, "/profile", arguments: item.person);
-    } else {
+    } else if (item.tag != null) {
       Navigator.pushNamed(context, "/stream/tag", arguments: item.tag);
     }
   }

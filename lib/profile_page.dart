@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -189,16 +188,7 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
     final content = <Widget>[], headRow = <Widget>[];
 
     if (profile.avatar?.medium != null) {
-      headRow.add(ClipRRect(
-        borderRadius: BorderRadius.circular(5),
-        child: CachedNetworkImage(
-          width: 64,
-          height: 64,
-          fit: BoxFit.cover,
-          imageUrl: profile.avatar.medium,
-          placeholder: (context, url) => Center(child: Icon(Icons.person)),
-        ) ,
-      ));
+      headRow.add(Avatar(url: profile.avatar.medium, size: 64));
     }
 
     if (profile.ownProfile) {

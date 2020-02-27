@@ -5,12 +5,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:insporation/src/composer.dart';
-import 'package:insporation/src/search.dart';
-import 'package:insporation/src/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
+import 'src/composer.dart';
+import 'src/search.dart';
+import 'src/utils.dart';
 import 'src/widgets.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -58,7 +58,7 @@ class _EditAvatar extends StatefulWidget {
 }
 
 class _EditAvatarState extends State<_EditAvatar> {
-  static double _size = 196;
+  static const double _size = 196;
 
   final _crop = GlobalKey<CropState>();
   File _newImage;

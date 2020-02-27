@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insporation/src/widgets.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
@@ -8,6 +7,7 @@ import 'src/messages.dart';
 import 'src/search.dart';
 import 'src/utils.dart';
 import 'src/colors.dart' as colors;
+import 'src/widgets.dart';
 
 class NewConversationOptions {
   final List<Person> recipients;

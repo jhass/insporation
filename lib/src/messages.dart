@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'client.dart';
 import 'markdown_extensions.dart' as mde;
 import 'colors.dart'  as colors;
+import 'widgets.dart';
 
 class PersonHeader extends StatelessWidget {
   const PersonHeader({Key key, @required this.person}) : super(key: key);
@@ -24,19 +25,7 @@ class PersonHeader extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(4, 4, 8, 4),
-            child: Container(
-              width: 24,
-              height: 24,
-              child: person.avatar != null ? ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: CachedNetworkImage(
-                  placeholder: (context, url) => Icon(Icons.person),
-                  imageUrl: person.avatar,
-                  fadeInDuration: Duration(milliseconds: 250),
-                  fit: BoxFit.cover,
-                )
-              ) : Icon(Icons.person),
-            )
+            child: Avatar(person: person)
           ),
           Flexible(
             child: Text(

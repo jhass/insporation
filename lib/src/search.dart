@@ -1,9 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:async';
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'client.dart';
 import 'item_stream.dart';
+import 'widgets.dart';
 
 enum SearchType { people, peopleByTag, tags }
 
@@ -77,20 +80,22 @@ class SearchResultStream extends ItemStream<SearchResult> {
     Stream<Person> _streamContacts(List<Aspect> aspects) async* {
       // TODO let's have a proper API endpoint for this
       final state = aspects.map((aspect) => _AllAspectsContactsStreamState(aspect)).toList();
+      final persons = HashSet<String>();
       int current = 0;
       do {
         Page<Person> lastPage = state[current].lastPage;
         if (lastPage == null || lastPage.nextPage != null) {
           final response = await client.fetchAspectContacts(state[current].aspect, page: lastPage?.nextPage);
           state[current].lastPage = response;
-          yield* Stream.fromIterable(response.content);
+          yield* Stream.fromIterable(response.content).where((person) => !persons.contains(person.guid));
+          persons.addAll(response.content.map((person) => person.guid));
         } else {
           state.removeAt(current);
         }
 
         current++;
 
-        if (current >= aspects.length) {
+        if (current >= state.length) {
           current = 0;
         }
       } while (state.length > 0);
@@ -139,8 +144,8 @@ abstract class _SearchDialogState<T extends StatefulWidget> extends ItemStreamSt
   _SearchDialogState({this.hint = "Search"}) : super(enableUpButton: false);
 
   final String hint;
-
   final _controller = TextEditingController();
+  bool _loading = false;
 
   @protected
   TextEditingController get controller => _controller;
@@ -158,40 +163,31 @@ abstract class _SearchDialogState<T extends StatefulWidget> extends ItemStreamSt
     title: TextField(
       controller: _controller,
       decoration: InputDecoration(hintText: hint),
-      onChanged: (value) {
+      onChanged: (value) async {
         final stream = (items as SearchResultStream);
         stream.query = value;
-        stream.load(Provider.of<Client>(context, listen: false));
+        setState(() => _loading = true);
+        await stream.load(Provider.of<Client>(context, listen: false));
+        setState(() => _loading = false);
       },
     ),
     children: <Widget>[
-        ConstrainedBox(
-          constraints: BoxConstraints.loose(Size(double.infinity, 400)),
-          child: buildStream(context)
-        ),
+      Visibility(visible: _loading, child: Center(child: CircularProgressIndicator())),
+      ConstrainedBox(
+        constraints: BoxConstraints.loose(Size(double.infinity, 400)),
+        child: buildStream(context)
+      ),
     ],
   );
 
   @override
   Widget buildItem(BuildContext context, SearchResult item) {
     if (item.person != null) {
-      final placeholder = Container(width: 32, height: 32, alignment: Alignment.center, child: Icon(Icons.person));
-      Widget avatar;
-      if (item.person.avatar != null)  {
-        avatar = ClipRRect(
-          borderRadius: BorderRadius.circular(5),
-          child: CachedNetworkImage(
-            width: 36,
-            height: 36,
-            imageUrl: item.person.avatar,
-            placeholder: (context, url) => placeholder,
-          )
-        );
-      } else {
-        avatar = placeholder;
-      }
-
-      return ListTile(leading: avatar, title: Text(item.person.nameOrId), onTap: () => Navigator.pop(context, item.person));
+      return ListTile(
+        leading: Avatar(person: item.person, size: 36),
+        title: Text(item.person.nameOrId),
+        onTap: () => Navigator.pop(context, item.person)
+      );
     } else {
       return ListTile(title: Text("#${item.tag}"), onTap: () => Navigator.pop(context, item.tag));
     }
