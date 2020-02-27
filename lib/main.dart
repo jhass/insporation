@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'src/colors.dart' as colors;
@@ -39,10 +43,37 @@ void main() => runApp(MultiProvider(
   child: Insporation(),
 ));
 
-class Insporation extends StatelessWidget {
+class Insporation extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _InsporationState();
+}
+
+class _InsporationState extends State<Insporation> {
+  final _shareEventsChannel = EventChannel("insporation/share_receiver");
+  final _navigator = GlobalKey<NavigatorState>();
+  StreamSubscription shareEventsSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // We need to give the MaterialApp widget some time to initialize the navigator and push the initial route,
+      // as we want for any share event to only push a route after that.
+      shareEventsSubscription = _shareEventsChannel.receiveBroadcastStream().listen(_onShareIntent);
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    shareEventsSubscription.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: _navigator,
       title: 'insporation*',
       theme: ThemeData.from(colorScheme: colors.scheme),
       darkTheme: ThemeData.from(colorScheme: colors.darkScheme),
@@ -96,5 +127,31 @@ class Insporation extends StatelessWidget {
         }
       },
     );
+  }
+
+  void _onShareIntent(event) {
+    if (event is! Map) {
+      return;
+    }
+
+    final shareEvent = event.cast<String, dynamic>();
+
+    if (!shareEvent.containsKey("type")) {
+        return;
+    }
+
+    switch (shareEvent["type"]) {
+      case "text":
+        final subject = shareEvent["subject"]?.isNotEmpty == true ? shareEvent["subject"] : null,
+          text = shareEvent["text"] as String,
+          prefill = subject == null ? text : text.startsWith("http") && !text.contains(RegExp(r"\s")) ? "[$subject]($text)" : "### $subject\n\n$text";
+        _navigator.currentState.pushNamed("/publisher", arguments: PublisherOptions(prefill: prefill));
+        break;
+      case "images":
+        _navigator.currentState.pushNamed("/publisher", arguments: PublisherOptions(
+          images: shareEvent["images"].cast<String>()
+        ));
+        break;
+    }
   }
 }

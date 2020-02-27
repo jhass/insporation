@@ -1,9 +1,11 @@
 import 'dart:collection';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geojson/geojson.dart';
+import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -16,9 +18,10 @@ import 'src/widgets.dart';
 
 class PublisherOptions {
   final String prefill;
+  final List<String> images;
   final PublishTarget target;
 
-  const PublisherOptions({this.prefill = "", this.target = const PublishTarget.allAspects()});
+  const PublisherOptions({this.prefill = "", this.images = const <String>[], this.target = const PublishTarget.allAspects()});
 }
 
 class PublishTarget {
@@ -41,6 +44,7 @@ class PublisherPage extends StatefulWidget {
 }
 
 class _PublisherPageState extends State<PublisherPage> {
+  static const _maxPhotoWidth = 700.0;
   final _scaffold = GlobalKey<ScaffoldState>(); // TOOD extract things so this not necessary
   final _initialFocus = FocusNode();
   final _controller = TextEditingController();
@@ -64,7 +68,13 @@ class _PublisherPageState extends State<PublisherPage> {
 
     _controller.addListener(_onTextChanged);
     _controller.text = widget.options.prefill;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // We can't yet call Provider.of from initState, so delay a bit
+      widget.options.images.forEach((uri) => _uploadPhotoUri(uri));
+    });
   }
+
   @override
   Widget build(BuildContext context) => Scaffold(
     key: _scaffold,
@@ -187,12 +197,28 @@ class _PublisherPageState extends State<PublisherPage> {
   }
 
   _uploadPhoto(ImageSource source) async {
-    final picture = await ImagePicker.pickImage(source: source, maxWidth: 700),
-      client = Provider.of<Client>(context, listen: false);
+    final picture = await ImagePicker.pickImage(source: source, maxWidth: _maxPhotoWidth);
 
     if (picture == null) {
       return; // user canceled
     }
+
+    _uploadPhotoFile(picture);
+  }
+
+  _uploadPhotoUri(String uri) async {
+    final source = File.fromUri(Uri.parse(uri)),
+      info = await ImageCrop.getImageOptions(file: source),
+      width = min(_maxPhotoWidth, info.width),
+      height = info.height * (width / info.width),
+      picture = info.width <= _maxPhotoWidth ? source : await ImageCrop.sampleImage(
+        file: source, preferredWidth: width.floor(), preferredHeight: height.floor());
+
+    _uploadPhotoFile(picture);
+  }
+
+  _uploadPhotoFile(File picture) async {
+    final client = Provider.of<Client>(context, listen: false);
     final upload = client.uploadPictureForPublishing(picture),
       attachedPhoto = _AttachedPhoto(picture, upload);
 

@@ -2,6 +2,7 @@ package jhass.eu.insporation
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -28,48 +29,62 @@ fun Throwable.fullMessage() : String {
 }
 
 class MainActivity: FlutterActivity() {
-    private var methodChannel : MethodChannel? = null
+    private var appAuthChannel : MethodChannel? = null
     private var currentAuthState : AuthState = AuthState()
     private var currentAppAuthResult : MethodChannel.Result? = null
-    private var returningFromAuthorization = false;
+    private var returningFromAuthorization = false
+    private val shareEventStream = ShareEventStream()
 
     private val authorizationService: AuthorizationService
         get() = AuthorizationService(context)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        shareEventStream.push(intent)
+    }
+
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine)
 
-        methodChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, APP_AUTH_CHANNEL)
-        methodChannel?.setMethodCallHandler { call, result ->
-                when (call.method) {
-                    "registerClient" -> {
-                        if (call.hasArgument("url")) {
-                            handleRegisterClient(call, result, authorizationService)
-                        } else {
-                            result.notImplemented()
-                        }
-                    }
-                    "authorize" -> {
-                        if (call.hasArgument("authState") &&
-                            call.hasArgument("username") &&
-                            call.hasArgument("scopes")) {
-                            handleAuthorize(call, result, authorizationService)
-                        } else {
-                            result.notImplemented()
-                        }
-                    }
-                    "getAccessToken" -> {
-                        if (call.hasArgument("authState")) {
-                            handleGetAccessToken(call, result, authorizationService)
-                        } else {
-                            result.notImplemented()
-                        }
-                    }
-                    else -> {
+        appAuthChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, APP_AUTH_CHANNEL)
+        appAuthChannel?.setMethodCallHandler { call, result ->
+            when (call.method) {
+                "registerClient" -> {
+                    if (call.hasArgument("url")) {
+                        handleRegisterClient(call, result, authorizationService)
+                    } else {
                         result.notImplemented()
                     }
                 }
+                "authorize" -> {
+                    if (call.hasArgument("authState") &&
+                            call.hasArgument("username") &&
+                            call.hasArgument("scopes")) {
+                        handleAuthorize(call, result, authorizationService)
+                    } else {
+                        result.notImplemented()
+                    }
+                }
+                "getAccessToken" -> {
+                    if (call.hasArgument("authState")) {
+                        handleGetAccessToken(call, result, authorizationService)
+                    } else {
+                        result.notImplemented()
+                    }
+                }
+                else -> {
+                    result.notImplemented()
+                }
             }
+        }
+
+        shareEventStream.setup(applicationContext, flutterEngine)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        shareEventStream.push(intent)
     }
 
     private fun handleRegisterClient(call: MethodCall, result: MethodChannel.Result, authorizationService: AuthorizationService) {
@@ -153,7 +168,7 @@ class MainActivity: FlutterActivity() {
             val exception = AuthorizationException.fromIntent(data)
 
             val result = currentAppAuthResult
-            val channel = methodChannel
+            val channel = appAuthChannel
             if (result != null) {
                 currentAuthState.update(authorizationResponse, exception)
                 when {
@@ -194,7 +209,7 @@ class MainActivity: FlutterActivity() {
     private fun exchangeAuthorizationCode(authorizationResponse: AuthorizationResponse, result: MethodChannel.Result?) {
         authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), currentAuthState.clientAuthentication) { tokenResponse, exception ->
             currentAuthState.update(tokenResponse, exception)
-            val channel = methodChannel
+            val channel = appAuthChannel
             if (result != null) {
                 when {
                     tokenResponse != null -> result.success(currentAuthState.jsonSerializeString())
