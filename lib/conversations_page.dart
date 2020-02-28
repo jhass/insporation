@@ -149,11 +149,10 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
   ItemStream<ConversationMessage> createStream() => _ConversationMessagesStream(widget.conversation);
 
   @override
-  Widget buildHeader(BuildContext context, String lastError) {
+  Widget buildHeader(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        super.buildHeader(context, lastError),
         Padding(
           padding: const EdgeInsets.all(4),
           child: Wrap(
@@ -196,7 +195,8 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
   );
 
   @override
-  Widget buildFooter(BuildContext context) => ConstrainedBox(
+  Widget buildFooter(BuildContext context, String lastError) => lastError != null ?
+    super.buildFooter(context, lastError) : ConstrainedBox(
     constraints: BoxConstraints(maxHeight: 400),
     child: Padding(
       padding: EdgeInsets.all(8),

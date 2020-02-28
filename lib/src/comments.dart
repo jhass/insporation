@@ -8,7 +8,6 @@ import 'messages.dart';
 import 'search.dart';
 import 'timeago.dart';
 import 'utils.dart';
-import 'widgets.dart';
 
 class CommentStream extends ItemStream<Comment> {
   CommentStream(this.post);
@@ -44,20 +43,14 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
     CommentView(comment: item);
 
   @override
-  Widget buildHeader(BuildContext context, String lastError) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Text("Comments", style: TextStyle(fontSize: 18)),
-      ),
-      ErrorMessage(lastError)
-    ]
+  Widget buildHeader(BuildContext context) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8),
+    child: Text("Comments", style: TextStyle(fontSize: 18)),
   );
 
-
   @override
-  Widget buildFooter(BuildContext context) => ConstrainedBox(
+  Widget buildFooter(BuildContext context, String lastError) => lastError != null ?
+    super.buildFooter(context, lastError) : ConstrainedBox(
     constraints: BoxConstraints(maxHeight: 400),
     child: Padding(
       padding: EdgeInsets.all(8),

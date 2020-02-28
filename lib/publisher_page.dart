@@ -335,9 +335,7 @@ class _PublishTargetSelectionDialogState extends State<_PublishTargetSelectionDi
 
     _currentSelection = List.of(widget.current.aspects ?? <Aspect>[]);
 
-    Provider.of<Client>(context, listen: false).currentUserAspects
-      .then((aspects) => setState(() => _aspects = aspects))
-      .catchError((error) => _lastError = error.toString());
+    _fetch();
   }
 
   @override
@@ -355,7 +353,7 @@ class _PublishTargetSelectionDialogState extends State<_PublishTargetSelectionDi
             Navigator.pop(context, PublishTarget.aspects(_currentSelection)) : null,
         )
       ],
-      content: _lastError != null ? ErrorMessage(_lastError) :
+      content: _lastError != null ? ErrorMessage(_lastError, onRetry: _fetch) :
         _aspects == null ? Center(child: CircularProgressIndicator()) :
         _buildOptions()
     );
@@ -387,6 +385,12 @@ class _PublishTargetSelectionDialogState extends State<_PublishTargetSelectionDi
     ));
 
     return ListView(children: options);
+  }
+
+  _fetch() {
+    Provider.of<Client>(context, listen: false).currentUserAspects
+      .then((aspects) => setState(() => _aspects = aspects))
+      .catchError((error) => _lastError = error.toString());
   }
 }
 

@@ -48,7 +48,7 @@ class _PostViewPageState extends State<PostViewPage> {
     return Scaffold(
       appBar: AppBar(),
       body: _loading ? Center(child: CircularProgressIndicator()) :
-        _lastError != null ? Center(child: ErrorMessage(_lastError)) :
+        _lastError != null ? Center(child: ErrorMessage(_lastError, onRetry: _fetch)) :
            _PostWithCommentsView(post: _post)
     );
   }
@@ -82,7 +82,7 @@ class _PostWithCommentsView extends CommentListView {
 
 class _PostWithCommentsViewState extends CommentListViewState {
   @override
-  Widget buildHeader(BuildContext context, String lastError) => Column(
+  Widget buildHeader(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       Column(
@@ -91,7 +91,7 @@ class _PostWithCommentsViewState extends CommentListViewState {
           PostView(post: widget.post, enableCommentsSheet: false),
         ],
       ),
-      super.buildHeader(context, lastError)
+      super.buildHeader(context)
     ],
   );
 }

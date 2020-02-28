@@ -66,8 +66,8 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStream
   }
 
   @override
-  Widget buildHeader(BuildContext context, String lastError) {
-    final selector = _StreamTypeSelector(currentType: widget.type, error: lastError);
+  Widget buildHeader(BuildContext context) {
+    final selector = _StreamTypeSelector(currentType: widget.type);
     if (widget.type == StreamType.aspects) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,46 +106,39 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStream
 }
 
 class _StreamTypeSelector extends StatelessWidget {
-  _StreamTypeSelector({Key key, @required this.currentType, this.error}) : super(key: key);
+  _StreamTypeSelector({Key key, @required this.currentType}) : super(key: key);
 
   final StreamType currentType;
-  final String error;
 
   @override
   Widget build(BuildContext context) {
     if (currentType == StreamType.tag) {
-      return ErrorMessage(error);
+      return SizedBox.shrink();
     }
 
     return Container(
       padding: const EdgeInsets.all(8.0),
       alignment: Alignment.topLeft,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          ErrorMessage(error),
-          ButtonTheme(
-            alignedDropdown: true,
-            child: DropdownButton(
-              value: currentType,
-              icon: Icon(Icons.arrow_downward),
-              iconSize: 32,
-              style: TextStyle(
-                  fontSize: 32,
-                  color: Theme.of(context).colorScheme.onSurface
-              ),
-              underline: SizedBox.shrink(),
-              onChanged: (newValue) {
-                if (newValue != currentType) {
-                  Navigator.pushReplacementNamed(context, '/stream/${describeEnum(newValue)}');
-                }
-              },
-              items: const [StreamType.main, StreamType.activity, StreamType.aspects, StreamType.followedTags,
-                StreamType.mentions, StreamType.liked, StreamType.commented].map((type) =>
-                  DropdownMenuItem(child: Text(streamNames[type]), value: type)).toList()
-            ),
+      child: ButtonTheme(
+        alignedDropdown: true,
+        child: DropdownButton(
+          value: currentType,
+          icon: Icon(Icons.arrow_downward),
+          iconSize: 32,
+          style: TextStyle(
+              fontSize: 32,
+              color: Theme.of(context).colorScheme.onSurface
           ),
-        ],
+          underline: SizedBox.shrink(),
+          onChanged: (newValue) {
+            if (newValue != currentType) {
+              Navigator.pushReplacementNamed(context, '/stream/${describeEnum(newValue)}');
+            }
+          },
+          items: const [StreamType.main, StreamType.activity, StreamType.aspects, StreamType.followedTags,
+            StreamType.mentions, StreamType.liked, StreamType.commented].map((type) =>
+              DropdownMenuItem(child: Text(streamNames[type]), value: type)).toList()
+        ),
       ),
     );
   }
@@ -218,9 +211,7 @@ class _FollowedTagsPageState extends State<_FollowedTagsPage> {
   void initState() {
     super.initState();
 
-    Provider.of<Client>(context, listen: false).fetchFollowedTags()
-      .then((tags) => setState(() => _tags = tags))
-      .catchError((error) => setState(() => _lastError = error.toString()));
+    _fetch();
   }
 
   @override
@@ -232,7 +223,7 @@ class _FollowedTagsPageState extends State<_FollowedTagsPage> {
       onPressed: _addTag
     ),
     body: _tags == null && _lastError == null ?
-      _lastError != null ? ErrorMessage(_lastError) :
+      _lastError != null ? ErrorMessage(_lastError, onRetry: _fetch) :
       Center(child: CircularProgressIndicator()) :
       ListView.builder(
         padding: EdgeInsets.only(bottom: 72),
@@ -246,6 +237,12 @@ class _FollowedTagsPageState extends State<_FollowedTagsPage> {
         )
       )
   );
+
+  _fetch() {
+    Provider.of<Client>(context, listen: false).fetchFollowedTags()
+      .then((tags) => setState(() => _tags = tags))
+      .catchError((error) => setState(() => _lastError = error.toString()));
+  }
 
   _addTag() async {
     final client = Provider.of<Client>(context, listen: false),

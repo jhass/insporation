@@ -99,16 +99,23 @@ abstract class ItemStream<T> extends ChangeNotifier {
     loading = false;
     _lastPage = null;
     _items = null;
-    if (_currentLoad  != null) {
-      _currentLoad.cancel();
-    }
+   _cancelCurrentLoad();
     notifyListeners();
+  }
+
+  _cancelCurrentLoad() {
+    if (_currentLoad != null) {
+      _currentLoad.cancel();
+      _currentLoad = null;
+    }
   }
 
   Future<void> _load(Client client, {page}) async {
     loading = true;
+    notifyListeners();
 
     try {
+      _cancelCurrentLoad();
       _currentLoad = CancelableFuture(loadPage(client: client, page: page));
       Page<T> newPage = await _currentLoad.get();
       _currentLoad = null;
@@ -160,11 +167,16 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
 
   ItemStream<T> createStream();
 
-  Widget buildHeader(BuildContext context, String lastError) => ErrorMessage(lastError);
+  Widget buildHeader(BuildContext context) => null;
 
   Widget buildItem(BuildContext context, T item);
 
-  Widget buildFooter(BuildContext context) => null;
+  Widget buildFooter(BuildContext context, String lastError) => Center(
+    child: ErrorMessage(
+      lastError,
+      onRetry: () => _items.length == 0 ? _refreshIndicator.currentState.show() : _loadItems()
+    )
+  );
 
   void onReset() {}
 
@@ -175,13 +187,14 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) =>
         _refreshIndicator.currentState.show());
+
     scrollController.addListener(() {
       final newVisibility = scrollController.offset >= 800;
       if (newVisibility != _upButtonVisibility) {
         setState(() => _upButtonVisibility = newVisibility);
       }
 
-      if (scrollController.offset >= scrollController.position.maxScrollExtent - 200)  {
+      if (_lastError == null && scrollController.offset >= scrollController.position.maxScrollExtent - 200)  {
         _loadItems();
       }
     });
@@ -212,14 +225,14 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
                   itemCount: items.length > 0 ? items.length + 2 : 0,
                   controller: scrollController,
                   itemBuilder: (context, position) =>
-                    position == 0 ? buildHeader(context, _lastError):
+                    position == 0 ? buildHeader(context) ?? SizedBox.shrink():
                       position > items.length ?
                         Visibility(
-                          visible: items.loading || !items.hasMore,
-                          child: items.hasMore ? Padding(
+                          visible: items.loading || !items.hasMore || _lastError != null,
+                          child: items.hasMore && _lastError == null ? Padding(
                             padding: const EdgeInsets.all(16),
                             child: Center(child: CircularProgressIndicator()),
-                          ) : buildFooter(context) ?? SizedBox.shrink()
+                          ) : buildFooter(context, _lastError) ?? SizedBox.shrink()
                         ) :
                         buildItem(context, items[position -1])
                 ),
@@ -248,9 +261,10 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
               ]
             ),
             replacement: _StreamFallback(
-              header: buildHeader(context, _lastError),
-              footer: (_lastError == null ? buildFooter(context) : null) ?? SizedBox.shrink(),
-              loading: _items.loading
+              header: buildHeader(context) ?? SizedBox.shrink(),
+              footer: buildFooter(context, _lastError) ?? SizedBox.shrink(),
+              loading: _items.loading,
+              error: _lastError != null,
             )
           ),
         )
@@ -297,11 +311,12 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
 }
 
 class _StreamFallback extends StatelessWidget {
-  _StreamFallback({Key key, this.header, this.footer, this.loading = false}) : super(key: key);
+  _StreamFallback({Key key, this.header, this.footer, this.loading = false, this.error = false}) : super(key: key);
 
   final Widget header;
   final Widget footer;
   final bool loading;
+  final bool error;
 
   @override
   Widget build(BuildContext context) {
@@ -320,11 +335,11 @@ class _StreamFallback extends StatelessWidget {
               children: <Widget>[
                 header,
                 Visibility(
-                  visible: !loading,
-                  replacement: SizedBox( // We need to take up some space so the refresh indicator renders
+                  visible: !loading && !error,
+                  replacement: footer == null ? SizedBox( // We need to take up some space so the refresh indicator renders
                     width: viewportConstraints.maxWidth,
                     height: viewportConstraints.maxHeight
-                  ),
+                  ) : SizedBox.shrink(),
                   child: Center(
                     child: Text("Darn, nothing to display!"),
                   ),

@@ -55,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(title: _titleView),
       body: _loading ? Center(child: CircularProgressIndicator()) :
-        _lastError != null ? ErrorMessage(_lastError) :
+        _lastError != null ? ErrorMessage(_lastError, onRetry: _fetch) :
            _UserPostStreamView(profile: _profile)
     );
   }
@@ -156,11 +156,10 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
   ItemStream<Post> createStream() => _UserPostStream(widget.profile.person);
 
   @override
-  Widget buildHeader(BuildContext context, String lastError) {
+  Widget buildHeader(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        super.buildHeader(context, lastError),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Text("Info", style: TextStyle(fontSize: 18))

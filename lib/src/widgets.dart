@@ -9,9 +9,10 @@ import 'client.dart';
 import 'colors.dart' as colors;
 
 class ErrorMessage extends StatelessWidget {
-  const ErrorMessage(this.message, {Key key,}) : super(key: key);
+  const ErrorMessage(this.message, {Key key, this.onRetry}) : super(key: key);
 
   final String message;
+  final Function onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +22,32 @@ class ErrorMessage extends StatelessWidget {
       child: Card(
         color: theme.colorScheme.error,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(message ?? "", style: TextStyle(color: theme.colorScheme.onError), textAlign: TextAlign.center),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(Icons.warning, color: theme.colorScheme.onError),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      message ?? "",
+                      style: TextStyle(color: theme.colorScheme.onError))
+                    ),
+                ],
+              ),
+              Visibility(
+                visible: onRetry != null,
+                child: FlatButton.icon(
+                  onPressed: onRetry,
+                  icon: Icon(Icons.refresh),
+                  textColor: theme.colorScheme.onError,
+                  label: Text("Retry")
+                )
+              )
+            ],
+          ),
         ),
       ),
     );
