@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 
 import 'widgets.dart';
 
-T tryProvide<T>(BuildContext context) {
+T tryProvide<T>(BuildContext context, {bool listen = false}) {
   try {
-    return Provider.of(context, listen: false);
+    return Provider.of(context, listen: listen);
   } on ProviderNotFoundException {
     return null;
   }

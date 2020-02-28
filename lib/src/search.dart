@@ -159,7 +159,7 @@ abstract class _SearchDialogState<T extends StatefulWidget> extends ItemStreamSt
   }
 
   @override
-  Widget build(BuildContext context) => SimpleDialog(
+  Widget buildBody(BuildContext context) => SimpleDialog(
     title: TextField(
       controller: _controller,
       decoration: InputDecoration(hintText: hint),

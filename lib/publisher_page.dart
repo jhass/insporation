@@ -33,19 +33,32 @@ class PublishTarget {
   const PublishTarget.allAspects() : public = false, allAspects = true, aspects = null;
   PublishTarget.aspects(this.aspects) : public = false, allAspects = false;
 }
-
-class PublisherPage extends StatefulWidget {
-  const PublisherPage({Key key, this.options = const PublisherOptions()}) : super(key: key);
+class PublisherPage extends StatelessWidget {
+  PublisherPage({Key key, this.options = const PublisherOptions()}) : super(key: key);
 
   final PublisherOptions options;
 
   @override
-  State<StatefulWidget> createState() => _PublisherPageState();
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: Text("Write a new post")),
+    body: Padding(
+      padding: EdgeInsets.all(8),
+      child: _PublisherPageBody(options: options)
+    )
+  );
 }
 
-class _PublisherPageState extends State<PublisherPage> {
+class _PublisherPageBody extends StatefulWidget {
+  _PublisherPageBody({Key key, this.options = const PublisherOptions()}) : super(key: key);
+
+  final PublisherOptions options;
+
+  @override
+  State<StatefulWidget> createState() => _PublisherPageBodyState();
+}
+
+class _PublisherPageBodyState extends State<_PublisherPageBody> {
   static const _maxPhotoWidth = 700.0;
-  final _scaffold = GlobalKey<ScaffoldState>(); // TOOD extract things so this not necessary
   final _initialFocus = FocusNode();
   final _controller = TextEditingController();
   final List<_AttachedPhoto> _attachedPhotos = [];
@@ -76,82 +89,75 @@ class _PublisherPageState extends State<PublisherPage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    key: _scaffold,
-    appBar: AppBar(title: Text("Write a new post")),
-    body: Padding(
-      padding: EdgeInsets.all(8),
-      child: SingleChildScrollView(
-        child: Column(
+  Widget build(BuildContext context) => SingleChildScrollView(
+    child: Column(
+      children: <Widget>[
+        Composer(
+          focusNode: _initialFocus,
+          controller: _controller,
+          enabled: !_submitting,
+          mentionablePeople: _mentionablePeople,
+        ),
+        Visibility(
+          visible: _attachedPhotos.length > 0,
+          child: ConstrainedBox(
+            constraints: BoxConstraints.loose(Size(double.infinity, 64)),
+                        child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: _attachedPhotos.length,
+              itemBuilder: (context, position) => _AttachedPhotoView(
+                photo: _attachedPhotos[position],
+                onDelete: () => setState(() => _attachedPhotos.removeAt(position)),
+              )
+            ),
+          ),
+        ),
+        ButtonBar(
+          alignment: MainAxisAlignment.start,
           children: <Widget>[
-            Composer(
-              focusNode: _initialFocus,
-              controller: _controller,
-              enabled: !_submitting,
-              mentionablePeople: _mentionablePeople,
+            IconButton(
+              icon: Icon(Icons.photo_camera),
+              tooltip: "Take a photo",
+              onPressed: () => _uploadPhoto(ImageSource.camera)
+            ),
+            IconButton(
+              icon: Icon(Icons.photo_library),
+              tooltip: "Upload a photo",
+              onPressed: () => _uploadPhoto(ImageSource.gallery)
+            ),
+            IconButton(
+              icon: Icon(Icons.poll),
+              tooltip: "Add a poll",
+              color: _poll != null ? Theme.of(context).colorScheme.secondary : null,
+              onPressed: _editPoll
+            ),
+            IconButton(
+              icon: Icon(Icons.location_on),
+              tooltip: "Add your location",
+              color: _location != null ? Theme.of(context).colorScheme.secondary : null,
+              onPressed: _editLocation
+            )
+          ],
+        ),
+        ButtonBar(
+          children: <Widget>[
+            RaisedButton.icon(
+              icon: Icon(Icons.arrow_drop_down),
+              label: Text(_currentTargetTitle),
+              onPressed: !_submitting ? _selectTarget : null
             ),
             Visibility(
-              visible: _attachedPhotos.length > 0,
-              child: ConstrainedBox(
-                constraints: BoxConstraints.loose(Size(double.infinity, 64)),
-                            child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _attachedPhotos.length,
-                  itemBuilder: (context, position) => _AttachedPhotoView(
-                    photo: _attachedPhotos[position],
-                    onDelete: () => setState(() => _attachedPhotos.removeAt(position)),
-                  )
-                ),
+              visible: !_submitting,
+              replacement: CircularProgressIndicator(),
+              child: RaisedButton(
+                child: Text("Publish post"),
+                onPressed: _valid && !_submitting ? _submit : null
               ),
-            ),
-            ButtonBar(
-              alignment: MainAxisAlignment.start,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.photo_camera),
-                  tooltip: "Take a photo",
-                  onPressed: () => _uploadPhoto(ImageSource.camera)
-                ),
-                IconButton(
-                  icon: Icon(Icons.photo_library),
-                  tooltip: "Upload a photo",
-                  onPressed: () => _uploadPhoto(ImageSource.gallery)
-                ),
-                IconButton(
-                  icon: Icon(Icons.poll),
-                  tooltip: "Add a poll",
-                  color: _poll != null ? Theme.of(context).colorScheme.secondary : null,
-                  onPressed: _editPoll
-                ),
-                IconButton(
-                  icon: Icon(Icons.location_on),
-                  tooltip: "Add your location",
-                  color: _location != null ? Theme.of(context).colorScheme.secondary : null,
-                  onPressed: _editLocation
-                )
-              ],
-            ),
-            ButtonBar(
-              children: <Widget>[
-                RaisedButton.icon(
-                  icon: Icon(Icons.arrow_drop_down),
-                  label: Text(_currentTargetTitle),
-                  onPressed: !_submitting ? _selectTarget : null
-                ),
-                Visibility(
-                  visible: !_submitting,
-                  replacement: CircularProgressIndicator(),
-                  child: RaisedButton(
-                    child: Text("Publish post"),
-                    onPressed: _valid && !_submitting ? _submit : null
-                  ),
-                )
-              ],
-            ),
-            ErrorMessage(_lastError)
+            )
           ],
-        )
-      )
+        ),
+        ErrorMessage(_lastError)
+      ],
     )
   );
 
@@ -229,9 +235,7 @@ class _PublisherPageState extends State<PublisherPage> {
       attachedPhoto.guid = photo.guid;
       attachedPhoto.uploaded = true;
     } catch (e, s) {
-      if (mounted) {
-        showErrorSnackBar(_scaffold.currentState, "Failed to upload photo", e, s);
-      }
+      tryShowErrorSnackBar(this, "Failed to upload photo", e, s);
 
       setState(() => _attachedPhotos.remove(attachedPhoto));
     } finally {

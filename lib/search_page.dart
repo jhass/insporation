@@ -17,7 +17,7 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> {
   final _search = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildBody(BuildContext context) {
     final SearchResultStream items = this.items;
     final theme = Theme.of(context);
 

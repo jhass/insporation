@@ -37,7 +37,7 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStream
   ItemStream<Post> createStream() => PostStream(type: widget.type, tag: widget.tag, aspects: widget.aspects);
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildBody(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: widget.type != StreamType.tag ? NavigationBar(currentPage: PageType.stream) : null,
       appBar: widget.type == StreamType.tag ? AppBar(

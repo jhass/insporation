@@ -26,7 +26,7 @@ class _ConversationsStream extends ItemStream<Conversation> {
 
 class _ConversationsPageState extends ItemStreamState<Conversation, ConversationsPage> {
   @override
-  Widget build(BuildContext context) {
+  Widget buildBody(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: NavigationBar(currentPage: PageType.conversations),
       floatingActionButton: FloatingActionButton(
@@ -138,7 +138,7 @@ class _ConversationMessagesStream extends ItemStream<ConversationMessage> {
 class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _ConversationMessagesPage> {
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildBody(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.conversation.subject)),
       body: buildStream(context)

@@ -17,17 +17,28 @@ class NewConversationOptions {
   const NewConversationOptions({this.recipients = const [], this.prefillSubject = "", this.prefillBody = ""});
 }
 
-class NewConversationPage extends StatefulWidget {
+class NewConversationPage extends StatelessWidget {
   NewConversationPage({Key key, this.options = const NewConversationOptions()}) : super(key: key);
 
   final NewConversationOptions options;
 
   @override
-  State<StatefulWidget> createState() => _NewConversationPageState();
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: Text("Start a new conversation")),
+    body: SingleChildScrollView(child: _NewConversationPageBody(options: options))
+  );
 }
 
-class _NewConversationPageState extends State<NewConversationPage> {
-  final _scaffold = GlobalKey<ScaffoldState>();
+class _NewConversationPageBody extends StatefulWidget {
+  _NewConversationPageBody({Key key, this.options = const NewConversationOptions()}) : super(key: key);
+
+  final NewConversationOptions options;
+
+  @override
+  State<StatefulWidget> createState() => _NewConversationPageBodyState();
+}
+
+class _NewConversationPageBodyState extends State<_NewConversationPageBody> {
   final List<Person> _recipients = [];
   final _subject = TextEditingController();
   final _subjectFocus = FocusNode();
@@ -57,40 +68,35 @@ class _NewConversationPageState extends State<NewConversationPage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    key: _scaffold,
-    appBar: AppBar(title: Text("Start a new conversation")),
-    body: SingleChildScrollView(
-      child: Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text("Recipients", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-          Wrap(
-            spacing: 4,
-            children: _buildRecipients()
-          ),
-          Divider(thickness: 1.0, color: colors.inputBorder(Theme.of(context))),
-          Text("Subject", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-          TextField(
-            controller: _subject,
-            focusNode: _subjectFocus,
-          ),
-          Divider(color: Colors.transparent),
-          Text("Message", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
-          ConstrainedBox(
-            constraints: BoxConstraints.loose(Size(double.infinity, 400)),
-            child: SimpleComposer(
-              controller: _body,
-              submittable: _validSubject && _recipients.isNotEmpty,
-              submitButtonContent: Text("Send"),
-              onSubmit: _submit,
-            )
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Recipients", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
+        Wrap(
+          spacing: 4,
+          children: _buildRecipients()
+        ),
+        Divider(thickness: 1.0, color: colors.inputBorder(Theme.of(context))),
+        Text("Subject", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
+        TextField(
+          controller: _subject,
+          focusNode: _subjectFocus,
+        ),
+        Divider(color: Colors.transparent),
+        Text("Message", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
+        ConstrainedBox(
+          constraints: BoxConstraints.loose(Size(double.infinity, 400)),
+          child: SimpleComposer(
+            controller: _body,
+            submittable: _validSubject && _recipients.isNotEmpty,
+            submitButtonContent: Text("Send"),
+            onSubmit: _submit,
           )
-        ],
-      ),
-    ))
+        )
+      ],
+    )
   );
 
   @override
@@ -148,12 +154,12 @@ class _NewConversationPageState extends State<NewConversationPage> {
 
       setState(() => _recipients.add(response));
     } catch (e, s) {
-      showErrorSnackBar(_scaffold.currentState, "Failed to add recipient", e, s);
+      tryShowErrorSnackBar(this, "Failed to add recipient", e, s);
     }
   }
 
   _showError(String message) {
-    _scaffold.currentState.showSnackBar(errorSnackbar(context, message));
+    Scaffold.of(context).showSnackBar(errorSnackbar(context, message));
   }
 
   Future<bool> _submit(String body) async {
@@ -168,7 +174,7 @@ class _NewConversationPageState extends State<NewConversationPage> {
       Navigator.pop(context, conversation);
       return true;
     } catch (e, s) {
-      showErrorSnackBar(_scaffold.currentState, "Failed to create conversation", e, s);
+      tryShowErrorSnackBar(this, "Failed to create conversation", e, s);
     }
     return false;
   }

@@ -2,13 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:gesture_zoom_box/gesture_zoom_box.dart';
-import 'package:provider/provider.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:url_launcher/url_launcher.dart';
 
 import 'client.dart';
 import 'markdown_extensions.dart' as mde;
 import 'colors.dart'  as colors;
+import 'utils.dart';
 import 'widgets.dart';
 
 class PersonHeader extends StatelessWidget {
@@ -149,10 +149,10 @@ class _NsfwShieldState extends State<NsfwShield> {
 
   @override
   Widget build(BuildContext context) {
-    final showNsfw = Provider.of<ShowNsfwPosts>(context);
+    final showNsfw = tryProvide<ShowNsfwPosts>(context, listen: true);
 
     return Visibility(
-        visible: widget.nsfwPost == true && _hide != false && showNsfw.value == false,
+        visible: widget.nsfwPost == true && _hide != false && (showNsfw != null && showNsfw.value == false),
         child: Container(
           alignment: Alignment.center,
           color: Colors.black.withOpacity(0.95),

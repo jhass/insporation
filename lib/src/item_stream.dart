@@ -188,7 +188,9 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
   }
 
   @override
-  Widget build(BuildContext context) => buildStream(context);
+  Widget build(BuildContext context) => ChangeNotifierProvider.value(value: _items, child: buildBody(context));
+
+  Widget buildBody(BuildContext context) => buildStream(context);
 
   Widget buildStream(BuildContext context) {
     final theme = Theme.of(context);
@@ -198,61 +200,58 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
       onRefresh: () => _loadItems(reset: true),
       child: Container(
         padding: const EdgeInsets.all(8.0),
-        child: ChangeNotifierProvider.value(
-          value: _items,
-          child: Consumer<ItemStream<T>>(
-            builder: (context, items, _) => Visibility(
-              visible: items.length > 0,
-              child: Stack(
-                fit: StackFit.expand,
-                children: <Widget>[
-                  ListView.builder(
-                    physics: AlwaysScrollableScrollPhysics(),
-                    padding: listPadding,
-                    itemCount: items.length > 0 ? items.length + 2 : 0,
-                    controller: scrollController,
-                    itemBuilder: (context, position) =>
-                      position == 0 ? buildHeader(context, _lastError):
-                        position > items.length ?
-                          Visibility(
-                            visible: items.loading || !items.hasMore,
-                            child: items.hasMore ? Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Center(child: CircularProgressIndicator()),
-                            ) : buildFooter(context) ?? SizedBox.shrink()
-                          ) :
-                          buildItem(context, items[position -1])
-                  ),
-                  Positioned(
-                    right: 8,
-                    top: 48,
-                    child: AnimatedSwitcher(
-                      transitionBuilder: (child, animation) => FadeTransition(child: child, opacity: animation),
-                      duration: Duration(milliseconds: 300),
-                      child: !_upButtonVisibility || !enableUpButton ? SizedBox.shrink() : ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: Container(
-                          color: theme.hintColor.withOpacity(0.25),
-                          child: IconButton(
-                            color: Colors.white.withOpacity(0.8),
-                            padding: const EdgeInsets.all(0),
-                            iconSize: 48,
-                            icon: Icon(Icons.keyboard_arrow_up),
-                            onPressed: () =>
-                              scrollController.animateTo(1, duration: Duration(seconds: 1), curve: Curves.easeOut),
-                          ),
+        child: Consumer<ItemStream<T>>(
+          builder: (context, items, _) => Visibility(
+            visible: items.length > 0,
+            child: Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                ListView.builder(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  padding: listPadding,
+                  itemCount: items.length > 0 ? items.length + 2 : 0,
+                  controller: scrollController,
+                  itemBuilder: (context, position) =>
+                    position == 0 ? buildHeader(context, _lastError):
+                      position > items.length ?
+                        Visibility(
+                          visible: items.loading || !items.hasMore,
+                          child: items.hasMore ? Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Center(child: CircularProgressIndicator()),
+                          ) : buildFooter(context) ?? SizedBox.shrink()
+                        ) :
+                        buildItem(context, items[position -1])
+                ),
+                Positioned(
+                  right: 8,
+                  top: 48,
+                  child: AnimatedSwitcher(
+                    transitionBuilder: (child, animation) => FadeTransition(child: child, opacity: animation),
+                    duration: Duration(milliseconds: 300),
+                    child: !_upButtonVisibility || !enableUpButton ? SizedBox.shrink() : ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Container(
+                        color: theme.hintColor.withOpacity(0.25),
+                        child: IconButton(
+                          color: Colors.white.withOpacity(0.8),
+                          padding: const EdgeInsets.all(0),
+                          iconSize: 48,
+                          icon: Icon(Icons.keyboard_arrow_up),
+                          onPressed: () =>
+                            scrollController.animateTo(1, duration: Duration(seconds: 1), curve: Curves.easeOut),
                         ),
                       ),
                     ),
-                  )
-                ]
-              ),
-              replacement: _StreamFallback(
-                header: buildHeader(context, _lastError),
-                footer: (_lastError == null ? buildFooter(context) : null) ?? SizedBox.shrink(),
-                loading: _items.loading
-              )
+                  ),
+                )
+              ]
             ),
+            replacement: _StreamFallback(
+              header: buildHeader(context, _lastError),
+              footer: (_lastError == null ? buildFooter(context) : null) ?? SizedBox.shrink(),
+              loading: _items.loading
+            )
           ),
         )
       )

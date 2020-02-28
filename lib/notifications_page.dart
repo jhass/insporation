@@ -20,7 +20,7 @@ class NotificationsPage extends StatefulWidget {
 
 class _NotificationsPageState extends ItemStreamState<Notification, NotificationsPage> {
   @override
-  Widget build(BuildContext context) {
+  Widget buildBody(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: NavigationBar(currentPage: PageType.notifications),
       body: buildStream(context)
