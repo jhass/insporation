@@ -98,10 +98,15 @@ class AppAuth {
       }
 
       // our session is probably not worth anything anymore, destroy it
+      await destroySession("Failed to fetch access token: ${e.message}");
+    }
+  }
+
+  Future<void> destroySession(String message) async {
+    if (_currentSession?.state != null) {
       _currentSession.state = null;
       await _store.storeSession(_currentSession);
-
-      throw InvalidSessionError("Failed to fetch access token: ${e.message}");
+      throw InvalidSessionError(message);
     }
   }
 

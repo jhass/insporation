@@ -445,6 +445,8 @@ class Client {
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return response;
+    } else if (response.statusCode == 401) {
+      await _appAuth.destroySession("Got forbidden while accessing resource, bad scopes or revoked authorization");
     } else {
       throw ClientException.fromResponse(response);
     }
