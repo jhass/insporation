@@ -44,3 +44,19 @@ jobs:
         files: 'dist/*'
         release-tag: nightly
         repo-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Checkout F-Droid repository
+      uses: actions/checkout@v2
+      with:
+        ref: gh-pages
+        path: pages
+    - name: Update F-Droid repository
+      run: |
+        apt-get install fdroidserver
+        cp dist/*.apk pages/fdroid/repo
+        cd pages/fdroid
+        fdroid update
+        git config --local user.email "nightly-ci@example.org"
+        git config --local user.name  "Github Actions Nightly Job"
+        git add .
+        git commit -m "Update fdroid repository for nightly build $GITHUB_RUN_NUMBER"
+        git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" gh-pages

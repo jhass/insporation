@@ -2,12 +2,27 @@
 
 A native [diaspora\*](https://diasporafoundation.org) client powered by Flutter.
 
-> This is still in early development. You will need a pod on the latest develop branch. Contributions are welcome, please open an issue if you work on something bigger to avoid duplicated effort :)
+> This is still in preview. You will need a pod on the latest develop branch. Contributions are welcome, please open an issue if you work on something bigger to avoid duplicated effort :)
 
 ## Installation
 
-If you don't know how to build an Android or Flutter app, this is probably not yet for you! As soon as this is polished enough, it will appear in the ususal stores.
+As soon as this is out of preview it will appear in the usual stores. Until then you have the following options:
 
+### Download latest nightly build
+
+You can go to the [releases page](https://github.com/jhass/insporation/releases) to download and install the latest build manually.
+
+### F-Droid repository
+
+The nightlies are also published to a F-Droid repository which you can add by scanning the following QR code:
+
+![](fdroid-repository.png)
+
+or clicking [this link](https://jhass.github.io/insporation/fdroid/repo?fingerprint=EC792A58B39DF9FBB466FB100E30E3842F229FDBC6E28D32C417F6A5B30ECCAE) on your device that has F-Droid installed.
+
+### Build it yourself
+
+If you don't know how to build an Android or Flutter app, this is probably not for you!
 In case you want to dare anyways:
 
 1. Install [Flutter](https://flutter.dev)
