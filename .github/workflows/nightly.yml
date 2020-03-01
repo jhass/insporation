@@ -9,15 +9,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: circleci/android:api-29-node
+    container:
+      image: circleci/android:api-29-node
+      options: -u root
     env:
       KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
 
     steps:
-    - name: Fix permissions in container
-      run: |
-        sudo chown -R circleci /_w
-        sudo chmod -R 777 /_w
     - uses: actions/checkout@v2
     - uses: subosito/flutter-action@v1.1.1
     - name: Setup keystore
