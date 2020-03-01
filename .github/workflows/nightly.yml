@@ -60,3 +60,6 @@ jobs:
         git add .
         git commit -m "Update fdroid repository for nightly build $GITHUB_RUN_NUMBER"
         git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" gh-pages
+      env:
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEYSTORE_KEY_ALIAS: key
