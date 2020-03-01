@@ -233,7 +233,7 @@ private class CallHandler(private val context: Context,
     Log.d("AppAuth", "Starting registration to $host")
     val registrationRequest = RegistrationRequest.Builder(serviceConfig, listOf(APP_AUTH_REDIRECT_URI))
       .setAdditionalParameters(mapOf(
-        "client_name" to "insporation* on ${android.os.Build.MODEL}"
+        "client_name" to "insporation* ${if (BuildConfig.DEBUG) "debug " else " "}on ${android.os.Build.MODEL}"
       )).build()
     val response = suspendCoroutine<RegistrationResponse> { continuation ->
       authorizationService.performRegistrationRequest(registrationRequest) { response, exception ->
