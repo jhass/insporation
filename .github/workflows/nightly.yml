@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: kineticengines/setup-android-actions@v0.0.31
+    - uses: subosito/flutter-action@v1.1.1
+    - name: Setup keystore
+      run: |
+       echo "$KEYSTORE" | base64 -d > "$KEYSTORE_PATH"
+      env:
+        KEYSTORE: ${{ secrets.KEYSTORE }}
+    - name: Build
+      run: |
+        flutter build apk --release --build-number=$GITHUB_RUN_NUMBER
+        cp build/app/outpus/apk/release/app-release.apk insporation-nightly-$(git describe --tags 2>/dev/null || echo $GITHUB-RUN_NUMBER).apk
+      env:
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEYSTORE_KEY_ALIAS: key
+    - uses: marvinpinto/action-automatic-releases@v0.2.2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        automatic_release_tag: nightly
+        files: |
+          insporation-nightly-*.apk
