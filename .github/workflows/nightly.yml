@@ -1,6 +1,8 @@
-name: CI
+name: Nightly build
 
 on:
+  repository_dispatch:
+    types: nightly
   schedule:
     - cron: '0 4 * * *'
 
