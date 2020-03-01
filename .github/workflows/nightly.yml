@@ -26,13 +26,21 @@ jobs:
     - name: Build
       run: |
         flutter build apk --release --build-number=$GITHUB_RUN_NUMBER
-        cp build/app/outputs/apk/release/app-release.apk insporation-nightly-$(git describe --tags 2>/dev/null || echo $GITHUB_RUN_NUMBER).apk
+        mkdir -p dist
+        cp build/app/outputs/apk/release/app-release.apk dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo $GITHUB_RUN_NUMBER).apk
       env:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEYSTORE_KEY_ALIAS: key
+    - uses: actions/upload-artifact@v1
+      with:
+        name: Application bundles
+        path: dist
     - uses: marvinpinto/action-automatic-releases@v0.2.2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         automatic_release_tag: nightly
-        files: |
-          insporation-nightly-*.apk
+    - uses: AButler/upload-release-assets@v2.0
+      with:
+        files: 'dist/*'
+        release-tag: nightly
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
