@@ -187,7 +187,7 @@ class _AspectContactsStream extends ItemStream<Person> {
 
 class _AspectContactsPageState extends ItemStreamState<Person, _AspectContactsPage> {
   @override
-  Widget build(BuildContext context) {
+  Widget buildBody(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.aspect.name)),
       body: buildStream(context)
