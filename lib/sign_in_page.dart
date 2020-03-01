@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import 'main.dart';
 import 'src/client.dart';
 import 'src/widgets.dart';
 
 class SignInPage extends StatefulWidget {
-  SignInPage({Key key, this.resumeLastSession = true}) : super(key: key);
+  SignInPage({Key key, this.resumeLastSession = true, this.error}) : super(key: key);
 
   final title = 'insporation*';
   final bool resumeLastSession;
+  final String error;
 
   @override
   State<StatefulWidget> createState() {
@@ -19,12 +20,9 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  static const _last_diaspora_id_pref = "last_diaspora_id";
-
   final _formKey = GlobalKey<FormState>();
   final _diasporaIdController = TextEditingController();
   final _initialFocus = FocusNode();
-  var _client;
   var _loading = true;
   String _lastError;
 
@@ -32,39 +30,13 @@ class _SignInPageState extends State<SignInPage> {
   void initState() {
     super.initState();
 
-    _client = Provider.of<Client>(context, listen: false);
-    _client.listenToAuthorizationResponse(
-      authorizingUser: () => SharedPreferences.getInstance().then((preferences) => preferences.getString(_last_diaspora_id_pref)),
-      success: () {
-        setState(() {
-          _loading = true;
-        });
-
-        Navigator.pushReplacementNamed(context, "/stream/main");
-      },
-      failed: (error) => setState(() {
-        _lastError = error;
-        _loading = false;
-      })
-    );
-
-    if (widget.resumeLastSession) {
+    if (widget.error != null) {
+      _showInitialError();
+    } else if (widget.resumeLastSession) {
       _resumeLastSession();
     } else {
-      setState(() => _loading = false);
-      SharedPreferences.getInstance().then((sharedPreferences) =>
-        sharedPreferences.remove(_last_diaspora_id_pref));
+      _promptNewSession();
     }
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      FocusScope.of(context).requestFocus(_initialFocus);
-    });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _client = Provider.of<Client>(context, listen: false);
   }
 
   @override
@@ -135,28 +107,82 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void dispose() {
     super.dispose();
-    _client.stopListeningToAuthorizationResponse();
+    _diasporaIdController.dispose();
   }
 
-  _resumeLastSession() {
-    SharedPreferences.getInstance().then((sharedPreferences) {
-      final lastDiasporaId = sharedPreferences.getString(_last_diaspora_id_pref);
-      _diasporaIdController.text = lastDiasporaId;
-      return lastDiasporaId != null ? _client.switchToUser(lastDiasporaId) : null;
-    }).then((_) {
+  _showInitialError() async {
+    final client = Provider.of<Client>(context, listen: false);
+    await client.restoreSession();
+    _diasporaIdController.text = client.currentUserId;
+    setState(() {
+      _lastError = widget.error;
+      _loading = false;
+    });
+  }
+
+  _resumeLastSession() async {
+    final client = Provider.of<Client>(context, listen: false),
+      persistentState = Provider.of<PersistentState>(context, listen: false);
+    await persistentState.restore();
+
+    setState(() {
+      _loading = true;
+      _lastError = null;
+    });
+
+    if (persistentState.wasAuthorizing) {
+      // We might have died in the background and now the authorization result is racing with the initial route.
+      // The initial route wants to resume the previous session, the authorization result may way to show the main stream
+      // or an error message, in any case it would replace the initial route. Give it a chance to win the race by waiting
+      // before launching another authorization
+      await Future.delayed(Duration(seconds: 1));
+
+      // Whether we've won the race or lost it, we don't need to let the user wait the next time
+      persistentState.wasAuthorizing = false;
+
+      // In case we lost the race, we should no longer be mounted and abort our efforts to resume the session
+      if (!mounted) {
+        return;
+      }
+
+      // But if we are, we should be pushed over the route triggered by the authorization response, in that case we can just pop ourselves
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+        return;
+      }
+    }
+
+    try {
+      await client.restoreSession();
+      _diasporaIdController.text = client.currentUserId;
+
+      if (client.currentUserId != null) {
+        await _ensureAuthorization();
+      }
+
+      if (client.hasSession) {
+        Navigator.pushReplacementNamed(context, '/stream/main');
+      } else {
+        setState(() => _loading = false);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          FocusScope.of(context).requestFocus(_initialFocus);
+        });
+      }
+    } catch (e, s) {
+      debugPrintStack(label: "Failed to resume session: $e", stackTrace: s);
       setState(() {
         _loading = false;
-        if (_client.hasSession) {
-          if (_client.authorized) {
-            _loading = true;
-            Navigator.pushReplacementNamed(context, '/stream/main');
-          }
-        }
+        _lastError = e.toString();
       });
-    }).catchError((e) => setState(() {
-      _loading = false;
-      _lastError = e.toString();
-    }));
+    }
+  }
+
+  _promptNewSession() {
+    Provider.of<Client>(context, listen: false).forgetSession();
+    setState(() => _loading = false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).requestFocus(_initialFocus);
+    });
   }
 
   _submit() async {
@@ -174,9 +200,8 @@ class _SignInPageState extends State<SignInPage> {
 
       final client = Provider.of<Client>(context, listen: false);
       try {
-        var sharedPreferences = await SharedPreferences.getInstance();
-        sharedPreferences.setString(_last_diaspora_id_pref, _diasporaIdController.text);
         await client.switchToUser(_diasporaIdController.text);
+        await _ensureAuthorization();
         Navigator.pushReplacementNamed(context, '/stream/main');
       } catch (e) {
         setState(() {
@@ -184,6 +209,17 @@ class _SignInPageState extends State<SignInPage> {
           _loading = false;
         });
       }
+    }
+  }
+
+  Future<void> _ensureAuthorization() async {
+    final client = Provider.of<Client>(context, listen: false),
+      persistentState = Provider.of<PersistentState>(context, listen: false);
+    try {
+      persistentState.wasAuthorizing = true;
+      await client.ensureAuthorization();
+    } finally {
+      persistentState.wasAuthorizing = false;
     }
   }
 }

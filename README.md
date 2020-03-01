@@ -24,7 +24,6 @@ In case you want to dare anyways:
 
 Roughly in order of priority, but contributions towards any of these goals are always welcome.
 
-* Code cleanup (extract any copy paste programming into properly abstracted classes & widgets)
 * Polish design
 * System notifications
 * Post preview in publisher

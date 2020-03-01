@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'src/app_auth.dart';
 import 'src/colors.dart' as colors;
 import 'contacts_page.dart';
 import 'conversations_page.dart';
@@ -20,8 +24,44 @@ import 'src/navigation.dart';
 import 'src/posts.dart';
 import 'stream_page.dart';
 
+class PersistentState {
+  static const _key = "persistent_state";
+
+  bool _restored = false;
+
+  bool _wasAuthorizing = false;
+
+  bool get wasAuthorizing => _wasAuthorizing;
+
+  set wasAuthorizing(bool value) {
+    _wasAuthorizing = value;
+    persist();
+  }
+
+  Future<void> restore() async {
+    if (_restored) {
+      return;
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+
+    if (prefs.containsKey(_key)) {
+      final values = jsonDecode(prefs.getString(_key));
+      _wasAuthorizing = values["was_authorizing"];
+    }
+
+    _restored = true;
+  }
+
+  Future<void> persist() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_key, jsonEncode({"was_authorizing": wasAuthorizing}));
+  }
+}
+
 void main() => runApp(MultiProvider(
   providers: [
+    Provider(create: (_) => PersistentState()..restore(), dispose: (_, state) => state.persist(), lazy: false),
     Provider(create: (_) => Client()),
     ChangeNotifierProxyProvider<Client, UnreadNotificationsCount>(
       create: (context) => UnreadNotificationsCount(),
@@ -51,6 +91,7 @@ class _InsporationState extends State<Insporation> {
   final _shareEventsChannel = EventChannel("insporation/share_receiver");
   final _navigator = GlobalKey<NavigatorState>();
   StreamSubscription shareEventsSubscription;
+  StreamSubscription sessionEventsSubscription;
 
   @override
   void initState() {
@@ -60,6 +101,9 @@ class _InsporationState extends State<Insporation> {
       // We need to give the MaterialApp widget some time to initialize the navigator and push the initial route,
       // as we want for any share event to only push a route after that.
       shareEventsSubscription = _shareEventsChannel.receiveBroadcastStream().listen(_onShareIntent);
+
+      // same for pushing a new route in response to a new session
+      sessionEventsSubscription = Provider.of<Client>(context, listen: false).newAuthorizations.listen(_onAuthorizationEvent);
     });
   }
 
@@ -67,6 +111,7 @@ class _InsporationState extends State<Insporation> {
   void dispose() {
     super.dispose();
     shareEventsSubscription.cancel();
+    sessionEventsSubscription.cancel();
   }
 
   @override
@@ -151,6 +196,20 @@ class _InsporationState extends State<Insporation> {
           images: shareEvent["images"].cast<String>()
         ));
         break;
+    }
+  }
+
+  void _onAuthorizationEvent(AuthorizationEvent event) {
+    if (event.error != null) {
+      // We got an authorization error from somewhere, show sign in page with it
+      debugPrint("Received authorization event for error: ${event.error}, launching sign page with it");
+      _navigator.currentState.pushAndRemoveUntil(PageRouteBuilder(pageBuilder: (context, _, __) =>
+        SignInPage(error: event.error)), (_) => false);
+    } else {
+      // We got a new session from somewhere and it's different from the one we already got in the client,
+      // assume this is a successful authorization and proceed to stream page
+      debugPrint("Received authorization event for session for ${event.session.userId}, launching main stream");
+      _navigator.currentState.pushNamedAndRemoveUntil("/stream/main", (_) => false);
     }
   }
 }

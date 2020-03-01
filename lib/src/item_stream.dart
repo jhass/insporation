@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'app_auth.dart';
 import 'client.dart';
 import 'utils.dart';
 import 'widgets.dart';

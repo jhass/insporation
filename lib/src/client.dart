@@ -1,75 +1,43 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-typedef AuthorizationSuccess = void Function();
-typedef AuthorizationFailed = void Function(String);
-typedef AuthorizingUser = Future<String> Function();
+import 'app_auth.dart';
 
 class Client {
-  static const _appauth = const MethodChannel("insporation/appauth");
-  static const _scopes =
-    "openid "
-    "profile profile:read_private profile:modify "
-    "public:read public:modify "
-    "private:read private:modify "
-    "contacts:read contacts:modify "
-    "tags:read tags:modify "
-    "interactions notifications conversations";
   static final _linkHeaderPattern = RegExp(r'<([^>]+)>;\s*rel="([^"]+)"');
 
-  final http.Client _client = http.Client();
-  _Session _currentSession;
-  _Host _currentHost;
+  final _client = http.Client();
+  final _appAuth = AppAuth();
   Future<Profile> _currentUser;
   Future<List<Aspect>> _currentUserAspects;
 
-  void listenToAuthorizationResponse({
-    @required AuthorizingUser authorizingUser,
-    AuthorizationSuccess success,
-    AuthorizationFailed failed}) {
-    _appauth.setMethodCallHandler((call) async {
-      switch (call.method) {
-        case "fetchAuthState":
-          final id = await authorizingUser(),
-            session = id != null ? await _loadSession(id) : null;
-          return session?.authState ?? _currentSession?.authState ?? _currentHost?.authState;
-        case "authorizationSuccess":
-          final id = await authorizingUser();
-          _currentSession = id != null ? await _loadSession(id) : _currentSession;
-          _currentSession.authState = call.arguments;
-          _currentSession.authorized = true;
-          await _persistCurrentSession();
+  Stream<AuthorizationEvent> get newAuthorizations => _appAuth.newAuthorizations;
 
-          if (success != null) {
-            success();
-          }
-          break;
-        case "authorizationFailed":
-          if (failed != null) {
-            failed(call.arguments);
-          }
-          break;
-      }
-
-      return null;
-    });
+  Future<void> switchToUser(String diasporaId) async {
+    await _appAuth.switchToUser(diasporaId);
   }
 
-  void stopListeningToAuthorizationResponse() {
-    _appauth.setMethodCallHandler(null);
+  Future<void> restoreSession() async {
+    await _appAuth.restoreSession();
   }
 
-  bool get hasSession => _currentSession?.diasporaId != null;
+  Future<void> ensureAuthorization() async {
+    assert(currentUserId != null, "Cannot ensure authorization without any session, active or not!");
+    if (currentUserId != null) {
+      await _appAuth.accessToken;
+    }
+  }
 
-  String get currentUserId => _currentSession?.diasporaId;
+  Future<void> forgetSession() => _appAuth.forgetSession();
 
-  bool get authorized => _currentSession.authorized;
+  bool get hasSession => _appAuth.hasSession;
+
+  String get currentUserId => _appAuth.currentUserId;
 
   Future<Profile> get currentUser {
     _fetch() async {
@@ -81,7 +49,15 @@ class Client {
       _currentUser = _fetch();
     }
 
-    return _currentUser;
+    return _currentUser.then((user) {
+      if (user.person.diasporaId != currentUserId) {
+        _currentUser = _fetch();
+        _currentUserAspects = null;
+        return _currentUser;
+      } else {
+        return user;
+      }
+    });
   }
 
   Future<List<Aspect>> get currentUserAspects async {
@@ -95,29 +71,6 @@ class Client {
     }
 
     return _currentUserAspects;
-  }
-
-  Future<void> switchToUser(String diasporaId) async {
-    _currentUser = null;
-    _currentUserAspects = null;
-
-    final parts = diasporaId.split("@"),
-        user = parts[0], hostname = parts[1];
-
-    _currentHost = await _loadHost(hostname);
-
-    if (!_currentHost.registered) {
-      await _registerClient(_currentHost);
-    }
-
-    _currentSession = await _loadSession(diasporaId);
-
-    if (!_currentSession.authorized) {
-      _currentSession.authState = await _authorize(_currentHost.authState, user);
-      _currentSession.authorized = true;
-    }
-
-    await _persistCurrentSession();
   }
 
   Future<Page<Post>> fetchMainStream({String page}) =>
@@ -470,7 +423,7 @@ class Client {
   }
 
   Future<http.Response> _call(String method, String endpoint, {Map<String, String> query = const {}, body, page}) async {
-    final token = await _getAccessToken(),
+    final token = await _appAuth.accessToken,
       uri = _computeUri(endpoint, query: query, page: page),
       request = http.Request(method, uri);
     request.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
@@ -501,93 +454,8 @@ class Client {
     if (page != null) {
       return Uri.parse(page);
     } else {
-      final newSegments = _currentHost.baseUri.pathSegments + endpoint.split(r'/');
-      return _currentHost.baseUri.replace(pathSegments: const ['api', 'v1'] + newSegments, queryParameters: query);
-    }
-  }
-
-  Future<_Host> _loadHost(String host) async {
-    final sharedPreferences = await SharedPreferences.getInstance();
-    final hostPref = "${host}_info";
-    if (sharedPreferences.containsKey(hostPref)) {
-      return _Host.fromJson(sharedPreferences.getString(hostPref));
-    } else {
-      return _Host.forUri(Uri.parse("https://$host"));
-    }
-  }
-
-  Future<void> _persistHost(_Host host) async {
-    final sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString("${host.baseUri.host}_info", host.toJson());
-  }
-
-  Future<_Session> _loadSession(String diasporaId) async {
-    final sharedPreferences = await SharedPreferences.getInstance();
-    final sessionPref = "${diasporaId}_session";
-    if (sharedPreferences.containsKey(sessionPref)) {
-      return _Session.fromJson(sharedPreferences.getString(sessionPref));
-    } else {
-      return _Session.forUser(diasporaId);
-    }
-  }
-
-  _persistCurrentSession() async {
-    final sharedPreferences = await SharedPreferences.getInstance();
-    if (_currentSession.diasporaId != null) {
-      sharedPreferences.setString("${_currentSession.diasporaId}_session", _currentSession.toJson());
-    }
-  }
-
-  Future<void> _registerClient(_Host host) async {
-    try {
-      host.authState = await _appauth.invokeMethod("registerClient", <String, dynamic>{
-        "url": host.baseUri.toString()
-      });
-      host.registered = true;
-      await _persistHost(host);
-    } on PlatformException catch (e) {
-      throw "Failed to register client: ${e.message}";
-    }
-  }
-
-  static Future<String> _authorize(String authState, String username) async {
-    try {
-      return await _appauth.invokeMethod("authorize", <String, dynamic>{
-        "authState": authState,
-        "username": username,
-        "scopes": _scopes
-      });
-    } on PlatformException catch (e) {
-      if (e.code == "concurrent_request") {
-        // probably returning after dieing in the background, ignore
-        return authState;
-      } else {
-        throw "Failed to authorize client: ${e.message}";
-      }
-    }
-  }
-
-  Future<String> _getAccessToken() async {
-    try {
-      final Map<dynamic, dynamic> result = await _appauth.invokeMethod("getAccessToken", <String, dynamic>{
-        "authState": _currentSession.authState
-      });
-      _currentSession.authState = result["authState"];
-
-      if (result["accessToken"] != null) {
-        return result["accessToken"];
-      } else {
-        throw "Failed to fetch access token: Got no token!";
-      }
-    } on PlatformException catch (e) {
-      if (e.message?.toLowerCase()?.contains("network") == true) {
-        throw e.message; // probably bad network
-      }
-
-      // our session is probably not worth anything anymore, destroy it
-      _currentSession.authorized = false;
-      await _persistCurrentSession();
-      throw InvalidSessionError("Failed to fetch access token: ${e.message}");
+      final newSegments = _appAuth.currentBaseUri.pathSegments + endpoint.split(r'/');
+      return _appAuth.currentBaseUri.replace(pathSegments: const ['api', 'v1'] + newSegments, queryParameters: query);
     }
   }
 
@@ -686,89 +554,6 @@ class ClientException implements Exception {
   @override
   String toString() =>
     "Failed to $requestMethod $requestPath: $code - $message";
-}
-
-class InvalidSessionError implements Exception {
-  InvalidSessionError(this.message);
-
-  final String message;
-
-  @override
-  String toString() => "Invalid session: $message";
-}
-
-class _Host {
-  final Uri baseUri;
-  String authState;
-  var registered = false;
-
-  _Host({this.baseUri, this.authState, this.registered});
-
-  _Host.forUri(this.baseUri);
-
-  factory _Host.fromJson(String json) {
-    final object = jsonDecode(json);
-    return _Host(
-        baseUri:  Uri.parse(object["baseUrl"]),
-        authState: object["authState"],
-        registered: object["registered"]
-    );
-  }
-
-  String toJson() =>
-     jsonEncode({
-      "baseUrl": baseUri.toString(),
-      "authState": authState,
-      "registered": registered
-    });
-}
-
-class _Session {
-  final String diasporaId;
-  String scopes;
-  String authState;
-  var _authorized = false;
-
-  _Session({@required this.diasporaId, @required this.scopes, @required this.authState,
-    @required authorized}) : _authorized = authorized;
-
-  _Session.forUser(this.diasporaId);
-
-  factory _Session.fromJson(String json) {
-    final object = jsonDecode(json);
-    return _Session(
-        diasporaId: object["diasporaId"],
-        scopes: object["scopes"],
-        authState: object["authState"],
-        authorized: object["authorized"]
-    );
-  }
-
-  bool get authorized => _authorized && authState != null && _normalizeScopes(Client._scopes) == _normalizeScopes(scopes);
-
-  set authorized(authorized) {
-    _authorized = authorized;
-    if (_authorized) {
-      scopes = Client._scopes;
-    }
-  }
-
-  String toJson() =>
-    jsonEncode({
-      "diasporaId": diasporaId,
-      "scopes": scopes,
-      "authState": authState,
-      "authorized": authorized});
-
-  static String _normalizeScopes(String scopes) {
-    if (scopes == null) {
-      return null;
-    }
-
-    final splitted = scopes.split(" ");
-    splitted.sort();
-    return splitted.join(" ");
-  }
 }
 
 class Person {

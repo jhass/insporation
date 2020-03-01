@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -514,7 +513,6 @@ class _EditProfileState extends State<_EditProfile> {
 
       Scaffold.of(context).showSnackBar(SnackBar(content: Text("Profile updated.")));
     } catch (e, s) {
-      debugger();
       tryShowErrorSnackBar(this, "Failed to update profile", e, s);
     } finally {
       setState(() => _submitting = false);
