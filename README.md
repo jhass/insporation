@@ -18,7 +18,7 @@ In case you want to dare anyways:
 ## Implementation status
 
 * Android support
-* Mostly usable for content browsing and basic content creation
+* Usable for content browsing and content creation
 
 ## Roadmap
 

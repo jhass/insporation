@@ -37,7 +37,6 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "jhass.eu.insporation"
         minSdkVersion 16
         targetSdkVersion 28
@@ -49,11 +48,18 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            keyAlias getenv("KEYSTORE_KEY_ALIAS", "key")
+            keyPassword getenv("KEYSTORE_PASSWORD", null)
+            storeFile file(getenv("KEYSTORE_PATH", "insporation.jks"))
+            storePassword getenv("KEYSTORE_PASSWORD", null)
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -69,4 +75,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+static def getenv(key, defaultValue) {
+    return System.getenv(key) ? System.getenv(key) : defaultValue
 }
