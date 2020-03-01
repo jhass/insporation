@@ -51,7 +51,7 @@ jobs:
         path: pages
     - name: Update F-Droid repository
       run: |
-        apt-get install fdroidserver
+        apt-get update && apt-get install -y fdroidserver
         cp dist/*.apk pages/fdroid/repo
         cd pages/fdroid
         fdroid update
