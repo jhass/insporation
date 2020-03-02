@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:gesture_zoom_box/gesture_zoom_box.dart';
+import 'package:insporation/src/localizations.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -144,7 +145,7 @@ class ShowNsfwPosts extends ValueNotifier<bool> {
   ShowNsfwPosts({bool initial = false}) : super(initial);
 }
 
-class _NsfwShieldState extends State<NsfwShield> {
+class _NsfwShieldState extends State<NsfwShield> with StateLocalizationHelpers {
   bool _hide;
 
   @override
@@ -161,7 +162,7 @@ class _NsfwShieldState extends State<NsfwShield> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                "NSFW post by ${widget.author.name}",
+                l.nsfwShieldTitle(widget.author.nameOrId),
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
@@ -174,7 +175,7 @@ class _NsfwShieldState extends State<NsfwShield> {
                       Flexible(
                         child: FlatButton(
                           child: Text(
-                            "Show all NSFW posts",
+                            l.showAllNsfwPostsButtonLabel,
                             textAlign: TextAlign.center,
                             style: TextStyle(color: colors.link)
                           ),
@@ -185,7 +186,7 @@ class _NsfwShieldState extends State<NsfwShield> {
                       Flexible(
                         child: FlatButton(
                           child: Text(
-                            "Show this post",
+                            l.showThisNsfwPostButtonLabel,
                             textAlign: TextAlign.center,
                             style: TextStyle(color: colors.link)
                           ),

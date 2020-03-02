@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
@@ -99,6 +98,7 @@ class AppAuth {
 
       // our session is probably not worth anything anymore, destroy it
       await destroySession("Failed to fetch access token: ${e.message}");
+      return null; // Previous always raises
     }
   }
 

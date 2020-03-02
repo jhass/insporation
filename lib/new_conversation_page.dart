@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
@@ -17,14 +18,14 @@ class NewConversationOptions {
   const NewConversationOptions({this.recipients = const [], this.prefillSubject = "", this.prefillBody = ""});
 }
 
-class NewConversationPage extends StatelessWidget {
+class NewConversationPage extends StatelessWidget with LocalizationHelpers {
   NewConversationPage({Key key, this.options = const NewConversationOptions()}) : super(key: key);
 
   final NewConversationOptions options;
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text("Start a new conversation")),
+    appBar: AppBar(title: Text(l(context).newConversationTitle)),
     body: SingleChildScrollView(child: _NewConversationPageBody(options: options))
   );
 }
@@ -38,7 +39,7 @@ class _NewConversationPageBody extends StatefulWidget {
   State<StatefulWidget> createState() => _NewConversationPageBodyState();
 }
 
-class _NewConversationPageBodyState extends State<_NewConversationPageBody> {
+class _NewConversationPageBodyState extends State<_NewConversationPageBody> with StateLocalizationHelpers {
   final List<Person> _recipients = [];
   final _subject = TextEditingController();
   final _subjectFocus = FocusNode();
@@ -73,25 +74,25 @@ class _NewConversationPageBodyState extends State<_NewConversationPageBody> {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("Recipients", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
+        Text(l.newConversationRecipientsLabel, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
         Wrap(
           spacing: 4,
           children: _buildRecipients()
         ),
         Divider(thickness: 1.0, color: colors.inputBorder(Theme.of(context))),
-        Text("Subject", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
+        Text(l.newConversationSubjectLabel, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
         TextField(
           controller: _subject,
           focusNode: _subjectFocus,
         ),
         Divider(color: Colors.transparent),
-        Text("Message", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
+        Text(l.newConversationMessageLabel, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
         ConstrainedBox(
           constraints: BoxConstraints.loose(Size(double.infinity, 400)),
           child: SimpleComposer(
             controller: _body,
             submittable: _validSubject && _recipients.isNotEmpty,
-            submitButtonContent: Text("Send"),
+            submitButtonContent: Text(l.sendNewConversation),
             onSubmit: _submit,
           )
         )
@@ -142,19 +143,19 @@ class _NewConversationPageBodyState extends State<_NewConversationPageBody> {
       }
 
       if (!profile.receiving) {
-        _showError("You're not sharing with ${response.nameOrId}, cannot add them as a recipient!");
+        _showError(l.failedToAddConversationParticipantNotSharingWith(response.nameOrId));
         return;
       } else if (!profile.sharing) {
-        _showError("${response.nameOrId} is not sharing with you, cannot add them as a recipient!");
+        _showError(l.failedToAddConversationParticipantNotSharing(response.nameOrId));
         return;
       } else if (_recipients.contains(response)) {
-        _showError("${response.nameOrId} already is a recipient, cannot add them twice.");
+        _showError(l.failedToAddConversationParticipantDuplicate(response.nameOrId));
         return;
       }
 
       setState(() => _recipients.add(response));
     } catch (e, s) {
-      tryShowErrorSnackBar(this, "Failed to add recipient", e, s);
+      tryShowErrorSnackBar(this, l.failedToAddConversationParticipant, e, s);
     }
   }
 
@@ -174,7 +175,7 @@ class _NewConversationPageBodyState extends State<_NewConversationPageBody> {
       Navigator.pop(context, conversation);
       return true;
     } catch (e, s) {
-      tryShowErrorSnackBar(this, "Failed to create conversation", e, s);
+      tryShowErrorSnackBar(this, l.failedToCreateConversation, e, s);
     }
     return false;
   }

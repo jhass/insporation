@@ -45,7 +45,7 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
   @override
   Widget buildHeader(BuildContext context) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 8),
-    child: Text("Comments", style: TextStyle(fontSize: 18)),
+    child: Text(l.commentsHeader, style: TextStyle(fontSize: 18)),
   );
 
   @override
@@ -55,7 +55,7 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
     child: Padding(
       padding: EdgeInsets.all(8),
       child: SimpleComposer(
-        submitButtonContent: Text("Comment"),
+        submitButtonContent: Text(l.createComment),
         mentionablePeople: _mentionablePeople(),
         onSubmit: _insertComment,
       ),
@@ -85,7 +85,7 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
       widget.post.interactions.subscribed = true;
       return true;
     } catch (e, s) {
-      tryShowErrorSnackBar(this, "Failed to post comment", e, s);
+      tryShowErrorSnackBar(this, l.failedToCommentOnPost, e, s);
       return false;
     }
   }

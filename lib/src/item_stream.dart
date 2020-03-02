@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'app_auth.dart';
 import 'client.dart';
+import 'localizations.dart';
 import 'utils.dart';
 import 'widgets.dart';
 
@@ -149,7 +150,7 @@ abstract class ItemStream<T> extends ChangeNotifier {
   Future<Page<T>> loadPage({Client client, String page});
 }
 
-abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
+abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> with StateLocalizationHelpers {
   ItemStreamState({this.enableUpButton = true, this.listPadding});
 
   final enableUpButton;
@@ -311,7 +312,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> {
   }
 }
 
-class _StreamFallback extends StatelessWidget {
+class _StreamFallback extends StatelessWidget with LocalizationHelpers {
   _StreamFallback({Key key, this.header, this.footer, this.loading = false, this.error = false}) : super(key: key);
 
   final Widget header;
@@ -342,7 +343,7 @@ class _StreamFallback extends StatelessWidget {
                     height: viewportConstraints.maxHeight
                   ) : SizedBox.shrink(),
                   child: Center(
-                    child: Text("Darn, nothing to display!"),
+                    child: Text(l(context).noItems),
                   ),
                 ),
                 Flexible(child: footer)

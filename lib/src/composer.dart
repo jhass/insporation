@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:insporation/src/localizations.dart';
 
 import 'client.dart';
 import 'search.dart';
@@ -24,7 +25,7 @@ class Composer extends StatefulWidget {
   State<StatefulWidget> createState() => _ComposerState();
 }
 
-class _ComposerState extends State<Composer> {
+class _ComposerState extends State<Composer> with StateLocalizationHelpers {
   TextEditingController _controller;
   TextEditingController get _effectiveController => widget.controller ?? _controller;
 
@@ -59,67 +60,67 @@ class _ComposerState extends State<Composer> {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.format_italic),
-              tooltip: "Italic",
+              tooltip: l.formatItalic,
               onPressed: widget.enabled ? () => _insertInlineWrap("*") : null
             ),
             IconButton(
               icon: Icon(Icons.format_bold),
-              tooltip: "Bold",
+              tooltip: l.formatBold,
               onPressed: widget.enabled ? () => _insertInlineWrap("**") : null
             ),
             IconButton(
               icon: Icon(Icons.format_strikethrough),
-              tooltip: "Strikethrough",
+              tooltip: l.formatStrikethrough,
               onPressed: widget.enabled ? () => _insertInlineWrap("~~") : null
             ),
             IconButton(
               icon: TextIcon(character: "H"),
-              tooltip: "Heading",
+              tooltip: l.insertHeading,
               onPressed: widget.enabled ? () => _insertHeadline() : null
             ),
             IconButton(
               icon: Icon(Icons.format_list_bulleted),
-              tooltip: "Bulleted list",
+              tooltip: l.insertBulletedList,
               onPressed: widget.enabled ? () => _insertPrefixedBlock("* ") : null
             ),
             IconButton(
               icon: Icon(Icons.format_list_numbered),
-              tooltip: "Numbered list",
+              tooltip: l.insertNumberedList,
               onPressed: widget.enabled ? () => _insertPrefixedBlock("1. ") : null
             ),
             IconButton(
               icon: Icon(Icons.format_quote),
-              tooltip: "Quote",
+              tooltip: l.insertQuote,
               onPressed: widget.enabled ? () => _insertPrefixedBlock(">  ") : null
             ),
             IconButton(
               icon: Icon(Icons.code),
-              tooltip: "Code",
+              tooltip: l.insertCode,
               onPressed: widget.enabled ? () => _insertInlineWrap("`") : null
             ),
             IconButton(
               icon: Stack(children: <Widget>[Icon(Icons.code),  Positioned(top: 4, left: 4, child: Icon(Icons.short_text, size:  16))]), // TODO proper icon
-              tooltip: "Code block",
+              tooltip: l.insertCodeBlock,
               onPressed: widget.enabled ? () =>  _insertBlockWrap("```") : null
             ),
             IconButton(
               icon: Icon(Icons.link),
-              tooltip: "Link",
+              tooltip: l.insertLink,
               onPressed: widget.enabled ? () => _insertLink() : null
             ),
             IconButton(
               icon: Icon(Icons.image),
-              tooltip: "Image URL",
+              tooltip: l.insertImageURL,
               onPressed: widget.enabled ? () => _insertImage() : null
             ),
             IconButton(
               icon: TextIcon(character: "#"),
-              tooltip: "Hashtag",
+              tooltip: l.insertHashtag,
               onPressed: widget.enabled ? () => _insertHashtag() : null
             ),
             IconButton(
               icon: TextIcon(character: "@"),
-              tooltip: "Mention",
+              tooltip: l.insertMention,
               onPressed: widget.enabled ? () => _insertMention() : null
             )
           ],
@@ -274,12 +275,12 @@ class _ComposerState extends State<Composer> {
   }
 
   _insertLink() async {
-    _insertLinkable("Insert a link", (response) => response.description != null && response.description.isNotEmpty ?
+    _insertLinkable(l.insertLinkPrompt, (response) => response.description != null && response.description.isNotEmpty ?
       "[${response.description}](${response.url})": "<${response.url}>");
   }
 
   _insertImage() async {
-    _insertLinkable("Embed an image", (response) => "![${response.description ?? ""}](${response.url})");
+    _insertLinkable(l.insertImageURLPrompt, (response) => "![${response.description ?? ""}](${response.url})");
   }
 
   _insertLinkable(String title, String Function(_LinkData response) formatter) async {
@@ -365,7 +366,7 @@ class _ComposerState extends State<Composer> {
 }
 
 class _LinkInputDialog extends StatefulWidget {
-  _LinkInputDialog({Key key, this.title, this.initialValue}) : super(key: key);
+  _LinkInputDialog({Key key, @required this.title, this.initialValue}) : super(key: key);
 
   final String title;
   final String initialValue;
@@ -374,7 +375,7 @@ class _LinkInputDialog extends StatefulWidget {
   State<StatefulWidget> createState() => _LinkInputDialogState();
 }
 
-class _LinkInputDialogState extends State<_LinkInputDialog> {
+class _LinkInputDialogState extends State<_LinkInputDialog> with StateLocalizationHelpers {
   final TextEditingController _url = TextEditingController();
   final TextEditingController _description = TextEditingController();
   bool _valid = false;
@@ -395,30 +396,30 @@ class _LinkInputDialogState extends State<_LinkInputDialog> {
 
   @override
   Widget build(BuildContext context) => AlertDialog(
-    title: Text("Insert a link"),
+    title: Text(widget.title),
     content: Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         TextField(
           controller: _url,
           autofocus: true,
-          decoration: InputDecoration(hintText: "URL"),
+          decoration: InputDecoration(hintText: l.insertLinkURLHint),
           keyboardType: TextInputType.url,
           onChanged: (value) => setState(() =>  _valid = value.isNotEmpty),
         ),
         TextField(
           controller: _description,
-          decoration: InputDecoration(hintText: "Description (optional)"),
+          decoration: InputDecoration(hintText: l.insertLinkDescriptionHint),
         )
       ],
     ),
     actions: <Widget>[
       FlatButton(
-        child: Text("Cancel"),
+        child: Text(ml.cancelButtonLabel),
         onPressed: () => Navigator.pop(context),
       ),
       FlatButton(
-        child: Text("Insert"),
+        child: Text(l.insertButtonLabel),
         onPressed: _valid ? () => Navigator.pop(context, _LinkData(_description.text, _url.text)) : null,
       )
     ],
@@ -456,7 +457,7 @@ class SimpleComposer extends StatefulWidget {
   State<StatefulWidget> createState() => _SimpleComposerState();
 }
 
-class _SimpleComposerState extends State<SimpleComposer> {
+class _SimpleComposerState extends State<SimpleComposer> with StateLocalizationHelpers {
   TextEditingController _controller;
   TextEditingController get _effectiveController => widget.controller ?? _controller;
   bool _submitting = false;
@@ -508,7 +509,7 @@ class _SimpleComposerState extends State<SimpleComposer> {
             child: Align(
               alignment: Alignment.centerRight,
               child: RaisedButton(
-                child: widget.submitButtonContent ?? Text("Submit"),
+                child: widget.submitButtonContent ?? Text(l.submitButtonLabel),
                 onPressed: widget.submittable && _submittable ? _submit : null,
               ),
             ),

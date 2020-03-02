@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide Notification;
+import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
@@ -43,7 +44,7 @@ class _NotificationListItem extends StatefulWidget {
   State<StatefulWidget> createState() => _NotificationListItemState();
 }
 
-class _NotificationListItemState extends State<_NotificationListItem> {
+class _NotificationListItemState extends State<_NotificationListItem> with StateLocalizationHelpers {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -68,24 +69,27 @@ class _NotificationListItemState extends State<_NotificationListItem> {
   }
 
   String get _title {
+    final actorCount = widget.notification.eventCreators?.length;
+
     switch (widget.notification.type) {
       case NotificationType.alsoCommented:
-        return "$_actors also commented on a $_target.";
+        return l.notificationAlsoCommented(actorCount, _actors, _target);
       case NotificationType.commentOnPost:
-        return "$_actors commented on your $_target.";
+        return l.notificationCommented(actorCount, _actors, _target);
       case NotificationType.contactsBirthday:
-        return "$_actors has their birthday today.";
+        return l.notificationBirthday(actorCount, _actors);
       case NotificationType.liked:
-        return "$_actors liked your $_target.";
+        return l.notificationLiked(actorCount, _actors, _target);
       case NotificationType.mentioned:
-        return "$_actors mentioned you in a $_target.";
+        return l.notificationMentionedInPost(actorCount, _actors, _target);
       case NotificationType.mentionedInComment:
-        final suffix = widget.notification.targetGuid == null ? " of a deleted post." : "";
-        return "$_actors mentioned you in a comment$suffix.";
+        return widget.notification.targetGuid != null ?
+          l.notificationMentionedInComment(actorCount, _actors) :
+          l.notificationMentionedInCommentOnDeletedPost(actorCount, _actors);
       case NotificationType.reshared:
-        return "$_actors reshared your $_target.";
+        return l.notificationReshared(actorCount, _actors, _target);
       case NotificationType.startedSharing:
-        return "$_actors started sharing with you.";
+        return l.notificationStartedSharing(actorCount, _actors);
     }
 
     return "$_actors did something noteworthy!"; // case above is exhaustive, never happens
@@ -96,14 +100,15 @@ class _NotificationListItemState extends State<_NotificationListItem> {
     if (names.length == 1) {
       return names[0];
     } else if (names.length == 2) {
-      return "${names[0]} and ${names[1]}";
+      return l.notificationActorsForTwoPeople(names[0], names[1]);
+    } else if (names.length == 3) {
+      return l.notificationActorsForThreePeople(names[0], names[1], names[2]);
     } else {
-      final others = names.length == 3 ? names[2] : "${names.length - 2} others";
-      return "${names.take(2).join(", ")} and $others";
+      return l.notificationActorsForMoreThanThreePeople(names[0], names[1], names.length - 2);
     }
   }
 
-  String get _target => widget.notification.targetGuid == null ? "deleted post" : "post";
+  String get _target => widget.notification.targetGuid == null ? l.notificationTargetDeletedPost : l.notificationTargetPost;
 
   bool get _canGoToTarget {
     switch (widget.notification.type) {

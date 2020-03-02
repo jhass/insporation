@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
@@ -13,7 +14,7 @@ class SearchPage extends StatefulWidget {
   State<StatefulWidget> createState() => _SearchPageState();
 }
 
-class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> {
+class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> with StateLocalizationHelpers {
   final _search = TextEditingController();
 
   @override
@@ -32,12 +33,12 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> {
                 selectedColor: theme.brightness == Brightness.light ? theme.colorScheme.primary : theme.colorScheme.onSurface,
                 unselectedColor: theme.colorScheme.surface,
                 children: {
-                  SearchType.people: Text("People"),
+                  SearchType.people: Text(l.searchTypePeople),
                   SearchType.peopleByTag: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: Text("People by tag")
+                    child: Text(l.searchTypePeopleByTag)
                   ),
-                  SearchType.tags: Text("Tags")
+                  SearchType.tags: Text(l.searchTypeTags)
                 },
                 groupValue: items.type,
                 onValueChanged: (type) => setState(() {
@@ -86,11 +87,11 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> {
   String _hintText(SearchType type) {
     switch (type) {
       case SearchType.people:
-        return "Start typing a name or diaspora* ID";
+        return l.searchPeopleHint;
       case SearchType.peopleByTag:
-        return "Enter a tag";
+        return l.searchPeopleByTagHint;
       case SearchType.tags:
-        return "Start typing tag";
+        return l.searchTagsHint;
     }
 
     return null; // case is exhaustive, never reached

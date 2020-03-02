@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
@@ -25,7 +26,7 @@ class _ContactsPageState extends ItemStreamState<Aspect, ContactsPage> {
   @override
   Widget buildBody(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Aspects")),
+      appBar: AppBar(title: Text(l.aspectsListTitle)),
       floatingActionButton: _AddAspectButton(),
       body: buildStream(context)
     );
@@ -43,7 +44,7 @@ class _AddAspectButton extends StatefulWidget {
   _AddAspectButtonState createState() => _AddAspectButtonState();
 }
 
-class _AddAspectButtonState extends State<_AddAspectButton> {
+class _AddAspectButtonState extends State<_AddAspectButton> with StateLocalizationHelpers {
   @override
   Widget build(BuildContext context) => FloatingActionButton(
     child: Icon(Icons.add),
@@ -52,8 +53,8 @@ class _AddAspectButtonState extends State<_AddAspectButton> {
 
   _addAspect() async {
     final name = await showDialog(context: context, builder: (context) => _AspectNameDialog(
-      title: "Create an aspect",
-      actionText: "Create"
+      title: l.createAspectPrompt,
+      actionText: l.createButtonLabel
     )),
       client = Provider.of<Client>(context, listen: false),
       items = Provider.of<ItemStream<Aspect>>(context, listen: false);
@@ -69,7 +70,7 @@ class _AddAspectButtonState extends State<_AddAspectButton> {
       final aspect = await client.createAspect(name);
       items.replace(toRemove: mock, replacement: aspect);
     } catch (e, s) {
-      tryShowErrorSnackBar(this, "Failed to create aspect", e, s);
+      tryShowErrorSnackBar(this, l.failedToCreateAspect, e, s);
       items.remove(mock);
     }
   }
@@ -84,7 +85,7 @@ class _AspectItem extends StatefulWidget {
   State<StatefulWidget> createState() => _AspectItemState();
 }
 
-class _AspectItemState extends State<_AspectItem> {
+class _AspectItemState extends State<_AspectItem> with StateLocalizationHelpers {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -117,8 +118,8 @@ class _AspectItemState extends State<_AspectItem> {
   _edit() async {
     final oldName = widget.aspect.name,
       newName = await showDialog(context: context, builder: (context) => _AspectNameDialog(
-      title: "Edit aspect",
-      actionText: "Save",
+      title: l.editAspectPrompt,
+      actionText: l.saveButtonLabel,
       initialValue: oldName,
     )),
       client = Provider.of<Client>(context, listen: false),
@@ -134,17 +135,17 @@ class _AspectItemState extends State<_AspectItem> {
       final newAspect = await client.renameAspect(widget.aspect, newName);
       items.replace(toRemove: widget.aspect, replacement: newAspect);
     } catch (e, s) {
-      tryShowErrorSnackBar(this, "Failed to rename aspect $oldName to $newName", e, s);
+      tryShowErrorSnackBar(this, l.failedToRenameAspect(oldName, newName), e, s);
       setState(() => widget.aspect.name = oldName);
     }
   }
 
   _remove() async {
     bool confirmed = await showDialog(context: context, builder: (context) => AlertDialog(
-      title: Text("Delete aspect ${widget.aspect.name}?"),
+      title: Text(l.deleteAspectPrompt(widget.aspect.name)),
       actions: <Widget>[
-        FlatButton(child: Text("Cancel"), onPressed: () => Navigator.pop(context)),
-        FlatButton(child: Text("Confirm delete"), onPressed: () => Navigator.pop(context, true))
+        FlatButton(child: Text(ml.cancelButtonLabel), onPressed: () => Navigator.pop(context)),
+        FlatButton(child: Text(l.confirmDeleteButtonLabel), onPressed: () => Navigator.pop(context, true))
       ],
     ));
     final client = Provider.of<Client>(context, listen: false),
@@ -159,7 +160,7 @@ class _AspectItemState extends State<_AspectItem> {
     try {
       await client.deleteAspect(widget.aspect);
     } catch (e, s) {
-      tryShowErrorSnackBar(this, "Failed to remove aspect ${widget.aspect.name}", e, s);
+      tryShowErrorSnackBar(this, l.failedToDeleteAspect(widget.aspect.name), e, s);
       items.insert(position, widget.aspect);
     }
   }
@@ -219,7 +220,7 @@ class _AspectNameDialog extends StatefulWidget {
   State<StatefulWidget> createState() => _AspectNameDialogState();
 }
 
-class _AspectNameDialogState extends State<_AspectNameDialog> {
+class _AspectNameDialogState extends State<_AspectNameDialog> with StateLocalizationHelpers {
   final _name = TextEditingController();
   bool _valid = false;
 
@@ -235,12 +236,12 @@ class _AspectNameDialogState extends State<_AspectNameDialog> {
     content: TextField(
       autofocus: true,
       controller: _name,
-      decoration: InputDecoration(hintText: "Enter a name"),
+      decoration: InputDecoration(hintText: l.aspectNameHint),
       onChanged: (value) => setState(() => _valid = value.trim().isNotEmpty),
       onSubmitted: _submit,
     ),
     actions: <Widget>[
-      FlatButton(child: Text("Cancel"), onPressed: () => Navigator.pop(context)),
+      FlatButton(child: Text(ml.cancelButtonLabel), onPressed: () => Navigator.pop(context)),
       FlatButton(child: Text(widget.actionText), onPressed: _valid ? _submit : null)
     ],
   );

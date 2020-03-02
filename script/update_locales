@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+
+flutter pub get
+flutter pub pub run intl_translation:generate_from_arb --output-dir=lib/l10n --no-use-deferred-loading lib/src/localizations.dart lib/l10n/intl_*.arb
+git add lib/l10n/messages_*.dart

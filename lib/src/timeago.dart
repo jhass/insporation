@@ -3,7 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+final timeagoLocaleMessages = <String, timeago.LookupMessages>{
+  Locale('en').toLanguageTag(): timeago.EnMessages(),
+  Locale('de').toLanguageTag(): timeago.DeMessages()
+};
+
 class Timeago extends StatefulWidget {
+  static loadLocale(Locale locale) {
+    timeago.setLocaleMessages(locale.toLanguageTag(), timeagoLocaleMessages[locale.toLanguageTag()]);
+  }
+
   Timeago(this.dateTime, {this.textStyle});
 
   final DateTime dateTime;
@@ -20,15 +29,20 @@ class _TimeagoState extends State<Timeago> {
   Timer _timer;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    if (_timer != null) {
+      _timer.cancel();
+    }
+
+    final locale = Localizations.localeOf(context).toLanguageTag();
     setState(() {
-      _currentText = timeago.format(widget.dateTime);
+      _currentText = timeago.format(widget.dateTime, locale: locale);
     });
 
     _timer = Timer.periodic(Duration(minutes: 1), (_) => setState(() =>
-      _currentText = timeago.format(widget.dateTime)));
+      _currentText = timeago.format(widget.dateTime, locale: locale)));
   }
 
   @override

@@ -8,6 +8,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   provider: ^4.0.1
   shared_preferences: ^0.5.6+1
   http: ^0.12.0+4
@@ -20,7 +22,8 @@ dependencies:
   cached_network_image: ^2.0.0
   gesture_zoom_box: ^0.0.2
   flutter_slidable: ^0.5.4
-  intl: ^0.16.1
+  intl: ^0.16.0
+  intl_translation: ^0.17.9
   image_picker: ^0.6.3+1
   image_crop: ^0.3.2
   flutter_app_badger: ^1.1.2

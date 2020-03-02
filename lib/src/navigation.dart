@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:insporation/src/localizations.dart';
 
 import 'client.dart';
 import 'widgets.dart';
@@ -18,28 +19,17 @@ enum PageType {
   post
 }
 
-class NavigationBar extends StatelessWidget {
-  static List<_BarItem> _mainItems = <_BarItem>[
-    _BarItem(PageType.stream, Icons.view_stream, "Stream", "/stream/main"),
-    _BarItem(PageType.conversations, Icons.mail, "Conversations", "/conversations"),
-    _BarItem(PageType.search, Icons.search, "Search", "/search"),
-    _BarItem(PageType.notifications, Icons.notifications, "Notifications", "/notifications")
-  ];
-
-  static List<_BarItem> _moreItems = <_BarItem>[
-    _BarItem(PageType.contacts, null, "Contacts", "/contacts"),
-    _BarItem(PageType.edit_profile, null, "Edit profile", "/edit_profile"),
-    _BarItem(PageType.sign_in, null, "Switch user", "/switch_user")
-  ];
-
+class NavigationBar extends StatelessWidget with LocalizationHelpers {
   NavigationBar({Key key, @required this.currentPage}) : super(key: key);
 
   final PageType currentPage;
 
   @override
   Widget build(BuildContext context) {
-    final currentIndex = _mainItems.indexWhere((item) => item.page == currentPage);
-    final items = _mainItems.map(_buildMainItem).toList();
+    final mainItems = _mainItems(l(context)),
+      moreItems = _moreItems(l(context)),
+      currentIndex = mainItems.indexWhere((item) => item.page == currentPage),
+      items = mainItems.map(_buildMainItem).toList();
     items.add(BottomNavigationBarItem(title: Text(""), icon: Icon(Icons.more_horiz)));
 
     final theme = Theme.of(context);
@@ -52,14 +42,14 @@ class NavigationBar extends StatelessWidget {
         if (index == currentIndex) {
           return;
         }
-        if (index < _mainItems.length) {
-          Navigator.of(context).pushReplacementNamed(_mainItems[index].route);
+        if (index < mainItems.length) {
+          Navigator.of(context).pushReplacementNamed(mainItems[index].route);
         } else {
           final RenderBox bar = context.findRenderObject();
           final RenderBox overlay = Overlay.of(context).context.findRenderObject();
           final RelativeRect position = RelativeRect.fromRect(
             Rect.fromPoints(
-              bar.localToGlobal(bar.size.topRight(Offset.zero) - Offset(0, bar.size.height + _moreItems.length * 36), ancestor: overlay),
+              bar.localToGlobal(bar.size.topRight(Offset.zero) - Offset(0, bar.size.height + moreItems.length * 36), ancestor: overlay),
               bar.localToGlobal(bar.size.bottomRight(Offset.zero), ancestor: overlay),
             ),
             Offset.zero & overlay.size,
@@ -67,7 +57,7 @@ class NavigationBar extends StatelessWidget {
           showMenu(
             context: context,
             position: position,
-            items: _moreItems.map((item) => PopupMenuItem(child: Text(item.title), value: item) ).toList(),
+            items: moreItems.map((item) => PopupMenuItem(child: Text(item.title), value: item) ).toList(),
           ).then((selected) {
             if (selected != null) {
               Navigator.of(context).pushNamed(selected.route);
@@ -97,6 +87,19 @@ class NavigationBar extends StatelessWidget {
       title: Text(item.title)
     );
   }
+
+  List<_BarItem> _mainItems(InsporationLocalizations l) => <_BarItem>[
+    _BarItem(PageType.stream, Icons.view_stream, l.navigationItemTitleStream, "/stream/main"),
+    _BarItem(PageType.conversations, Icons.mail, l.navigationItemTitleConversations, "/conversations"),
+    _BarItem(PageType.search, Icons.search, l.navigationItemTitleSearch, "/search"),
+    _BarItem(PageType.notifications, Icons.notifications, l.navigationItemTitleNotifications, "/notifications")
+  ];
+
+  List<_BarItem> _moreItems(InsporationLocalizations l) => <_BarItem>[
+    _BarItem(PageType.contacts, null, l.navigationItemTitleContacts, "/contacts"),
+    _BarItem(PageType.edit_profile, null, l.navigationItemTitleEditProfile, "/edit_profile"),
+    _BarItem(PageType.sign_in, null, l.navigationItemTitleSwitchUser, "/switch_user")
+  ];
 }
 
 class _BarItem {

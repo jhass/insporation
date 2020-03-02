@@ -108,7 +108,7 @@ class _ConversationsPageState extends ItemStreamState<Conversation, Conversation
     try {
       await client.hideConversation(conversation);
     } catch (e, s) {
-      tryShowErrorSnackBar(this, "Failed to hide conversation", e, s);
+      tryShowErrorSnackBar(this, l.failedToHideConversation, e, s);
 
       items.insert(position, conversation);
     }
@@ -201,7 +201,7 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
     child: Padding(
       padding: EdgeInsets.all(8),
       child: SimpleComposer(
-        submitButtonContent: Text("Reply"),
+        submitButtonContent: Text(l.replyToConversation),
         mentionablePeople: SearchablePeople.list(widget.conversation.participants),
         onSubmit: (body) async {
         final client = Provider.of<Client>(context, listen: false);
@@ -210,7 +210,7 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
           items.add(message);
           return true;
         } catch (e, s) {
-          tryShowErrorSnackBar(this, "Failed to reply to conversation", e, s);
+          tryShowErrorSnackBar(this, l.failedToReplyToConversation, e, s);
         }
         return false;
       },

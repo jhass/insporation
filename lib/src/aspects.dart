@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'client.dart';
@@ -12,19 +13,21 @@ class AspectSelectionList extends StatefulWidget {
   State<StatefulWidget> createState() => _AspectSelectionListState();
 
   static Widget buildDialog({@required BuildContext context, @required List<Aspect> currentSelection, String title}) {
-    final newAspects = List.of(currentSelection ?? <Aspect>[]);
+    final newAspects = List.of(currentSelection ?? <Aspect>[]),
+      ml = MaterialLocalizations.of(context),
+      l = InsporationLocalizations.of(context);
     return AlertDialog(
       content: AspectSelectionList(selectedAspects: newAspects),
-      title: Text(title ?? "Select aspects"),
+      title: Text(title ?? l.aspectsPrompt),
       actions: <Widget>[
-        FlatButton(onPressed: () => Navigator.pop(context), child: Text("Cancel")),
-        FlatButton(onPressed: () => Navigator.pop(context, newAspects), child: Text("Save"))
+        FlatButton(onPressed: () => Navigator.pop(context), child: Text(ml.cancelButtonLabel)),
+        FlatButton(onPressed: () => Navigator.pop(context, newAspects), child: Text(l.saveButtonLabel))
       ],
     );
   }
 }
 
-class _AspectSelectionListState extends State<AspectSelectionList> {
+class _AspectSelectionListState extends State<AspectSelectionList> with StateLocalizationHelpers {
   List<Aspect> _userAspects;
 
   @override
@@ -58,7 +61,7 @@ class _AspectSelectionListState extends State<AspectSelectionList> {
           ),
           child: position == 0 ?
             FlatButton(
-              child: Text(allSelected ? "Deselect all" : "Select all"),
+              child: Text(allSelected ? l.deselectAllButtonLabel : l.selectAllButtonLabel),
               onPressed: () => setState(() {
                 widget.selectedAspects.clear();
                 if (!allSelected) {

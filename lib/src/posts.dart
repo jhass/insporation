@@ -10,23 +10,13 @@ import 'package:url_launcher/url_launcher.dart';
 import 'client.dart';
 import 'comments.dart';
 import 'item_stream.dart';
+import 'localizations.dart';
 import 'messages.dart';
 import 'timeago.dart';
 import 'utils.dart';
 import 'colors.dart' as colors;
 
 enum StreamType { main, activity, aspects, mentions, followedTags, liked, commented, tag }
-
-const streamNames = {
-  StreamType.main: "Stream",
-  StreamType.activity: "Activity",
-  StreamType.aspects: "Aspects",
-  StreamType.followedTags: "Followed tags",
-  StreamType.mentions: "Mentions",
-  StreamType.liked: "Liked",
-  StreamType.commented: "Commented",
-  StreamType.tag: "Tag"
-};
 
 class PostStream extends ItemStream<Post> {
   final StreamType type;
@@ -119,7 +109,7 @@ class PostStreamItem extends StatelessWidget {
   }
 }
 
-class PostView extends StatelessWidget {
+class PostView extends StatelessWidget with LocalizationHelpers {
   PostView({Key key, @required this.post, this.enableCommentsSheet = true})  : super(key: key);
 
   final Post post;
@@ -171,7 +161,7 @@ class PostView extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 8),
                           child: Icon(Icons.warning, color: Colors.white)
                         ),
-                        Text("Reshare of a deleted post", style: TextStyle(color: Colors.white))
+                        Text(l(context).deletedPostReshareHint, style: TextStyle(color: Colors.white))
                      ]
                     )
                   ),
@@ -219,7 +209,7 @@ class _PostInteractionsView extends StatefulWidget {
   State<StatefulWidget> createState() => _PostInteractionsViewState();
 }
 
-class _PostInteractionsViewState extends State<_PostInteractionsView> {
+class _PostInteractionsViewState extends State<_PostInteractionsView> with StateLocalizationHelpers {
   bool _updatingLike = false;
 
   @override
@@ -306,7 +296,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
         setState(() => _updatingLike = false);
       }
     } catch (e, s) {
-      showErrorSnackBar(scaffold, "Failed to ${current ? "unlike" : "like"} post", e, s);
+      showErrorSnackBar(scaffold, current ? l.failedToUnlikePost : l.failedToLikePost, e, s);
 
       widget.post.interactions.liked = current;
       widget.post.interactions.likes = currentCount;
@@ -322,14 +312,14 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
       context: context,
       barrierDismissible: true,
       builder: (dialogContext) => AlertDialog(
-        title: Text("Reshare post?"),
+        title: Text(l.resharePrompt),
         actions: <Widget>[
           FlatButton(
-            child: Text("Cancel"),
+            child: Text(ml.cancelButtonLabel),
             onPressed: () => Navigator.pop(dialogContext),
           ),
           FlatButton(
-            child: Text("Reshare"),
+            child: Text(l.confirmReshare),
             onPressed: () {
               _createReshare();
               Navigator.pop(dialogContext);
@@ -362,7 +352,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> {
         postStream?.removeMock(mockReshare);
       }
     } catch (e, s) {
-      showErrorSnackBar(scaffold, "Failed to reshare post", e, s);
+      showErrorSnackBar(scaffold, l.failedToResharePost, e, s);
 
       setState(() {
         widget.post.interactions.reshared = false;
@@ -386,7 +376,7 @@ class PostActionsView extends StatefulWidget {
   State<StatefulWidget> createState() => _PostActionsViewState();
 }
 
-class _PostActionsViewState extends State<PostActionsView> {
+class _PostActionsViewState extends State<PostActionsView> with StateLocalizationHelpers {
   final _reportField = TextEditingController();
   bool _updatingSubscription = false;
 
@@ -396,16 +386,16 @@ class _PostActionsViewState extends State<PostActionsView> {
       IconButton(
         icon: Icon(Icons.notifications, color: widget.post.interactions.subscribed ? Theme.of(context).colorScheme.secondary : null),
         onPressed: _updatingSubscription ? null : _toggleSubscription,
-        tooltip: widget.post.interactions.subscribed ? "Stop notifications" : "Enable notifications"
+        tooltip: widget.post.interactions.subscribed ? l.cancelPostSubscription : l.startPostSubscription
       ),
       IconButton(
         icon: Icon(widget.post.ownPost ? Icons.delete : Icons.visibility_off),
         onPressed: widget.post.ownPost ? _promptDelete : _removePost,
-        tooltip: widget.post.ownPost ? "Delete" : "Hide",
+        tooltip: widget.post.ownPost ? ml.deleteButtonTooltip : l.hidePost,
       )
     ];
     if (!widget.post.ownPost && !widget.post.interactions.reported) {
-      actions.add(IconButton(icon: Icon(Icons.flag), onPressed: _promptReport, tooltip: "Report"));
+      actions.add(IconButton(icon: Icon(Icons.flag), onPressed: _promptReport, tooltip: l.reportPost));
     }
 
     return widget.orientation ==  Axis.vertical ? Column(children: actions) : Row(mainAxisSize: MainAxisSize.min, children: actions);
@@ -438,7 +428,7 @@ class _PostActionsViewState extends State<PostActionsView> {
         setState(() => _updatingSubscription = false);
       }
     } catch (e, s) {
-      showErrorSnackBar(scaffold, "Failed to ${current ? "unsubscribe from" : "subscribe to"} post", e, s);
+      showErrorSnackBar(scaffold, current ? l.failedToUnsubscribeFromPost : l.failedToSubscribeToPost, e, s);
       debugPrintStack(label: e.toString(), stackTrace: s);
 
       widget.post.interactions.subscribed = current;
@@ -454,14 +444,14 @@ class _PostActionsViewState extends State<PostActionsView> {
       context: context,
       barrierDismissible: true,
       builder: (dialogContext) => AlertDialog(
-        title: Text("Delete post?"),
+        title: Text(l.deletePrompt),
         actions: <Widget>[
           FlatButton(
-            child: Text("No"),
+            child: Text(l.noButtonLabel),
             onPressed: () => Navigator.pop(dialogContext),
           ),
           FlatButton(
-            child: Text("Yes"),
+            child: Text(l.yesButtonLabel),
             onPressed: () {
               _removePost();
               Navigator.pop(dialogContext);
@@ -493,7 +483,7 @@ class _PostActionsViewState extends State<PostActionsView> {
         Navigator.pop(context);
       }
     } catch (e, s) {
-      showErrorSnackBar(scaffold, "Failed to ${widget.post.ownPost ? "delete" : "hide"} post", e, s);
+      showErrorSnackBar(scaffold, widget.post.ownPost ? l.failedToDeletePost : l.failedToHidePost, e, s);
 
       postStream?.insert(position, widget.post);
     }
@@ -504,21 +494,21 @@ class _PostActionsViewState extends State<PostActionsView> {
       context: context,
       barrierDismissible: true,
       builder: (dialogContext) => AlertDialog(
-        title: Text("Report post"),
+        title: Text(l.reportPostPrompt),
         content: TextField(
           controller: _reportField,
           minLines: 1,
           decoration: InputDecoration(
-            hintText: "Please describe the issue"
+            hintText: l.reportPostHint
           )
         ),
         actions: <Widget>[
           FlatButton(
-            child: Text("Cancel"),
+            child: Text(ml.cancelButtonLabel),
             onPressed: () => Navigator.pop(dialogContext),
           ),
           FlatButton(
-            child: Text("Submit"),
+            child: Text(l.submitButtonLabel),
             onPressed: () {
               if (_reportField.text.isNotEmpty) {
                 _createReport(_reportField.text);
@@ -542,11 +532,11 @@ class _PostActionsViewState extends State<PostActionsView> {
 
       if (scaffold.mounted) {
         scaffold.showSnackBar(SnackBar(
-          content: Text("Report sent.")
+          content: Text(l.sentPostReport)
         ));
       }
     } catch(e, s) {
-      showErrorSnackBar(scaffold, "Failed to create report", e, s);
+      showErrorSnackBar(scaffold, l.failedToReportPost, e, s);
 
       widget.post.interactions.reported = false;
       if (mounted) {
@@ -626,7 +616,7 @@ class _PollView extends StatefulWidget {
   State<StatefulWidget> createState() => _PollViewState();
 }
 
-class _PollViewState extends State<_PollView> {
+class _PollViewState extends State<_PollView> with StateLocalizationHelpers {
   bool _showAnswers = false;
   int _currentAnswer;
 
@@ -667,20 +657,20 @@ class _PollViewState extends State<_PollView> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text("${widget.poll.participationCount} votes so far", style: TextStyle(fontSize: 12)),
+              child: Text(l.voteCount(widget.poll.participationCount), style: TextStyle(fontSize: 12)),
             ),
             Spacer(),
             Visibility(
               visible: !widget.poll.alreadyParticipated && widget.poll.participationCount > 0 && !_showAnswers,
               child: FlatButton(
-                child: Text("View results", style: TextStyle(color: colors.link)),
+                child: Text(l.pollResultsButtonLabel, style: TextStyle(color: colors.link)),
                 onPressed: () => setState(() => _showAnswers = true)
               )
             ),
             Visibility(
               visible: !widget.poll.alreadyParticipated,
               child: RaisedButton(
-                child: Text("Vote"),
+                child: Text(l.voteButtonLabel),
                 onPressed: _currentAnswer == null ? null : _submit,
               ),
             )
@@ -734,7 +724,7 @@ class _PollViewState extends State<_PollView> {
     try {
       await client.vote(widget.post, answer);
     } catch(e, s) {
-      tryShowErrorSnackBar(this, "Failed to vote on post", e, s);
+      tryShowErrorSnackBar(this, l.failedToVote, e, s);
 
       setState(() {
         widget.poll.alreadyParticipated = false;
@@ -749,7 +739,7 @@ class _PollViewState extends State<_PollView> {
   static _percentFormat(double percentage) => (percentage * 100).toStringAsFixed(0) + "%";
 }
 
-class _OEmbedView extends StatelessWidget {
+class _OEmbedView extends StatelessWidget with LocalizationHelpers {
   _OEmbedView({Key key, this.oEmbed}) : super(key: key);
 
   final OEmbed oEmbed;
@@ -804,7 +794,7 @@ class _OEmbedView extends StatelessWidget {
                               style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)
                             ),
                             Text(
-                              "by ${oEmbed.author}",
+                              l(context).oEmbedAuthor(oEmbed.author),
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(color: Colors.white)
                             )
@@ -832,7 +822,7 @@ class _OEmbedView extends StatelessWidget {
           child: GestureDetector(
             onTap: () => launch(oEmbed.url),
             child: Text(
-              "${oEmbed.author} on ${oEmbed.provider}:",
+              l(context).oEmbedHeader(oEmbed.author, oEmbed.provider),
               style: TextStyle(color: colors.link, decoration: TextDecoration.underline),
             )
           )

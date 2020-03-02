@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
@@ -17,7 +18,7 @@ class EditProfilePage extends StatefulWidget {
   State<StatefulWidget> createState() => _EditProfilePageState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _EditProfilePageState extends State<EditProfilePage> with StateLocalizationHelpers {
   Profile _profile;
 
   @override
@@ -30,7 +31,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Edit profile")),
+      appBar: AppBar(title: Text(l.editProfileTitle)),
       body: _profile == null ? Center(child: CircularProgressIndicator()) : SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(bottom: 48),
@@ -56,7 +57,7 @@ class _EditAvatar extends StatefulWidget {
   State<StatefulWidget> createState() => _EditAvatarState();
 }
 
-class _EditAvatarState extends State<_EditAvatar> {
+class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers {
   static const double _size = 196;
 
   final _crop = GlobalKey<CropState>();
@@ -71,7 +72,7 @@ class _EditAvatarState extends State<_EditAvatar> {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text("Update profile picture", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+          child: Text(l.uploadProfilePictureHeader, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
         ),
         Center(
           child: Padding(
@@ -108,11 +109,11 @@ class _EditAvatarState extends State<_EditAvatar> {
               alignment: WrapAlignment.center,
               spacing: 4,
               children: _newImage == null ? <Widget>[
-                OutlineButton.icon(icon: Icon(Icons.photo_camera), label: Text("Take new picture"), onPressed: () => _pick(ImageSource.camera)),
-                OutlineButton.icon(icon: Icon(Icons.photo_library), label: Text("Upload new picture"), onPressed: () => _pick(ImageSource.gallery))
+                OutlineButton.icon(icon: Icon(Icons.photo_camera), label: Text(l.takeNewPicture), onPressed: () => _pick(ImageSource.camera)),
+                OutlineButton.icon(icon: Icon(Icons.photo_library), label: Text(l.uploadNewPicture), onPressed: () => _pick(ImageSource.gallery))
               ] : !_uploading ? <Widget>[
-                OutlineButton(child: Text("Save"), onPressed: _upload),
-                OutlineButton(child: Text("Cancel"), onPressed: () => setState(() => _newImage = null))
+                OutlineButton(child: Text(l.saveButtonLabel), onPressed: _upload),
+                OutlineButton(child: Text(ml.cancelButtonLabel), onPressed: () => setState(() => _newImage = null))
               ] : <Widget>[],
             ),
           )
@@ -148,7 +149,7 @@ class _EditAvatarState extends State<_EditAvatar> {
         _newImage = null;
       });
     } catch (e, s) {
-      tryShowErrorSnackBar(this, "Failed to upload profile picture", e, s);
+      tryShowErrorSnackBar(this, l.failedToUploadProfilePicture, e, s);
 
       setState(() {
         _uploading = false;
@@ -167,7 +168,7 @@ class _EditProfile extends StatefulWidget {
   _EditProfileState createState() => _EditProfileState();
 }
 
-class _EditProfileState extends State<_EditProfile> {
+class _EditProfileState extends State<_EditProfile> with StateLocalizationHelpers {
   Profile _profile;
   final _name = TextEditingController();
   final _nameFocus = FocusNode();
@@ -217,7 +218,7 @@ class _EditProfileState extends State<_EditProfile> {
     children: <Widget>[
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text("Edit profile", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+        child: Text(l.editProfileHeader, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
       ),
       Padding(
         padding: const EdgeInsets.all(16.0),
@@ -230,7 +231,7 @@ class _EditProfileState extends State<_EditProfile> {
                 controller: _name,
                 focusNode: _nameFocus,
                 enabled: !_submitting,
-                decoration: InputDecoration(labelText: "Name"),
+                decoration: InputDecoration(labelText: l.editProfileNameLabel),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_locationFocus),
               ),
@@ -238,7 +239,7 @@ class _EditProfileState extends State<_EditProfile> {
                 controller: _location,
                 focusNode: _locationFocus,
                 enabled: !_submitting,
-                decoration: InputDecoration(labelText: "Location"),
+                decoration: InputDecoration(labelText: l.editProfileLocationLabel),
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_genderFocus),
               ),
@@ -246,7 +247,7 @@ class _EditProfileState extends State<_EditProfile> {
                 controller: _gender,
                 focusNode: _genderFocus,
                 enabled: !_submitting,
-                decoration: InputDecoration(labelText: "Gender"),
+                decoration: InputDecoration(labelText: l.editProfileGenderLabel),
                 onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_bioFocus),
               ),
               Padding(
@@ -269,7 +270,7 @@ class _EditProfileState extends State<_EditProfile> {
                       child: AbsorbPointer(
                         child: TextFormField(
                           controller: _birthdayController,
-                          decoration: InputDecoration(labelText: "Birthday"),
+                          decoration: InputDecoration(labelText: l.editProfileBirthdayLabel),
                         ),
                       ),
                     ),
@@ -289,7 +290,7 @@ class _EditProfileState extends State<_EditProfile> {
               ),
               SwitchListTile(
                 contentPadding: EdgeInsets.all(0),
-                title: Text("Make profile info public?"),
+                title: Text(l.editProfilePublicLabel),
                 value: _publicProfile,
                 onChanged: !_submitting ? (value) {
                   setState(() => _publicProfile = value);
@@ -298,7 +299,7 @@ class _EditProfileState extends State<_EditProfile> {
               ),
               SwitchListTile(
                 contentPadding: EdgeInsets.all(0),
-                title: Text("Allow to be searched for?"),
+                title: Text(l.editProfileSearchableLabel),
                 value: _searchable,
                 onChanged: !_submitting ? (value) {
                   setState(() => _searchable = value);
@@ -307,7 +308,7 @@ class _EditProfileState extends State<_EditProfile> {
               ),
               SwitchListTile(
                 contentPadding: EdgeInsets.all(0),
-                title: Text("Mark profile as #nsfw?"),
+                title: Text(l.editProfileNsfwLabel),
                 value: _nsfw,
                 onChanged: !_submitting ? (value) {
                   setState(() => _nsfw = value);
@@ -316,7 +317,7 @@ class _EditProfileState extends State<_EditProfile> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
-                child: Text("Tags", style: TextStyle(fontSize: 16, color: Theme.of(context).hintColor)),
+                child: Text(l.editProfileTagsLabel, style: TextStyle(fontSize: 16, color: Theme.of(context).hintColor)),
               ),
               Wrap(
                 spacing: 4,
@@ -330,7 +331,7 @@ class _EditProfileState extends State<_EditProfile> {
                     visible: !_submitting,
                     replacement: CircularProgressIndicator(),
                     child: OutlineButton(
-                      child: Text("Update profile"),
+                      child: Text(l.editProfileSubmit),
                       onPressed: _hasChanges ? _submit : null,
                     ),
                   )
@@ -434,7 +435,7 @@ class _EditProfileState extends State<_EditProfile> {
           }
 
           if (_tags.contains(response)) {
-            Scaffold.of(context).showSnackBar(errorSnackbar(context, "Tag already added"));
+            Scaffold.of(context).showSnackBar(errorSnackbar(context, l.duplicateProfileTag));
             return;
           }
 
@@ -511,9 +512,9 @@ class _EditProfileState extends State<_EditProfile> {
       _profile = newProfile;
       _validate();
 
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text("Profile updated.")));
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text(l.updatedProfile)));
     } catch (e, s) {
-      tryShowErrorSnackBar(this, "Failed to update profile", e, s);
+      tryShowErrorSnackBar(this, l.failedToUpdateProfile, e, s);
     } finally {
       setState(() => _submitting = false);
     }

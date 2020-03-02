@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'new_conversation_page.dart';
@@ -162,7 +163,7 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Text("Info", style: TextStyle(fontSize: 18))
+          child: Text(l.profileInfoHeader, style: TextStyle(fontSize: 18))
         ),
         Card(
           child: Padding(
@@ -177,7 +178,7 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Text("Posts", style: TextStyle(fontSize: 18)),
+          child: Text(l.profilePostsHeader, style: TextStyle(fontSize: 18)),
         ),
       ],
     );
@@ -195,7 +196,7 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
         child: Container(
           alignment: Alignment.centerRight,
           child: OutlineButton(
-            child: Text("Edit profile"),
+            child: Text(l.editProfile),
             onPressed: () => Navigator.pushNamed(context, "/edit_profile"),
           )
         )
@@ -212,7 +213,7 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
                 children: <Widget>[
                   IconButton(
                     icon: TextIcon(character: "@"),
-                    tooltip: "Mention user",
+                    tooltip: l.mentionUser,
                     onPressed: () => Navigator.pushNamed(context, "/publisher", arguments: PublisherOptions(
                       prefill: "@{${profile.person.diasporaId}} ",
                       target: PublishTarget.aspects(profile.aspects)
@@ -220,7 +221,7 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
                   ),
                   IconButton(
                     icon: Icon(Icons.mail),
-                    tooltip: "Message",
+                    tooltip: l.messageUser,
                     onPressed: profile.canMessage ? () =>
                       Navigator.pushNamed(context, "/conversations/new", arguments: NewConversationOptions(
                         recipients: [profile.person]
@@ -229,7 +230,7 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
                   IconButton(
                     icon: Icon(Icons.block),
                     color: profile.blocked?  colors.blocked : null,
-                    tooltip: profile.blocked ? "Unblock" : "Block",
+                    tooltip: profile.blocked ? l.unblockUser : l.blockUser,
                     onPressed: () {
                       profile.blocked = !profile.blocked;
                       // TODO for real, backend route missing
@@ -316,7 +317,7 @@ class _AspectMembershipView extends StatefulWidget {
   State<StatefulWidget> createState() => _AspectMembershipViewState();
 }
 
-class _AspectMembershipViewState extends State<_AspectMembershipView> {
+class _AspectMembershipViewState extends State<_AspectMembershipView> with StateLocalizationHelpers {
   @override
   Widget build(BuildContext context) {
     if (widget.profile.blocked) {
@@ -353,26 +354,26 @@ class _AspectMembershipViewState extends State<_AspectMembershipView> {
     final aspects = widget.profile.aspects;
 
     if (aspects.length == 0) {
-      return "Add contact";
+      return l.addContact;
     } else if (aspects.length == 1) {
       return aspects.first.name;
     } else {
-      return "In ${aspects.length} aspects";
+      return l.manageContact(aspects.length);
     }
   }
 
   String get _shareStatus {
     final profile = widget.profile;
     if (profile.blocked) {
-      return "You blocked them";
+      return l.contactStatusBlocked;
     } else if (profile.receiving && profile.sharing) {
-      return "You are sharing with each other";
+      return l.contactStatusMutual;
     } else if (profile.receiving) {
-      return "They are sharing with you.";
+      return l.contactStatusReceiving;
     } else if (profile.sharing) {
-      return "You are sharing with them.";
+      return l.contactStatusSharing;
     } else {
-      return "You are not sharing with each other.";
+      return l.contactStatusNotSharing;
     }
   }
 
@@ -387,7 +388,7 @@ class _AspectMembershipViewState extends State<_AspectMembershipView> {
       builder: (context) => AspectSelectionList.buildDialog(
         context: context,
         currentSelection: oldAspects,
-        title: "Select aspects for ${profile.value.person.nameOrId}"
+        title: l.contactAspectsPrompt(profile.value.person.nameOrId)
       )
     );
 
@@ -416,15 +417,15 @@ class _AspectMembershipViewState extends State<_AspectMembershipView> {
         Scaffold.of(context).showSnackBar(SnackBar(
           backgroundColor: background,
           content: Text(
-            startedSharing ? "Started sharing with ${profile.value.person.nameOrId}." :
-              stoppedSharing ? "Stopped sharing with ${profile.value.person.nameOrId}." :
-                "Aspects updated.",
+            startedSharing ? l.startedSharing(profile.value.person.nameOrId) :
+              stoppedSharing ? l.stoppedSharing(profile.value.person.nameOrId) :
+                l.contactAspectsUpdated,
             style: TextStyle(color: text)
           )
         ));
       }
     } catch (e, s) {
-      tryShowErrorSnackBar(this, "Failed to update aspects", e, s);
+      tryShowErrorSnackBar(this, l.failedToUpdateContactAspects, e, s);
 
       profile.value.sharing = oldAspects.isNotEmpty;
       profile.value.aspects.clear();

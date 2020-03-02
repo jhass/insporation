@@ -141,14 +141,15 @@ class _AllAspectsContactsStreamState {
 
 
 abstract class _SearchDialogState<T extends StatefulWidget> extends ItemStreamState<SearchResult, T> {
-  _SearchDialogState({this.hint = "Search"}) : super(enableUpButton: false);
+  _SearchDialogState() : super(enableUpButton: false);
 
-  final String hint;
   final _controller = TextEditingController();
   bool _loading = false;
 
   @protected
   TextEditingController get controller => _controller;
+
+  String get hint => l.searchDialogHint;
 
   String get initialValue => null;
 
@@ -204,7 +205,8 @@ class TagSearchDialog extends StatefulWidget {
 }
 
 class _TagSearchDialogState extends _SearchDialogState<TagSearchDialog> {
-  _TagSearchDialogState() : super(hint: "Search for a tag");
+  @override
+  String get hint => l.tagSearchDialogHint;
 
   @override
   String get initialValue => widget.initialValue;
@@ -228,7 +230,8 @@ class PeopleSearchDialog extends StatefulWidget {
 }
 
 class _PeopleSearchDialogState extends _SearchDialogState<PeopleSearchDialog> {
-  _PeopleSearchDialogState() : super(hint: "Search for person");
+  @override
+  String get hint => l.peopleSearchDialogHint;
 
   @override
   String get initialValue => widget.initialValue;

@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +20,7 @@ import 'publisher_page.dart';
 import 'search_page.dart';
 import 'src/client.dart';
 import 'sign_in_page.dart';
+import 'src/localizations.dart';
 import 'src/navigation.dart';
 import 'src/posts.dart';
 import 'stream_page.dart';
@@ -121,6 +122,13 @@ class _InsporationState extends State<Insporation> {
       title: 'insporation*',
       theme: ThemeData.from(colorScheme: colors.scheme),
       darkTheme: ThemeData.from(colorScheme: colors.darkScheme),
+      localizationsDelegates: [
+        InsporationLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate
+      ],
+      supportedLocales: supportedLocales,
       home: SignInPage(),
       routes: {
         '/switch_user': (context) => SignInPage(resumeLastSession: false),

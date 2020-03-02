@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'main.dart';
 import 'src/client.dart';
+import 'src/localizations.dart';
 import 'src/widgets.dart';
 
 class SignInPage extends StatefulWidget {
@@ -19,7 +20,7 @@ class SignInPage extends StatefulWidget {
   }
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
   final _formKey = GlobalKey<FormState>();
   final _diasporaIdController = TextEditingController();
   final _initialFocus = FocusNode();
@@ -68,10 +69,10 @@ class _SignInPageState extends State<SignInPage> {
                       children: <Widget>[
                         TextFormField(
                           controller: _diasporaIdController,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             icon: Icon(Icons.person),
-                            hintText: "username@diaspora.pod",
-                            labelText: "diaspora* ID"
+                            hintText: l.signInHint,
+                            labelText: l.signInLabel
                           ),
                           focusNode: _initialFocus, // autofocus: true is broken and raises on start
                           autocorrect: false,
@@ -85,11 +86,11 @@ class _SignInPageState extends State<SignInPage> {
                           ],
                           onEditingComplete: _submit,
                           validator: (String value) {
-                            return !RegExp(r"^[\w.]+@[\w+.]+$").hasMatch(value) ? "Enter a full diaspora* ID" : null;
+                            return !RegExp(r"^[\w.]+@[\w+.]+$").hasMatch(value) ? l.invalidDiasporaId : null;
                           },
                         ),
                         RaisedButton(
-                          child: Text("Sign in"),
+                          child: Text(l.signInAction),
                           onPressed: _submit,
                         )
                       ]

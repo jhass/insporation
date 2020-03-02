@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'publisher_page.dart';
@@ -21,15 +22,6 @@ class StreamPage extends StatefulWidget {
 
   @override
   _StreamPageState createState() => _StreamPageState();
-
-  String get title {
-    switch (type) {
-      case StreamType.tag:
-        return "#$tag";
-      default:
-        return streamNames[type];
-    }
-  }
 }
 
 class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStreamState<StreamPage> {
@@ -41,7 +33,7 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStream
     return Scaffold(
       bottomNavigationBar: widget.type != StreamType.tag ? NavigationBar(currentPage: PageType.stream) : null,
       appBar: widget.type == StreamType.tag ? AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ) : null,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -87,7 +79,7 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStream
           Padding(
             padding: EdgeInsets.all(8),
             child: OutlineButton(
-              child: Text("Manage followed tags", style: TextStyle(fontSize: 16)),
+              child: Text(l.manageFollowedTags, style: TextStyle(fontSize: 16)),
               onPressed: () async {
                 await Navigator.push(context, PageRouteBuilder(
                   pageBuilder: (context, _, __) => _FollowedTagsPage()
@@ -103,9 +95,18 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStream
       return selector;
     }
   }
+
+  String get title {
+    switch (widget.type) {
+      case StreamType.tag:
+        return "#${widget.tag}";
+      default:
+        return l.streamName(widget.type);
+    }
+  }
 }
 
-class _StreamTypeSelector extends StatelessWidget {
+class _StreamTypeSelector extends StatelessWidget with LocalizationHelpers {
   _StreamTypeSelector({Key key, @required this.currentType}) : super(key: key);
 
   final StreamType currentType;
@@ -137,7 +138,7 @@ class _StreamTypeSelector extends StatelessWidget {
           },
           items: const [StreamType.main, StreamType.activity, StreamType.aspects, StreamType.followedTags,
             StreamType.mentions, StreamType.liked, StreamType.commented].map((type) =>
-              DropdownMenuItem(child: Text(streamNames[type]), value: type)).toList()
+              DropdownMenuItem(child: Text(l(context).streamName(type)), value: type)).toList()
         ),
       ),
     );
@@ -153,7 +154,7 @@ class _AspectsSelector extends StatefulWidget {
   State<StatefulWidget> createState() => _AspectsSelectorState();
 }
 
-class _AspectsSelectorState extends State<_AspectsSelector> {
+class _AspectsSelectorState extends State<_AspectsSelector> with StateLocalizationHelpers {
   @override
   Widget build(BuildContext context) => OutlineButton.icon(
     icon: Icon(Icons.arrow_drop_down, size: 28),
@@ -163,11 +164,11 @@ class _AspectsSelectorState extends State<_AspectsSelector> {
 
   String get _label {
     if (widget.currentSelection == null || widget.currentSelection.length == 0) {
-      return "All aspects";
+      return l.aspectStreamSelectorAllAspects;
     } else if (widget.currentSelection.length == 1) {
       return widget.currentSelection.first.name;
     } else {
-      return "${widget.currentSelection.length} aspects";
+      return l.aspectStreamSelectorAspects(widget.currentSelection.length);
     }
   }
 
@@ -202,7 +203,7 @@ class _FollowedTagsPage extends StatefulWidget {
   State<StatefulWidget> createState() => _FollowedTagsPageState();
 }
 
-class _FollowedTagsPageState extends State<_FollowedTagsPage> {
+class _FollowedTagsPageState extends State<_FollowedTagsPage> with StateLocalizationHelpers {
   final _scaffold = GlobalKey<ScaffoldState>();
   List<String> _tags;
   String _lastError;
@@ -217,7 +218,7 @@ class _FollowedTagsPageState extends State<_FollowedTagsPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
     key: _scaffold,
-    appBar: AppBar(title: Text("Followed tags")),
+    appBar: AppBar(title: Text(l.followedTagsPageTitle)),
     floatingActionButton: FloatingActionButton(
       child: Icon(Icons.add),
       onPressed: _addTag
@@ -257,7 +258,7 @@ class _FollowedTagsPageState extends State<_FollowedTagsPage> {
     try {
       await client.followTag(tag);
     } catch (e, s) {
-      showErrorSnackBar(_scaffold.currentState, "Failed to follow #$tag", e, s);
+      showErrorSnackBar(_scaffold.currentState, l.failedToFollowTag(tag), e, s);
 
       setState(() => _tags.remove(tag));
     }
@@ -272,7 +273,7 @@ class _FollowedTagsPageState extends State<_FollowedTagsPage> {
     try {
       await client.unfollowTag(tag);
     } catch (e, s) {
-      showErrorSnackBar(_scaffold.currentState, "Failed to unfollow #$tag", e, s);
+      showErrorSnackBar(_scaffold.currentState, l.failedToUnfollowTag(tag), e, s);
 
       setState(() => _tags.insert(position, tag));
     }

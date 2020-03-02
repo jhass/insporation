@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:geojson/geojson.dart';
 import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -33,14 +34,14 @@ class PublishTarget {
   const PublishTarget.allAspects() : public = false, allAspects = true, aspects = null;
   PublishTarget.aspects(this.aspects) : public = false, allAspects = false;
 }
-class PublisherPage extends StatelessWidget {
+class PublisherPage extends StatelessWidget with LocalizationHelpers {
   PublisherPage({Key key, this.options = const PublisherOptions()}) : super(key: key);
 
   final PublisherOptions options;
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text("Write a new post")),
+    appBar: AppBar(title: Text(l(context).publisherTitle)),
     body: Padding(
       padding: EdgeInsets.all(8),
       child: _PublisherPageBody(options: options)
@@ -57,7 +58,7 @@ class _PublisherPageBody extends StatefulWidget {
   State<StatefulWidget> createState() => _PublisherPageBodyState();
 }
 
-class _PublisherPageBodyState extends State<_PublisherPageBody> {
+class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocalizationHelpers {
   static const _maxPhotoWidth = 700.0;
   final _initialFocus = FocusNode();
   final _controller = TextEditingController();
@@ -117,23 +118,23 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.photo_camera),
-              tooltip: "Take a photo",
+              tooltip: l.takePhoto,
               onPressed: () => _uploadPhoto(ImageSource.camera)
             ),
             IconButton(
               icon: Icon(Icons.photo_library),
-              tooltip: "Upload a photo",
+              tooltip: l.uploadPhoto,
               onPressed: () => _uploadPhoto(ImageSource.gallery)
             ),
             IconButton(
               icon: Icon(Icons.poll),
-              tooltip: "Add a poll",
+              tooltip: l.addPoll,
               color: _poll != null ? Theme.of(context).colorScheme.secondary : null,
               onPressed: _editPoll
             ),
             IconButton(
               icon: Icon(Icons.location_on),
-              tooltip: "Add your location",
+              tooltip: l.addLocation,
               color: _location != null ? Theme.of(context).colorScheme.secondary : null,
               onPressed: _editLocation
             )
@@ -150,7 +151,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> {
               visible: !_submitting,
               replacement: CircularProgressIndicator(),
               child: RaisedButton(
-                child: Text("Publish post"),
+                child: Text(l.publishPost),
                 onPressed: _valid && !_submitting ? _submit : null
               ),
             )
@@ -182,13 +183,13 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> {
 
   String get _currentTargetTitle {
     if (_currentTarget.public) {
-      return "Public";
+      return l.publishTargetPublic;
     } else if (_currentTarget.allAspects) {
-      return "All aspects";
+      return l.publishTargetAllAspects;
     } else if (_currentTarget.aspects.length == 1) {
       return _currentTarget.aspects.first.name;
     } else {
-      return "${_currentTarget.aspects.length} aspects";
+      return l.publishTargetAspects(_currentTarget.aspects.length);
     }
   }
 
@@ -235,7 +236,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> {
       attachedPhoto.guid = photo.guid;
       attachedPhoto.uploaded = true;
     } catch (e, s) {
-      tryShowErrorSnackBar(this, "Failed to upload photo", e, s);
+      tryShowErrorSnackBar(this, l.failedToUploadPhoto, e, s);
 
       setState(() => _attachedPhotos.remove(attachedPhoto));
     } finally {
@@ -324,7 +325,7 @@ class _PublishTargetSelectionDialog extends StatefulWidget {
   State<StatefulWidget> createState() => _PublishTargetSelectionDialogState();
 }
 
-class _PublishTargetSelectionDialogState extends State<_PublishTargetSelectionDialog> {
+class _PublishTargetSelectionDialogState extends State<_PublishTargetSelectionDialog> with StateLocalizationHelpers {
   List<Aspect> _aspects;
   List<Aspect> _currentSelection;
   String _lastError;
@@ -341,14 +342,14 @@ class _PublishTargetSelectionDialogState extends State<_PublishTargetSelectionDi
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Select post visibility"),
+      title: Text(l.publishTargetPrompt),
       actions: <Widget>[
         FlatButton(
-          child: Text("Cancel"),
+          child: Text(ml.cancelButtonLabel),
           onPressed: () => Navigator.pop(context),
         ),
         FlatButton(
-          child: Text("Select"),
+          child: Text(l.selectButtonLabel),
           onPressed: _aspects != null && _currentSelection.isNotEmpty ? () =>
             Navigator.pop(context, PublishTarget.aspects(_currentSelection)) : null,
         )
@@ -363,14 +364,14 @@ class _PublishTargetSelectionDialogState extends State<_PublishTargetSelectionDi
     final options = <Widget>[];
 
     options.add(ListTile(
-      title: Text("Public"),
+      title: Text(l.publishTargetPublic),
       onTap: () => Navigator.pop(context, PublishTarget.public()),
     ));
 
     options.add(Container(
       decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor))),
       child: ListTile(
-        title: Text("All aspects"),
+        title: Text(l.publishTargetAllAspects),
         onTap: () => Navigator.pop(context, PublishTarget.allAspects()),
       ),
     ));
@@ -472,7 +473,7 @@ class _PollEditor extends StatefulWidget {
   _PollEditorState createState() => _PollEditorState();
 }
 
-class _PollEditorState extends State<_PollEditor> {
+class _PollEditorState extends State<_PollEditor> with StateLocalizationHelpers {
   final _question = TextEditingController();
   final _answers = <TextEditingController>[];
   final _discardedAnswers = <TextEditingController>[];
@@ -495,14 +496,14 @@ class _PollEditorState extends State<_PollEditor> {
   @override
   Widget build(BuildContext context) {
     final actions = <Widget>[
-      FlatButton(child: Text("Cancel"), onPressed: () => Navigator.pop(context)),
-      FlatButton(child: Text("Save"), onPressed: _valid ? () => Navigator.pop(context, _poll) : null)
+      FlatButton(child: Text(ml.cancelButtonLabel), onPressed: () => Navigator.pop(context)),
+      FlatButton(child: Text(l.saveButtonLabel), onPressed: _valid ? () => Navigator.pop(context, _poll) : null)
     ];
 
     if (widget.poll != null) {
       actions.insert(0, Spacer());
       actions.insert(0, FlatButton(
-        child: Text("Remove"),
+        child: Text(l.removeButtonLabel),
         onPressed: () => Navigator.pop(context, _Poll())
       ));
     }
@@ -515,7 +516,7 @@ class _PollEditorState extends State<_PollEditor> {
               _poll.question = value;
               _validate();
             },
-            decoration: InputDecoration(hintText: "Enter a question"),
+            decoration: InputDecoration(hintText: l.pollQuestionHint),
           ),
         ),
     ];
@@ -524,14 +525,14 @@ class _PollEditorState extends State<_PollEditor> {
       child: TextField(
         controller: _answers[position],
         onChanged: (value) => _onAnswerChanged(position, value),
-        decoration: InputDecoration(hintText: "Enter an answer"),
+        decoration: InputDecoration(hintText: l.pollAnswerHint),
       )
     )));
 
     children.add(Row(mainAxisAlignment: MainAxisAlignment.end, children: actions));
 
     return SimpleDialog(
-      title: Text(widget.poll == null ? "Create poll" : "Edit poll"),
+      title: Text(widget.poll == null ? l.createPoll : l.editPoll),
       children: children);
   }
 
@@ -586,7 +587,7 @@ class _LocationEditor extends StatefulWidget {
   _LocationEditorState createState() => _LocationEditorState();
 }
 
-class _LocationEditorState extends State<_LocationEditor> {
+class _LocationEditorState extends State<_LocationEditor> with StateLocalizationHelpers {
   static final _apiBase = Uri.parse("https://photon.komoot.de/api/");
 
   final _controller = TextEditingController();
@@ -609,7 +610,7 @@ class _LocationEditorState extends State<_LocationEditor> {
         SimpleDialogOption(
           child: TextField(
             controller: _controller,
-            decoration: InputDecoration(hintText: "Enter address"),
+            decoration: InputDecoration(hintText: l.enterAddressHint),
             onChanged: _search,
           )
         )
@@ -636,13 +637,13 @@ class _LocationEditorState extends State<_LocationEditor> {
     )));
 
     final actions = <Widget>[
-      FlatButton(child: Text("Close"), onPressed: () => Navigator.pop(context, widget.location)),
+      FlatButton(child: Text(ml.closeButtonLabel), onPressed: () => Navigator.pop(context, widget.location)),
     ];
 
     if (widget.location != null) {
       actions.insert(0, Spacer());
       actions.insert(0, FlatButton(
-        child: Text("Remove"),
+        child: Text(l.removeButtonLabel),
         onPressed: () => Navigator.pop(context),
       ));
     }
@@ -690,7 +691,7 @@ class _LocationEditorState extends State<_LocationEditor> {
     } on FutureCanceledError {
       // ignore
     } catch (e, s) {
-      tryShowErrorSnackBar(this, "Failed to query addresses", e, s);
+      tryShowErrorSnackBar(this, l.failedToSearchForAddresses, e, s);
     }
   }
 
