@@ -123,13 +123,15 @@ class _StreamTypeSelector extends StatelessWidget {
         alignedDropdown: true,
         child: DropdownButton(
           value: currentType,
-          icon: Icon(Icons.arrow_downward),
-          iconSize: 32,
+          hint: Text("Change View"),
+          icon: Icon(Icons.view_list),
+          iconSize: 30,
           style: TextStyle(
-              fontSize: 32,
+              fontSize: 20,
               color: Theme.of(context).colorScheme.onSurface
           ),
           underline: SizedBox.shrink(),
+          isExpanded: true,
           onChanged: (newValue) {
             if (newValue != currentType) {
               Navigator.pushReplacementNamed(context, '/stream/${describeEnum(newValue)}');
