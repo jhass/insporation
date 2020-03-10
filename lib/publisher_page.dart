@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:geojson/geojson.dart';
 import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 import 'src/client.dart';
 import 'src/composer.dart';
+import 'src/localizations.dart';
 import 'src/search.dart';
 import 'src/utils.dart';
 import 'src/widgets.dart';

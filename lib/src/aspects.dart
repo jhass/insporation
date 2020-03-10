@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'client.dart';
+import 'localizations.dart';
 
 class AspectSelectionList extends StatefulWidget {
   AspectSelectionList({Key key, @required this.selectedAspects}) : super(key: key);

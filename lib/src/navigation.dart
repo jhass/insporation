@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_app_badger/flutter_app_badger.dart';
-import 'package:insporation/src/localizations.dart';
 
 import 'client.dart';
+import 'localizations.dart';
 import 'widgets.dart';
 import 'colors.dart' as colors;
 

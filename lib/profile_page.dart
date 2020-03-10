@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'new_conversation_page.dart';
@@ -7,6 +6,7 @@ import 'publisher_page.dart';
 import 'src/aspects.dart';
 import 'src/client.dart';
 import 'src/item_stream.dart';
+import 'src/localizations.dart';
 import 'src/messages.dart';
 import 'src/posts.dart';
 import 'src/utils.dart';

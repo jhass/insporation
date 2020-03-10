@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'publisher_page.dart';
 import 'src/aspects.dart';
 import 'src/client.dart';
 import 'src/item_stream.dart';
+import 'src/localizations.dart';
 import 'src/navigation.dart';
 import 'src/posts.dart';
 import 'src/search.dart';

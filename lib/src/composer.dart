@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:insporation/src/localizations.dart';
 
 import 'client.dart';
+import 'localizations.dart';
 import 'search.dart';
 import 'widgets.dart';
 

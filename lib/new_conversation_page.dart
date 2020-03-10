@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
 import 'src/composer.dart';
+import 'src/localizations.dart';
 import 'src/messages.dart';
 import 'src/search.dart';
 import 'src/utils.dart';

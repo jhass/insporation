@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:gesture_zoom_box/gesture_zoom_box.dart';
-import 'package:insporation/src/localizations.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:url_launcher/url_launcher.dart';
 
 import 'client.dart';
+import 'localizations.dart';
 import 'markdown_extensions.dart' as mde;
 import 'colors.dart'  as colors;
 import 'utils.dart';
