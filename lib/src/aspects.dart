@@ -50,8 +50,8 @@ class _AspectSelectionListState extends State<AspectSelectionList> with StateLoc
 
     final allSelected = widget.selectedAspects.length == _userAspects.length;
 
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.66),
+    return Container(
+      width: double.maxFinite,
       child: ListView.builder(
         padding: EdgeInsets.all(0),
         itemCount: _userAspects.length + 1,

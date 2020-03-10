@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
@@ -18,13 +21,32 @@ import 'colors.dart' as colors;
 
 enum StreamType { main, activity, aspects, mentions, followedTags, liked, commented, tag }
 
-class PostStream extends ItemStream<Post> {
+class StreamOptions {
   final StreamType type;
-  final String tag;
   final List<Aspect> aspects;
+  final String tag;
+
+  const StreamOptions({this.type = StreamType.main, this.aspects, this.tag});
+  const StreamOptions.aspects(this.aspects) : type = StreamType.aspects, tag = null;
+
+  factory StreamOptions.from(Map<String, dynamic> object) => StreamOptions(
+    type: StreamType.values.firstWhere((type) => describeEnum(type) == object["type"]),
+    aspects: object["aspects"] != null ? Aspect.fromList(object["aspects"].cast<Map<String, dynamic>>()) : null,
+    tag: object["tag"]
+  );
+
+  Map<String, dynamic> toJson() => {
+    "type": describeEnum(type),
+    "aspects": aspects,
+    "tag": tag
+  };
+}
+
+class PostStream extends ItemStream<Post> {
+  final StreamOptions options;
   bool loading = false;
 
-  PostStream({this.type, this.tag, this.aspects});
+  PostStream({this.options = const StreamOptions()});
 
   addMock(Post post) {
     assert(post.mock, "Post is not a mock!");
@@ -47,13 +69,13 @@ class PostStream extends ItemStream<Post> {
 
   @override
   Future<Page<Post>> loadPage({Client client, String page}) {
-      switch (type) {
+      switch (options.type) {
         case StreamType.main:
           return client.fetchMainStream(page: page);
         case StreamType.activity:
           return client.fetchActivityStream(page: page);
         case StreamType.aspects:
-          return client.fetchAspectsStream(aspects, page: page);
+          return client.fetchAspectsStream(options.aspects, page: page);
         case StreamType.mentions:
           return client.fetchMentionsStream(page: page);
         case StreamType.followedTags:
@@ -63,10 +85,10 @@ class PostStream extends ItemStream<Post> {
         case StreamType.commented:
           return client.fetchCommentedStream(page: page);
         case StreamType.tag:
-          return client.fetchTagStream(tag, page: page);
+          return client.fetchTagStream(options.tag, page: page);
       }
 
-      throw "Unimplemented stream type: $type";
+      throw "Unimplemented stream type: ${options.type}";
   }
 }
 

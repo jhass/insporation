@@ -89,7 +89,7 @@ class NavigationBar extends StatelessWidget with LocalizationHelpers {
   }
 
   List<_BarItem> _mainItems(InsporationLocalizations l) => <_BarItem>[
-    _BarItem(PageType.stream, Icons.view_stream, l.navigationItemTitleStream, "/stream/main"),
+    _BarItem(PageType.stream, Icons.view_stream, l.navigationItemTitleStream, "/stream"),
     _BarItem(PageType.conversations, Icons.mail, l.navigationItemTitleConversations, "/conversations"),
     _BarItem(PageType.search, Icons.search, l.navigationItemTitleSearch, "/search"),
     _BarItem(PageType.notifications, Icons.notifications, l.navigationItemTitleNotifications, "/notifications")

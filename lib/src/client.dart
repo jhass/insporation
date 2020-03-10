@@ -678,6 +678,11 @@ class Aspect {
 
   @override
   int get hashCode => id.hashCode;
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name
+  };
 }
 
 enum PostType { status, reshare }

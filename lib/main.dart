@@ -29,13 +29,20 @@ class PersistentState {
   static const _key = "persistent_state";
 
   bool _restored = false;
-
   bool _wasAuthorizing = false;
+  StreamOptions _lastStreamOptions;
+
 
   bool get wasAuthorizing => _wasAuthorizing;
+  StreamOptions get lastStreamOptions => _lastStreamOptions;
 
   set wasAuthorizing(bool value) {
     _wasAuthorizing = value;
+    persist();
+  }
+
+  set lastStreamOptions(StreamOptions value) {
+    _lastStreamOptions = value;
     persist();
   }
 
@@ -48,7 +55,8 @@ class PersistentState {
 
     if (prefs.containsKey(_key)) {
       final values = jsonDecode(prefs.getString(_key));
-      _wasAuthorizing = values["was_authorizing"];
+      _wasAuthorizing = values["was_authorizing"] ?? false;
+      _lastStreamOptions = values["last_stream_options"] != null ? StreamOptions.from(values["last_stream_options"]) : null;
     }
 
     _restored = true;
@@ -56,7 +64,10 @@ class PersistentState {
 
   Future<void> persist() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_key, jsonEncode({"was_authorizing": wasAuthorizing}));
+    await prefs.setString(_key, jsonEncode({
+      "was_authorizing": wasAuthorizing,
+      "last_stream_options": lastStreamOptions
+    }));
   }
 }
 
@@ -132,19 +143,15 @@ class _InsporationState extends State<Insporation> {
       home: SignInPage(),
       routes: {
         '/switch_user': (context) => SignInPage(resumeLastSession: false),
-        '/stream/main': (context) => StreamPage(type: StreamType.main),
-        '/stream/activity': (context) => StreamPage(type: StreamType.activity),
-        '/stream/aspects': (context) {
-          final List<Aspect> aspects = ModalRoute.of(context).settings.arguments;
-          return StreamPage(type: StreamType.aspects, aspects: aspects);
+        '/stream': (context) {
+          final StreamOptions options = ModalRoute.of(context).settings.arguments;
+          final lastOptions = Provider.of<PersistentState>(context, listen: false).lastStreamOptions;
+          return StreamPage(options: options ?? lastOptions ?? const StreamOptions());
         },
-        '/stream/mentions': (context) => StreamPage(type: StreamType.mentions),
-        '/stream/followedTags': (context) => StreamPage(type: StreamType.followedTags),
-        '/stream/liked': (context) => StreamPage(type: StreamType.liked),
-        '/stream/commented': (context) => StreamPage(type: StreamType.commented),
         '/stream/tag': (context) {
           final String tag = ModalRoute.of(context).settings.arguments;
-          return StreamPage(type: StreamType.tag, tag: tag);
+          assert(tag != null, "Can't push tag stream without tag argument");
+          return StreamPage(options: StreamOptions(type: StreamType.tag, tag: tag));
         },
         '/publisher': (context) => PublisherPage(options: ModalRoute.of(context).settings.arguments ?? PublisherOptions()),
         '/conversations': (context) => ConversationsPage(),
@@ -217,7 +224,7 @@ class _InsporationState extends State<Insporation> {
       // We got a new session from somewhere and it's different from the one we already got in the client,
       // assume this is a successful authorization and proceed to stream page
       debugPrint("Received authorization event for session for ${event.session.userId}, launching main stream");
-      _navigator.currentState.pushNamedAndRemoveUntil("/stream/main", (_) => false);
+      _navigator.currentState.pushNamedAndRemoveUntil("/stream", (_) => false);
     }
   }
 }

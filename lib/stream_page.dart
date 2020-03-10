@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'main.dart';
 import 'publisher_page.dart';
 import 'src/aspects.dart';
 import 'src/client.dart';
@@ -14,11 +15,9 @@ import 'src/utils.dart';
 import 'src/widgets.dart';
 
 class StreamPage extends StatefulWidget {
-  StreamPage({Key key, this.type, this.aspects, this.tag}) : super(key: key);
+  StreamPage({Key key, this.options = const StreamOptions()}) : super(key: key);
 
-  final StreamType type;
-  final List<Aspect> aspects;
-  final String tag;
+  final StreamOptions options;
 
   @override
   _StreamPageState createState() => _StreamPageState();
@@ -26,23 +25,32 @@ class StreamPage extends StatefulWidget {
 
 class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStreamState<StreamPage> {
   @override
-  ItemStream<Post> createStream() => PostStream(type: widget.type, tag: widget.tag, aspects: widget.aspects);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (widget.options.type != StreamType.tag) {
+      Provider.of<PersistentState>(context, listen: false).lastStreamOptions = widget.options;
+    }
+  }
+
+  @override
+  ItemStream<Post> createStream() => PostStream(options: widget.options);
 
   @override
   Widget buildBody(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: widget.type != StreamType.tag ? NavigationBar(currentPage: PageType.stream) : null,
-      appBar: widget.type == StreamType.tag ? AppBar(
+      bottomNavigationBar: widget.options.type != StreamType.tag ? NavigationBar(currentPage: PageType.stream) : null,
+      appBar: widget.options.type == StreamType.tag ? AppBar(
         title: Text(title),
       ) : null,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () async {
           PublisherOptions options;
-          if (widget.type == StreamType.tag) {
-            options = PublisherOptions(prefill: "#${widget.tag} ");
-          } else if (widget.type == StreamType.aspects && widget.aspects != null) {
-            options = PublisherOptions(target: PublishTarget.aspects(widget.aspects));
+          if (widget.options.type == StreamType.tag) {
+            options = PublisherOptions(prefill: "#${widget.options.tag} ");
+          } else if (widget.options.type == StreamType.aspects && widget.options.aspects != null) {
+            options = PublisherOptions(target: PublishTarget.aspects(widget.options.aspects));
           }
           final post = await Navigator.pushNamed(context, "/publisher", arguments: options);
 
@@ -59,19 +67,19 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStream
 
   @override
   Widget buildHeader(BuildContext context) {
-    final selector = _StreamTypeSelector(currentType: widget.type);
-    if (widget.type == StreamType.aspects) {
+    final selector = _StreamTypeSelector(currentType: widget.options.type);
+    if (widget.options.type == StreamType.aspects) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           selector,
           Padding(
             padding: EdgeInsets.all(8),
-            child: _AspectsSelector(currentSelection: widget.aspects),
+            child: _AspectsSelector(currentSelection: widget.options.aspects),
           )
         ],
       );
-    } else if (widget.type == StreamType.followedTags) {
+    } else if (widget.options.type == StreamType.followedTags) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -97,11 +105,11 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStream
   }
 
   String get title {
-    switch (widget.type) {
+    switch (widget.options.type) {
       case StreamType.tag:
-        return "#${widget.tag}";
+        return "#${widget.options.tag}";
       default:
-        return l.streamName(widget.type);
+        return l.streamName(widget.options.type);
     }
   }
 }
@@ -133,7 +141,7 @@ class _StreamTypeSelector extends StatelessWidget with LocalizationHelpers {
           underline: SizedBox.shrink(),
           onChanged: (newValue) {
             if (newValue != currentType) {
-              Navigator.pushReplacementNamed(context, '/stream/${describeEnum(newValue)}');
+              Navigator.pushReplacementNamed(context, '/stream', arguments: StreamOptions(type: newValue));
             }
           },
           items: const [StreamType.main, StreamType.activity, StreamType.aspects, StreamType.followedTags,
@@ -194,7 +202,7 @@ class _AspectsSelectorState extends State<_AspectsSelector> with StateLocalizati
       newAspects = null;
     }
 
-    Navigator.pushReplacementNamed(context, "/stream/aspects", arguments: newAspects);
+    Navigator.pushReplacementNamed(context, "/stream", arguments: StreamOptions.aspects(newAspects));
   }
 }
 

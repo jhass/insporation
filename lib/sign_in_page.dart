@@ -162,7 +162,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
       }
 
       if (client.hasSession) {
-        Navigator.pushReplacementNamed(context, '/stream/main');
+        Navigator.pushReplacementNamed(context, '/stream');
       } else {
         setState(() => _loading = false);
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -203,7 +203,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
       try {
         await client.switchToUser(_diasporaIdController.text);
         await _ensureAuthorization();
-        Navigator.pushReplacementNamed(context, '/stream/main');
+        Navigator.pushReplacementNamed(context, '/stream');
       } catch (e) {
         setState(() {
           _lastError = e.toString();
