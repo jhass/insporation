@@ -28,6 +28,8 @@ bool containSameElements(Iterable a, Iterable b) {
   return a.toSet().containsAll(b);
 }
 
+String presence(String value) => value == null || value.isEmpty || value.trim().isEmpty ?  null : value;
+
 void tryShowErrorSnackBar(State widget, String message, exception, stack) {
   if (widget.mounted) {
     showErrorSnackBar(Scaffold.of(widget.context), message, exception, stack);

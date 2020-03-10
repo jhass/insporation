@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 import 'src/client.dart';
 import 'src/composer.dart';
 import 'src/localizations.dart';
+import 'src/persistence.dart';
 import 'src/search.dart';
 import 'src/utils.dart';
 import 'src/widgets.dart';
@@ -74,6 +75,8 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   void initState() {
     super.initState();
 
+    final state = Provider.of<PersistentState>(context, listen: false);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_initialFocus);
     });
@@ -81,7 +84,8 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
     _currentTarget = widget.options.target;
 
     _controller.addListener(_onTextChanged);
-    _controller.text = widget.options.prefill;
+    _controller.text = presence(widget.options.prefill) ?? state.postDraft;
+    _controller.addListener(() => state.postDraft = _controller.text);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // We can't yet call Provider.of from initState, so delay a bit
@@ -282,6 +286,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
 
   _submit() async {
     final client = Provider.of<Client>(context, listen: false),
+      state = Provider.of<PersistentState>(context, listen: false),
       photos = _attachedPhotos.map((photo) => photo.guid).toList();
 
     setState(() => _submitting = true);
@@ -302,7 +307,9 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
         location: _location
       );
 
-      Navigator.pop(context, await client.createPost(post));
+      final newPost = await client.createPost(post);
+      state.postDraft = null;
+      Navigator.pop(context, newPost);
     } catch (e, s) {
       debugPrintStack(label: e.toString(), stackTrace: s);
 

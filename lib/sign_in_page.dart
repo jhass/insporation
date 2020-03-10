@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import 'main.dart';
 import 'src/client.dart';
 import 'src/localizations.dart';
+import 'src/persistence.dart';
 import 'src/widgets.dart';
 
 class SignInPage extends StatefulWidget {

@@ -7,6 +7,7 @@ import 'src/composer.dart';
 import 'src/item_stream.dart';
 import 'src/messages.dart';
 import 'src/navigation.dart';
+import 'src/persistence.dart';
 import 'src/search.dart';
 import 'src/timeago.dart';
 import 'src/utils.dart';
@@ -136,6 +137,15 @@ class _ConversationMessagesStream extends ItemStream<ConversationMessage> {
 }
 
 class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _ConversationMessagesPage> {
+  final _newMessage = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    final state = Provider.of<PersistentState>(context, listen: false);
+    _newMessage.text = state.getMessageDraft(widget.conversation);
+    _newMessage.addListener(() => state.setMessageDraft(widget.conversation, _newMessage.text));
+  }
 
   @override
   Widget buildBody(BuildContext context) {
@@ -201,20 +211,31 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
     child: Padding(
       padding: EdgeInsets.all(8),
       child: SimpleComposer(
+        controller: _newMessage,
         submitButtonContent: Text(l.replyToConversation),
         mentionablePeople: SearchablePeople.list(widget.conversation.participants),
-        onSubmit: (body) async {
-        final client = Provider.of<Client>(context, listen: false);
-        try {
-          final message = await client.createMessage(widget.conversation, body);
-          items.add(message);
-          return true;
-        } catch (e, s) {
-          tryShowErrorSnackBar(this, l.failedToReplyToConversation, e, s);
-        }
-        return false;
-      },
+        onSubmit: _submit
       ),
     ),
   );
+
+  @override
+  void dispose() {
+    _newMessage.dispose();
+    super.dispose();
+  }
+
+  Future<bool> _submit(String body) async {
+    final client = Provider.of<Client>(context, listen: false),
+      state = Provider.of<PersistentState>(context, listen: false);
+    try {
+      final message = await client.createMessage(widget.conversation, body);
+      items.add(message);
+      state.clearMessageDraft(widget.conversation);
+      return true;
+    } catch (e, s) {
+      tryShowErrorSnackBar(this, l.failedToReplyToConversation, e, s);
+    }
+    return false;
+  }
 }

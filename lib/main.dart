@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'src/app_auth.dart';
 import 'src/colors.dart' as colors;
@@ -22,54 +20,9 @@ import 'src/client.dart';
 import 'sign_in_page.dart';
 import 'src/localizations.dart';
 import 'src/navigation.dart';
+import 'src/persistence.dart';
 import 'src/posts.dart';
 import 'stream_page.dart';
-
-class PersistentState {
-  static const _key = "persistent_state";
-
-  bool _restored = false;
-  bool _wasAuthorizing = false;
-  StreamOptions _lastStreamOptions;
-
-
-  bool get wasAuthorizing => _wasAuthorizing;
-  StreamOptions get lastStreamOptions => _lastStreamOptions;
-
-  set wasAuthorizing(bool value) {
-    _wasAuthorizing = value;
-    persist();
-  }
-
-  set lastStreamOptions(StreamOptions value) {
-    _lastStreamOptions = value;
-    persist();
-  }
-
-  Future<void> restore() async {
-    if (_restored) {
-      return;
-    }
-
-    final prefs = await SharedPreferences.getInstance();
-
-    if (prefs.containsKey(_key)) {
-      final values = jsonDecode(prefs.getString(_key));
-      _wasAuthorizing = values["was_authorizing"] ?? false;
-      _lastStreamOptions = values["last_stream_options"] != null ? StreamOptions.from(values["last_stream_options"]) : null;
-    }
-
-    _restored = true;
-  }
-
-  Future<void> persist() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_key, jsonEncode({
-      "was_authorizing": wasAuthorizing,
-      "last_stream_options": lastStreamOptions
-    }));
-  }
-}
 
 void main() => runApp(MultiProvider(
   providers: [

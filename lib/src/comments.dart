@@ -5,6 +5,7 @@ import 'client.dart';
 import 'composer.dart';
 import 'item_stream.dart';
 import 'messages.dart';
+import 'persistence.dart';
 import 'search.dart';
 import 'timeago.dart';
 import 'utils.dart';
@@ -30,7 +31,18 @@ class CommentListView extends StatefulWidget {
 }
 
 class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
+  final _newComment = TextEditingController();
+
   CommentListViewState() : super(enableUpButton: false);
+
+  @override
+  void initState() {
+    super.initState();
+
+    final state = Provider.of<PersistentState>(context, listen: false);
+    _newComment.text = state.getCommentDraft(widget.post) ?? "";
+    _newComment.addListener(() => state.setCommentDraft(widget.post, _newComment.text));
+  }
 
   @override
   ScrollController get scrollController => widget.controller ?? super.scrollController;
@@ -55,12 +67,19 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
     child: Padding(
       padding: EdgeInsets.all(8),
       child: SimpleComposer(
+        controller: _newComment,
         submitButtonContent: Text(l.createComment),
         mentionablePeople: _mentionablePeople(),
         onSubmit: _insertComment,
       ),
     ),
   );
+
+  @override
+  void dispose() {
+    _newComment.dispose();
+    super.dispose();
+  }
 
   SearchablePeople _mentionablePeople() {
     if (widget.post.public) {
@@ -75,11 +94,13 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
   }
 
   Future<bool> _insertComment(String value) async {
-    final client = Provider.of<Client>(context, listen: false);
+    final client = Provider.of<Client>(context, listen: false),
+      state = Provider.of<PersistentState>(context, listen: false);
 
     try {
       final comment = await client.commentPost(widget.post, value);
       items.add(comment);
+      state.clearCommentDraft(widget.post);
        // TODO invalidate other widgets depending on the post
       widget.post.interactions.comments++;
       widget.post.interactions.subscribed = true;
