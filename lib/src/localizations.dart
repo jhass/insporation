@@ -1124,6 +1124,20 @@ class InsporationLocalizations {
     locale: localeName
   );
 
+  String get failedToMarkNotificationAsRead => Intl.message(
+    'Failed to mark notification as read',
+    name: 'failedToMarkNotificationAsRead',
+    desc: 'Error message after marking a notification as read failed',
+    locale: localeName
+  );
+
+  String get failedToMarkNotificationAsUnread => Intl.message(
+    'Failed to mark notification as unread',
+    name: 'failedToMarkNotificationAsUnread',
+    desc: 'Error message after marking a notification  as unread failed',
+    locale: localeName
+  );
+
   String get profileInfoHeader => Intl.message(
     'Info',
     name: 'profileInfoHeader',

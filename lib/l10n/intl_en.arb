@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-03-03T16:57:22.565762",
+  "@@last_modified": "2020-03-11T12:13:51.915247",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -964,6 +964,18 @@
         "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
       }
     }
+  },
+  "failedToMarkNotificationAsRead": "Failed to mark notification as read",
+  "@failedToMarkNotificationAsRead": {
+    "description": "Error message after marking a notification as read failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkNotificationAsUnread": "Failed to mark notification as unread",
+  "@failedToMarkNotificationAsUnread": {
+    "description": "Error message after marking a notification  as unread failed",
+    "type": "text",
+    "placeholders": {}
   },
   "profileInfoHeader": "Info",
   "@profileInfoHeader": {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart' hide Notification;
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:insporation/src/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
@@ -49,20 +51,31 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return InkWell(
-      onTap: _canGoToTarget ? _goToTarget : null,
-      child: Container(
-        decoration:  BoxDecoration(
-          color: widget.notification.read ? Colors.transparent : colors.unreadItemBackground(theme),
-          border: Border(
-            left: widget.notification.read ? BorderSide.none : BorderSide(color: theme.colorScheme.secondary, width: 2),
-            bottom: BorderSide(color: widget.notification.read ? theme.dividerColor : colors.unreadItemBottomBorder(theme))
-          )
-        ),
-        padding: EdgeInsets.symmetric(vertical: 4),
-        child: ListTile(
-          leading: AvatarStack(people: widget.notification.eventCreators),
-          title: Text(_title),
+    return Dismissible(
+      key: ValueKey(widget.notification.guid),
+      direction: DismissDirection.startToEnd,
+      background: Container(
+        color: widget.notification.read ? theme.colorScheme.secondary : Colors.transparent,
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Icon(Icons.done),
+      ),
+      confirmDismiss: _toggleRead,
+      child: InkWell(
+        onTap: _canGoToTarget ? _goToTarget : null,
+        child: Container(
+          decoration:  BoxDecoration(
+            color: widget.notification.read ? theme.backgroundColor : colors.unreadItemBackground(theme),
+            border: Border(
+              left: widget.notification.read ? BorderSide.none : BorderSide(color: theme.colorScheme.secondary, width: 2),
+              bottom: BorderSide(color: widget.notification.read ? theme.dividerColor : colors.unreadItemBottomBorder(theme))
+            )
+          ),
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: ListTile(
+            leading: AvatarStack(people: widget.notification.eventCreators),
+            title: Text(_title),
+          ),
         ),
       ),
     );
@@ -120,17 +133,46 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
     }
   }
 
-  void _goToTarget() async {
-    final client = Provider.of<Client>(context, listen: false),
-      unreadCount = Provider.of<UnreadNotificationsCount>(context, listen: false),
-      isUnread = !widget.notification.read;
+  Future<bool> _toggleRead(_) async {
+    _setRead(!widget.notification.read);
 
-    if (isUnread) {
-      setState(() {
-        widget.notification.read = true;
-      });
-      unreadCount.decrement();
+    return false;
+  }
+
+  Future<void> _setRead(bool newStatus) async {
+    if (widget.notification.read == newStatus) {
+      return;
     }
+
+    final client = Provider.of<Client>(context, listen: false),
+      unreadCount = Provider.of<UnreadNotificationsCount>(context, listen: false);
+
+    setState(() => widget.notification.read = newStatus);
+    if (newStatus) {
+      unreadCount.decrement();
+    } else {
+      unreadCount.increment();
+    }
+
+    try {
+      await client.setNotificationRead(widget.notification, isRead: newStatus);
+    } catch (e, s)  {
+      tryShowErrorSnackBar(this, newStatus ? l.failedToMarkNotificationAsRead : l.failedToMarkNotificationAsUnread, e, s);
+
+      if (mounted) {
+        setState(() => widget.notification.read = !newStatus);
+      }
+
+      if (newStatus) {
+        unreadCount.increment();
+      } else {
+        unreadCount.decrement();
+      }
+    }
+  }
+
+  void _goToTarget() async {
+    _setRead(true);
 
     switch (widget.notification.type) {
       case NotificationType.alsoCommented:
@@ -145,20 +187,6 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
       case NotificationType.startedSharing:
         Navigator.pushNamed(context, "/profile", arguments: widget.notification.eventCreators.first);
         break;
-    }
-
-    if (isUnread) {
-      try {
-        await client.setNotificationRead(widget.notification);
-      } catch(e, s) {
-        debugPrintStack(label: e.message, stackTrace: s);
-
-        if (mounted) {
-          setState(() => widget.notification.read = false);
-        }
-
-        unreadCount.increment();
-      }
     }
   }
 }
