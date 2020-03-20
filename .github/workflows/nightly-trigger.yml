@@ -1,0 +1,15 @@
+name: Nightly trigger
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v2
+    - run: |
+      git fetch --tags
+      [ "$(git show-ref -s --head HEAD)" != "$(git show-ref -s nightly)" ] &&
+        script/trigger-nightly
