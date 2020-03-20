@@ -7,9 +7,9 @@ on:
 jobs:
   trigger:
     runs-on: ubuntu-latest
-  steps:
+    steps:
     - uses: actions/checkout@v2
     - run: |
-      git fetch --tags
-      [ "$(git show-ref -s --head HEAD)" != "$(git show-ref -s nightly)" ] &&
-        script/trigger-nightly
+        git fetch --tags
+        [ "$(git show-ref -s --head HEAD)" != "$(git show-ref -s nightly)" ] &&
+          script/trigger-nightly
