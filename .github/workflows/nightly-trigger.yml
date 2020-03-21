@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: |
-        git fetch --tags
+        git fetch --depth=1 --no-tags origin +refs/tags/nightly:refs/tags/nightly
         [ "$(git show-ref -s --head HEAD)" != "$(git show-ref -s nightly)" ] &&
           script/trigger-nightly
       env:
