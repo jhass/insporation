@@ -13,3 +13,5 @@ jobs:
         git fetch --tags
         [ "$(git show-ref -s --head HEAD)" != "$(git show-ref -s nightly)" ] &&
           script/trigger-nightly
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
