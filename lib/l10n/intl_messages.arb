@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-03-11T12:13:51.915247",
+  "@@last_modified": "2020-03-21T12:25:49.037636",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -1018,6 +1018,26 @@
     "description": "Tooltip for the unblock user button",
     "type": "text",
     "placeholders": {}
+  },
+  "failedToBlockUser": "Failed to block {name}",
+  "@failedToBlockUser": {
+    "description": "Error message after blocking a user failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice, alice@pod.example.org"
+      }
+    }
+  },
+  "failedToUnblockUser": "Failed to unblock {name}",
+  "@failedToUnblockUser": {
+    "description": "Error message after unblocking a user failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice, alice@pod.example.org"
+      }
+    }
   },
   "addContact": "Add contact",
   "@addContact": {

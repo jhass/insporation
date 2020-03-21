@@ -229,13 +229,9 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
                   ),
                   IconButton(
                     icon: Icon(Icons.block),
-                    color: profile.blocked?  colors.blocked : null,
+                    color: profile.blocked ? colors.blocked : null,
                     tooltip: profile.blocked ? l.unblockUser : l.blockUser,
-                    onPressed: () {
-                      profile.blocked = !profile.blocked;
-                      // TODO for real, backend route missing
-                      Provider.of<_ProfileNotifier>(context, listen: false).updated(); // trigger update
-                    },
+                    onPressed: _toggleBlock,
                   )
                 ]
               ),
@@ -306,6 +302,30 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
         ))
       ]
     );
+
+  _toggleBlock() async {
+    final newState = !widget.profile.blocked,
+      profile = widget.profile,
+      person = profile.person,
+      profileNotifier = Provider.of<_ProfileNotifier>(context, listen: false),
+      client = Provider.of<Client>(context, listen: false);
+
+    profile.blocked = newState;
+    profileNotifier.updated();
+
+    try {
+      if (newState) {
+        await client.blockUser(person);
+      } else {
+        await client.unblockUser(person);
+      }
+    } catch (e, s) {
+      tryShowErrorSnackBar(this, newState ? l.failedToBlockUser(person.nameOrId) : l.failedToUnblockUser(person.nameOrId), e, s);
+
+      profile.blocked = !newState;
+      profileNotifier.updated();
+    }
+  }
 }
 
 class _AspectMembershipView extends StatefulWidget {

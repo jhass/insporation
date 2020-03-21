@@ -1187,6 +1187,24 @@ class InsporationLocalizations {
     locale: localeName
   );
 
+  String failedToBlockUser(String name) => Intl.message(
+    'Failed to block $name',
+    name: 'failedToBlockUser',
+    args: [name],
+    desc: 'Error message after blocking a user failed',
+    examples: const {"name": "Alice, alice@pod.example.org"},
+    locale: localeName
+  );
+
+  String failedToUnblockUser(String name) => Intl.message(
+    'Failed to unblock $name',
+    name: 'failedToUnblockUser',
+    args: [name],
+    desc: 'Error message after unblocking a user failed',
+    examples: const {"name": "Alice, alice@pod.example.org"},
+    locale: localeName
+  );
+
   String get addContact => Intl.message(
     'Add contact',
     name: 'addContact',

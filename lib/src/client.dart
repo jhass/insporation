@@ -302,6 +302,30 @@ class Client {
     }
   }
 
+  Future<void> blockUser(Person person) async {
+    try {
+      await _call("POST", "users/${person.guid}/block");
+    } on ClientException catch (e) {
+      if (e.code != 409) {
+        throw e;
+      }
+
+      // already blocked, ignore
+    }
+  }
+
+  Future<void> unblockUser(Person person) async {
+    try {
+      await _call("DELETE", "users/${person.guid}/block");
+    } on ClientException catch (e) {
+      if (e.code != 410) {
+        throw e;
+      }
+
+      // not blocked, ignore
+    }
+  }
+
   Future<Page<Person>> fetchAspectContacts(Aspect aspect, {String page}) async {
     final response = await _call("GET", "aspects/${aspect.id}/contacts", page: page);
     return _makePage(await compute(_parsePeopleJson, response.body), response);
