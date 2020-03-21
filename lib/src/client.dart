@@ -339,8 +339,12 @@ class Client {
     }
   }
 
-  Future<Page<Person>> searchPeopleByName(String query, {String page}) async {
-    final response = await _call("GET", "search/users", query: {"name_or_handle": query}, page: page);
+  Future<Page<Person>> searchPeopleByName(String query, {List<String> filters, String page}) async {
+    final params = <String, dynamic>{"name_or_handle": query};
+    if (filters != null) {
+      params["filter[]"] = filters;
+    }
+    final response = await _call("GET", "search/users", query: params, page: page);
     return _makePage(await compute(_parsePeopleJson, response.body), response);
   }
 
@@ -422,7 +426,7 @@ class Client {
     return initialPage;
   }
 
-  Future<http.Response> _call(String method, String endpoint, {Map<String, String> query = const {}, body, page}) async {
+  Future<http.Response> _call(String method, String endpoint, {Map<String, dynamic> query = const {}, body, page}) async {
     final token = await _appAuth.accessToken,
       uri = _computeUri(endpoint, query: query, page: page),
       request = http.Request(method, uri);
@@ -441,6 +445,7 @@ class Client {
       }
     }
 
+    debugPrint("Request: ${requestToSend}");
     final response = await _client.send(requestToSend).then(http.Response.fromStream);
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -453,7 +458,7 @@ class Client {
     }
   }
 
-  Uri _computeUri(String endpoint, {Map<String, String> query, page}) {
+  Uri _computeUri(String endpoint, {Map<String, dynamic> query, page}) {
     if (page != null) {
       return Uri.parse(page);
     } else {

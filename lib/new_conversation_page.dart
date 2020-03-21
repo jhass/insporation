@@ -124,43 +124,19 @@ class _NewConversationPageBodyState extends State<_NewConversationPageBody> with
   }
 
   _selectRecipient() async {
-    final client = Provider.of<Client>(context, listen: false);
-    // TODO there's no good way to search through mutual contacts only, so we validate it after selection for now,
-    // also we do allow to search through all people rather than contacts only because the contacts only
-    // search is a hack too and thus a lot slower, and we have to validate anyways after
     final Person response = await showDialog(context: context, builder: (context) =>
-      PeopleSearchDialog(people: SearchablePeople.all()));
+      PeopleSearchDialog(people: SearchablePeople.mutualContacts()));
 
     if (response == null) {
       return; // user cancelled dialog
     }
 
-    try {
-      final profile = await client.fetchProfile(response.guid);
-
-      if (!mounted) {
+    if (_recipients.contains(response)) {
+        Scaffold.of(context).showSnackBar(errorSnackbar(context, l.failedToAddConversationParticipantDuplicate(response.nameOrId)));
         return;
       }
 
-      if (!profile.receiving) {
-        _showError(l.failedToAddConversationParticipantNotSharingWith(response.nameOrId));
-        return;
-      } else if (!profile.sharing) {
-        _showError(l.failedToAddConversationParticipantNotSharing(response.nameOrId));
-        return;
-      } else if (_recipients.contains(response)) {
-        _showError(l.failedToAddConversationParticipantDuplicate(response.nameOrId));
-        return;
-      }
-
-      setState(() => _recipients.add(response));
-    } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToAddConversationParticipant, e, s);
-    }
-  }
-
-  _showError(String message) {
-    Scaffold.of(context).showSnackBar(errorSnackbar(context, message));
+    setState(() => _recipients.add(response));
   }
 
   Future<bool> _submit(String body) async {

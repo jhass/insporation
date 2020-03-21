@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,18 +8,46 @@ import 'item_stream.dart';
 import 'widgets.dart';
 
 enum SearchType { people, peopleByTag, tags }
+enum ContactsSearchType { all, receiving, sharing, mutual }
 
 class SearchablePeople {
-  final bool all;
   final List<Person> list;
-  final bool contactsOnly;
+  final ContactsSearchType contactsSearchType;
   final List<Aspect> inAspects;
 
-  const SearchablePeople.all() : all = true, list = null, contactsOnly = false, inAspects = null;
-  SearchablePeople.list(this.list) : all = false, contactsOnly = false, inAspects = null;
-  const SearchablePeople.contactsOnly() : all = false, list = null, contactsOnly = true, inAspects = null;
-  SearchablePeople.inAspects(this.inAspects) : all = false, list = null, contactsOnly = true;
-  const SearchablePeople.none() : all = false, list = const [], contactsOnly = false, inAspects = null;
+  const SearchablePeople.all() : list = null, contactsSearchType = null, inAspects = null;
+  SearchablePeople.list(this.list) : contactsSearchType = null, inAspects = null;
+  const SearchablePeople.contacts() : contactsSearchType = ContactsSearchType.all, list = null, inAspects = null;
+  const SearchablePeople.receivingContacts() : contactsSearchType = ContactsSearchType.receiving,  list = null, inAspects = null;
+  const SearchablePeople.sharingContacts() : contactsSearchType = ContactsSearchType.sharing,  list = null, inAspects = null;
+  const SearchablePeople.mutualContacts() : contactsSearchType = ContactsSearchType.mutual, list = null, inAspects = null;
+  SearchablePeople.inAspects(this.inAspects) : contactsSearchType = ContactsSearchType.all, list = null;
+  const SearchablePeople.none() : list = const [], contactsSearchType = null, inAspects = null;
+
+  List<String> get filters {
+    assert(list == null, "Can't do a filtered search through a given list of people");
+    final filters = <String>[];
+
+    if (contactsSearchType != null) {
+      if (contactsSearchType == ContactsSearchType.all && inAspects == null) {
+        filters.add("contacts");
+      }
+
+      if (contactsSearchType == ContactsSearchType.receiving || contactsSearchType == ContactsSearchType.mutual) {
+        filters.add("contacts:receiving");
+      }
+
+      if (contactsSearchType == ContactsSearchType.sharing || contactsSearchType == ContactsSearchType.mutual) {
+        filters.add("contacts:sharing");
+      }
+    }
+
+    if (inAspects != null) {
+      filters.add("aspect:${inAspects.map((aspect) => aspect.id).join(",")}");
+    }
+
+    return filters.isNotEmpty ? filters : null;
+  }
 }
 
 class SearchResult {
@@ -44,7 +71,7 @@ class SearchResultStream extends ItemStream<SearchResult> {
       assert(people != null, "Must give people to search through!");
     }
 
-    if (!people.all) {
+    if (people.list != null) {
       assert(type == SearchType.people, "Can search through list of people only by name or ID!");
     }
   }
@@ -77,41 +104,14 @@ class SearchResultStream extends ItemStream<SearchResult> {
     bool _matchPerson(Person person) =>
       person.nameOrId.contains(_query) || person.diasporaId.contains(RegExp(RegExp.escape(_query), caseSensitive: false));
 
-    Stream<Person> _streamContacts(List<Aspect> aspects) async* {
-      // TODO let's have a proper API endpoint for this
-      final state = aspects.map((aspect) => _AllAspectsContactsStreamState(aspect)).toList();
-      final persons = HashSet<String>();
-      int current = 0;
-      do {
-        Page<Person> lastPage = state[current].lastPage;
-        if (lastPage == null || lastPage.nextPage != null) {
-          final response = await client.fetchAspectContacts(state[current].aspect, page: lastPage?.nextPage);
-          state[current].lastPage = response;
-          yield* Stream.fromIterable(response.content).where((person) => !persons.contains(person.guid));
-          persons.addAll(response.content.map((person) => person.guid));
-        } else {
-          state.removeAt(current);
-        }
-
-        current++;
-
-        if (current >= state.length) {
-          current = 0;
-        }
-      } while (state.length > 0);
-    }
-
     switch (_type) {
       case SearchType.people:
-        if (people.all) {
-          final result = await client.searchPeopleByName(query, page: page);
-          return result.map((person) => SearchResult.forPerson(person));
-        } else if (people.contactsOnly) {
-          final aspects = people.inAspects ?? await client.currentUserAspects;
-          return Page(content: await _streamContacts(aspects).where(_matchPerson).take(5).map((person) => SearchResult.forPerson(person)).toList());
-        } // else if people.list != null
+        if (people.list != null) {
+          return Page(content: people.list.where(_matchPerson).map((person) => SearchResult.forPerson(person)).toList());
+        }
 
-        return Page(content: people.list.where(_matchPerson).map((person) => SearchResult.forPerson(person)).toList());
+        final result = await client.searchPeopleByName(query, filters: people.filters, page: page);
+        return result.map((person) => SearchResult.forPerson(person));
       case SearchType.peopleByTag:
         final result = await client.searchPeopleByTag(query, page: page);
         return result.map((person) => SearchResult.forPerson(person));
@@ -130,13 +130,6 @@ class SearchResultStream extends ItemStream<SearchResult> {
 
     return null; // case is exhaustive, never happens
   }
-}
-
-class _AllAspectsContactsStreamState {
-  final Aspect aspect;
-  Page<Person> lastPage;
-
-  _AllAspectsContactsStreamState(this.aspect);
 }
 
 
@@ -169,15 +162,16 @@ abstract class _SearchDialogState<T extends StatefulWidget> extends ItemStreamSt
         stream.query = value;
         setState(() => _loading = true);
         await stream.load(Provider.of<Client>(context, listen: false));
-        setState(() => _loading = false);
+        if (mounted) {
+          setState(() => _loading = false);
+        }
       },
     ),
     children: <Widget>[
       Visibility(visible: _loading, child: Center(child: CircularProgressIndicator())),
       ConstrainedBox(
-        constraints: BoxConstraints.loose(Size(double.infinity, 400)),
-        child: buildStream(context)
-      ),
+        constraints: BoxConstraints(minWidth: double.maxFinite, maxWidth: double.maxFinite, maxHeight: 400),
+        child: buildStream(context)),
     ],
   );
 

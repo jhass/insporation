@@ -201,7 +201,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
     if (_currentTarget.public) {
       return SearchablePeople.all();
     } else if (_currentTarget.allAspects) {
-      return SearchablePeople.contactsOnly();
+      return SearchablePeople.receivingContacts();
     } else {
       return SearchablePeople.inAspects(_currentTarget.aspects);
     }
@@ -363,7 +363,9 @@ class _PublishTargetSelectionDialogState extends State<_PublishTargetSelectionDi
       ],
       content: _lastError != null ? ErrorMessage(_lastError, onRetry: _fetch) :
         _aspects == null ? Center(child: CircularProgressIndicator()) :
-        _buildOptions()
+        ConstrainedBox(
+          constraints: BoxConstraints(minWidth: double.maxFinite, maxWidth: double.maxFinite, maxHeight: 400),
+          child: _buildOptions())
     );
   }
 
