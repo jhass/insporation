@@ -12,6 +12,6 @@ jobs:
     - run: |
         git fetch --depth=1 --no-tags origin +refs/tags/nightly:refs/tags/nightly
         [ "$(git show-ref -s --head HEAD)" != "$(git show-ref -s nightly)" ] &&
-          script/trigger-nightly
+          script/trigger-nightly || echo "no changes"
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_AUTOMATION_TOKEN }}
