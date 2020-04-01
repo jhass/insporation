@@ -32,6 +32,7 @@ class CommentListView extends StatefulWidget {
 
 class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
   final _newComment = TextEditingController();
+  DraftObserver _draftObserver;
 
   CommentListViewState() : super(enableUpButton: false);
 
@@ -41,7 +42,8 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
 
     final state = Provider.of<PersistentState>(context, listen: false);
     _newComment.text = state.getCommentDraft(widget.post) ?? "";
-    _newComment.addListener(() => state.setCommentDraft(widget.post, _newComment.text));
+    _draftObserver = DraftObserver(context: context, controller: _newComment, onPersist: (text) =>
+      state.setCommentDraft(widget.post, text));
   }
 
   @override
@@ -77,6 +79,7 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
 
   @override
   void dispose() {
+    _draftObserver?.dispose();
     _newComment.dispose();
     super.dispose();
   }

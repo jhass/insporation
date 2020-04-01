@@ -70,6 +70,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   bool _submitting = false;
   String _lastError;
   PublishTarget _currentTarget;
+  DraftObserver _draftObserver;
 
   @override
   void initState() {
@@ -85,7 +86,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
 
     _controller.addListener(_onTextChanged);
     _controller.text = presence(widget.options.prefill) ?? state.postDraft;
-    _controller.addListener(() => state.postDraft = _controller.text);
+    _draftObserver = DraftObserver(context: context, controller: _controller, onPersist: (text) => state.postDraft = text);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // We can't yet call Provider.of from initState, so delay a bit
@@ -168,8 +169,9 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
 
   @override
   void dispose() {
-    super.dispose();
+    _draftObserver?.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   _onTextChanged() => _validate();

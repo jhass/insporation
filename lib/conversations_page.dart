@@ -138,13 +138,15 @@ class _ConversationMessagesStream extends ItemStream<ConversationMessage> {
 
 class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _ConversationMessagesPage> {
   final _newMessage = TextEditingController();
+  DraftObserver _draftObserver;
 
   @override
   void initState() {
     super.initState();
     final state = Provider.of<PersistentState>(context, listen: false);
     _newMessage.text = state.getMessageDraft(widget.conversation);
-    _newMessage.addListener(() => state.setMessageDraft(widget.conversation, _newMessage.text));
+    _draftObserver = DraftObserver(context: context, controller: _newMessage, onPersist: (text) =>
+      state.setMessageDraft(widget.conversation, text));
   }
 
   @override
@@ -221,6 +223,7 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
 
   @override
   void dispose() {
+    _draftObserver?.dispose();
     _newMessage.dispose();
     super.dispose();
   }

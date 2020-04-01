@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:quiver/collection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -97,5 +99,39 @@ class PersistentState {
       "comment_drafts": _commentDrafts,
       "message_drafts": _messageDrafts
     }));
+  }
+}
+
+class DraftObserver with WidgetsBindingObserver {
+  final Function(String) onPersist;
+  final TextEditingController controller;
+  final BuildContext context;
+
+  DraftObserver({@required this.controller, @required this.onPersist, this.context}) {
+    assert(controller != null, "Must pass a text controller to listen for changes to");
+    assert(onPersist != null, "Must pass a function to notify of text changes to persist as draft");
+
+    controller.addListener(_onTextChanges);
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  void dispose() {
+    controller.removeListener(_onTextChanges);
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      _onTextChanges();
+      if (context != null) {
+        // TODO: Workaround for https://github.com/flutter/flutter/issues/47628
+        FocusScope.of(context).unfocus();
+      }
+    }
+  }
+
+  void _onTextChanges() {
+    onPersist(controller.text);
   }
 }
