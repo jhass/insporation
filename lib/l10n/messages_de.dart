@@ -106,7 +106,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "createComment" : MessageLookupByLibrary.simpleMessage("Kommentieren"),
     "createPoll" : MessageLookupByLibrary.simpleMessage("Umfrage erstellen"),
     "deleteAspectPrompt" : m2,
-    "deletePrompt" : MessageLookupByLibrary.simpleMessage("Beitrag löschen?"),
+    "deletePostPrompt" : MessageLookupByLibrary.simpleMessage("Beitrag löschen?"),
     "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Weitersagung eines gelöschten Beitrags."),
     "deselectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Alle abwählen"),
     "duplicateProfileTag" : MessageLookupByLibrary.simpleMessage("Tag wurde bereits hinzugefügt"),

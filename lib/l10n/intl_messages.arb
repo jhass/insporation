@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-03-21T12:25:49.037636",
+  "@@last_modified": "2020-04-06T11:16:42.929045",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -210,6 +210,48 @@
     "type": "text",
     "placeholders": {}
   },
+  "deleteCommentPrompt": "Delete comment?",
+  "@deleteCommentPrompt": {
+    "description": "Title for delete comment prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToDeleteComment": "Failed to delete comment",
+  "@failedToDeleteComment": {
+    "description": "Error message after deleting a commment failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportComment": "Report",
+  "@reportComment": {
+    "description": "Tooltip for report comment icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportCommentPrompt": "Report comment",
+  "@reportCommentPrompt": {
+    "description": "Title for report comment prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportCommentHint": "Please describe the issue",
+  "@reportCommentHint": {
+    "description": "Hint text for comment report field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sentCommentReport": "Report sent.",
+  "@sentCommentReport": {
+    "description": "Success message after a comment report was sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReportComment": "Failed to create the report",
+  "@failedToReportComment": {
+    "description": "Error message after a comment report couldn't be sent",
+    "type": "text",
+    "placeholders": {}
+  },
   "failedToLikePost": "Failed to like the post",
   "@failedToLikePost": {
     "description": "Error message after liking a post failed",
@@ -264,8 +306,8 @@
     "type": "text",
     "placeholders": {}
   },
-  "deletePrompt": "Delete post?",
-  "@deletePrompt": {
+  "deletePostPrompt": "Delete post?",
+  "@deletePostPrompt": {
     "description": "Title for delete post prompt dialog",
     "type": "text",
     "placeholders": {}

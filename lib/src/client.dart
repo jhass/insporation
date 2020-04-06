@@ -104,7 +104,8 @@ class Client {
 
   Future<Page<Comment>> fetchComments(Post post, {String page}) async {
     final response = await _call("GET", "posts/${post.guid}/comments", page: page),
-      comments = await compute(_parseCommentsJson, response.body);
+      comments = await compute(_parseCommentsJson, {"body": response.body,
+        "currentUser": currentUserId, "postGuid": post.guid, "postAuthor": post.author.diasporaId});
     return _makePage(comments, response);
   }
 
@@ -139,7 +140,31 @@ class Client {
 
   Future<Comment> commentPost(Post post, String comment) async {
     final response = await _call("POST", "posts/${post.guid}/comments", body: {"body": comment});
-    return Comment.from(jsonDecode(response.body));
+    return Comment.from(jsonDecode(response.body), currentUser: currentUserId, postGuid: post.guid, postAuthor: post.author.diasporaId);
+  }
+
+  Future<void> deleteComment(Comment comment) async {
+    try {
+      await _call("DELETE", "posts/${comment.postGuid}/comments/${comment.guid}");
+    } on ClientException catch (e) {
+      if (e.code != 410) {
+        throw e;
+      }
+
+      // already gone, ignore
+    }
+  }
+
+  Future<void> reportComment(Comment comment, String reason) async {
+    try {
+      await _call("POST", "posts/${comment.postGuid}/comments/${comment.guid}/report", body: {"reason": reason});
+    } on ClientException catch (e) {
+      if (e.code != 409) {
+        throw e;
+      }
+
+      // already reported, ignore
+    }
   }
 
   Future<Post> resharePost(Post post) async {
@@ -469,7 +494,7 @@ class Client {
       }
     }
 
-    debugPrint("Request: ${requestToSend}");
+    debugPrint("Request: $requestToSend");
     final response = await _client.send(requestToSend).then(http.Response.fromStream);
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -515,9 +540,13 @@ class Client {
     return Post.fromList(posts, currentUser: currentUser);
   }
 
-  static List<Comment> _parseCommentsJson(String json) {
+  static List<Comment> _parseCommentsJson(Map<String, String> arguments) {
+    final json = arguments["body"];
+    final currentUser = arguments["currentUser"];
+    final postGuid = arguments["postGuid"];
+    final postAuthor = arguments["postAuthor"];
     final List<Map<String, dynamic>> comments = jsonDecode(json).cast<Map<String, dynamic>>();
-    return Comment.fromList(comments);
+    return Comment.fromList(comments, currentUser: currentUser, postGuid: postGuid, postAuthor: postAuthor);
   }
 
   static List<Notification> _parseNotificationsJson(String json) {
@@ -1022,26 +1051,39 @@ class PollAnswer {
 }
 
 class Comment {
+  final String guid;
   final String body;
   final Person author;
   final Map<String, Person> mentionedPeople;
+  bool reported;
   final DateTime createdAt;
+  final String postGuid;
+  final bool canDelete;
 
-  Comment({@required this.body, @required this.author, @required this.mentionedPeople, @required this.createdAt});
+  Comment({@required this.guid, @required this.body, @required this.author, @required this.mentionedPeople,
+    @required this.reported, @required this.createdAt,  @required this.postGuid, @required this.canDelete});
 
-  factory Comment.from(Map<String, dynamic> object) =>
-    Comment(
+  factory Comment.from(Map<String, dynamic> object, {@required String currentUser,
+    @required String postGuid, @required String postAuthor}) {
+    var author = Person.from(object["author"]);
+    return Comment(
+      guid: object["guid"],
       body: object["body"],
-      author: Person.from(object["author"]),
+      author: author,
       mentionedPeople: object["mentioned_people"] != null ? Map.fromIterable(
         Person.fromList(object["mentioned_people"].cast<Map<String, dynamic>>()),
         key: (person) => person.diasporaId
       ) : null,
-      createdAt: DateTime.parse(object["created_at"])
+      reported: object["reported"],
+      createdAt: DateTime.parse(object["created_at"]),
+      postGuid: postGuid,
+      canDelete: author.diasporaId == currentUser || postAuthor == currentUser
     );
+  }
 
-  static List<Comment> fromList(List<Map<String, dynamic>> objects) =>
-    objects.map((object) => Comment.from(object)).toList();
+  static List<Comment> fromList(List<Map<String, dynamic>> objects, {@required String currentUser,
+    @required String postGuid, @required String postAuthor}) =>
+    objects.map((object) => Comment.from(object, currentUser: currentUser, postGuid: postGuid, postAuthor: postAuthor)).toList();
 }
 
 enum NotificationType {

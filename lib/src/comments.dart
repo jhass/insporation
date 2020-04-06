@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
 import 'client.dart';
 import 'composer.dart';
 import 'item_stream.dart';
+import 'localizations.dart';
 import 'messages.dart';
 import 'persistence.dart';
 import 'search.dart';
@@ -53,8 +55,8 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
   ItemStream<Comment> createStream() => CommentStream(widget.post);
 
   @override
-  Widget buildItem(BuildContext context, Comment item) =>
-    CommentView(comment: item);
+  Widget buildItem(BuildContext context, Comment comment) =>
+    CommentView(comment: comment);
 
   @override
   Widget buildHeader(BuildContext context) => Padding(
@@ -121,7 +123,22 @@ class CommentView extends StatelessWidget {
   final Comment comment;
 
   @override
-  Widget build(BuildContext context) => Card(
+  Widget build(BuildContext context) {
+    if (comment.canDelete || !comment.reported) {
+      return Slidable(
+        actionPane: SlidableDrawerActionPane(),
+        actions: [
+          _CommentActionsView(comment: comment)
+        ],
+        child: buildComment(),
+      );
+    } else {
+      return buildComment();
+    }
+  }
+
+  Card buildComment() {
+    return Card(
     child: Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -142,4 +159,137 @@ class CommentView extends StatelessWidget {
       ),
     ),
   );
+  }
+}
+
+
+class _CommentActionsView extends StatefulWidget {
+  _CommentActionsView({Key key, this.comment}) : super(key: key);
+
+  final Comment comment;
+
+  @override
+  _CommentActionsViewState createState() => _CommentActionsViewState();
+}
+
+class _CommentActionsViewState extends State<_CommentActionsView> with StateLocalizationHelpers {
+  final _reportField = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final actions = <Widget>[];
+    if (widget.comment.canDelete) {
+      actions.add(IconButton(
+        icon: Icon(Icons.delete),
+        tooltip: ml.deleteButtonTooltip,
+        onPressed: _promptDelete
+      ));
+    } else if (!widget.comment.reported) {
+      actions.add(IconButton(
+        icon: Icon(Icons.flag),
+        tooltip: l.reportComment,
+        onPressed: _promptReport,
+      ));
+    }
+
+    return Column(children: actions);
+  }
+
+  _promptDelete() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l.deleteCommentPrompt),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(l.noButtonLabel),
+            onPressed: () => Navigator.pop(dialogContext),
+          ),
+          FlatButton(
+            child: Text(l.yesButtonLabel),
+            onPressed: () {
+              _delete();
+              Navigator.pop(dialogContext);
+            },
+          )
+        ],
+      )
+    );
+  }
+
+  _delete() async {
+    final client = Provider.of<Client>(context, listen: false),
+      items = tryProvide<ItemStream<Comment>>(context);
+    int oldPosition = 0;
+
+    if (items != null) {
+      oldPosition = items.remove(widget.comment);
+    }
+
+    try {
+      await client.deleteComment(widget.comment);
+    } catch (e, s) {
+      tryShowErrorSnackBar(this, l.failedToDeleteComment, e, s);
+      if (items != null) {
+        items.insert(oldPosition, widget.comment);
+      }
+    }
+  }
+
+  _promptReport() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l.reportCommentPrompt),
+        content: TextField(
+          controller: _reportField,
+          minLines: 1,
+          decoration: InputDecoration(
+            hintText: l.reportCommentHint
+          )
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(ml.cancelButtonLabel),
+            onPressed: () => Navigator.pop(dialogContext),
+          ),
+          FlatButton(
+            child: Text(l.submitButtonLabel),
+            onPressed: () {
+              if (_reportField.text.isNotEmpty) {
+                _createReport(_reportField.text);
+                Navigator.pop(dialogContext);
+              }
+            },
+          )
+        ],
+      )
+    );
+  }
+
+  _createReport(String report) async {
+    final scaffold = Scaffold.of(context),
+      client = Provider.of<Client>(context, listen: false);
+    setState(() => widget.comment.reported = true);
+    Slidable.of(context)?.close();
+
+    try {
+      await client.reportComment(widget.comment, report);
+
+      if (scaffold.mounted) {
+        scaffold.showSnackBar(SnackBar(
+          content: Text(l.sentCommentReport)
+        ));
+      }
+    } catch(e, s) {
+      tryShowErrorSnackBar(this, l.failedToReportComment, e, s);
+
+      widget.comment.reported = false;
+      if (mounted) {
+        setState(() {});
+      }
+    }
+  }
 }

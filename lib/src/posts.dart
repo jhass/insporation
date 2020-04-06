@@ -464,7 +464,7 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
       context: context,
       barrierDismissible: true,
       builder: (dialogContext) => AlertDialog(
-        title: Text(l.deletePrompt),
+        title: Text(l.deletePostPrompt),
         actions: <Widget>[
           FlatButton(
             child: Text(l.noButtonLabel),
@@ -556,7 +556,7 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
         ));
       }
     } catch(e, s) {
-      showErrorSnackBar(scaffold, l.failedToReportPost, e, s);
+      tryShowErrorSnackBar(this, l.failedToReportPost, e, s);
 
       widget.post.interactions.reported = false;
       if (mounted) {

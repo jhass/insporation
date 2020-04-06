@@ -308,6 +308,55 @@ class InsporationLocalizations {
     locale: localeName
   );
 
+  String get deleteCommentPrompt => Intl.message(
+    'Delete comment?',
+    name: 'deleteCommentPrompt',
+    desc: 'Title for delete comment prompt dialog',
+    locale: localeName
+  );
+
+  String get failedToDeleteComment => Intl.message(
+    'Failed to delete comment',
+    name: 'failedToDeleteComment',
+    desc: 'Error message after deleting a commment failed',
+    locale: localeName
+  );
+
+  String get reportComment => Intl.message(
+    'Report',
+    name: 'reportComment',
+    desc: 'Tooltip for report comment icon button',
+    locale: localeName
+  );
+
+  String get reportCommentPrompt => Intl.message(
+    'Report comment',
+    name: 'reportCommentPrompt',
+    desc: 'Title for report comment prompt dialog',
+    locale: localeName
+  );
+
+  String get reportCommentHint => Intl.message(
+    'Please describe the issue',
+    name: 'reportCommentHint',
+    desc: 'Hint text for comment report field',
+    locale: localeName
+  );
+
+  String get sentCommentReport => Intl.message(
+    'Report sent.',
+    name: 'sentCommentReport',
+    desc: 'Success message after a comment report was sent',
+    locale: localeName
+  );
+
+  String get failedToReportComment => Intl.message(
+    'Failed to create the report',
+    name: 'failedToReportComment',
+    desc: "Error message after a comment report couldn't be sent",
+    locale: localeName
+  );
+
   String get failedToLikePost => Intl.message(
     'Failed to like the post',
     name: 'failedToLikePost',
@@ -371,9 +420,9 @@ class InsporationLocalizations {
     locale: localeName
   );
 
-  String get deletePrompt => Intl.message(
+  String get deletePostPrompt => Intl.message(
     'Delete post?',
-    name: 'deletePrompt',
+    name: 'deletePostPrompt',
     desc: 'Title for delete post prompt dialog',
     locale: localeName
   );

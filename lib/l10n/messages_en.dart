@@ -31,11 +31,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m5(name) => "You\'re not sharing with ${name}, cannot add them as a recipient!";
 
+  static m30(name) => "Failed to block ${name}";
+
   static m6(name) => "Failed to remove aspect ${name}";
 
   static m7(tag) => "Failed to follow #${tag}";
 
   static m8(oldName, newName) => "Failed to rename aspect ${oldName} to ${newName}";
+
+  static m31(name) => "Failed to unblock ${name}";
 
   static m9(tag) => "Failed to unfollow #${tag}";
 
@@ -106,7 +110,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "createComment" : MessageLookupByLibrary.simpleMessage("Comment"),
     "createPoll" : MessageLookupByLibrary.simpleMessage("Create poll"),
     "deleteAspectPrompt" : m2,
-    "deletePrompt" : MessageLookupByLibrary.simpleMessage("Delete post?"),
+    "deleteCommentPrompt" : MessageLookupByLibrary.simpleMessage("Delete comment?"),
+    "deletePostPrompt" : MessageLookupByLibrary.simpleMessage("Delete post?"),
     "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Reshare of a deleted post"),
     "deselectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Deselect all"),
     "duplicateProfileTag" : MessageLookupByLibrary.simpleMessage("Tag already added"),
@@ -129,21 +134,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToAddConversationParticipantDuplicate" : m3,
     "failedToAddConversationParticipantNotSharing" : m4,
     "failedToAddConversationParticipantNotSharingWith" : m5,
+    "failedToBlockUser" : m30,
     "failedToCommentOnPost" : MessageLookupByLibrary.simpleMessage("Failed to create comment"),
     "failedToCreateAspect" : MessageLookupByLibrary.simpleMessage("Failed to create aspect"),
     "failedToCreateConversation" : MessageLookupByLibrary.simpleMessage("Failed to create conversation"),
     "failedToDeleteAspect" : m6,
+    "failedToDeleteComment" : MessageLookupByLibrary.simpleMessage("Failed to delete comment"),
     "failedToDeletePost" : MessageLookupByLibrary.simpleMessage("Failed to delete the post"),
     "failedToFollowTag" : m7,
     "failedToHideConversation" : MessageLookupByLibrary.simpleMessage("Failed to hide conversation"),
     "failedToHidePost" : MessageLookupByLibrary.simpleMessage("Failed to hide the post"),
     "failedToLikePost" : MessageLookupByLibrary.simpleMessage("Failed to like the post"),
+    "failedToMarkNotificationAsRead" : MessageLookupByLibrary.simpleMessage("Failed to mark notification as read"),
+    "failedToMarkNotificationAsUnread" : MessageLookupByLibrary.simpleMessage("Failed to mark notification as unread"),
     "failedToRenameAspect" : m8,
     "failedToReplyToConversation" : MessageLookupByLibrary.simpleMessage("Failed to reply to conversation"),
+    "failedToReportComment" : MessageLookupByLibrary.simpleMessage("Failed to create the report"),
     "failedToReportPost" : MessageLookupByLibrary.simpleMessage("Failed to create report"),
     "failedToResharePost" : MessageLookupByLibrary.simpleMessage("Failed to reshare post"),
     "failedToSearchForAddresses" : MessageLookupByLibrary.simpleMessage("Failed to search for addresses"),
     "failedToSubscribeToPost" : MessageLookupByLibrary.simpleMessage("Failed to subscribe to the post"),
+    "failedToUnblockUser" : m31,
     "failedToUnfollowTag" : m9,
     "failedToUnlikePost" : MessageLookupByLibrary.simpleMessage("Failed to unlike the post"),
     "failedToUnsubscribeFromPost" : MessageLookupByLibrary.simpleMessage("Failed to unsubscribe from the post"),
@@ -221,6 +232,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "publisherTitle" : MessageLookupByLibrary.simpleMessage("Write a new post"),
     "removeButtonLabel" : MessageLookupByLibrary.simpleMessage("Remove"),
     "replyToConversation" : MessageLookupByLibrary.simpleMessage("Reply"),
+    "reportComment" : MessageLookupByLibrary.simpleMessage("Report"),
+    "reportCommentHint" : MessageLookupByLibrary.simpleMessage("Please describe the issue"),
+    "reportCommentPrompt" : MessageLookupByLibrary.simpleMessage("Report comment"),
     "reportPost" : MessageLookupByLibrary.simpleMessage("Report"),
     "reportPostHint" : MessageLookupByLibrary.simpleMessage("Please describe the issue"),
     "reportPostPrompt" : MessageLookupByLibrary.simpleMessage("Report post"),
@@ -236,6 +250,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Select all"),
     "selectButtonLabel" : MessageLookupByLibrary.simpleMessage("Select"),
     "sendNewConversation" : MessageLookupByLibrary.simpleMessage("Send"),
+    "sentCommentReport" : MessageLookupByLibrary.simpleMessage("Report sent."),
     "sentPostReport" : MessageLookupByLibrary.simpleMessage("Report sent."),
     "showAllNsfwPostsButtonLabel" : MessageLookupByLibrary.simpleMessage("Show all NSFW posts"),
     "showThisNsfwPostButtonLabel" : MessageLookupByLibrary.simpleMessage("Show this post"),

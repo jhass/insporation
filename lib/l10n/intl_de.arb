@@ -28,7 +28,7 @@
 	"createComment": "Kommentieren",
 	"createPoll": "Umfrage erstellen",
 	"deleteAspectPrompt": "Aspekt {name} wirklich löschen?",
-	"deletePrompt": "Beitrag löschen?",
+	"deletePostPrompt": "Beitrag löschen?",
 	"deletedPostReshareHint": "Weitersagung eines gelöschten Beitrags.",
 	"deselectAllButtonLabel": "Alle abwählen",
 	"duplicateProfileTag": "Tag wurde bereits hinzugefügt",

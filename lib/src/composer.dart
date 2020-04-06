@@ -505,7 +505,7 @@ class _SimpleComposerState extends State<SimpleComposer> with StateLocalizationH
             ),
           ),
           Visibility(
-            visible: widget.onSubmit != null,
+            visible: widget.onSubmit != null && !_submitting,
             child: Align(
               alignment: Alignment.centerRight,
               child: RaisedButton(
