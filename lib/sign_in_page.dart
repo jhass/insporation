@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 
 import 'src/client.dart';
 import 'src/localizations.dart';
+import 'src/navigation.dart';
 import 'src/persistence.dart';
+import 'src/utils.dart';
 import 'src/widgets.dart';
 
 class SignInPage extends StatefulWidget {
@@ -162,7 +164,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
       }
 
       if (client.hasSession) {
-        Navigator.pushReplacementNamed(context, '/stream');
+        _onSession(client);
       } else {
         setState(() => _loading = false);
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -203,7 +205,8 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
       try {
         await client.switchToUser(_diasporaIdController.text);
         await _ensureAuthorization();
-        Navigator.pushReplacementNamed(context, '/stream');
+
+        _onSession(client);
       } catch (e) {
         setState(() {
           _lastError = e.toString();
@@ -222,5 +225,14 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
     } finally {
       persistentState.wasAuthorizing = false;
     }
+  }
+
+  _onSession(Client client) {
+    // refresh unread counts now that we have a session
+    tryProvide<UnreadNotificationsCount>(context)?.update(client);
+    tryProvide<UnreadConversationsCount>(context)?.update(client);
+
+    // Move to stream
+    Navigator.pushReplacementNamed(context, '/stream');
   }
 }
