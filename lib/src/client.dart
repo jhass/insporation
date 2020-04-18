@@ -1262,7 +1262,7 @@ class ProfileUpdate {
 
   Map<String, dynamic> toJson() => {
     "bio": bio,
-    "birthday": birthday.toIso8601String(),
+    "birthday": birthday?.toIso8601String(),
     "gender": gender,
     "location": location,
     "name": name,
