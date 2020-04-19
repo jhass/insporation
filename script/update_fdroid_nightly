@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+cp dist/*.apk pages/fdroid/repo
+cd pages/fdroid
+fdroid update
+git config --local user.email "me+nightly-ci@jhass.eu"
+git config --local user.name  "Github Actions Nightly Job"
+git add .
+git commit -m "Update fdroid repository for nightly build $GITHUB_RUN_NUMBER"
+git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" gh-pages
