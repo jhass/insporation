@@ -13,6 +13,12 @@ jobs:
     env:
       KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
     steps:
+    - name: free disk space
+      run: |
+        sudo swapoff -a
+        sudo rm -f /swapfile
+        sudo apt clean
+        df -h
     - uses: actions/checkout@v2
     - uses: subosito/flutter-action@v1.1.1
     - name: Setup keystore
