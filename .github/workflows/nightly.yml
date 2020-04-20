@@ -38,6 +38,8 @@ jobs:
     container: cgeo/fdroid-base
     env:
       KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
+      LC_ALL: en_US.UTF-8
+      LANG: en_US.UTF-8
     steps:
     - uses: actions/download-artifact@v1
       with:
