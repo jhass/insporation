@@ -5,7 +5,25 @@ on:
     types: nightly
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+    - name: free disk space
+      run: |
+        sudo swapoff -a
+        sudo rm -f /swapfile
+        sudo apt clean
+        docker rmi $(docker image ls -aq)
+        df -h
+    - uses: actions/checkout@v2
+    - name: Setup keystore
+      run: |
+       echo "$KEYSTORE" | base64 -d > "$KEYSTORE_PATH"
+      env:
+        KEYSTORE: ${{ secrets.KEYSTORE }}
+        KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
   build:
+    needs: prepare
     runs-on: ubuntu-latest
     container:
       image: circleci/android:api-29-node
@@ -13,19 +31,7 @@ jobs:
     env:
       KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
     steps:
-    - name: free disk space
-      run: |
-        sudo swapoff -a
-        sudo rm -f /swapfile
-        sudo apt clean
-        df -h
-    - uses: actions/checkout@v2
     - uses: subosito/flutter-action@v1.1.1
-    - name: Setup keystore
-      run: |
-       echo "$KEYSTORE" | base64 -d > "$KEYSTORE_PATH"
-      env:
-        KEYSTORE: ${{ secrets.KEYSTORE }}
     - name: Build
       run: |
         flutter build apk --release --build-number=$GITHUB_RUN_NUMBER
@@ -34,6 +40,10 @@ jobs:
       env:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEYSTORE_KEY_ALIAS: key
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
     - uses: actions/upload-artifact@v1
       with:
         name: Application bundles
@@ -57,5 +67,6 @@ jobs:
       with:
         args: script/update_fdroid_nightly
       env:
+        KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEYSTORE_KEY_ALIAS: key
