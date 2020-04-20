@@ -32,6 +32,17 @@ jobs:
       with:
         name: Application bundles
         path: dist
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    container: cgeo/fdroid-base
+    env:
+      KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
+    steps:
+    - uses: actions/download-artifact@v1
+      with:
+        name: Application bundles
+        path: dist
     - uses: marvinpinto/action-automatic-releases@v0.2.2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -46,10 +57,13 @@ jobs:
       with:
         ref: gh-pages
         path: pages
+    - name: Setup keystore
+      run: |
+       echo "$KEYSTORE" | base64 -d > "$KEYSTORE_PATH"
+      env:
+        KEYSTORE: ${{ secrets.KEYSTORE }}
     - name: Update F-Droid repository
-      uses: docker://cgeo/fdroid-base
-      with:
-        args: script/update_fdroid_nightly
+      run: script/update_fdroid_nightly
       env:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEYSTORE_KEY_ALIAS: key
