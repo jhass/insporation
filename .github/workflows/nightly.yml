@@ -36,7 +36,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container:
-      imafge: cgeo/fdroid-base
+      image: cgeo/fdroid-base
       options: -u root
     env:
       KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
@@ -45,9 +45,8 @@ jobs:
     steps:
     - name: Update git
       run: |
-        add-apt-repository ppa:git-core/ppa
-        apt update
-        apt install git
+        add-apt-repository -y ppa:git-core/ppa
+        apt install -y git
     - uses: actions/download-artifact@v1
       with:
         name: Application bundles
