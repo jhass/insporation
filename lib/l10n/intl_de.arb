@@ -128,7 +128,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "contactStatusMutual": "Ihr teilt miteinander.",
+  "contactStatusMutual": "Ihr teilt miteinander",
   "@contactStatusMutual": {
     "description": "Contact status message for a contact that is sharing with the user and that the user is sharing with",
     "type": "text",
@@ -764,7 +764,7 @@
       }
     }
   },
-  "notificationAlsoCommented": "{actorCount,plural, =0{Niemand hat auch einen {target} kommentiert.}=1{{actors} hat auch einen {target}  kommentiert.}other{{actors} hat auch einen {target} kommentiert.}}",
+  "notificationAlsoCommented": "{actorCount,plural, =0{Niemand hat auch einen {target} kommentiert.}=1{{actors} hat auch einen {target} kommentiert.}other{{actors} hat auch einen {target} kommentiert.}}",
   "@notificationAlsoCommented": {
     "description": "Notification message for when some people also commented on a post. The zero case is never used",
     "type": "text",
@@ -825,7 +825,7 @@
       }
     }
   },
-  "notificationMentionedInComment": "{actorCount,plural, =0{Niemand hat dich in einem Kommentar erwähnt.}=1{{actors} hat dich in einem Kommentar erwähnt.}other{{actors} haben dich in einem  Kommentar erwähnt.}}",
+  "notificationMentionedInComment": "{actorCount,plural, =0{Niemand hat dich in einem Kommentar erwähnt.}=1{{actors} hat dich in einem Kommentar erwähnt.}other{{actors} haben dich in einem Kommentar erwähnt.}}",
   "@notificationMentionedInComment": {
     "description": "Notification message for when somebody mentioned the user in a comment. Currently only the one case is used",
     "type": "text",
@@ -838,7 +838,7 @@
       }
     }
   },
-  "notificationMentionedInCommentOnDeletedPost": "{actorCount,plural, =0{Niemand hat dich in einem Kommentar zu einem gelöschten Beitrag erwähnt.}=1{{actors} hat dich in einem Kommentar zu einem gelöschten Beitrag erwähnt.}other{{actors} haben dich in einem  Kommentar zu einem gelöschten Beitrag erwähnt.}}",
+  "notificationMentionedInCommentOnDeletedPost": "{actorCount,plural, =0{Niemand hat dich in einem Kommentar zu einem gelöschten Beitrag erwähnt.}=1{{actors} hat dich in einem Kommentar zu einem gelöschten Beitrag erwähnt.}other{{actors} haben dich in einem Kommentar zu einem gelöschten Beitrag erwähnt.}}",
   "@notificationMentionedInCommentOnDeletedPost": {
     "description": "Notification message for when somebody mentioned the user in in comment on a deleted post. Currently only the one case is used",
     "type": "text",
@@ -867,7 +867,7 @@
       }
     }
   },
-  "notificationReshared": "{actorCount,plural, =0{Niemand hat deinen  {target} weitergesagt.}=1{{actors} hat deinen  {target} weitergesagt.}other{{actors} haben deinen {target} weitergesagt.}}",
+  "notificationReshared": "{actorCount,plural, =0{Niemand hat deinen {target} weitergesagt.}=1{{actors} hat deinen {target} weitergesagt.}other{{actors} haben deinen {target} weitergesagt.}}",
   "@notificationReshared": {
     "description": "Notification message for when some people reshared the users post. The zero case is never used",
     "type": "text",
@@ -953,7 +953,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "pollQuestionHint": "Gib eine  Frage ein",
+  "pollQuestionHint": "Gib eine Frage ein",
   "@pollQuestionHint": {
     "description": "Hint text for the poll question field",
     "type": "text",
@@ -983,7 +983,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "publishTargetAllAspects": "Alle  Aspekte",
+  "publishTargetAllAspects": "Alle Aspekte",
   "@publishTargetAllAspects": {
     "description": "Publish target label for a post to all aspects",
     "type": "text",
@@ -1035,7 +1035,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "reportPostHint": "Bitte  beschreibe das Problem",
+  "reportPostHint": "Bitte beschreibe das Problem",
   "@reportPostHint": {
     "description": "Hint text for post report field",
     "type": "text",
@@ -1071,7 +1071,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "searchPeopleHint": "Gib einen Namen oder eine diaspora* ID  ein",
+  "searchPeopleHint": "Gib einen Namen oder eine diaspora* ID ein",
   "@searchPeopleHint": {
     "description": "Hint text for the people search field",
     "type": "text",
@@ -1137,7 +1137,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "startPostSubscription": "Benachrichtigungen für  Beitrag anstellen",
+  "startPostSubscription": "Benachrichtigungen für Beitrag anstellen",
   "@startPostSubscription": {
     "description": "Tooltip for start post subscription icon button",
     "type": "text",
@@ -1284,5 +1284,79 @@
     "description": "Label for a dialog yes button",
     "type": "text",
     "placeholders": {}
+  },
+  "failedToReportComment": "Konnte den Kommentar nicht melden.",
+  "@failedToReportComment": {
+    "description": "Error message after a comment report couldn't be sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToDeleteComment": "Konnte Kommentar nicht löschen.",
+  "@failedToDeleteComment": {
+    "description": "Error message after deleting a commment failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkNotificationAsUnread": "Konnte Benachrichtigung nicht als ungelesen markieren.",
+  "@failedToMarkNotificationAsUnread": {
+    "description": "Error message after marking a notification  as unread failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportComment": "Kommentar melden",
+  "@reportComment": {
+    "description": "Tooltip for report comment icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteCommentPrompt": "Kommentar löschen?",
+  "@deleteCommentPrompt": {
+    "description": "Title for delete comment prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportCommentHint": "Bitte beschreibe das Problem",
+  "@reportCommentHint": {
+    "description": "Hint text for comment report field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportCommentPrompt": "Kommentar melden",
+  "@reportCommentPrompt": {
+    "description": "Title for report comment prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sentCommentReport": "Kommentar gemeldet.",
+  "@sentCommentReport": {
+    "description": "Success message after a comment report was sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkNotificationAsRead": "Konnte Benachrichtigung nicht als gelesen markieren.",
+  "@failedToMarkNotificationAsRead": {
+    "description": "Error message after marking a notification as read failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToBlockUser": "Konnte {name} nicht blockieren.",
+  "@failedToBlockUser": {
+    "description": "Error message after blocking a user failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice, alice@pod.example.org"
+      }
+    }
+  },
+  "failedToUnblockUser": "Konnte {name} nicht entblocken.",
+  "@failedToUnblockUser": {
+    "description": "Error message after unblocking a user failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice, alice@pod.example.org"
+      }
+    }
   }
 }
