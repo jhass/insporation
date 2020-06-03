@@ -1,186 +1,1288 @@
 {
-	"signInAction": "Anmelden",
-	"signInLabel": "diaspora* ID",
-	"signInHint": "benutzername@diaspora.pod",
-	"invalidDiasporaId": "Gib eine volle diaspora* ID ein",
-	"addContact": "Kontakt hinzufügen",
-	"addLocation": "Eigenen Standort hinzufügen",
-	"addPoll": "Eine Umfrage hinzufügen",
-	"aspectNameHint": "Gib einen Namen ein",
-	"aspectStreamSelectorAllAspects": "Alle Aspekte",
-	"aspectStreamSelectorAspects": "{count,plural, =0{Keine Aspekte}=1{Ein Aspekt}other{{count} Aspekte}}",
-	"aspectsListTitle": "Aspekte",
-	"aspectsPrompt": "Aspekte auswählen",
-	"blockUser": "Blockieren",
-	"cancelPostSubscription": "Benachrichtigungen stoppen",
-	"commentsHeader": "Kommentare",
-	"confirmDeleteButtonLabel": "Löschen bestätigen",
-	"confirmReshare": "Weitersagen",
-	"contactAspectsPrompt": "Aspekte für {name} auswählen",
-	"contactAspectsUpdated": "Aspekte aktualisiert.",
-	"contactStatusBlocked": "Von dir blockiert",
-	"contactStatusMutual": "Ihr teilt miteinander.",
-	"contactStatusNotSharing": "Ihr teilt nicht miteinander.",
-	"contactStatusReceiving": "Diese Person teilt mit dir.",
-	"contactStatusSharing": "Du teilst mit dieser Person.",
-	"createAspectPrompt": "Aspekt erstellen",
-	"createButtonLabel": "Erstellen",
-	"createComment": "Kommentieren",
-	"createPoll": "Umfrage erstellen",
-	"deleteAspectPrompt": "Aspekt {name} wirklich löschen?",
-	"deletePostPrompt": "Beitrag löschen?",
-	"deletedPostReshareHint": "Weitersagung eines gelöschten Beitrags.",
-	"deselectAllButtonLabel": "Alle abwählen",
-	"duplicateProfileTag": "Tag wurde bereits hinzugefügt",
-	"editAspectPrompt": "Aspekt bearbeiten",
-	"editPoll": "Umfrage bearbeiten",
-	"editProfile": "Profil bearbeiten",
-	"editProfileBirthdayLabel": "Geburtstag",
-	"editProfileGenderLabel": "Gender",
-	"editProfileHeader": "Profile bearbeiten",
-	"editProfileLocationLabel": "Standort",
-	"editProfileNameLabel": "Name",
-	"editProfileNsfwLabel": "Profile als #nsfw markieren?",
-	"editProfilePublicLabel": "Profil öffentlich machen?",
-	"editProfileSearchableLabel": "Profil in der Suche anzeigen?",
-	"editProfileSubmit": "Profil speichern",
-	"editProfileTagsLabel": "Tags",
-	"editProfileTitle": "Profil",
-	"enterAddressHint": "Gib eine Adresse ein",
-	"failedToAddConversationParticipant": "Empfänger konnte nicht hinzugefügt werden.",
-	"failedToAddConversationParticipantDuplicate": "{name} ist bereits ein Empfänger, kann nicht erneut hinzugefügt werden.",
-	"failedToAddConversationParticipantNotSharing": "{name} teilt nicht mit dir, kann nicht als Empfänger hinzugefügt werden.",
-	"failedToAddConversationParticipantNotSharingWith": "Du teilst nicht mit {name}, kann nicht als Empfänger hinzugefügt werden.",
-	"failedToCommentOnPost": "Kommentar konnte nicht erstellt werden.",
-	"failedToCreateAspect": "Aspekt konnte nicht erstellt werden.",
-	"failedToCreateConversation": "Unterhaltung konnte nicht erstellt werden.",
-	"failedToDeleteAspect": "Aspekt {name} konnte nicht gelöscht werden.",
-	"failedToDeletePost": "Beitrag konnte nicht gelöscht werden.",
-	"failedToFollowTag": "Konnte #{tag} nicht folgen.",
-	"failedToHideConversation": "Die Unterhaltung konnte nicht versteckt werden.",
-	"failedToHidePost": "Der Beitrag konnte nicht versteckt werden.",
-	"failedToLikePost": "Konnte den Beitrag nicht mit einem „Gefällt mir“ markieren.",
-	"failedToRenameAspect": "Konnte Aspekt {oldName} nicht nach {newName} umbenennen.",
-	"failedToReplyToConversation": "Konnte auf die Unterhaltung nicht antworten.",
-	"failedToReportPost": "Konnte den Beitrag nicht melden.",
-	"failedToResharePost": "Konnte den Beitrag nicht weitersagen.",
-	"failedToSearchForAddresses": "Konnte nicht nach den Adressen suchen.",
-	"failedToSubscribeToPost": "Konnte die Benachrichtigungen für den Beitrag nicht anstellen.",
-	"failedToUnfollowTag": "Konnte #{tag} nicht entfolgen.",
-	"failedToUnlikePost": "Konnte das „Gefällt mir“ nicht vom Beitrag entfernen.",
-	"failedToUnsubscribeFromPost": "Konnte die Benachrichtigungen für den Beitrag nicht abbestellen.",
-	"failedToUpdateContactAspects": "Konnte die Aspekte nicht aktualisieren.",
-	"failedToUpdateProfile": "Konnte das Profil nicht speichern.",
-	"failedToUploadPhoto": "Konnte das Bild nicht hochladen.",
-	"failedToUploadProfilePicture": "Konnte das Profilbild nicht hochladen.",
-	"failedToVote": "Konnte nicht abstimmen.",
-	"followedTagsPageTitle": "Verfolgte tags",
-	"formatBold": "Fett",
-	"formatItalic": "Kursiv",
-	"formatStrikethrough": "Durchgestrichen",
-	"hidePost": "Verstecken",
-	"insertBulletedList": "Liste",
-	"insertButtonLabel": "Einfügen",
-	"insertCode": "Code",
-	"insertCodeBlock": "Codeblock",
-	"insertHashtag": "Tag",
-	"insertHeading": "Überschrift",
-	"insertImageURL": "Bildadresse",
-	"insertImageURLPrompt": "Bild einbetten",
-	"insertLink": "Link",
-	"insertLinkDescriptionHint": "Beschreibung (optional)",
-	"insertLinkPrompt": "Link einfügen",
-	"insertLinkURLHint": "Adresse",
-	"insertMention": "Erwähnung",
-	"insertNumberedList": "Nummerierte Liste",
-	"insertQuote": "Zitat",
-	"manageContact": "{count,plural, =0{In keinem Aspekt}=1{In einem Aspekt}other{In {count} Aspekten}}",
-	"manageFollowedTags": "Verfolgte Tags verwalten",
-	"mentionUser": "In Beitrag erwähnen",
-	"messageUser": "Nachricht senden",
-	"navigationItemTitleContacts": "Kontakte",
-	"navigationItemTitleConversations": "Unterhaltungen",
-	"navigationItemTitleEditProfile": "Profil bearbeiten",
-	"navigationItemTitleNotifications": "Benachrichtigungen",
-	"navigationItemTitleSearch": "Suche",
-	"navigationItemTitleStream": "Stream",
-	"navigationItemTitleSwitchUser": "Nutzer wechseln",
-	"newConversationMessageLabel": "Nachricht",
-	"newConversationRecipientsLabel": "Empfänger",
-	"newConversationSubjectLabel": "Betreff",
-	"newConversationTitle": "Unterhaltung beginnen",
-	"noButtonLabel": "Nein",
-	"noItems": "Leider nichts zum anzeigen gefunden 😕",
-	"notificationActorsForMoreThanThreePeople": "{othersCount,plural, =0{{first}, {second} und niemand sonst}=1{{first}, {second} und noch jemand}other{{first}, {second} und {othersCount} andere}}",
-	"notificationActorsForThreePeople": "{first}, {second} und {third}",
-	"notificationActorsForTwoPeople": "{first} und {second}",
-	"notificationAlsoCommented": "{actorCount,plural, =0{Niemand hat auch einen {target} kommentiert.}=1{{actors} hat auch einen {target}  kommentiert.}other{{actors} hat auch einen {target} kommentiert.}}",
-	"notificationBirthday": "{actorCount,plural, =0{Niemand hat heute Geburtstag.}=1{{actors} hat heute Geburtstag.}other{{actors} haben heute Geburtstag.}}",
-	"notificationCommented": "{actorCount,plural, =0{Niemand hat deinen {target} kommentiert.}=1{{actors} hat deinen {target} kommentiert.}other{{actors} haben deinen {target} kommentiert.}}",
-	"notificationLiked": "{actorCount,plural, =0{Niemand gefällt dein {target}.}=1{{actors} gefällt dein {target}.}other{{actors} gefallen dein {target}.}}",
-	"notificationMentionedInComment": "{actorCount,plural, =0{Niemand hat dich in einem Kommentar erwähnt.}=1{{actors} hat dich in einem Kommentar erwähnt.}other{{actors} haben dich in einem  Kommentar erwähnt.}}",
-	"notificationMentionedInCommentOnDeletedPost": "{actorCount,plural, =0{Niemand hat dich in einem Kommentar zu einem gelöschten Beitrag erwähnt.}=1{{actors} hat dich in einem Kommentar zu einem gelöschten Beitrag erwähnt.}other{{actors} haben dich in einem  Kommentar zu einem gelöschten Beitrag erwähnt.}}",
-	"notificationMentionedInPost": "{actorCount,plural, =0{Niemand hat dich in einem {target} erwähnt.}=1{{actors} hat dich in einem {target} erwähnt.}other{{actors} haben dich in einem {target} erwähnt.}}",
-	"notificationReshared": "{actorCount,plural, =0{Niemand hat deinen  {target} weitergesagt.}=1{{actors} hat deinen  {target} weitergesagt.}other{{actors} haben deinen {target} weitergesagt.}}",
-	"notificationStartedSharing": "{actorCount,plural, =0{Niemand hat angefangen mit dir zu teilen.}=1{{actors} hat angefangen mit dir zu teilen.}other{{actors} haben angefangen mit dir zu teilen.}}",
-	"notificationTargetDeletedPost": "gelöschten Beitrag",
-	"notificationTargetPost": "Beitrag",
-	"nsfwShieldTitle": "NSFW Beitrag von {author}",
-	"oEmbedAuthor": "von {author}",
-	"oEmbedHeader": "{author} auf {provider}:",
-	"peopleSearchDialogHint": "Nach Person suchen",
-	"pollAnswerHint": "Gib eine Antwort ein",
-	"pollQuestionHint": "Gib eine  Frage ein",
-	"pollResultsButtonLabel": "Ergebnisse anschauen",
-	"profileInfoHeader": "Infos",
-	"profilePostsHeader": "Beiträge",
-	"publishPost": "Beitrag erstellen",
-	"publishTargetAllAspects": "Alle  Aspekte",
-	"publishTargetAspects": "{count,plural, =0{Keine Aspekte}=1{Ein Aspekt}other{{count} Aspekte}}",
-	"publishTargetPrompt": "Beitragssichtbarkeit auswählen",
-	"publishTargetPublic": "Öffentlich",
-	"publisherTitle": "Beitrag erstellen",
-	"removeButtonLabel": "Löschen",
-	"replyToConversation": "Antworten",
-	"reportPost": "Beitrag melden",
-	"reportPostHint": "Bitte  beschreibe das Problem",
-	"reportPostPrompt": "Beitrag melden",
-	"resharePrompt": "Beitrag weitersagen?",
-	"saveButtonLabel": "Speichern",
-	"searchDialogHint": "Suchen",
-	"searchPeopleByTagHint": "Gib einen Tag ein",
-	"searchPeopleHint": "Gib einen Namen oder eine diaspora* ID  ein",
-	"searchTagsHint": "Gib einen Tag ein",
-	"searchTypePeople": "Leute",
-	"searchTypePeopleByTag": "Leute mit Tag",
-	"searchTypeTags": "Tags",
-	"selectAllButtonLabel": "Alle auswählen",
-	"selectButtonLabel": "Auswählen",
-	"sendNewConversation": "Abschicken",
-	"sentPostReport": "Beitrag gemeldet.",
-	"showAllNsfwPostsButtonLabel": "Zeige alle NSFW Beiträge",
-	"showThisNsfwPostButtonLabel": "Zeige diesen Beitrag",
-	"startPostSubscription": "Benachrichtigungen für  Beitrag anstellen",
-	"startedSharing": "Du teilst nun mit {name}.",
-	"stoppedSharing": "Du teilst nun nicht mehr mit {name}.",
-	"streamNameActivity": "Aktivitäten",
-	"streamNameAspects": "Aspekte",
-	"streamNameCommented": "Kommentiert",
-	"streamNameFollowedTags": "Verfolgte Tags",
-	"streamNameLiked": "Gefällt mir",
-	"streamNameMain": "Stream",
-	"streamNameMentions": "Erwähnungen",
-	"streamNameTag": "Tag",
-	"submitButtonLabel": "Senden",
-	"tagSearchDialogHint": "Suche nach einem Tag",
-	"takeNewPicture": "Neues Profilbild machen",
-	"takePhoto": "Bild machen",
-	"unblockUser": "Entblocken",
-	"updatedProfile": "Profil aktualisiert.",
-	"uploadNewPicture": "Neues Profilbild hochladen",
-	"uploadPhoto": "Ein Bild hochladen",
-	"uploadProfilePictureHeader": "Neues Profilbild hochladen",
-	"voteButtonLabel": "Abstimmen",
-	"voteCount": "{count,plural, =0{Bisher keine Stimmen}=1{Eine Stimme}other{{count} Stimmen}}",
-	"yesButtonLabel": "Ja"
+  "@@last_modified": "2020-04-06T11:16:42.929045",
+  "signInAction": "Anmelden",
+  "@signInAction": {
+    "description": "Sign in button label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInLabel": "diaspora* ID",
+  "@signInLabel": {
+    "description": "Label for sign in field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInHint": "benutzername@diaspora.pod",
+  "@signInHint": {
+    "description": "Hint text for sign in field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalidDiasporaId": "Gib eine volle diaspora* ID ein",
+  "@invalidDiasporaId": {
+    "description": "Error message after an invalid diaspora* ID was entered",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addContact": "Kontakt hinzufügen",
+  "@addContact": {
+    "description": "Label for add contact button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addLocation": "Eigenen Standort hinzufügen",
+  "@addLocation": {
+    "description": "Tooltip for the add location button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addPoll": "Eine Umfrage hinzufügen",
+  "@addPoll": {
+    "description": "Tooltip for the add poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectNameHint": "Gib einen Namen ein",
+  "@aspectNameHint": {
+    "description": "Hint text for an aspect name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectStreamSelectorAllAspects": "Alle Aspekte",
+  "@aspectStreamSelectorAllAspects": {
+    "description": "Aspect stream selector label for all aspects",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectStreamSelectorAspects": "{count,plural, =0{Keine Aspekte}=1{Ein Aspekt}other{{count} Aspekte}}",
+  "@aspectStreamSelectorAspects": {
+    "description": "Aspect stream selector label for a list of aspects. The zero and one cases are never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "aspectsListTitle": "Aspekte",
+  "@aspectsListTitle": {
+    "description": "Title for the aspects list page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectsPrompt": "Aspekte auswählen",
+  "@aspectsPrompt": {
+    "description": "Title for the aspect selection dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "blockUser": "Blockieren",
+  "@blockUser": {
+    "description": "Tooltip for the block user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancelPostSubscription": "Benachrichtigungen stoppen",
+  "@cancelPostSubscription": {
+    "description": "Tooltip for cancel post subscription icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "commentsHeader": "Kommentare",
+  "@commentsHeader": {
+    "description": "Header for comment stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmDeleteButtonLabel": "Löschen bestätigen",
+  "@confirmDeleteButtonLabel": {
+    "description": "Label for a dialog confirm delete button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmReshare": "Weitersagen",
+  "@confirmReshare": {
+    "description": "Label for confirm button in the reshare prompt",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactAspectsPrompt": "Aspekte für {name} auswählen",
+  "@contactAspectsPrompt": {
+    "description": "Title for the contact aspects prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "contactAspectsUpdated": "Aspekte aktualisiert.",
+  "@contactAspectsUpdated": {
+    "description": "Success message after the user updated a contact's aspcts",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusBlocked": "Von dir blockiert",
+  "@contactStatusBlocked": {
+    "description": "Contact status message for a blocked user",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusMutual": "Ihr teilt miteinander.",
+  "@contactStatusMutual": {
+    "description": "Contact status message for a contact that is sharing with the user and that the user is sharing with",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusNotSharing": "Ihr teilt nicht miteinander.",
+  "@contactStatusNotSharing": {
+    "description": "Contact status message for somebody that is not sharing with the user nor the user is sharing with",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusReceiving": "Diese Person teilt mit dir.",
+  "@contactStatusReceiving": {
+    "description": "Contact status message for a contact that is sharing with the user, but the user is not sharing with the contact",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusSharing": "Du teilst mit dieser Person.",
+  "@contactStatusSharing": {
+    "description": "Contact status message for a contact that the user is sharing with, but the contact is not sharing with the user",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createAspectPrompt": "Aspekt erstellen",
+  "@createAspectPrompt": {
+    "description": "Title for the create aspect prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createButtonLabel": "Erstellen",
+  "@createButtonLabel": {
+    "description": "Label for a dialog create button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createComment": "Kommentieren",
+  "@createComment": {
+    "description": "Label for create comment button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createPoll": "Umfrage erstellen",
+  "@createPoll": {
+    "description": "Label for the create poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteAspectPrompt": "Aspekt {name} wirklich löschen?",
+  "@deleteAspectPrompt": {
+    "description": "Title for the delete aspect prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Colleagues"
+      }
+    }
+  },
+  "deletePostPrompt": "Beitrag löschen?",
+  "@deletePostPrompt": {
+    "description": "Title for delete post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deletedPostReshareHint": "Weitersagung eines gelöschten Beitrags.",
+  "@deletedPostReshareHint": {
+    "description": "Fallback message when showing a reshare of a deleted post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deselectAllButtonLabel": "Alle abwählen",
+  "@deselectAllButtonLabel": {
+    "description": "Label for a deselect all button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "duplicateProfileTag": "Tag wurde bereits hinzugefügt",
+  "@duplicateProfileTag": {
+    "description": "Error message after trying to add a duplicate profile tag",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editAspectPrompt": "Aspekt bearbeiten",
+  "@editAspectPrompt": {
+    "description": "Title for the edit aspect prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editPoll": "Umfrage bearbeiten",
+  "@editPoll": {
+    "description": "Label for the edit poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfile": "Profil bearbeiten",
+  "@editProfile": {
+    "description": "Label for the edit profile button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileBirthdayLabel": "Geburtstag",
+  "@editProfileBirthdayLabel": {
+    "description": "Label for edit profile birthday field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileGenderLabel": "Gender",
+  "@editProfileGenderLabel": {
+    "description": "Label for edit profile gender field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileHeader": "Profile bearbeiten",
+  "@editProfileHeader": {
+    "description": "Header for edit profile section on edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileLocationLabel": "Standort",
+  "@editProfileLocationLabel": {
+    "description": "Label for edit profile location field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileNameLabel": "Name",
+  "@editProfileNameLabel": {
+    "description": "Label for edit profile name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileNsfwLabel": "Profile als #nsfw markieren?",
+  "@editProfileNsfwLabel": {
+    "description": "Label for edit profile NSFW field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfilePublicLabel": "Profil öffentlich machen?",
+  "@editProfilePublicLabel": {
+    "description": "Label for edit profile public field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileSearchableLabel": "Profil in der Suche anzeigen?",
+  "@editProfileSearchableLabel": {
+    "description": "Label for edit profile searchable field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileSubmit": "Profil speichern",
+  "@editProfileSubmit": {
+    "description": "Label for edit profile submit button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileTagsLabel": "Tags",
+  "@editProfileTagsLabel": {
+    "description": "Label for edit profile tags field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileTitle": "Profil",
+  "@editProfileTitle": {
+    "description": "Title for edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterAddressHint": "Gib eine Adresse ein",
+  "@enterAddressHint": {
+    "description": "Hint text for an address field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToAddConversationParticipant": "Empfänger konnte nicht hinzugefügt werden.",
+  "@failedToAddConversationParticipant": {
+    "description": "Error message after adding a conversation participant failed for a general reason",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToAddConversationParticipantDuplicate": "{name} ist bereits ein Empfänger, kann nicht erneut hinzugefügt werden.",
+  "@failedToAddConversationParticipantDuplicate": {
+    "description": "Error message after adding a conversation participant failed due to them already being part of the participants",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice McBoss"
+      }
+    }
+  },
+  "failedToAddConversationParticipantNotSharing": "{name} teilt nicht mit dir, kann nicht als Empfänger hinzugefügt werden.",
+  "@failedToAddConversationParticipantNotSharing": {
+    "description": "Error message after adding a conversation participant failed due to them not sharing with the user",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Charlotte Idol"
+      }
+    }
+  },
+  "failedToAddConversationParticipantNotSharingWith": "Du teilst nicht mit {name}, kann nicht als Empfänger hinzugefügt werden.",
+  "@failedToAddConversationParticipantNotSharingWith": {
+    "description": "Error message after adding a conversation participant failed due to the user not sharing with them",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Stranger"
+      }
+    }
+  },
+  "failedToCommentOnPost": "Kommentar konnte nicht erstellt werden.",
+  "@failedToCommentOnPost": {
+    "description": "Error message after commenting on a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToCreateAspect": "Aspekt konnte nicht erstellt werden.",
+  "@failedToCreateAspect": {
+    "description": "Error message after failing to create an aspect",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToCreateConversation": "Unterhaltung konnte nicht erstellt werden.",
+  "@failedToCreateConversation": {
+    "description": "Error message after sending a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToDeleteAspect": "Aspekt {name} konnte nicht gelöscht werden.",
+  "@failedToDeleteAspect": {
+    "description": "Error message after deleting an aspect failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Leaders"
+      }
+    }
+  },
+  "failedToDeletePost": "Beitrag konnte nicht gelöscht werden.",
+  "@failedToDeletePost": {
+    "description": "Error message after failing to delete a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToFollowTag": "Konnte #{tag} nicht folgen.",
+  "@failedToFollowTag": {
+    "description": "Error message after following a tag failed",
+    "type": "text",
+    "placeholders": {
+      "tag": {
+        "example": "newhere"
+      }
+    }
+  },
+  "failedToHideConversation": "Die Unterhaltung konnte nicht versteckt werden.",
+  "@failedToHideConversation": {
+    "description": "Error message after hiding a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToHidePost": "Der Beitrag konnte nicht versteckt werden.",
+  "@failedToHidePost": {
+    "description": "Error message after failing to hide a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToLikePost": "Konnte den Beitrag nicht mit einem „Gefällt mir“ markieren.",
+  "@failedToLikePost": {
+    "description": "Error message after liking a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToRenameAspect": "Konnte Aspekt {oldName} nicht nach {newName} umbenennen.",
+  "@failedToRenameAspect": {
+    "description": "Error message after renaming an aspect failed",
+    "type": "text",
+    "placeholders": {
+      "oldName": {
+        "example": "Friends"
+      },
+      "newName": {
+        "example": "Enemies"
+      }
+    }
+  },
+  "failedToReplyToConversation": "Konnte auf die Unterhaltung nicht antworten.",
+  "@failedToReplyToConversation": {
+    "description": "Error message after replying to a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReportPost": "Konnte den Beitrag nicht melden.",
+  "@failedToReportPost": {
+    "description": "Error message after a post report couldn't be sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToResharePost": "Konnte den Beitrag nicht weitersagen.",
+  "@failedToResharePost": {
+    "description": "Error message after resharing a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToSearchForAddresses": "Konnte nicht nach den Adressen suchen.",
+  "@failedToSearchForAddresses": {
+    "description": "Error message after searching for the entered address failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToSubscribeToPost": "Konnte die Benachrichtigungen für den Beitrag nicht anstellen.",
+  "@failedToSubscribeToPost": {
+    "description": "Error message after failing to subscribe to a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUnfollowTag": "Konnte #{tag} nicht entfolgen.",
+  "@failedToUnfollowTag": {
+    "description": "Error message after unfollowing a tag failed",
+    "type": "text",
+    "placeholders": {
+      "tag": {
+        "example": "nsfw"
+      }
+    }
+  },
+  "failedToUnlikePost": "Konnte das „Gefällt mir“ nicht vom Beitrag entfernen.",
+  "@failedToUnlikePost": {
+    "description": "Error message after unliking a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUnsubscribeFromPost": "Konnte die Benachrichtigungen für den Beitrag nicht abbestellen.",
+  "@failedToUnsubscribeFromPost": {
+    "description": "Error message after failing to unsubscribe from a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUpdateContactAspects": "Konnte die Aspekte nicht aktualisieren.",
+  "@failedToUpdateContactAspects": {
+    "description": "Error message after updating a contact's aspects failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUpdateProfile": "Konnte das Profil nicht speichern.",
+  "@failedToUpdateProfile": {
+    "description": "Error message after updating the profile failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUploadPhoto": "Konnte das Bild nicht hochladen.",
+  "@failedToUploadPhoto": {
+    "description": "Error message after uploading a photo failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUploadProfilePicture": "Konnte das Profilbild nicht hochladen.",
+  "@failedToUploadProfilePicture": {
+    "description": "Error message after uploading a profile picture failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToVote": "Konnte nicht abstimmen.",
+  "@failedToVote": {
+    "description": "Error message after voting on a poll failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "followedTagsPageTitle": "Verfolgte tags",
+  "@followedTagsPageTitle": {
+    "description": "Title for the followed tags page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatBold": "Fett",
+  "@formatBold": {
+    "description": "Tooltip for format bold button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatItalic": "Kursiv",
+  "@formatItalic": {
+    "description": "Tooltip for format italic button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatStrikethrough": "Durchgestrichen",
+  "@formatStrikethrough": {
+    "description": "Tooltip for format strikethrough button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "hidePost": "Verstecken",
+  "@hidePost": {
+    "description": "Tooltip for hide post icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertBulletedList": "Liste",
+  "@insertBulletedList": {
+    "description": "Tooltip for insert bulleted list button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertButtonLabel": "Einfügen",
+  "@insertButtonLabel": {
+    "description": "Label for a dialog insert button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertCode": "Code",
+  "@insertCode": {
+    "description": "Tooltip for insert code button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertCodeBlock": "Codeblock",
+  "@insertCodeBlock": {
+    "description": "Tooltip for insert code block button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertHashtag": "Tag",
+  "@insertHashtag": {
+    "description": "Tooltip for insert hashtag button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertHeading": "Überschrift",
+  "@insertHeading": {
+    "description": "Tooltip for insert heading button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertImageURL": "Bildadresse",
+  "@insertImageURL": {
+    "description": "Tooltip for insert image URL button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertImageURLPrompt": "Bild einbetten",
+  "@insertImageURLPrompt": {
+    "description": "Title for insert image URL prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLink": "Link",
+  "@insertLink": {
+    "description": "Tooltip for insert link button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLinkDescriptionHint": "Beschreibung (optional)",
+  "@insertLinkDescriptionHint": {
+    "description": "Hint text for description field in insert link dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLinkPrompt": "Link einfügen",
+  "@insertLinkPrompt": {
+    "description": "Title for insert link prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLinkURLHint": "Adresse",
+  "@insertLinkURLHint": {
+    "description": "Hint text for URL field in insert link dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertMention": "Erwähnung",
+  "@insertMention": {
+    "description": "Tooltip for insert mention button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertNumberedList": "Nummerierte Liste",
+  "@insertNumberedList": {
+    "description": "Tooltip for insert numbered list button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertQuote": "Zitat",
+  "@insertQuote": {
+    "description": "Tooltip for insert quote button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "manageContact": "{count,plural, =0{In keinem Aspekt}=1{In einem Aspekt}other{In {count} Aspekten}}",
+  "@manageContact": {
+    "description": "Label for manage contact button. The zero case and one is never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "manageFollowedTags": "Verfolgte Tags verwalten",
+  "@manageFollowedTags": {
+    "description": "Label for the manage followed tags button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mentionUser": "In Beitrag erwähnen",
+  "@mentionUser": {
+    "description": "Tooltip for the mention user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "messageUser": "Nachricht senden",
+  "@messageUser": {
+    "description": "Tooltip for the message user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleContacts": "Kontakte",
+  "@navigationItemTitleContacts": {
+    "description": "Title for the contacts navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleConversations": "Unterhaltungen",
+  "@navigationItemTitleConversations": {
+    "description": "Title for the Conversations navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleEditProfile": "Profil bearbeiten",
+  "@navigationItemTitleEditProfile": {
+    "description": "Title for the edit profile navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleNotifications": "Benachrichtigungen",
+  "@navigationItemTitleNotifications": {
+    "description": "Title for the notifications navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleSearch": "Suche",
+  "@navigationItemTitleSearch": {
+    "description": "Title for the search navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleStream": "Stream",
+  "@navigationItemTitleStream": {
+    "description": "Title for the Stream navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleSwitchUser": "Nutzer wechseln",
+  "@navigationItemTitleSwitchUser": {
+    "description": "Title for the switch user navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationMessageLabel": "Nachricht",
+  "@newConversationMessageLabel": {
+    "description": "Label for new conversation message field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationRecipientsLabel": "Empfänger",
+  "@newConversationRecipientsLabel": {
+    "description": "Label for new conversation recipients field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationSubjectLabel": "Betreff",
+  "@newConversationSubjectLabel": {
+    "description": "Label for new conversation subject field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationTitle": "Unterhaltung beginnen",
+  "@newConversationTitle": {
+    "description": "Title for new conversation page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noButtonLabel": "Nein",
+  "@noButtonLabel": {
+    "description": "Label for a dialog no button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noItems": "Leider nichts zum anzeigen gefunden 😕",
+  "@noItems": {
+    "description": "Fallback message when something didn't return any items",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationActorsForMoreThanThreePeople": "{othersCount,plural, =0{{first}, {second} und niemand sonst}=1{{first}, {second} und noch jemand}other{{first}, {second} und {othersCount} andere}}",
+  "@notificationActorsForMoreThanThreePeople": {
+    "description": "Actors part of a notification message with more than three actors. The first two are given, the count is the count of how many more (at least two) there are. So the zero and one cases never come into use",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      },
+      "othersCount": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "notificationActorsForThreePeople": "{first}, {second} und {third}",
+  "@notificationActorsForThreePeople": {
+    "description": "Actors part of a notification message with exactly three actors",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      },
+      "third": {
+        "example": "Charlotte"
+      }
+    }
+  },
+  "notificationActorsForTwoPeople": "{first} und {second}",
+  "@notificationActorsForTwoPeople": {
+    "description": "Actors part of a notification message with exactly two actors",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      }
+    }
+  },
+  "notificationAlsoCommented": "{actorCount,plural, =0{Niemand hat auch einen {target} kommentiert.}=1{{actors} hat auch einen {target}  kommentiert.}other{{actors} hat auch einen {target} kommentiert.}}",
+  "@notificationAlsoCommented": {
+    "description": "Notification message for when some people also commented on a post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationBirthday": "{actorCount,plural, =0{Niemand hat heute Geburtstag.}=1{{actors} hat heute Geburtstag.}other{{actors} haben heute Geburtstag.}}",
+  "@notificationBirthday": {
+    "description": "Notification message for when a contact of the user has their birthday. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "notificationCommented": "{actorCount,plural, =0{Niemand hat deinen {target} kommentiert.}=1{{actors} hat deinen {target} kommentiert.}other{{actors} haben deinen {target} kommentiert.}}",
+  "@notificationCommented": {
+    "description": "Notification message for when some people commented on the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationLiked": "{actorCount,plural, =0{Niemand gefällt dein {target}.}=1{{actors} gefällt dein {target}.}other{{actors} gefallen dein {target}.}}",
+  "@notificationLiked": {
+    "description": "Notification message for when some people liked the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationMentionedInComment": "{actorCount,plural, =0{Niemand hat dich in einem Kommentar erwähnt.}=1{{actors} hat dich in einem Kommentar erwähnt.}other{{actors} haben dich in einem  Kommentar erwähnt.}}",
+  "@notificationMentionedInComment": {
+    "description": "Notification message for when somebody mentioned the user in a comment. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "notificationMentionedInCommentOnDeletedPost": "{actorCount,plural, =0{Niemand hat dich in einem Kommentar zu einem gelöschten Beitrag erwähnt.}=1{{actors} hat dich in einem Kommentar zu einem gelöschten Beitrag erwähnt.}other{{actors} haben dich in einem  Kommentar zu einem gelöschten Beitrag erwähnt.}}",
+  "@notificationMentionedInCommentOnDeletedPost": {
+    "description": "Notification message for when somebody mentioned the user in in comment on a deleted post. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "notificationMentionedInPost": "{actorCount,plural, =0{Niemand hat dich in einem {target} erwähnt.}=1{{actors} hat dich in einem {target} erwähnt.}other{{actors} haben dich in einem {target} erwähnt.}}",
+  "@notificationMentionedInPost": {
+    "description": "Notification message for when somebody mentioned the user in a post. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationReshared": "{actorCount,plural, =0{Niemand hat deinen  {target} weitergesagt.}=1{{actors} hat deinen  {target} weitergesagt.}other{{actors} haben deinen {target} weitergesagt.}}",
+  "@notificationReshared": {
+    "description": "Notification message for when some people reshared the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationStartedSharing": "{actorCount,plural, =0{Niemand hat angefangen mit dir zu teilen.}=1{{actors} hat angefangen mit dir zu teilen.}other{{actors} haben angefangen mit dir zu teilen.}}",
+  "@notificationStartedSharing": {
+    "description": "Notification message for when some people started sharing  with the user. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "notificationTargetDeletedPost": "gelöschten Beitrag",
+  "@notificationTargetDeletedPost": {
+    "description": "Target part of a notification message for a deleted post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetPost": "Beitrag",
+  "@notificationTargetPost": {
+    "description": "Target part of a notification message for a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nsfwShieldTitle": "NSFW Beitrag von {author}",
+  "@nsfwShieldTitle": {
+    "description": "Title on the NSFW shield",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      }
+    }
+  },
+  "oEmbedAuthor": "von {author}",
+  "@oEmbedAuthor": {
+    "description": "Subtitle on oEmbed thumbnails",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      }
+    }
+  },
+  "oEmbedHeader": "{author} auf {provider}:",
+  "@oEmbedHeader": {
+    "description": "Header above HTML style oEmbeds",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      },
+      "provider": {
+        "example": "Twitter"
+      }
+    }
+  },
+  "peopleSearchDialogHint": "Nach Person suchen",
+  "@peopleSearchDialogHint": {
+    "description": "Hint text for the people search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pollAnswerHint": "Gib eine Antwort ein",
+  "@pollAnswerHint": {
+    "description": "Hint text for a poll answer field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pollQuestionHint": "Gib eine  Frage ein",
+  "@pollQuestionHint": {
+    "description": "Hint text for the poll question field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pollResultsButtonLabel": "Ergebnisse anschauen",
+  "@pollResultsButtonLabel": {
+    "description": "Label for view poll results button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profileInfoHeader": "Infos",
+  "@profileInfoHeader": {
+    "description": "Header for info section on the profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profilePostsHeader": "Beiträge",
+  "@profilePostsHeader": {
+    "description": "Header for posts section on the profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishPost": "Beitrag erstellen",
+  "@publishPost": {
+    "description": "Label for the publish post button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetAllAspects": "Alle  Aspekte",
+  "@publishTargetAllAspects": {
+    "description": "Publish target label for a post to all aspects",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetAspects": "{count,plural, =0{Keine Aspekte}=1{Ein Aspekt}other{{count} Aspekte}}",
+  "@publishTargetAspects": {
+    "description": "Publish target label for a post to a list of aspects. The zero and one cases are never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "publishTargetPrompt": "Beitragssichtbarkeit auswählen",
+  "@publishTargetPrompt": {
+    "description": "Title for the publish target selection prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetPublic": "Öffentlich",
+  "@publishTargetPublic": {
+    "description": "Publish target label for a public post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publisherTitle": "Beitrag erstellen",
+  "@publisherTitle": {
+    "description": "Title for the publisher page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "removeButtonLabel": "Löschen",
+  "@removeButtonLabel": {
+    "description": "Label for a dialog remove button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "replyToConversation": "Antworten",
+  "@replyToConversation": {
+    "description": "Label for reply to conversation button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPost": "Beitrag melden",
+  "@reportPost": {
+    "description": "Tooltip for report post icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPostHint": "Bitte  beschreibe das Problem",
+  "@reportPostHint": {
+    "description": "Hint text for post report field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPostPrompt": "Beitrag melden",
+  "@reportPostPrompt": {
+    "description": "Title for report post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resharePrompt": "Beitrag weitersagen?",
+  "@resharePrompt": {
+    "description": "Title for reshare post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "saveButtonLabel": "Speichern",
+  "@saveButtonLabel": {
+    "description": "Label for a dialog save button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchDialogHint": "Suchen",
+  "@searchDialogHint": {
+    "description": "Hint text for the search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchPeopleByTagHint": "Gib einen Tag ein",
+  "@searchPeopleByTagHint": {
+    "description": "Hint text for the the people by tag search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchPeopleHint": "Gib einen Namen oder eine diaspora* ID  ein",
+  "@searchPeopleHint": {
+    "description": "Hint text for the people search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTagsHint": "Gib einen Tag ein",
+  "@searchTagsHint": {
+    "description": "Hint text for the tags search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTypePeople": "Leute",
+  "@searchTypePeople": {
+    "description": "Label for search type selector for the people search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTypePeopleByTag": "Leute mit Tag",
+  "@searchTypePeopleByTag": {
+    "description": "Label for search type selector for the people by tag search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTypeTags": "Tags",
+  "@searchTypeTags": {
+    "description": "Label for search type selector for the tags search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectAllButtonLabel": "Alle auswählen",
+  "@selectAllButtonLabel": {
+    "description": "Label for a select all button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectButtonLabel": "Auswählen",
+  "@selectButtonLabel": {
+    "description": "Label for a dialog select button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sendNewConversation": "Abschicken",
+  "@sendNewConversation": {
+    "description": "Label for new conversation send button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sentPostReport": "Beitrag gemeldet.",
+  "@sentPostReport": {
+    "description": "Success message after a post report was sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "showAllNsfwPostsButtonLabel": "Zeige alle NSFW Beiträge",
+  "@showAllNsfwPostsButtonLabel": {
+    "description": "Label on show all NSFW posts button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "showThisNsfwPostButtonLabel": "Zeige diesen Beitrag",
+  "@showThisNsfwPostButtonLabel": {
+    "description": "Label on show this NSFW post button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "startPostSubscription": "Benachrichtigungen für  Beitrag anstellen",
+  "@startPostSubscription": {
+    "description": "Tooltip for start post subscription icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "startedSharing": "Du teilst nun mit {name}.",
+  "@startedSharing": {
+    "description": "Success message after the user started sharing with somebody",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "stoppedSharing": "Du teilst nun nicht mehr mit {name}.",
+  "@stoppedSharing": {
+    "description": "Success message after the user stopped sharing with somebody",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "streamNameActivity": "Aktivitäten",
+  "@streamNameActivity": {
+    "description": "Name of the activity stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameAspects": "Aspekte",
+  "@streamNameAspects": {
+    "description": "Name of the aspects stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameCommented": "Kommentiert",
+  "@streamNameCommented": {
+    "description": "Name of the commented stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameFollowedTags": "Verfolgte Tags",
+  "@streamNameFollowedTags": {
+    "description": "Name of the followed tags stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameLiked": "Gefällt mir",
+  "@streamNameLiked": {
+    "description": "Name of the liked stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameMain": "Stream",
+  "@streamNameMain": {
+    "description": "Name of the main stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameMentions": "Erwähnungen",
+  "@streamNameMentions": {
+    "description": "Name of the mentions stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameTag": "Tag",
+  "@streamNameTag": {
+    "description": "Name of a tag stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "submitButtonLabel": "Senden",
+  "@submitButtonLabel": {
+    "description": "Label for a dialog submit button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tagSearchDialogHint": "Suche nach einem Tag",
+  "@tagSearchDialogHint": {
+    "description": "Hint text for the tag search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "takeNewPicture": "Neues Profilbild machen",
+  "@takeNewPicture": {
+    "description": "Label for take a new picture button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "takePhoto": "Bild machen",
+  "@takePhoto": {
+    "description": "Tooltip for the take a photo button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "unblockUser": "Entblocken",
+  "@unblockUser": {
+    "description": "Tooltip for the unblock user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "updatedProfile": "Profil aktualisiert.",
+  "@updatedProfile": {
+    "description": "Success message after the profile was updated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "uploadNewPicture": "Neues Profilbild hochladen",
+  "@uploadNewPicture": {
+    "description": "Label for upload a new picture button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "uploadPhoto": "Ein Bild hochladen",
+  "@uploadPhoto": {
+    "description": "Tooltip for the upload a photo button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "uploadProfilePictureHeader": "Neues Profilbild hochladen",
+  "@uploadProfilePictureHeader": {
+    "description": "Header for upload profile picture section on the edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "voteButtonLabel": "Abstimmen",
+  "@voteButtonLabel": {
+    "description": "Label for poll vote submission",
+    "type": "text",
+    "placeholders": {}
+  },
+  "voteCount": "{count,plural, =0{Bisher keine Stimmen}=1{Eine Stimme}other{{count} Stimmen}}",
+  "@voteCount": {
+    "description": "Label for how many votes are registered on a poll",
+    "type": "text",
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "yesButtonLabel": "Ja",
+  "@yesButtonLabel": {
+    "description": "Label for a dialog yes button",
+    "type": "text",
+    "placeholders": {}
+  }
 }
