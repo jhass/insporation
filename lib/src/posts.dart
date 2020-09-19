@@ -122,7 +122,7 @@ class PostStreamItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      child: PostView(post: post),
+      child: PostView(post: post, linkToSPV: true),
       actionPane: SlidableDrawerActionPane(),
       actions: <Widget>[PostActionsView(post: post)],
     );
@@ -130,10 +130,11 @@ class PostStreamItem extends StatelessWidget {
 }
 
 class PostView extends StatelessWidget with LocalizationHelpers {
-  PostView({Key key, @required this.post, this.enableCommentsSheet = true})  : super(key: key);
+  PostView({Key key, @required this.post, this.enableCommentsSheet = true, this.linkToSPV = false})  : super(key: key);
 
   final Post post;
   final bool enableCommentsSheet;
+  final bool linkToSPV;
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +204,10 @@ class PostView extends StatelessWidget with LocalizationHelpers {
                             color: Theme.of(context).iconTheme.color.withOpacity(0.5)
                         ),
                       ),
-                      Timeago(post.createdAt, textStyle: TextStyle(fontSize: 10, fontStyle: FontStyle.italic)),
+                      GestureDetector(
+                        onTap: linkToSPV ? () { Navigator.pushNamed(context, "/post", arguments: post); } : null,
+                        child: Timeago(post.createdAt, textStyle: TextStyle(fontSize: 10, fontStyle: FontStyle.italic))
+                      ),
                       Spacer(),
                       _PostInteractionsView(post: post, enableCommentsSheet: enableCommentsSheet)
                     ],
