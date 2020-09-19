@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-04-06T11:16:42.929045",
+  "@@last_modified": "2020-09-19T15:53:22.525594",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -218,7 +218,7 @@
   },
   "failedToDeleteComment": "Failed to delete comment",
   "@failedToDeleteComment": {
-    "description": "Error message after deleting a commment failed",
+    "description": "Error message after deleting a comment failed",
     "type": "text",
     "placeholders": {}
   },
@@ -252,6 +252,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "likesHeader": "Likes",
+  "@likesHeader": {
+    "description": "Header for likes list",
+    "type": "text",
+    "placeholders": {}
+  },
   "failedToLikePost": "Failed to like the post",
   "@failedToLikePost": {
     "description": "Error message after liking a post failed",
@@ -261,6 +267,12 @@
   "failedToUnlikePost": "Failed to unlike the post",
   "@failedToUnlikePost": {
     "description": "Error message after unliking a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resharesHeader": "Reshares",
+  "@resharesHeader": {
+    "description": "Header for reshares list",
     "type": "text",
     "placeholders": {}
   },

@@ -318,7 +318,7 @@ class InsporationLocalizations {
   String get failedToDeleteComment => Intl.message(
     'Failed to delete comment',
     name: 'failedToDeleteComment',
-    desc: 'Error message after deleting a commment failed',
+    desc: 'Error message after deleting a comment failed',
     locale: localeName
   );
 
@@ -357,6 +357,13 @@ class InsporationLocalizations {
     locale: localeName
   );
 
+  String get likesHeader => Intl.message(
+    'Likes',
+    name: 'likesHeader',
+    desc: 'Header for likes list',
+    locale: localeName
+  );
+
   String get failedToLikePost => Intl.message(
     'Failed to like the post',
     name: 'failedToLikePost',
@@ -368,6 +375,13 @@ class InsporationLocalizations {
     'Failed to unlike the post',
     name: 'failedToUnlikePost',
     desc: 'Error message after unliking a post failed',
+    locale: localeName
+  );
+
+  String get resharesHeader => Intl.message(
+    'Reshares',
+    name: 'resharesHeader',
+    desc: 'Header for reshares list',
     locale: localeName
   );
 

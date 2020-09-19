@@ -268,6 +268,18 @@ class Client {
     return Post.from(jsonDecode(response.body));
   }
 
+  Future<Page<Like>> fetchLikes(Post post, {String page}) async {
+    final response = await _call("GET", "posts/${post.guid}/likes", page: page),
+      likes = await compute(_parseLikesJson, response.body);
+    return _makePage(likes, response);
+  }
+
+  Future<Page<ReshareReference>> fetchReshares(Post post, {String page}) async {
+    final response = await _call("GET", "posts/${post.guid}/reshares", page: page),
+      reshares = await compute(_parseResharesJson, response.body);
+    return _makePage(reshares, response);
+  }
+
   Future<Profile> fetchProfile(String guid) async {
     final response = await _call("GET", "users/$guid");
     return Profile.from(jsonDecode(response.body), currentUser: currentUserId);
@@ -567,6 +579,16 @@ class Client {
   static List<ConversationMessage> _parseConversationMessagesJson(String json) {
     final List<Map<String, dynamic>> messages = jsonDecode(json).cast<Map<String, dynamic>>();
     return ConversationMessage.fromList(messages);
+  }
+
+  static List<Like> _parseLikesJson(String json) {
+    final List<Map<String, dynamic>> messages = jsonDecode(json).cast<Map<String, dynamic>>();
+    return Like.fromList(messages);
+  }
+
+  static List<ReshareReference> _parseResharesJson(String json) {
+    final List<Map<String, dynamic>> messages = jsonDecode(json).cast<Map<String, dynamic>>();
+    return ReshareReference.fromList(messages);
   }
 }
 
@@ -1085,6 +1107,37 @@ class Comment {
     @required String postGuid, @required String postAuthor}) =>
     objects.map((object) => Comment.from(object, currentUser: currentUser, postGuid: postGuid, postAuthor: postAuthor)).toList();
 }
+
+class Like {
+  final String guid;
+  final Person author;
+
+  Like({@required this.guid, @required this.author});
+
+  factory Like.from(Map<String, dynamic> object) => Like(
+      guid: object["guid"],
+      author: Person.from(object["author"])
+    );
+
+  static List<Like> fromList(List<Map<String, dynamic>> objects) =>
+    objects.map((object) => Like.from(object)).toList();
+}
+
+class ReshareReference {
+  final String guid;
+  final Person author;
+
+  ReshareReference({@required this.guid, @required this.author});
+
+  factory ReshareReference.from(Map<String, dynamic> object) => ReshareReference(
+      guid: object["guid"],
+      author: Person.from(object["author"])
+    );
+
+  static List<ReshareReference> fromList(List<Map<String, dynamic>> objects) =>
+    objects.map((object) => ReshareReference.from(object)).toList();
+}
+
 
 enum NotificationType {
   alsoCommented,

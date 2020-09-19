@@ -84,6 +84,13 @@ abstract class ItemStream<T> extends ChangeNotifier {
     return _items != null && _items.contains(item);
   }
 
+  Future<void> loadAll(Client client, {bool reset = false}) async {
+    await load(client, reset: reset);
+    while (_lastPage?.nextPage != null) {
+      await load(client);
+    }
+  }
+
   Future<void> load(Client client, {bool reset = false}) {
     if (loading) {
       return Future.value();
@@ -148,6 +155,26 @@ abstract class ItemStream<T> extends ChangeNotifier {
 
   @protected
   Future<Page<T>> loadPage({Client client, String page});
+}
+
+abstract class TransformingItemStream<S, T> extends ItemStream<T> {
+  @override
+  Future<Page<T>> loadPage({Client client, String page}) async {
+    final source = await loadSourcePage(client: client, page: page);
+    return Page(
+      content: source.content.map((o) => transform(o)).toList(),
+      firstPage: source.firstPage,
+      lastPage: source.lastPage,
+      previousPage: source.previousPage,
+      nextPage: source.nextPage
+    );
+  }
+
+  @protected
+  Future<Page<S>> loadSourcePage({Client client, String page});
+
+  @protected
+  T transform(S object);
 }
 
 abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> with StateLocalizationHelpers {

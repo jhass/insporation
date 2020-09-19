@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-04-06T11:16:42.929045",
+  "@@last_modified": "2020-09-19T15:53:22.525594",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -186,7 +186,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "deletedPostReshareHint": "Reshare of a deleted post.",
+  "deletedPostReshareHint": "Reshare of a deleted post",
   "@deletedPostReshareHint": {
     "description": "Fallback message when showing a reshare of a deleted post",
     "type": "text",
@@ -204,7 +204,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToCommentOnPost": "Failed to create comment.",
+  "failedToCommentOnPost": "Failed to create comment",
   "@failedToCommentOnPost": {
     "description": "Error message after commenting on a post failed",
     "type": "text",
@@ -216,9 +216,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToDeleteComment": "Failed to delete comment.",
+  "failedToDeleteComment": "Failed to delete comment",
   "@failedToDeleteComment": {
-    "description": "Error message after deleting a commment failed",
+    "description": "Error message after deleting a comment failed",
     "type": "text",
     "placeholders": {}
   },
@@ -246,21 +246,33 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToReportComment": "Failed to create the report.",
+  "failedToReportComment": "Failed to create the report",
   "@failedToReportComment": {
     "description": "Error message after a comment report couldn't be sent",
     "type": "text",
     "placeholders": {}
   },
-  "failedToLikePost": "Failed to like the post.",
+  "likesHeader": "Likes",
+  "@likesHeader": {
+    "description": "Header for likes list",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToLikePost": "Failed to like the post",
   "@failedToLikePost": {
     "description": "Error message after liking a post failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToUnlikePost": "Failed to unlike the post.",
+  "failedToUnlikePost": "Failed to unlike the post",
   "@failedToUnlikePost": {
     "description": "Error message after unliking a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resharesHeader": "Reshares",
+  "@resharesHeader": {
+    "description": "Header for reshares list",
     "type": "text",
     "placeholders": {}
   },
@@ -276,7 +288,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToResharePost": "Failed to reshare post.",
+  "failedToResharePost": "Failed to reshare post",
   "@failedToResharePost": {
     "description": "Error message after resharing a post failed",
     "type": "text",
@@ -294,13 +306,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToSubscribeToPost": "Failed to subscribe to the post.",
+  "failedToSubscribeToPost": "Failed to subscribe to the post",
   "@failedToSubscribeToPost": {
     "description": "Error message after failing to subscribe to a post",
     "type": "text",
     "placeholders": {}
   },
-  "failedToUnsubscribeFromPost": "Failed to unsubscribe from the post.",
+  "failedToUnsubscribeFromPost": "Failed to unsubscribe from the post",
   "@failedToUnsubscribeFromPost": {
     "description": "Error message after failing to unsubscribe from a post",
     "type": "text",
@@ -312,7 +324,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToDeletePost": "Failed to delete the post.",
+  "failedToDeletePost": "Failed to delete the post",
   "@failedToDeletePost": {
     "description": "Error message after failing to delete a post",
     "type": "text",
@@ -324,7 +336,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToHidePost": "Failed to hide the post.",
+  "failedToHidePost": "Failed to hide the post",
   "@failedToHidePost": {
     "description": "Error message after failing to hide a post",
     "type": "text",
@@ -354,7 +366,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToReportPost": "Failed to create report.",
+  "failedToReportPost": "Failed to create report",
   "@failedToReportPost": {
     "description": "Error message after a post report couldn't be sent",
     "type": "text",
@@ -380,7 +392,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToVote": "Failed to vote on post.",
+  "failedToVote": "Failed to vote on post",
   "@failedToVote": {
     "description": "Error message after voting on a poll failed",
     "type": "text",
@@ -569,7 +581,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToCreateAspect": "Failed to create aspect.",
+  "failedToCreateAspect": "Failed to create aspect",
   "@failedToCreateAspect": {
     "description": "Error message after failing to create an aspect",
     "type": "text",
@@ -581,7 +593,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToRenameAspect": "Failed to rename aspect {oldName} to {newName}.",
+  "failedToRenameAspect": "Failed to rename aspect {oldName} to {newName}",
   "@failedToRenameAspect": {
     "description": "Error message after renaming an aspect failed",
     "type": "text",
@@ -604,7 +616,7 @@
       }
     }
   },
-  "failedToDeleteAspect": "Failed to remove aspect {name}.",
+  "failedToDeleteAspect": "Failed to remove aspect {name}",
   "@failedToDeleteAspect": {
     "description": "Error message after deleting an aspect failed",
     "type": "text",
@@ -626,13 +638,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToReplyToConversation": "Failed to reply to conversation.",
+  "failedToReplyToConversation": "Failed to reply to conversation",
   "@failedToReplyToConversation": {
     "description": "Error message after replying to a conversation failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToHideConversation": "Failed to hide conversation.",
+  "failedToHideConversation": "Failed to hide conversation",
   "@failedToHideConversation": {
     "description": "Error message after hiding a conversation failed",
     "type": "text",
@@ -662,7 +674,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToUploadProfilePicture": "Failed to upload profile picture.",
+  "failedToUploadProfilePicture": "Failed to upload profile picture",
   "@failedToUploadProfilePicture": {
     "description": "Error message after uploading a profile picture failed",
     "type": "text",
@@ -740,7 +752,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToUpdateProfile": "Failed to update profile.",
+  "failedToUpdateProfile": "Failed to update profile",
   "@failedToUpdateProfile": {
     "description": "Error message after updating the profile failed",
     "type": "text",
@@ -806,13 +818,13 @@
       }
     }
   },
-  "failedToAddConversationParticipant": "Failed to add recipient.",
+  "failedToAddConversationParticipant": "Failed to add recipient",
   "@failedToAddConversationParticipant": {
     "description": "Error message after adding a conversation participant failed for a general reason",
     "type": "text",
     "placeholders": {}
   },
-  "failedToCreateConversation": "Failed to create conversation.",
+  "failedToCreateConversation": "Failed to create conversation",
   "@failedToCreateConversation": {
     "description": "Error message after sending a conversation failed",
     "type": "text",
@@ -1007,13 +1019,13 @@
       }
     }
   },
-  "failedToMarkNotificationAsRead": "Failed to mark notification as read.",
+  "failedToMarkNotificationAsRead": "Failed to mark notification as read",
   "@failedToMarkNotificationAsRead": {
     "description": "Error message after marking a notification as read failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToMarkNotificationAsUnread": "Failed to mark notification as unread.",
+  "failedToMarkNotificationAsUnread": "Failed to mark notification as unread",
   "@failedToMarkNotificationAsUnread": {
     "description": "Error message after marking a notification  as unread failed",
     "type": "text",
@@ -1061,7 +1073,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToBlockUser": "Failed to block {name}.",
+  "failedToBlockUser": "Failed to block {name}",
   "@failedToBlockUser": {
     "description": "Error message after blocking a user failed",
     "type": "text",
@@ -1071,7 +1083,7 @@
       }
     }
   },
-  "failedToUnblockUser": "Failed to unblock {name}.",
+  "failedToUnblockUser": "Failed to unblock {name}",
   "@failedToUnblockUser": {
     "description": "Error message after unblocking a user failed",
     "type": "text",
@@ -1163,7 +1175,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToUpdateContactAspects": "Failed to update aspects.",
+  "failedToUpdateContactAspects": "Failed to update aspects",
   "@failedToUpdateContactAspects": {
     "description": "Error message after updating a contact's aspects failed",
     "type": "text",
@@ -1233,7 +1245,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToUploadPhoto": "Failed to upload photo.",
+  "failedToUploadPhoto": "Failed to upload photo",
   "@failedToUploadPhoto": {
     "description": "Error message after uploading a photo failed",
     "type": "text",
@@ -1269,7 +1281,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToSearchForAddresses": "Failed to search for addresses.",
+  "failedToSearchForAddresses": "Failed to search for addresses",
   "@failedToSearchForAddresses": {
     "description": "Error message after searching for the entered address failed",
     "type": "text",
@@ -1339,7 +1351,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToFollowTag": "Failed to follow #{tag}.",
+  "failedToFollowTag": "Failed to follow #{tag}",
   "@failedToFollowTag": {
     "description": "Error message after following a tag failed",
     "type": "text",
@@ -1349,7 +1361,7 @@
       }
     }
   },
-  "failedToUnfollowTag": "Failed to unfollow #{tag}.",
+  "failedToUnfollowTag": "Failed to unfollow #{tag}",
   "@failedToUnfollowTag": {
     "description": "Error message after unfollowing a tag failed",
     "type": "text",
