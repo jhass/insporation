@@ -30,6 +30,10 @@ In case you want to dare anyways:
 3. Clone this repo
 4. Connect your ADB debugging enabled device and `flutter run` :)
 
+## Contributing translations
+
+Want to use insporation\* in your favorite language? Head over to [Weblate](https://hosted.weblate.org/engage/insporation/)!
+
 ## Implementation status
 
 * Android support
