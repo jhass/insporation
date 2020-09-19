@@ -192,7 +192,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "deletedPostReshareHint": "Weitersagung eines gelöschten Beitrags.",
+  "deletedPostReshareHint": "Weitersagung eines gelöschten Beitrags",
   "@deletedPostReshareHint": {
     "description": "Fallback message when showing a reshare of a deleted post",
     "type": "text",
@@ -300,7 +300,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToAddConversationParticipant": "Empfänger konnte nicht hinzugefügt werden.",
+  "failedToAddConversationParticipant": "Empfänger konnte nicht hinzugefügt werden",
   "@failedToAddConversationParticipant": {
     "description": "Error message after adding a conversation participant failed for a general reason",
     "type": "text",
@@ -336,25 +336,25 @@
       }
     }
   },
-  "failedToCommentOnPost": "Kommentar konnte nicht erstellt werden.",
+  "failedToCommentOnPost": "Kommentar konnte nicht erstellt werden",
   "@failedToCommentOnPost": {
     "description": "Error message after commenting on a post failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToCreateAspect": "Aspekt konnte nicht erstellt werden.",
+  "failedToCreateAspect": "Aspekt konnte nicht erstellt werden",
   "@failedToCreateAspect": {
     "description": "Error message after failing to create an aspect",
     "type": "text",
     "placeholders": {}
   },
-  "failedToCreateConversation": "Unterhaltung konnte nicht erstellt werden.",
+  "failedToCreateConversation": "Unterhaltung konnte nicht erstellt werden",
   "@failedToCreateConversation": {
     "description": "Error message after sending a conversation failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToDeleteAspect": "Aspekt {name} konnte nicht gelöscht werden.",
+  "failedToDeleteAspect": "Aspekt {name} konnte nicht gelöscht werden",
   "@failedToDeleteAspect": {
     "description": "Error message after deleting an aspect failed",
     "type": "text",
@@ -364,13 +364,13 @@
       }
     }
   },
-  "failedToDeletePost": "Beitrag konnte nicht gelöscht werden.",
+  "failedToDeletePost": "Beitrag konnte nicht gelöscht werden",
   "@failedToDeletePost": {
     "description": "Error message after failing to delete a post",
     "type": "text",
     "placeholders": {}
   },
-  "failedToFollowTag": "Konnte #{tag} nicht folgen.",
+  "failedToFollowTag": "Konnte #{tag} nicht folgen",
   "@failedToFollowTag": {
     "description": "Error message after following a tag failed",
     "type": "text",
@@ -380,25 +380,25 @@
       }
     }
   },
-  "failedToHideConversation": "Die Unterhaltung konnte nicht versteckt werden.",
+  "failedToHideConversation": "Die Unterhaltung konnte nicht versteckt werden",
   "@failedToHideConversation": {
     "description": "Error message after hiding a conversation failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToHidePost": "Der Beitrag konnte nicht versteckt werden.",
+  "failedToHidePost": "Der Beitrag konnte nicht versteckt werden",
   "@failedToHidePost": {
     "description": "Error message after failing to hide a post",
     "type": "text",
     "placeholders": {}
   },
-  "failedToLikePost": "Konnte den Beitrag nicht mit einem „Gefällt mir“ markieren.",
+  "failedToLikePost": "Konnte den Beitrag nicht mit einem „Gefällt mir“ markieren",
   "@failedToLikePost": {
     "description": "Error message after liking a post failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToRenameAspect": "Konnte Aspekt {oldName} nicht nach {newName} umbenennen.",
+  "failedToRenameAspect": "Konnte Aspekt {oldName} nicht nach {newName} umbenennen",
   "@failedToRenameAspect": {
     "description": "Error message after renaming an aspect failed",
     "type": "text",
@@ -411,37 +411,37 @@
       }
     }
   },
-  "failedToReplyToConversation": "Konnte auf die Unterhaltung nicht antworten.",
+  "failedToReplyToConversation": "Konnte auf die Unterhaltung nicht antworten",
   "@failedToReplyToConversation": {
     "description": "Error message after replying to a conversation failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToReportPost": "Konnte den Beitrag nicht melden.",
+  "failedToReportPost": "Konnte den Beitrag nicht melden",
   "@failedToReportPost": {
     "description": "Error message after a post report couldn't be sent",
     "type": "text",
     "placeholders": {}
   },
-  "failedToResharePost": "Konnte den Beitrag nicht weitersagen.",
+  "failedToResharePost": "Konnte den Beitrag nicht weitersagen",
   "@failedToResharePost": {
     "description": "Error message after resharing a post failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToSearchForAddresses": "Konnte nicht nach den Adressen suchen.",
+  "failedToSearchForAddresses": "Konnte nicht nach den Adressen suchen",
   "@failedToSearchForAddresses": {
     "description": "Error message after searching for the entered address failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToSubscribeToPost": "Konnte die Benachrichtigungen für den Beitrag nicht anstellen.",
+  "failedToSubscribeToPost": "Konnte die Benachrichtigungen für den Beitrag nicht anstellen",
   "@failedToSubscribeToPost": {
     "description": "Error message after failing to subscribe to a post",
     "type": "text",
     "placeholders": {}
   },
-  "failedToUnfollowTag": "Konnte #{tag} nicht entfolgen.",
+  "failedToUnfollowTag": "Konnte #{tag} nicht entfolgen",
   "@failedToUnfollowTag": {
     "description": "Error message after unfollowing a tag failed",
     "type": "text",
@@ -451,43 +451,43 @@
       }
     }
   },
-  "failedToUnlikePost": "Konnte das „Gefällt mir“ nicht vom Beitrag entfernen.",
+  "failedToUnlikePost": "Konnte das „Gefällt mir“ nicht vom Beitrag entfernen",
   "@failedToUnlikePost": {
     "description": "Error message after unliking a post failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToUnsubscribeFromPost": "Konnte die Benachrichtigungen für den Beitrag nicht abbestellen.",
+  "failedToUnsubscribeFromPost": "Konnte die Benachrichtigungen für den Beitrag nicht abbestellen",
   "@failedToUnsubscribeFromPost": {
     "description": "Error message after failing to unsubscribe from a post",
     "type": "text",
     "placeholders": {}
   },
-  "failedToUpdateContactAspects": "Konnte die Aspekte nicht aktualisieren.",
+  "failedToUpdateContactAspects": "Konnte die Aspekte nicht aktualisieren",
   "@failedToUpdateContactAspects": {
     "description": "Error message after updating a contact's aspects failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToUpdateProfile": "Konnte das Profil nicht speichern.",
+  "failedToUpdateProfile": "Konnte das Profil nicht speichern",
   "@failedToUpdateProfile": {
     "description": "Error message after updating the profile failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToUploadPhoto": "Konnte das Bild nicht hochladen.",
+  "failedToUploadPhoto": "Konnte das Bild nicht hochladen",
   "@failedToUploadPhoto": {
     "description": "Error message after uploading a photo failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToUploadProfilePicture": "Konnte das Profilbild nicht hochladen.",
+  "failedToUploadProfilePicture": "Konnte das Profilbild nicht hochladen",
   "@failedToUploadProfilePicture": {
     "description": "Error message after uploading a profile picture failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToVote": "Konnte nicht abstimmen.",
+  "failedToVote": "Konnte nicht abstimmen",
   "@failedToVote": {
     "description": "Error message after voting on a poll failed",
     "type": "text",
@@ -1285,19 +1285,19 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToReportComment": "Konnte den Kommentar nicht melden.",
+  "failedToReportComment": "Konnte den Kommentar nicht melden",
   "@failedToReportComment": {
     "description": "Error message after a comment report couldn't be sent",
     "type": "text",
     "placeholders": {}
   },
-  "failedToDeleteComment": "Konnte Kommentar nicht löschen.",
+  "failedToDeleteComment": "Konnte Kommentar nicht löschen",
   "@failedToDeleteComment": {
     "description": "Error message after deleting a commment failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToMarkNotificationAsUnread": "Konnte Benachrichtigung nicht als ungelesen markieren.",
+  "failedToMarkNotificationAsUnread": "Konnte Benachrichtigung nicht als ungelesen markieren",
   "@failedToMarkNotificationAsUnread": {
     "description": "Error message after marking a notification  as unread failed",
     "type": "text",
@@ -1333,13 +1333,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToMarkNotificationAsRead": "Konnte Benachrichtigung nicht als gelesen markieren.",
+  "failedToMarkNotificationAsRead": "Konnte Benachrichtigung nicht als gelesen markieren",
   "@failedToMarkNotificationAsRead": {
     "description": "Error message after marking a notification as read failed",
     "type": "text",
     "placeholders": {}
   },
-  "failedToBlockUser": "Konnte {name} nicht blockieren.",
+  "failedToBlockUser": "Konnte {name} nicht blockieren",
   "@failedToBlockUser": {
     "description": "Error message after blocking a user failed",
     "type": "text",
@@ -1349,7 +1349,7 @@
       }
     }
   },
-  "failedToUnblockUser": "Konnte {name} nicht entblocken.",
+  "failedToUnblockUser": "Konnte {name} nicht entblocken",
   "@failedToUnblockUser": {
     "description": "Error message after unblocking a user failed",
     "type": "text",
@@ -1358,5 +1358,17 @@
         "example": "Alice, alice@pod.example.org"
       }
     }
+  },
+  "resharesHeader": "Weitersagungen",
+  "@resharesHeader": {
+    "description": "Header for reshares list",
+    "type": "text",
+    "placeholders": {}
+  },
+  "likesHeader": "Gefällt",
+  "@likesHeader": {
+    "description": "Header for likes list",
+    "type": "text",
+    "placeholders": {}
   }
 }
