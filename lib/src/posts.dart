@@ -438,8 +438,13 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
         tooltip: widget.post.ownPost ? ml.deleteButtonTooltip : l.hidePost,
       )
     ];
+
     if (!widget.post.ownPost && !widget.post.interactions.reported) {
       actions.add(IconButton(icon: Icon(Icons.flag), onPressed: _promptReport, tooltip: l.reportPost));
+    }
+
+    if (widget.post.isReshare) {
+      actions.add(IconButton(icon: Icon(Icons.keyboard_return), onPressed: _showOriginalPost, tooltip: l.showOriginalPost));
     }
 
     return widget.orientation ==  Axis.vertical ? Column(children: actions) : Row(mainAxisSize: MainAxisSize.min, children: actions);
@@ -588,6 +593,8 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
       }
     }
   }
+
+  _showOriginalPost() => Navigator.pushNamed(context, "/post", arguments: widget.post.root);
 }
 
 class _PhotoSlider extends StatefulWidget {

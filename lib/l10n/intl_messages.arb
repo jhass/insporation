@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-09-19T15:53:22.525594",
+  "@@last_modified": "2020-09-19T21:11:35.111039",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -369,6 +369,12 @@
   "failedToReportPost": "Failed to create report",
   "@failedToReportPost": {
     "description": "Error message after a post report couldn't be sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "showOriginalPost": "Show the originally reshared post",
+  "@showOriginalPost": {
+    "description": "Tooltip message for the show original post button",
     "type": "text",
     "placeholders": {}
   },

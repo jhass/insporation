@@ -497,6 +497,13 @@ class InsporationLocalizations {
     locale: localeName
   );
 
+  String get showOriginalPost => Intl.message(
+    'Show the originally reshared post',
+    name: 'showOriginalPost',
+    desc: "Tooltip message for the show original post button",
+    locale: localeName
+  );
+
   String voteCount(int count) => Intl.plural(
     count,
     zero: 'No votes so far',

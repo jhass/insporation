@@ -831,6 +831,8 @@ class Post {
 
   bool get canComment => !mock;
 
+  bool get isReshare => type == PostType.reshare;
+
   Post mockReshare(Person author) {
     final post = root != null ? root : this;
 
