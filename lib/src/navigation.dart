@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide Notification;
+import 'package:flutter/material.dart' hide Notification, Page;
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 
 import 'client.dart';

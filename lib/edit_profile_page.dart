@@ -61,6 +61,7 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
   static const double _size = 196;
 
   final _crop = GlobalKey<CropState>();
+  final _imagePicker = ImagePicker();
   File _newImage;
   bool _uploading = false;
 
@@ -124,13 +125,13 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
 
   _pick(ImageSource source) async {
     // TODO recover from dying the background
-    final image = await ImagePicker.pickImage(source: source, maxWidth: 700);
+    final image = await _imagePicker.getImage(source: source, maxWidth: 700);
 
     if (image == null) {
       return; // user canceled
     }
 
-    setState(() => _newImage = image);
+    setState(() => _newImage = File(image.path));
   }
 
   _upload() async {

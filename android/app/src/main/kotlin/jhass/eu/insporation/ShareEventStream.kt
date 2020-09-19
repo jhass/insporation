@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-private const val SHARE_RECEIVER_CHANNEL = "insporation/share_receiver";
+private const val SHARE_RECEIVER_CHANNEL = "insporation/share_receiver"
 
 class ShareEventStream {
   private val intentQueue = Channel<Intent>()

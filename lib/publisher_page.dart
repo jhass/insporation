@@ -63,6 +63,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   static const _maxPhotoWidth = 700.0;
   final _initialFocus = FocusNode();
   final _controller = TextEditingController();
+  final _imagePicker = ImagePicker();
   final List<_AttachedPhoto> _attachedPhotos = [];
   _Poll _poll;
   Location _location;
@@ -210,13 +211,13 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   }
 
   _uploadPhoto(ImageSource source) async {
-    final picture = await ImagePicker.pickImage(source: source, maxWidth: _maxPhotoWidth);
+    final picture = await _imagePicker.getImage(source: source, maxWidth: _maxPhotoWidth);
 
     if (picture == null) {
       return; // user canceled
     }
 
-    _uploadPhotoFile(picture);
+    _uploadPhotoFile(File(picture.path));
   }
 
   _uploadPhotoUri(String uri) async {

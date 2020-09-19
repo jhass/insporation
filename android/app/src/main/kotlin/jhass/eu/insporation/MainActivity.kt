@@ -14,7 +14,7 @@ private const val STATE_AUTHORIZING_DATA = "authorizing_data"
 class MainActivity: FlutterActivity() {
   private val appAuthHandler = AppAuthHandler()
   private val shareEventStream = ShareEventStream()
-  var authorizingData: String? = null
+  private var authorizingData: String? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
