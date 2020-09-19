@@ -136,7 +136,7 @@ class _PostWithInteractionsViewState extends CommentListViewState {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Align(alignment: Alignment.topRight, child: PostActionsView(post: widget.post, orientation: Axis.horizontal)),
-          PostView(post: widget.post, enableCommentsSheet: false),
+          PostView(post: widget.post, enableCommentsSheet: false, limitHeight: false),
           _ListPeopleView(people: _likes, header: l.likesHeader),
           _ListPeopleView(people: _reshares, header: l.resharesHeader),
         ],

@@ -29,6 +29,7 @@ dependencies:
   flutter_app_badger: ^1.1.2
   geojson: ^0.8.0
   quiver: ^2.0.5
+  expandable_widget: ^1.0.5
 
 dev_dependencies:
   flutter_test:

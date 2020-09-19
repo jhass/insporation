@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:expandable_widget/expandable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_html/flutter_html.dart';
@@ -130,11 +131,13 @@ class PostStreamItem extends StatelessWidget {
 }
 
 class PostView extends StatelessWidget with LocalizationHelpers {
-  PostView({Key key, @required this.post, this.enableCommentsSheet = true, this.linkToSPV = false})  : super(key: key);
+  PostView({Key key, @required this.post, this.enableCommentsSheet = true,
+    this.linkToSPV = false, this.limitHeight = true})  : super(key: key);
 
   final Post post;
   final bool enableCommentsSheet;
   final bool linkToSPV;
+  final bool limitHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -167,29 +170,7 @@ class PostView extends StatelessWidget with LocalizationHelpers {
                   ],
                 ),
                 Divider(),
-                Visibility(
-                  visible: post.photos != null && post.photos.length > 0,
-                  child: _PhotoSlider(photos: post.photos ?? const <Photo>[])
-                ),
-                !post.reshareOfDeleted ? Message(body: post.body, mentionedPeople: post.mentionedPeople) :
-                  Container(
-                    padding: EdgeInsets.all(16),
-                    color: Colors.black87,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          child: Icon(Icons.warning, color: Colors.white)
-                        ),
-                        Text(l(context).deletedPostReshareHint, style: TextStyle(color: Colors.white))
-                     ]
-                    )
-                  ),
-                _PollView(post: post),
-                _OEmbedView(oEmbed: post.oEmbed),
-                _OpenGraphView(object: post.openGraphObject),
-                _LocationView(location: post.location),
+                _buildContent(context),
                 Divider(),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 2.0),
@@ -220,6 +201,45 @@ class PostView extends StatelessWidget with LocalizationHelpers {
         ]
       ),
     );
+  }
+
+  Widget _buildContent(BuildContext context) {
+    Widget content = Wrap(
+      children: [
+        Visibility(
+          visible: post.photos != null && post.photos.length > 0,
+          child: _PhotoSlider(photos: post.photos ?? const <Photo>[])
+        ),
+        !post.reshareOfDeleted ? Message(body: post.body, mentionedPeople: post.mentionedPeople) :
+        Container(
+          padding: EdgeInsets.all(16),
+          color: Colors.black87,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: Icon(Icons.warning, color: Colors.white)
+              ),
+              Text(l(context).deletedPostReshareHint, style: TextStyle(color: Colors.white))
+            ]
+          )
+        ),
+        _PollView(post: post),
+        _OEmbedView(oEmbed: post.oEmbed),
+        _OpenGraphView(object: post.openGraphObject),
+        _LocationView(location: post.location),
+      ],
+    );
+
+    if (limitHeight) {
+      return ExpandableWidget.maxHeight(
+        maxHeight: 600,
+        child: content,
+      );
+    } else {
+      return content;
+    }
   }
 }
 
