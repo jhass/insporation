@@ -1370,5 +1370,11 @@
     "description": "Header for likes list",
     "type": "text",
     "placeholders": {}
+  },
+  "showOriginalPost": "Den ursprünglich wieder weitergesagten Beitrag anzeigen",
+  "@showOriginalPost": {
+    "description": "Tooltip message for the show original post button",
+    "type": "text",
+    "placeholders": {}
   }
 }
