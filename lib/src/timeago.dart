@@ -5,7 +5,8 @@ import 'package:timeago/timeago.dart' as timeago;
 
 final timeagoLocaleMessages = <String, timeago.LookupMessages>{
   Locale('en').toLanguageTag(): timeago.EnMessages(),
-  Locale('de').toLanguageTag(): timeago.DeMessages()
+  Locale('de').toLanguageTag(): timeago.DeMessages(),
+  Locale('fr').toLanguageTag(): timeago.FrMessages()
 };
 
 class Timeago extends StatefulWidget {

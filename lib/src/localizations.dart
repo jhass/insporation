@@ -11,7 +11,8 @@ import 'timeago.dart';
 // Keep timeagoLocaleMessages in timeago.dart in sync!
 const supportedLocales = [
   const Locale('en'),
-  const Locale('de')
+  const Locale('de'),
+  const Locale('fr')
 ];
 
 mixin LocalizationHelpers {
