@@ -486,13 +486,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "streamNameMain": "السيل",
+  "streamNameMain": "ساحة المشاركات",
   "@streamNameMain": {
     "description": "Name of the main stream",
     "type": "text",
     "placeholders": {}
   },
-  "navigationItemTitleStream": "السيل",
+  "navigationItemTitleStream": "ساحة المشاركات",
   "@navigationItemTitleStream": {
     "description": "Title for the Stream navigation item",
     "type": "text",
