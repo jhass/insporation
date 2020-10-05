@@ -31,17 +31,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m5(name) => "You\'re not sharing with ${name}, cannot add them as a recipient!";
 
-  static m6(name) => "Failed to block ${name}.";
+  static m6(name) => "Failed to block ${name}";
 
-  static m7(name) => "Failed to remove aspect ${name}.";
+  static m7(name) => "Failed to remove aspect ${name}";
 
-  static m8(tag) => "Failed to follow #${tag}.";
+  static m8(tag) => "Failed to follow #${tag}";
 
-  static m9(oldName, newName) => "Failed to rename aspect ${oldName} to ${newName}.";
+  static m9(oldName, newName) => "Failed to rename aspect ${oldName} to ${newName}";
 
-  static m10(name) => "Failed to unblock ${name}.";
+  static m10(name) => "Failed to unblock ${name}";
 
-  static m11(tag) => "Failed to unfollow #${tag}.";
+  static m11(tag) => "Failed to unfollow #${tag}";
 
   static m12(count) => "${Intl.plural(count, zero: 'In no aspects', one: 'In one aspect', other: 'In ${count} aspects')}";
 
@@ -112,7 +112,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteAspectPrompt" : m2,
     "deleteCommentPrompt" : MessageLookupByLibrary.simpleMessage("Delete comment?"),
     "deletePostPrompt" : MessageLookupByLibrary.simpleMessage("Delete post?"),
-    "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Reshare of a deleted post."),
+    "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Reshare of a deleted post"),
     "deselectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Deselect all"),
     "duplicateProfileTag" : MessageLookupByLibrary.simpleMessage("Tag already added"),
     "editAspectPrompt" : MessageLookupByLibrary.simpleMessage("Edit aspect"),
@@ -130,39 +130,39 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProfileTagsLabel" : MessageLookupByLibrary.simpleMessage("Tags"),
     "editProfileTitle" : MessageLookupByLibrary.simpleMessage("Edit profile"),
     "enterAddressHint" : MessageLookupByLibrary.simpleMessage("Enter an address"),
-    "failedToAddConversationParticipant" : MessageLookupByLibrary.simpleMessage("Failed to add recipient."),
+    "failedToAddConversationParticipant" : MessageLookupByLibrary.simpleMessage("Failed to add recipient"),
     "failedToAddConversationParticipantDuplicate" : m3,
     "failedToAddConversationParticipantNotSharing" : m4,
     "failedToAddConversationParticipantNotSharingWith" : m5,
     "failedToBlockUser" : m6,
-    "failedToCommentOnPost" : MessageLookupByLibrary.simpleMessage("Failed to create comment."),
-    "failedToCreateAspect" : MessageLookupByLibrary.simpleMessage("Failed to create aspect."),
-    "failedToCreateConversation" : MessageLookupByLibrary.simpleMessage("Failed to create conversation."),
+    "failedToCommentOnPost" : MessageLookupByLibrary.simpleMessage("Failed to create comment"),
+    "failedToCreateAspect" : MessageLookupByLibrary.simpleMessage("Failed to create aspect"),
+    "failedToCreateConversation" : MessageLookupByLibrary.simpleMessage("Failed to create conversation"),
     "failedToDeleteAspect" : m7,
-    "failedToDeleteComment" : MessageLookupByLibrary.simpleMessage("Failed to delete comment."),
-    "failedToDeletePost" : MessageLookupByLibrary.simpleMessage("Failed to delete the post."),
+    "failedToDeleteComment" : MessageLookupByLibrary.simpleMessage("Failed to delete comment"),
+    "failedToDeletePost" : MessageLookupByLibrary.simpleMessage("Failed to delete the post"),
     "failedToFollowTag" : m8,
-    "failedToHideConversation" : MessageLookupByLibrary.simpleMessage("Failed to hide conversation."),
-    "failedToHidePost" : MessageLookupByLibrary.simpleMessage("Failed to hide the post."),
-    "failedToLikePost" : MessageLookupByLibrary.simpleMessage("Failed to like the post."),
-    "failedToMarkNotificationAsRead" : MessageLookupByLibrary.simpleMessage("Failed to mark notification as read."),
-    "failedToMarkNotificationAsUnread" : MessageLookupByLibrary.simpleMessage("Failed to mark notification as unread."),
+    "failedToHideConversation" : MessageLookupByLibrary.simpleMessage("Failed to hide conversation"),
+    "failedToHidePost" : MessageLookupByLibrary.simpleMessage("Failed to hide the post"),
+    "failedToLikePost" : MessageLookupByLibrary.simpleMessage("Failed to like the post"),
+    "failedToMarkNotificationAsRead" : MessageLookupByLibrary.simpleMessage("Failed to mark notification as read"),
+    "failedToMarkNotificationAsUnread" : MessageLookupByLibrary.simpleMessage("Failed to mark notification as unread"),
     "failedToRenameAspect" : m9,
-    "failedToReplyToConversation" : MessageLookupByLibrary.simpleMessage("Failed to reply to conversation."),
-    "failedToReportComment" : MessageLookupByLibrary.simpleMessage("Failed to create the report."),
-    "failedToReportPost" : MessageLookupByLibrary.simpleMessage("Failed to create report."),
-    "failedToResharePost" : MessageLookupByLibrary.simpleMessage("Failed to reshare post."),
-    "failedToSearchForAddresses" : MessageLookupByLibrary.simpleMessage("Failed to search for addresses."),
-    "failedToSubscribeToPost" : MessageLookupByLibrary.simpleMessage("Failed to subscribe to the post."),
+    "failedToReplyToConversation" : MessageLookupByLibrary.simpleMessage("Failed to reply to conversation"),
+    "failedToReportComment" : MessageLookupByLibrary.simpleMessage("Failed to create the report"),
+    "failedToReportPost" : MessageLookupByLibrary.simpleMessage("Failed to create report"),
+    "failedToResharePost" : MessageLookupByLibrary.simpleMessage("Failed to reshare post"),
+    "failedToSearchForAddresses" : MessageLookupByLibrary.simpleMessage("Failed to search for addresses"),
+    "failedToSubscribeToPost" : MessageLookupByLibrary.simpleMessage("Failed to subscribe to the post"),
     "failedToUnblockUser" : m10,
     "failedToUnfollowTag" : m11,
-    "failedToUnlikePost" : MessageLookupByLibrary.simpleMessage("Failed to unlike the post."),
-    "failedToUnsubscribeFromPost" : MessageLookupByLibrary.simpleMessage("Failed to unsubscribe from the post."),
-    "failedToUpdateContactAspects" : MessageLookupByLibrary.simpleMessage("Failed to update aspects."),
-    "failedToUpdateProfile" : MessageLookupByLibrary.simpleMessage("Failed to update profile."),
-    "failedToUploadPhoto" : MessageLookupByLibrary.simpleMessage("Failed to upload photo."),
-    "failedToUploadProfilePicture" : MessageLookupByLibrary.simpleMessage("Failed to upload profile picture."),
-    "failedToVote" : MessageLookupByLibrary.simpleMessage("Failed to vote on post."),
+    "failedToUnlikePost" : MessageLookupByLibrary.simpleMessage("Failed to unlike the post"),
+    "failedToUnsubscribeFromPost" : MessageLookupByLibrary.simpleMessage("Failed to unsubscribe from the post"),
+    "failedToUpdateContactAspects" : MessageLookupByLibrary.simpleMessage("Failed to update aspects"),
+    "failedToUpdateProfile" : MessageLookupByLibrary.simpleMessage("Failed to update profile"),
+    "failedToUploadPhoto" : MessageLookupByLibrary.simpleMessage("Failed to upload photo"),
+    "failedToUploadProfilePicture" : MessageLookupByLibrary.simpleMessage("Failed to upload profile picture"),
+    "failedToVote" : MessageLookupByLibrary.simpleMessage("Failed to vote on post"),
     "followedTagsPageTitle" : MessageLookupByLibrary.simpleMessage("Followed tags"),
     "formatBold" : MessageLookupByLibrary.simpleMessage("Bold"),
     "formatItalic" : MessageLookupByLibrary.simpleMessage("Italic"),
@@ -184,6 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "insertNumberedList" : MessageLookupByLibrary.simpleMessage("Numbered list"),
     "insertQuote" : MessageLookupByLibrary.simpleMessage("Quote"),
     "invalidDiasporaId" : MessageLookupByLibrary.simpleMessage("Enter a full diaspora* ID"),
+    "likesHeader" : MessageLookupByLibrary.simpleMessage("Likes"),
     "manageContact" : m12,
     "manageFollowedTags" : MessageLookupByLibrary.simpleMessage("Manage followed tags"),
     "mentionUser" : MessageLookupByLibrary.simpleMessage("Mention user"),
@@ -239,6 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportPostHint" : MessageLookupByLibrary.simpleMessage("Please describe the issue"),
     "reportPostPrompt" : MessageLookupByLibrary.simpleMessage("Report post"),
     "resharePrompt" : MessageLookupByLibrary.simpleMessage("Reshare post?"),
+    "resharesHeader" : MessageLookupByLibrary.simpleMessage("Reshares"),
     "saveButtonLabel" : MessageLookupByLibrary.simpleMessage("Save"),
     "searchDialogHint" : MessageLookupByLibrary.simpleMessage("Search"),
     "searchPeopleByTagHint" : MessageLookupByLibrary.simpleMessage("Enter a tag"),
@@ -253,6 +255,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "sentCommentReport" : MessageLookupByLibrary.simpleMessage("Report sent."),
     "sentPostReport" : MessageLookupByLibrary.simpleMessage("Report sent."),
     "showAllNsfwPostsButtonLabel" : MessageLookupByLibrary.simpleMessage("Show all NSFW posts"),
+    "showOriginalPost" : MessageLookupByLibrary.simpleMessage("Show the originally reshared post"),
     "showThisNsfwPostButtonLabel" : MessageLookupByLibrary.simpleMessage("Show this post"),
     "signInAction" : MessageLookupByLibrary.simpleMessage("Sign in"),
     "signInHint" : MessageLookupByLibrary.simpleMessage("username@diaspora.pod"),

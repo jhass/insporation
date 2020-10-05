@@ -31,17 +31,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m5(name) => "Du teilst nicht mit ${name}, kann nicht als Empfänger hinzugefügt werden.";
 
-  static m6(name) => "Konnte ${name} nicht blockieren.";
+  static m6(name) => "Konnte ${name} nicht blockieren";
 
-  static m7(name) => "Aspekt ${name} konnte nicht gelöscht werden.";
+  static m7(name) => "Aspekt ${name} konnte nicht gelöscht werden";
 
-  static m8(tag) => "Konnte #${tag} nicht folgen.";
+  static m8(tag) => "Konnte #${tag} nicht folgen";
 
-  static m9(oldName, newName) => "Konnte Aspekt ${oldName} nicht nach ${newName} umbenennen.";
+  static m9(oldName, newName) => "Konnte Aspekt ${oldName} nicht nach ${newName} umbenennen";
 
-  static m10(name) => "Konnte ${name} nicht entblocken.";
+  static m10(name) => "Konnte ${name} nicht entblocken";
 
-  static m11(tag) => "Konnte #${tag} nicht entfolgen.";
+  static m11(tag) => "Konnte #${tag} nicht entfolgen";
 
   static m12(count) => "${Intl.plural(count, zero: 'In keinem Aspekt', one: 'In einem Aspekt', other: 'In ${count} Aspekten')}";
 
@@ -112,7 +112,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteAspectPrompt" : m2,
     "deleteCommentPrompt" : MessageLookupByLibrary.simpleMessage("Kommentar löschen?"),
     "deletePostPrompt" : MessageLookupByLibrary.simpleMessage("Beitrag löschen?"),
-    "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Weitersagung eines gelöschten Beitrags."),
+    "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Weitersagung eines gelöschten Beitrags"),
     "deselectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Alle abwählen"),
     "duplicateProfileTag" : MessageLookupByLibrary.simpleMessage("Tag wurde bereits hinzugefügt"),
     "editAspectPrompt" : MessageLookupByLibrary.simpleMessage("Aspekt bearbeiten"),
@@ -130,39 +130,39 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProfileTagsLabel" : MessageLookupByLibrary.simpleMessage("Tags"),
     "editProfileTitle" : MessageLookupByLibrary.simpleMessage("Profil"),
     "enterAddressHint" : MessageLookupByLibrary.simpleMessage("Gib eine Adresse ein"),
-    "failedToAddConversationParticipant" : MessageLookupByLibrary.simpleMessage("Empfänger konnte nicht hinzugefügt werden."),
+    "failedToAddConversationParticipant" : MessageLookupByLibrary.simpleMessage("Empfänger konnte nicht hinzugefügt werden"),
     "failedToAddConversationParticipantDuplicate" : m3,
     "failedToAddConversationParticipantNotSharing" : m4,
     "failedToAddConversationParticipantNotSharingWith" : m5,
     "failedToBlockUser" : m6,
-    "failedToCommentOnPost" : MessageLookupByLibrary.simpleMessage("Kommentar konnte nicht erstellt werden."),
-    "failedToCreateAspect" : MessageLookupByLibrary.simpleMessage("Aspekt konnte nicht erstellt werden."),
-    "failedToCreateConversation" : MessageLookupByLibrary.simpleMessage("Unterhaltung konnte nicht erstellt werden."),
+    "failedToCommentOnPost" : MessageLookupByLibrary.simpleMessage("Kommentar konnte nicht erstellt werden"),
+    "failedToCreateAspect" : MessageLookupByLibrary.simpleMessage("Aspekt konnte nicht erstellt werden"),
+    "failedToCreateConversation" : MessageLookupByLibrary.simpleMessage("Unterhaltung konnte nicht erstellt werden"),
     "failedToDeleteAspect" : m7,
-    "failedToDeleteComment" : MessageLookupByLibrary.simpleMessage("Konnte Kommentar nicht löschen."),
-    "failedToDeletePost" : MessageLookupByLibrary.simpleMessage("Beitrag konnte nicht gelöscht werden."),
+    "failedToDeleteComment" : MessageLookupByLibrary.simpleMessage("Konnte Kommentar nicht löschen"),
+    "failedToDeletePost" : MessageLookupByLibrary.simpleMessage("Beitrag konnte nicht gelöscht werden"),
     "failedToFollowTag" : m8,
-    "failedToHideConversation" : MessageLookupByLibrary.simpleMessage("Die Unterhaltung konnte nicht versteckt werden."),
-    "failedToHidePost" : MessageLookupByLibrary.simpleMessage("Der Beitrag konnte nicht versteckt werden."),
-    "failedToLikePost" : MessageLookupByLibrary.simpleMessage("Konnte den Beitrag nicht mit einem „Gefällt mir“ markieren."),
-    "failedToMarkNotificationAsRead" : MessageLookupByLibrary.simpleMessage("Konnte Benachrichtigung nicht als gelesen markieren."),
-    "failedToMarkNotificationAsUnread" : MessageLookupByLibrary.simpleMessage("Konnte Benachrichtigung nicht als ungelesen markieren."),
+    "failedToHideConversation" : MessageLookupByLibrary.simpleMessage("Die Unterhaltung konnte nicht versteckt werden"),
+    "failedToHidePost" : MessageLookupByLibrary.simpleMessage("Der Beitrag konnte nicht versteckt werden"),
+    "failedToLikePost" : MessageLookupByLibrary.simpleMessage("Konnte den Beitrag nicht mit einem „Gefällt mir“ markieren"),
+    "failedToMarkNotificationAsRead" : MessageLookupByLibrary.simpleMessage("Konnte Benachrichtigung nicht als gelesen markieren"),
+    "failedToMarkNotificationAsUnread" : MessageLookupByLibrary.simpleMessage("Konnte Benachrichtigung nicht als ungelesen markieren"),
     "failedToRenameAspect" : m9,
-    "failedToReplyToConversation" : MessageLookupByLibrary.simpleMessage("Konnte auf die Unterhaltung nicht antworten."),
-    "failedToReportComment" : MessageLookupByLibrary.simpleMessage("Konnte den Kommentar nicht melden."),
-    "failedToReportPost" : MessageLookupByLibrary.simpleMessage("Konnte den Beitrag nicht melden."),
-    "failedToResharePost" : MessageLookupByLibrary.simpleMessage("Konnte den Beitrag nicht weitersagen."),
-    "failedToSearchForAddresses" : MessageLookupByLibrary.simpleMessage("Konnte nicht nach den Adressen suchen."),
-    "failedToSubscribeToPost" : MessageLookupByLibrary.simpleMessage("Konnte die Benachrichtigungen für den Beitrag nicht anstellen."),
+    "failedToReplyToConversation" : MessageLookupByLibrary.simpleMessage("Konnte auf die Unterhaltung nicht antworten"),
+    "failedToReportComment" : MessageLookupByLibrary.simpleMessage("Konnte den Kommentar nicht melden"),
+    "failedToReportPost" : MessageLookupByLibrary.simpleMessage("Konnte den Beitrag nicht melden"),
+    "failedToResharePost" : MessageLookupByLibrary.simpleMessage("Konnte den Beitrag nicht weitersagen"),
+    "failedToSearchForAddresses" : MessageLookupByLibrary.simpleMessage("Konnte nicht nach den Adressen suchen"),
+    "failedToSubscribeToPost" : MessageLookupByLibrary.simpleMessage("Konnte die Benachrichtigungen für den Beitrag nicht anstellen"),
     "failedToUnblockUser" : m10,
     "failedToUnfollowTag" : m11,
-    "failedToUnlikePost" : MessageLookupByLibrary.simpleMessage("Konnte das „Gefällt mir“ nicht vom Beitrag entfernen."),
-    "failedToUnsubscribeFromPost" : MessageLookupByLibrary.simpleMessage("Konnte die Benachrichtigungen für den Beitrag nicht abbestellen."),
-    "failedToUpdateContactAspects" : MessageLookupByLibrary.simpleMessage("Konnte die Aspekte nicht aktualisieren."),
-    "failedToUpdateProfile" : MessageLookupByLibrary.simpleMessage("Konnte das Profil nicht speichern."),
-    "failedToUploadPhoto" : MessageLookupByLibrary.simpleMessage("Konnte das Bild nicht hochladen."),
-    "failedToUploadProfilePicture" : MessageLookupByLibrary.simpleMessage("Konnte das Profilbild nicht hochladen."),
-    "failedToVote" : MessageLookupByLibrary.simpleMessage("Konnte nicht abstimmen."),
+    "failedToUnlikePost" : MessageLookupByLibrary.simpleMessage("Konnte das „Gefällt mir“ nicht vom Beitrag entfernen"),
+    "failedToUnsubscribeFromPost" : MessageLookupByLibrary.simpleMessage("Konnte die Benachrichtigungen für den Beitrag nicht abbestellen"),
+    "failedToUpdateContactAspects" : MessageLookupByLibrary.simpleMessage("Konnte die Aspekte nicht aktualisieren"),
+    "failedToUpdateProfile" : MessageLookupByLibrary.simpleMessage("Konnte das Profil nicht speichern"),
+    "failedToUploadPhoto" : MessageLookupByLibrary.simpleMessage("Konnte das Bild nicht hochladen"),
+    "failedToUploadProfilePicture" : MessageLookupByLibrary.simpleMessage("Konnte das Profilbild nicht hochladen"),
+    "failedToVote" : MessageLookupByLibrary.simpleMessage("Konnte nicht abstimmen"),
     "followedTagsPageTitle" : MessageLookupByLibrary.simpleMessage("Verfolgte tags"),
     "formatBold" : MessageLookupByLibrary.simpleMessage("Fett"),
     "formatItalic" : MessageLookupByLibrary.simpleMessage("Kursiv"),
@@ -184,6 +184,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "insertNumberedList" : MessageLookupByLibrary.simpleMessage("Nummerierte Liste"),
     "insertQuote" : MessageLookupByLibrary.simpleMessage("Zitat"),
     "invalidDiasporaId" : MessageLookupByLibrary.simpleMessage("Gib eine volle diaspora* ID ein"),
+    "likesHeader" : MessageLookupByLibrary.simpleMessage("Gefällt"),
     "manageContact" : m12,
     "manageFollowedTags" : MessageLookupByLibrary.simpleMessage("Verfolgte Tags verwalten"),
     "mentionUser" : MessageLookupByLibrary.simpleMessage("In Beitrag erwähnen"),
@@ -239,6 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportPostHint" : MessageLookupByLibrary.simpleMessage("Bitte beschreibe das Problem"),
     "reportPostPrompt" : MessageLookupByLibrary.simpleMessage("Beitrag melden"),
     "resharePrompt" : MessageLookupByLibrary.simpleMessage("Beitrag weitersagen?"),
+    "resharesHeader" : MessageLookupByLibrary.simpleMessage("Weitersagungen"),
     "saveButtonLabel" : MessageLookupByLibrary.simpleMessage("Speichern"),
     "searchDialogHint" : MessageLookupByLibrary.simpleMessage("Suchen"),
     "searchPeopleByTagHint" : MessageLookupByLibrary.simpleMessage("Gib einen Tag ein"),
@@ -253,6 +255,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "sentCommentReport" : MessageLookupByLibrary.simpleMessage("Kommentar gemeldet."),
     "sentPostReport" : MessageLookupByLibrary.simpleMessage("Beitrag gemeldet."),
     "showAllNsfwPostsButtonLabel" : MessageLookupByLibrary.simpleMessage("Zeige alle NSFW Beiträge"),
+    "showOriginalPost" : MessageLookupByLibrary.simpleMessage("Den ursprünglich wieder weitergesagten Beitrag anzeigen"),
     "showThisNsfwPostButtonLabel" : MessageLookupByLibrary.simpleMessage("Zeige diesen Beitrag"),
     "signInAction" : MessageLookupByLibrary.simpleMessage("Anmelden"),
     "signInHint" : MessageLookupByLibrary.simpleMessage("benutzername@diaspora.pod"),

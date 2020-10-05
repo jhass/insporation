@@ -458,7 +458,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToDeleteAspect": "Impossibile rimuovere l’aspetto {nome}",
+  "failedToDeleteAspect": "Impossibile rimuovere l’aspetto {name}",
   "@failedToDeleteAspect": {
     "description": "Error message after deleting an aspect failed",
     "type": "text",
