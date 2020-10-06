@@ -20,13 +20,11 @@ jobs:
        echo "$KEYSTORE" | base64 -d > "$KEYSTORE_PATH"
       env:
         KEYSTORE: ${{ secrets.KEYSTORE }}
-    - name: Setup Git
-      run: |
-        git config --local user.email "me+nightly-ci@jhass.eu"
-        git config --local user.name  "Github Actions Nightly Job"
     - name: Update locales
       run: |
         script/update_locales
+        git config --local user.email "me+nightly-ci@jhass.eu"
+        git config --local user.name  "Github Actions Nightly Job"
         git commit -m "regenerated locales for nightly build $GITHUB_RUN_NUMBER" || true
         git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" main
     - name: Build
@@ -85,6 +83,8 @@ jobs:
         cd pages/fdroid
         fdroid update
         git add .
+        git config --local user.email "me+nightly-ci@jhass.eu"
+        git config --local user.name  "Github Actions Nightly Job"
         git commit -m "Update fdroid repository for nightly build $GITHUB_RUN_NUMBER"
         git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" gh-pages
       env:
