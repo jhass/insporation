@@ -101,7 +101,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "resharesHeader": "معادة النشر",
+  "resharesHeader": "إعادة النشر",
   "@resharesHeader": {
     "description": "Header for reshares list",
     "type": "text",
@@ -903,7 +903,7 @@
       }
     }
   },
-  "notificationTargetPost": "أنشر",
+  "notificationTargetPost": "مشاركة",
   "@notificationTargetPost": {
     "description": "Target part of a notification message for a post",
     "type": "text",
