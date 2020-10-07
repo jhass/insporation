@@ -215,7 +215,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "streamNameActivity": "الأنشطة",
+  "streamNameActivity": "النشاطات",
   "@streamNameActivity": {
     "description": "Name of the activity stream",
     "type": "text",
@@ -658,7 +658,7 @@
       }
     }
   },
-  "contactStatusNotSharing": "أنتما لا تتشركون مع بعضكم.",
+  "contactStatusNotSharing": "أنتما لا تتشركان معا.",
   "@contactStatusNotSharing": {
     "description": "Contact status message for somebody that is not sharing with the user nor the user is sharing with",
     "type": "text",
@@ -688,7 +688,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "addContact": "أضف مراسل",
+  "addContact": "أضف كجهة اتصال",
   "@addContact": {
     "description": "Label for add contact button",
     "type": "text",
@@ -768,7 +768,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "notificationStartedSharing": "{actorCount,plural, =0{لم يشارك أحد.}=1{{actors} بدأ في المشاركة معك.}other{{actors} بدأوا في المشاركة معك.}}",
+  "notificationStartedSharing": "{actorCount,plural, =0{لم يشارك أحد.}=1{{actors} بدأ المشاركة معك.}other{{actors} بدأوا المشاركة معك.}}",
   "@notificationStartedSharing": {
     "description": "Notification message for when some people started sharing  with the user. The zero case is never used",
     "type": "text",
@@ -1262,7 +1262,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "voteCount": "{count,plural, =0{بدون تصويت}=1{صوت واحد}other{{count } صوت}",
+  "voteCount": "{count,plural, =0{لم يصوت أحد}=1{صوت واحد}other{صوت {count}}}",
   "@voteCount": {
     "description": "Label for how many votes are registered on a poll",
     "type": "text",
