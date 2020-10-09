@@ -67,7 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m23(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'لم يعد أحد نشر ${target}.', one: '${actors} أعاد نشر ${target}.', other: '${actors} أعادوا نشر ${target}.')}";
 
-  static m24(actorCount, actors) => "${Intl.plural(actorCount, zero: 'لم يشارك أحد.', one: '${actors} بدأ في المشاركة معك.', other: '${actors} بدأوا في المشاركة معك.')}";
+  static m24(actorCount, actors) => "${Intl.plural(actorCount, zero: 'لم يشارك أحد.', one: '${actors} بدأ المشاركة معك.', other: '${actors} بدأوا المشاركة معك.')}";
 
   static m25(author) => "مشاركة غير مناسبة لمكان العمل بوسطة ${author}";
 
@@ -81,11 +81,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m30(name) => "أوقفت التشارك مع ${name}.";
 
-  static m31(count) => "{count,plural, =0{بدون تصويت}=1{صوت واحد}other{${count} صوت}";
+  static m31(count) => "${Intl.plural(count, zero: 'لم يصوت أحد', one: 'صوت واحد', other: 'صوت ${count}')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "addContact" : MessageLookupByLibrary.simpleMessage("أضف مراسل"),
+    "addContact" : MessageLookupByLibrary.simpleMessage("أضف كجهة اتصال"),
     "addLocation" : MessageLookupByLibrary.simpleMessage("أضف موقعك"),
     "addPoll" : MessageLookupByLibrary.simpleMessage("أضف استطلاعا"),
     "aspectNameHint" : MessageLookupByLibrary.simpleMessage("أدخل الاسم"),
@@ -102,7 +102,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "contactAspectsUpdated" : MessageLookupByLibrary.simpleMessage("حُدثت الفئات."),
     "contactStatusBlocked" : MessageLookupByLibrary.simpleMessage("حظَرتهم"),
     "contactStatusMutual" : MessageLookupByLibrary.simpleMessage("أنتما تتشركان مع بعضكما"),
-    "contactStatusNotSharing" : MessageLookupByLibrary.simpleMessage("أنتما لا تتشركون مع بعضكم."),
+    "contactStatusNotSharing" : MessageLookupByLibrary.simpleMessage("أنتما لا تتشركان معا."),
     "contactStatusReceiving" : MessageLookupByLibrary.simpleMessage("هم يشاركون معك."),
     "contactStatusSharing" : MessageLookupByLibrary.simpleMessage("انت تشارك معهم."),
     "createAspectPrompt" : MessageLookupByLibrary.simpleMessage("أنشئ فئة"),
@@ -263,7 +263,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "startPostSubscription" : MessageLookupByLibrary.simpleMessage("مكن الاشعارات"),
     "startedSharing" : m29,
     "stoppedSharing" : m30,
-    "streamNameActivity" : MessageLookupByLibrary.simpleMessage("الأنشطة"),
+    "streamNameActivity" : MessageLookupByLibrary.simpleMessage("النشاطات"),
     "streamNameAspects" : MessageLookupByLibrary.simpleMessage("الفئات"),
     "streamNameCommented" : MessageLookupByLibrary.simpleMessage("مُعلِق عليها"),
     "streamNameFollowedTags" : MessageLookupByLibrary.simpleMessage("الوسوم المتّبعة"),
