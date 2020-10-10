@@ -623,10 +623,12 @@ class _PhotoSliderState extends State<_PhotoSlider> {
               fadeInDuration: Duration(milliseconds: 250),
             )
           ),
-          height: 300,
-          viewportFraction: 1.0,
-          enableInfiniteScroll: widget.photos.length > 1,
-          onPageChanged: (index) => setState(() => _current = index),
+          options: CarouselOptions(
+            height: 300,
+            viewportFraction: 1.0,
+            enableInfiniteScroll: widget.photos.length > 1,
+            onPageChanged: (index, reason) => setState(() => _current = index)
+          ),
         ),
         Visibility(
           visible: widget.photos.length > 1,

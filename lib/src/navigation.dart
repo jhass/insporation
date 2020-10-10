@@ -30,7 +30,7 @@ class NavigationBar extends StatelessWidget with LocalizationHelpers {
       moreItems = _moreItems(l(context)),
       currentIndex = mainItems.indexWhere((item) => item.page == currentPage),
       items = mainItems.map(_buildMainItem).toList();
-    items.add(BottomNavigationBarItem(title: Text(""), icon: Icon(Icons.more_horiz)));
+    items.add(BottomNavigationBarItem(label: "", icon: Icon(Icons.more_horiz)));
 
     final theme = Theme.of(context);
 
@@ -84,7 +84,7 @@ class NavigationBar extends StatelessWidget with LocalizationHelpers {
 
     return BottomNavigationBarItem(
       icon: icon,
-      title: Text(item.title)
+      label: item.title
     );
   }
 
