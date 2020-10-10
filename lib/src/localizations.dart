@@ -147,6 +147,13 @@ class InsporationLocalizations {
     locale: localeName
   );
 
+  String get errorSignInTimeout => Intl.message(
+    'Timeout while trying to authenticate, are you sure your pod supports the API?',
+    name: 'errorSignInTimeout',
+    desc: 'Error message after authenticating timed out',
+    locale: localeName
+  );
+
   String get navigationItemTitleStream => Intl.message(
     'Stream',
     name: 'navigationItemTitleStream',

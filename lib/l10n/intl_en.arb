@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-09-19T21:11:35.111039",
+  "@@last_modified": "2020-10-10T11:47:20.152158",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -87,6 +87,12 @@
   "invalidDiasporaId": "Enter a full diaspora* ID",
   "@invalidDiasporaId": {
     "description": "Error message after an invalid diaspora* ID was entered",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorSignInTimeout": "Timeout while trying to authenticate, are you sure your pod supports the API?",
+  "@errorSignInTimeout": {
+    "description": "Error message after authenticating timed out",
     "type": "text",
     "placeholders": {}
   },

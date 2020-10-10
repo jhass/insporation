@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -171,6 +173,11 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
           FocusScope.of(context).requestFocus(_initialFocus);
         });
       }
+    } on TimeoutException {
+      setState(() {
+        _loading = false;
+        _lastError = l.errorSignInTimeout;
+      });
     } catch (e, s) {
       debugPrintStack(label: "Failed to resume session: $e", stackTrace: s);
       setState(() {
@@ -207,6 +214,11 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
         await _ensureAuthorization();
 
         _onSession(client);
+      } on TimeoutException {
+        setState(() {
+          _lastError = l.errorSignInTimeout;
+          _loading = false;
+        });
       } catch (e) {
         setState(() {
           _lastError = e.toString();

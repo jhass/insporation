@@ -1,6 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/services.dart';
 import 'package:quiver/core.dart';
@@ -86,7 +87,7 @@ class AppAuth {
       final tokens = await _channel.invokeMapMethod("getAccessToken", {"session": _currentSession.toMap()});
       assert(tokens["accessToken"] != null, "Platform implementation failed to return an access token");
 
-      // Update currenwithCont session in case it was refreshed or authorized, so we hand off the right state to the next token request
+      // Update current session in case it was refreshed or authorized, so we hand off the right state to the next token request
       _currentSession = await _store.fetchSession(_currentSession.userId);
       assert(hasSession, "We should have some session state after we got an access token");
 
@@ -94,6 +95,10 @@ class AppAuth {
     } on PlatformException catch (e) {
       if (e.message?.toLowerCase()?.contains("network") == true) {
         throw e.message; // probably bad network
+      }
+
+      if (e.code.startsWith("timeout")) {
+        throw TimeoutException(e.message);
       }
 
       // our session is probably not worth anything anymore, destroy it

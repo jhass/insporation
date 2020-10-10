@@ -8,13 +8,12 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import net.openid.appauth.*
 import org.json.JSONObject
+import java.sql.Time
+import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -22,8 +21,16 @@ import kotlin.coroutines.suspendCoroutine
 private const val APP_AUTH_CHANNEL = "insporation/appauth"
 private const val APP_AUTH_SESSION_CHANNEL = "insporation/appauth_authorization_events"
 private val APP_AUTH_REDIRECT_URI : Uri = Uri.parse("eu.jhass.insporation://callback")
+private const val TIMEOUT = 60000L
 
 typealias OnLaunchAuthorizationIntent = (intent: Intent, data: String) -> Unit
+
+private suspend inline fun <T> suspendCoroutineWithTimeout(
+  timeout: Long,
+  crossinline block: (Continuation<T>) -> Unit
+) = withTimeout(timeout) {
+  suspendCancellableCoroutine(block = block)
+}
 
 class AppAuthHandler {
   private val authorizationResponses = Channel<Pair<Intent, String>>()
@@ -98,17 +105,21 @@ private class CallHandler(private val context: Context,
     }
 
     Log.d("AppAuth", "Fetching access token for ${currentSession.userId}")
-    return suspendCoroutine { continuation ->
-      state.performActionWithFreshTokens(authorizationService, state.clientAuthentication) { accessToken, idToken, exception ->
-        if (accessToken != null || idToken != null) {
-          Log.d("AppAuth", "Got access token for ${currentSession.userId}")
-          storeSession(currentSession) // In case the access token was refreshed
-          continuation.resume(Tokens(accessToken!!, idToken))
-        } else {
-          Log.d("AppAuth", "Failed to fetch access token for ${currentSession.userId}: ${exception?.fullMessage()}")
-          continuation.resumeWithException(CallError("failed_token_fetch", "Failed to obtain access token", exception))
+    try {
+      return suspendCoroutineWithTimeout(TIMEOUT) { continuation ->
+        state.performActionWithFreshTokens(authorizationService, state.clientAuthentication) { accessToken, idToken, exception ->
+          if (accessToken != null || idToken != null) {
+            Log.d("AppAuth", "Got access token for ${currentSession.userId}")
+            storeSession(currentSession) // In case the access token was refreshed
+            continuation.resume(Tokens(accessToken!!, idToken))
+          } else {
+            Log.d("AppAuth", "Failed to fetch access token for ${currentSession.userId}: ${exception?.fullMessage()}")
+            continuation.resumeWithException(CallError("failed_token_fetch", "Failed to obtain access token", exception))
+          }
         }
       }
+    } catch (e : TimeoutCancellationException) {
+      throw CallError("timeout_token_fetch", "Timed out while fetching token")
     }
   }
 
@@ -157,8 +168,12 @@ private class CallHandler(private val context: Context,
     var registration = fetchRegistration(userId)
     if (registration.state == null) {
       Log.d("AppAuth", "Tried to authorize to ${registration.host} which we don't have a registration for yet, triggering it")
-      registration = register(registration.host)
-      storeRegistration(registration)
+      try {
+        registration = register(registration.host)
+        storeRegistration(registration)
+      } catch (e : TimeoutCancellationException) {
+        throw CallError("timeout_register", "Timed out while trying to register client")
+      }
     }
 
     val state = registration.state!!
@@ -184,11 +199,15 @@ private class CallHandler(private val context: Context,
     awaitingAuthorizationResult = null
 
     if (result.exception != null) {
-      Log.d("AppAuth", "Failed to auuthorize $userId: ${result.exception.fullMessage()}")
+      Log.d("AppAuth", "Failed to authorize $userId: ${result.exception.fullMessage()}")
       throw CallError("failed_authorize", "Failed to authorize user", result.exception)
     }
 
-    return buildSessionFromAuthorization(state, session, result.response!!)
+    try {
+      return buildSessionFromAuthorization(state, session, result.response!!)
+    } catch (e : TimeoutCancellationException) {
+      throw CallError("timeout_token_fetch", "Timed out while trying to fetch token")
+    }
   }
 
   private suspend fun buildSessionFromAuthorization(registrationState: AuthState, session: Session, authorizationResponse: AuthorizationResponse): Session {
@@ -197,7 +216,7 @@ private class CallHandler(private val context: Context,
 
     // Exchange authorization code for access and refresh token
     Log.d("AppAuth", "Exchange successful authorization for ${session.userId} for tokens")
-    val result = suspendCoroutine<AuthorizationResult<TokenResponse>> { continuation ->
+    val result = suspendCoroutineWithTimeout<AuthorizationResult<TokenResponse>>(TIMEOUT) { continuation ->
       authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), sessionState.clientAuthentication) { response, exception ->
         continuation.resume(AuthorizationResult(response, exception))
       }
@@ -210,7 +229,7 @@ private class CallHandler(private val context: Context,
       throw CallError("failed_authorize", "Failed to exchange authorization token", result.exception)
     }
 
-    Log.d("AppAuth", "Succesfully exchanged token for authorization for ${session.userId}")
+    Log.d("AppAuth", "Successfully exchanged token for authorization for ${session.userId}")
     session.state = sessionState
     storeSession(session)
     return session
@@ -218,7 +237,7 @@ private class CallHandler(private val context: Context,
 
   private suspend fun register(host: String): Registration {
     Log.d("AppAuth", "Starting service discovery for $host")
-    val serviceConfig = suspendCoroutine<AuthorizationServiceConfiguration> { continuation ->
+    val serviceConfig = suspendCoroutineWithTimeout<AuthorizationServiceConfiguration>(TIMEOUT) { continuation ->
       AuthorizationServiceConfiguration.fetchFromIssuer(Uri.Builder().scheme("https").authority(host).build()) { serviceConfig, exception ->
         if (serviceConfig != null) {
           Log.d("AppAuth", "Discovered service config for $host")
@@ -235,7 +254,7 @@ private class CallHandler(private val context: Context,
       .setAdditionalParameters(mapOf(
         "client_name" to "insporation* ${if (BuildConfig.DEBUG) "debug " else " "}on ${android.os.Build.MODEL}"
       )).build()
-    val response = suspendCoroutine<RegistrationResponse> { continuation ->
+    val response = suspendCoroutineWithTimeout<RegistrationResponse>(TIMEOUT) { continuation ->
       authorizationService.performRegistrationRequest(registrationRequest) { response, exception ->
         if (response != null) {
           Log.d("AppAuth", "Successfully registered to $host")
