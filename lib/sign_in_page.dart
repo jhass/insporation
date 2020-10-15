@@ -90,7 +90,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
                           ],
                           onEditingComplete: _submit,
                           validator: (String value) {
-                            return !RegExp(r"^[\w.]+@[\w+.]+$").hasMatch(value) ? l.invalidDiasporaId : null;
+                            return !RegExp(r"^[\w._-]+@[\w+._-]+$").hasMatch(value) ? l.invalidDiasporaId : null;
                           },
                         ),
                         RaisedButton(
