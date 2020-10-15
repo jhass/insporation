@@ -130,6 +130,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProfileTagsLabel" : MessageLookupByLibrary.simpleMessage("الوسوم"),
     "editProfileTitle" : MessageLookupByLibrary.simpleMessage("حرر الملف الشخصي"),
     "enterAddressHint" : MessageLookupByLibrary.simpleMessage("أدرج عنوانا"),
+    "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("انتهت مهلة الاستيثاق، أمتأكد من دعم خادمك لل API ؟"),
     "failedToAddConversationParticipant" : MessageLookupByLibrary.simpleMessage("فشلت إضافة مستلم"),
     "failedToAddConversationParticipantDuplicate" : m3,
     "failedToAddConversationParticipantNotSharing" : m4,
