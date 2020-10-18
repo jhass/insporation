@@ -1,4 +1,11 @@
 PODS:
+  - AppAuth (1.4.0):
+    - AppAuth/Core (= 1.4.0)
+    - AppAuth/ExternalUserAgent (= 1.4.0)
+  - AppAuth/Core (1.4.0)
+  - AppAuth/ExternalUserAgent (1.4.0)
+  - AwaitKit (5.2.0):
+    - PromiseKit (~> 6)
   - Flutter (1.0.0)
   - flutter_app_badger (0.0.1):
     - Flutter
@@ -11,6 +18,15 @@ PODS:
     - Flutter
   - path_provider (0.0.1):
     - Flutter
+  - PromiseKit (6.13.1):
+    - PromiseKit/CorePromise (= 6.13.1)
+    - PromiseKit/Foundation (= 6.13.1)
+    - PromiseKit/UIKit (= 6.13.1)
+  - PromiseKit/CorePromise (6.13.1)
+  - PromiseKit/Foundation (6.13.1):
+    - PromiseKit/CorePromise
+  - PromiseKit/UIKit (6.13.1):
+    - PromiseKit/CorePromise
   - screen (0.0.1):
     - Flutter
   - shared_preferences (0.0.1):
@@ -28,6 +44,8 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - AppAuth
+  - AwaitKit (~> 5.2.0)
   - Flutter (from `Flutter`)
   - flutter_app_badger (from `.symlinks/plugins/flutter_app_badger/ios`)
   - image_crop (from `.symlinks/plugins/image_crop/ios`)
@@ -43,7 +61,10 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AppAuth
+    - AwaitKit
     - FMDB
+    - PromiseKit
 
 EXTERNAL SOURCES:
   Flutter:
@@ -72,12 +93,15 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
+  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  AwaitKit: 512626cd12c82b1fbffddc8f414d0364cb456004
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_app_badger: 65de4d6f0c34a891df49e6cfb8a1c0496426fa68
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   image_crop: e0a67085d3ebf3cf46ca46d61c53a082507b0bc3
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
@@ -86,6 +110,6 @@ SPEC CHECKSUMS:
   wakelock: 0d4a70faf8950410735e3f61fb15d517c8a6efc4
   webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: 94bf01c88d3305ab39a49663d08b7b7d948ef5fc
 
 COCOAPODS: 1.9.3
