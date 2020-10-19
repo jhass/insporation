@@ -5,12 +5,14 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleURLName</key>
-			<string>eu.jhass.insporation</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>eu.jhass.insporation</string>
+			</array>
 		</dict>
 	</array>
 	<key>LSApplicationCategoryType</key>
-	<string></string>
+	<string>public.app-category.social-networking</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
