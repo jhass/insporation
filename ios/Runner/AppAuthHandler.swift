@@ -24,11 +24,13 @@ class AppAuthHandler : NSObject {
     let kAppAuthExampleAuthStateKey = "authState" // plus name?
     
     let APP_AUTH_SESSION_CHANNEL = "insporation/appauth_authorization_events"
-    let APP_AUTH_REDIRECT_URI =  URL.init(string: "eu.jhass.insporation://callback")!
+    // A single slash between shema and path is recommended for iOS
+    let APP_AUTH_REDIRECT_URI =  URL.init(string: "eu.jhass.insporation:/callback")!
     let TIMEOUT = 6 // Seconds
     let controller : UIViewController
     var registration : Registration?
     let authMethodChannel : FlutterMethodChannel
+    var currentSession : Session?
     
     // private var awaitingAuthorizationResult: Channel<AuthorizationResult<AuthorizationResponse>>? = null
     
@@ -37,14 +39,13 @@ class AppAuthHandler : NSObject {
         self.controller = controller
         
         print("Init App Auth Handler")
-        
     }
     
     /**
      Gets a token from auth
      */
     func getAccessTokens(_ session : Session) -> [String: String]! {
-        var currentSession = session
+        self.currentSession = session
         let state = session.state
         
         if (state == nil) {
@@ -153,6 +154,11 @@ class AppAuthHandler : NSObject {
 
         let scopeArray = scopes.components(separatedBy: " ")
         
+        var login = ""
+        if let session = self.currentSession {
+            login = session.userId.components(separatedBy: "@").first!
+        }
+        
         // builds authentication request
         let request = OIDAuthorizationRequest(configuration: configuration,
                                               clientId: clientID,
@@ -160,11 +166,12 @@ class AppAuthHandler : NSObject {
                                               scopes: scopeArray,
                                               redirectURL: APP_AUTH_REDIRECT_URI,
                                               responseType: OIDResponseTypeCode,
-                                              additionalParameters: nil)
+                                              additionalParameters: ["prompt": "login",
+                                                                     "login_hint":login])
         
         // performs authentication request
         print("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
-
+    
         appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: self.controller) { authState, error in
 
             if let authState = authState {
@@ -175,6 +182,7 @@ class AppAuthHandler : NSObject {
                 self.setAuthState(nil)
             }
         }
+        
     }
 }
 
