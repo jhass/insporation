@@ -18,7 +18,7 @@ class Tokens {
         self.idToken = idToken
     }
     
-    func toMap() -> [String:String] {
+    func toDict() -> [String:String] {
         return ["accessToken": accessToken, "idToken":idToken]
     }
     

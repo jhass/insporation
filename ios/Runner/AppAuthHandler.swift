@@ -25,28 +25,31 @@ class AppAuthHandler : NSObject {
     
     let APP_AUTH_SESSION_CHANNEL = "insporation/appauth_authorization_events"
     // A single slash between shema and path is recommended for iOS
-    let APP_AUTH_REDIRECT_URI =  URL.init(string: "eu.jhass.insporation:/callback")!
+    let APP_AUTH_REDIRECT_URI =  URL.init(string: "eu.jhass.insporation:/callback/")!
     let TIMEOUT = 6 // Seconds
     let controller : UIViewController
     var registration : Registration?
     let authMethodChannel : FlutterMethodChannel
     var currentSession : Session?
     
-    // private var awaitingAuthorizationResult: Channel<AuthorizationResult<AuthorizationResponse>>? = null
+    var tokens : Tokens?
+    var errorMessage : String?
     
     init(methodChannel: FlutterMethodChannel, controller: UIViewController) {
         self.authMethodChannel = methodChannel
         self.controller = controller
-        
-        print("Init App Auth Handler")
+        os_log("Init App Auth Handler")
     }
     
     /**
      Gets a token from auth
      */
-    func getAccessTokens(_ session : Session) -> [String: String]! {
+    func getAccessTokens(_ session : Session) {
         self.currentSession = session
-        let state = session.state
+        let state = session.state // Hier könnte von flutter schon ein Auth drinn sein?
+        
+        
+        // A incomming session could be searche internally for existing tokens
         
         if (state == nil) {
             if #available(iOS 10.0, *) {
@@ -55,72 +58,62 @@ class AppAuthHandler : NSObject {
                 NSLog("Provided session for fetching access token has no authorization, launching authorization process")
             }
             
-            currentSession = authorizeUser(userId: session.userId,scopes: session.scopes)
+            authorizeUser()
+        }
+    }
+    
+    func authorizeUser() {
+        guard let userId = self.currentSession?.userId else {
+            os_log("No userID set.")
+            self.errorMessage = "No uder ID set" // TODO: Localize
+            return
         }
         
-        return [String:String]() // Return empty for Test
+        // Get registration from devise store
+        guard let registration = RegistrationStore.fetchRegistration(userId: userId) else { return }
+        guard let hostname = registration.host else {return }
+        
+        discoverConfiguration(hostname: hostname)
+        
     }
     
-    func authorizeUser(userId: String, scopes: String) -> Session {
+    func discoverConfiguration(hostname: String) {
         
-        guard let registration = RegistrationStore.fetchRegistration(userId: userId) else { return Session() }
-        guard let hostname = registration.host else {return Session()}
-        
-        do {
-            try register(hostname: hostname, scopes: scopes)
-        } catch {}
-        
-        return Session()
-    }
-    
-    func register(hostname: String, scopes: String) throws  {
-        
-        // discovers endpoints
         let discoveryURL = URL(string: "https://\(hostname)")!
-        //var fetchedConfiguration : OIDServiceConfiguration
+        if #available(iOS 10.0, *) {
+            os_log("Discovering service config for '%{public}@'", log: .default, type: .debug, hostname)
+        } else {
+            NSLog("Discovering service config for %s", hostname)
+        }
         
         OIDAuthorizationService.discoverConfiguration(forIssuer: discoveryURL) { (configuration, error) in
             if let error = error {
                 if #available(iOS 10.0, *) {
-                    os_log("Failed to discover service config for %{public}@: %{public}@", log: .default, type: .info, hostname, error.localizedDescription)
+                    os_log("Failed to discover service config for %{public}@: %{public}@", log: .default, type: .error, hostname, error.localizedDescription)
                 } else {
                     // Fallback on earlier versions
                     NSLog("Failed to discover service config for @s: @‚", hostname, error.localizedDescription)
                 }
-                NSLog("Failed to discover service config for @s: @‚", hostname, error.localizedDescription)
+                self.errorMessage = "Failed to discover service." // TODO: Localize
                 return
             }
             
             guard let configuration = configuration else { return }
             
             if #available(iOS 10.0, *) {
-                os_log("Discovered service config for %{public}@", log: .default, type: .debug, hostname)
+                os_log("Discovered service config for '%{public}@'", log: .default, type: .debug, hostname)
             } else {
-                NSLog("Discovered service config")
+                NSLog("Discovered service config: \(hostname) ")
             }
             
-            self.doRegistrationRequest(configuration: configuration, callback: { (configuration, response) in
-                print("Starting with Authorization: \(String(describing: configuration))")
-                
-                // get Client from respnse
-                guard let configuration = configuration, let clientID = response?.clientID else {
-                    print("Error retrieving configuration OR clientID")
-                    return
-                }
-                
-                self.doAuthWithAutoCodeExchange(configuration: configuration,
-                                                scopes: scopes,
-                                                clientID: clientID,
-                                                clientSecret: response?.clientSecret)
-                
-            })
-            
+            self.doRegistrationRequest(configuration: configuration)
         }
     }
     
-    func doRegistrationRequest(configuration : OIDServiceConfiguration, callback: @escaping PostRegistrationCallback) {
-        
-        print("Starting registration request")
+    /// Query a registration,
+    func doRegistrationRequest(configuration: OIDServiceConfiguration) {
+
+        os_log("Starting registration request with: %{public}@", log: .default, type: .debug, configuration)
         
         let registrationRequest = OIDRegistrationRequest(configuration: configuration,
                                                          redirectURIs: [APP_AUTH_REDIRECT_URI],
@@ -130,28 +123,40 @@ class AppAuthHandler : NSObject {
                                                          tokenEndpointAuthMethod: nil,
                                                          additionalParameters: [:])
         
-        OIDAuthorizationService.perform(registrationRequest) { response, error in
-            
-            if let regResponse = response {
-                self.setAuthState(OIDAuthState(registrationResponse: regResponse))
-                print("Got registration response: \(regResponse)")
-                
-                callback(configuration, regResponse)
-                
-            } else {
-                print("Registration error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
-                self.setAuthState(nil)
+        OIDAuthorizationService.perform(registrationRequest) { (response, error) in
+    
+            if let error = error {
+                os_log("Failed registration client %{error}@", log: .default, type: .error,  error.localizedDescription)
+                self.setAuthState(nil) // Clear local store - if already stored
+                self.errorMessage = "Failed to register service: \(error.localizedDescription)"
+                return
             }
+            
+            guard let response = response else { return }
+            
+            // Succesful registration
+            // Store registration in devise store
+            self.setAuthState(OIDAuthState(registrationResponse: response))
+            os_log("Got registration response: %{public}@", log: .default, type: .default, response)
+            
+            // get Client from response
+            let clientID = response.clientID
+            
+            guard let scopes = self.currentSession?.scopes else { return }
+            self.doAuthWithAutoCodeExchange(configuration: configuration,
+                                            scopes: scopes,
+                                            clientID: clientID,
+                                            clientSecret: response.clientSecret)
         }
     }
-
+    
     func doAuthWithAutoCodeExchange(configuration: OIDServiceConfiguration, scopes: String,  clientID: String, clientSecret: String?) {
-
+        
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            print("Error accessing AppDelegate")
+            os_log("Error accessing AppDelegate")
             return
         }
-
+        
         let scopeArray = scopes.components(separatedBy: " ")
         
         var login = ""
@@ -167,36 +172,48 @@ class AppAuthHandler : NSObject {
                                               redirectURL: APP_AUTH_REDIRECT_URI,
                                               responseType: OIDResponseTypeCode,
                                               additionalParameters: ["prompt": "login",
-                                                                     "login_hint":login])
+                                                                     "login_hint": login])
         
         // performs authentication request
-        print("Initiating authorization request with scope: \(request.scope ?? "DEFAULT_SCOPE")")
-    
-        appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: self.controller) { authState, error in
-
-            if let authState = authState {
-                self.setAuthState(authState)
-                print("Got authorization tokens. Access token: \(authState.lastTokenResponse?.accessToken ?? "DEFAULT_TOKEN")")
-            } else {
-                print("Authorization error: \(error?.localizedDescription ?? "DEFAULT_ERROR")")
+        os_log("Initiating authorization request with request: %{public}@", log: .default, type: .default,  request.debugDescription )
+        
+        appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(request, presenting: self.controller) { (response, error) in
+            
+            if let error = error {
+                os_log("Authorization error: %{public}", log:.default, type: .error,  error.localizedDescription )
                 self.setAuthState(nil)
+                self.errorMessage = "Authorization error: \(error.localizedDescription)"
+                return
+            }
+            
+            if let response = response {
+                
+                // Token setting should end waiting service
+                guard let accessToken = response.accessToken, let idToken = response.idToken else {
+                    self.errorMessage = "No token received"
+                    return
+                }
+                
+                self.tokens = Tokens(accessToken: accessToken, idToken: idToken)
+                
+                let authState = OIDAuthState(authorizationResponse: response)
+                os_log("Got authorization tokens")
+                self.setAuthState(authState)
             }
         }
-        
     }
 }
 
 extension AppAuthHandler : OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate {
     
     func didChange(_ state: OIDAuthState) {
-        print("Did change State")
+        os_log("Did change State")
         setAuthState(state)
     }
     
     func authState(_ state: OIDAuthState, didEncounterAuthorizationError error: Error) {
-        print("Received authorization error: \(error)")
+        os_log("Received authorization error: %{public}", log:.default, type:.error, error.localizedDescription)
     }
-    
 }
 
 /// Load / Save Chnage States
@@ -204,42 +221,28 @@ extension AppAuthHandler {
     
     func saveState() {
         
-        var data: Data? = nil
-        
-        if let authState = self.authState {
-            data = NSKeyedArchiver.archivedData(withRootObject: authState)
-        }
-        
-        // TODO: Set correct defaults for State !
-        
-        if let userDefaults = UserDefaults(suiteName: "group.net.openid.appauth.Example") {
-            userDefaults.set(data, forKey: kAppAuthExampleAuthStateKey)
-            userDefaults.synchronize()
+        if let currentSession = self.currentSession {
+            storeSession(session: currentSession)
         }
     }
     
-    func loadState() {
-        guard let data = UserDefaults(suiteName: "group.net.openid.appauth.Example")?.object(forKey: kAppAuthExampleAuthStateKey) as? Data else {
-            return
-        }
-        
-        if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
-            self.setAuthState(authState)
-        }
+    func storeSession(session: Session) {
+       //  self.authMethodChannel.invokeMethod("storeSession", arguments: session.toDict())
     }
     
     func setAuthState(_ authState: OIDAuthState?) {
         if (self.authState == authState) {
             return;
         }
+        
         self.authState = authState;
         self.authState?.stateChangeDelegate = self;
+        self.currentSession?.uppdate(state: authState!)
         self.stateChanged()
     }
     
     func stateChanged() {
         self.saveState()
-        // self.updateUI()
     }
 }
 

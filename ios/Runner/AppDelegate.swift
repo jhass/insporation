@@ -38,11 +38,28 @@ import os.log
                 let sessionArgs_:[String: Any?] = (sessionArgs as! [String : Any?])
                 let session = Session(sessionData: sessionArgs_)
                 if let appAuthHandler = self.appAuthHandler {
-                    result(appAuthHandler.getAccessTokens(session))
+                    
+                    let queue = DispatchQueue(label: "insporation.authQueue")
+                    queue.sync {
+                        
+                        appAuthHandler.getAccessTokens(session)
+                    }
+                    // Wait until values token or error is set
+                    var tokens : Tokens?
+                    var error : String?
+                    while tokens == nil && error == nil {
+                        queue.asyncAfter(deadline: .now() + 0.1) {
+                            tokens = appAuthHandler.tokens
+                            error = appAuthHandler.errorMessage
+                        }
+                    }
+                    
+                    print("Error: \(String(describing: error))")
+                    print("Token: \(String(describing: tokens))")
+                    
+                    result(self.appAuthHandler?.tokens?.toDict())
                 }
             }
-            
-            result("Failure running args code")
         }
         
         GeneratedPluginRegistrant.register(with: self)
