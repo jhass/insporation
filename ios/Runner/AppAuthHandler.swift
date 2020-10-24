@@ -32,8 +32,8 @@ class AppAuthHandler : NSObject {
     let authMethodChannel : FlutterMethodChannel
     var currentSession : Session?
     
-    var tokens : Tokens?
-    var errorMessage : String?
+    private var completionHandler : [(_ tokens:Tokens) -> Void] = []
+    private var errorHandler : [(_ errorMessage:String) -> Void] = []
     
     init(methodChannel: FlutterMethodChannel, controller: UIViewController) {
         self.authMethodChannel = methodChannel
@@ -44,8 +44,12 @@ class AppAuthHandler : NSObject {
     /**
      Gets a token from auth
      */
-    func getAccessTokens(_ session : Session) {
+    func getAccessTokens(_ session : Session, completionHandler : @escaping (Tokens) -> Void, errorHandler:@escaping (String) -> Void) {
         self.currentSession = session
+        
+        self.completionHandler.append(completionHandler)
+        self.errorHandler.append(errorHandler)
+        
         let state = session.state // Hier könnte von flutter schon ein Auth drinn sein?
         
         
@@ -65,7 +69,7 @@ class AppAuthHandler : NSObject {
     func authorizeUser() {
         guard let userId = self.currentSession?.userId else {
             os_log("No userID set.")
-            self.errorMessage = "No uder ID set" // TODO: Localize
+            self.errorHandler.first?("No user ID set")
             return
         }
         
@@ -94,7 +98,7 @@ class AppAuthHandler : NSObject {
                     // Fallback on earlier versions
                     NSLog("Failed to discover service config for @s: @‚", hostname, error.localizedDescription)
                 }
-                self.errorMessage = "Failed to discover service." // TODO: Localize
+                self.errorHandler.first?("Failed to discover service")
                 return
             }
             
@@ -118,17 +122,17 @@ class AppAuthHandler : NSObject {
         let registrationRequest = OIDRegistrationRequest(configuration: configuration,
                                                          redirectURIs: [APP_AUTH_REDIRECT_URI],
                                                          responseTypes: nil,
-                                                         grantTypes: nil,
+                                                         grantTypes: ["authorization_code"],
                                                          subjectType: nil,
                                                          tokenEndpointAuthMethod: nil,
-                                                         additionalParameters: [:])
+                                                         additionalParameters: ["client_name":"insporation*"])
         
         OIDAuthorizationService.perform(registrationRequest) { (response, error) in
     
             if let error = error {
                 os_log("Failed registration client %{error}@", log: .default, type: .error,  error.localizedDescription)
                 self.setAuthState(nil) // Clear local store - if already stored
-                self.errorMessage = "Failed to register service: \(error.localizedDescription)"
+                self.errorHandler.first?("Failed to register service: \(error.localizedDescription)")
                 return
             }
             
@@ -154,6 +158,7 @@ class AppAuthHandler : NSObject {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             os_log("Error accessing AppDelegate")
+            self.errorHandler.first?("Error accessing AppDelegate")
             return
         }
         
@@ -180,9 +185,9 @@ class AppAuthHandler : NSObject {
         appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(request, presenting: self.controller) { (response, error) in
             
             if let error = error {
-                os_log("Authorization error: %{public}", log:.default, type: .error,  error.localizedDescription )
+                os_log("Authorization error: %{public}@", log:.default, type: .error,  error.localizedDescription )
                 self.setAuthState(nil)
-                self.errorMessage = "Authorization error: \(error.localizedDescription)"
+                self.errorHandler.first?("Authorization error: \(error.localizedDescription)")
                 return
             }
             
@@ -190,15 +195,16 @@ class AppAuthHandler : NSObject {
                 
                 // Token setting should end waiting service
                 guard let accessToken = response.accessToken, let idToken = response.idToken else {
-                    self.errorMessage = "No token received"
+                    self.errorHandler.first?("No token received")
                     return
                 }
                 
-                self.tokens = Tokens(accessToken: accessToken, idToken: idToken)
+                let tokens = Tokens(accessToken: accessToken, idToken: idToken)
                 
                 let authState = OIDAuthState(authorizationResponse: response)
                 os_log("Got authorization tokens")
                 self.setAuthState(authState)
+                self.completionHandler.first?(tokens)
             }
         }
     }
@@ -212,7 +218,7 @@ extension AppAuthHandler : OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate
     }
     
     func authState(_ state: OIDAuthState, didEncounterAuthorizationError error: Error) {
-        os_log("Received authorization error: %{public}", log:.default, type:.error, error.localizedDescription)
+        os_log("Received authorization error: %{public}@", log:.default, type:.error, error.localizedDescription)
     }
 }
 
@@ -237,7 +243,7 @@ extension AppAuthHandler {
         
         self.authState = authState;
         self.authState?.stateChangeDelegate = self;
-        self.currentSession?.uppdate(state: authState!)
+        // self.currentSession?.uppdate(state: authState!)
         self.stateChanged()
     }
     

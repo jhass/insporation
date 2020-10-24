@@ -39,25 +39,13 @@ import os.log
                 let session = Session(sessionData: sessionArgs_)
                 if let appAuthHandler = self.appAuthHandler {
                     
-                    let queue = DispatchQueue(label: "insporation.authQueue")
-                    queue.sync {
-                        
-                        appAuthHandler.getAccessTokens(session)
+                    appAuthHandler.getAccessTokens(session) { (tokens) in
+                        os_log("Token: %{public}@", log: .default, type: .default,tokens.toDict())
+                        result(tokens.toDict())
+                    } errorHandler : { (errorMessage) in
+                        os_log("Error: %{public}@", log:.default, type: .error, errorMessage)
+                        result(errorMessage)
                     }
-                    // Wait until values token or error is set
-                    var tokens : Tokens?
-                    var error : String?
-                    while tokens == nil && error == nil {
-                        queue.asyncAfter(deadline: .now() + 0.1) {
-                            tokens = appAuthHandler.tokens
-                            error = appAuthHandler.errorMessage
-                        }
-                    }
-                    
-                    print("Error: \(String(describing: error))")
-                    print("Token: \(String(describing: tokens))")
-                    
-                    result(self.appAuthHandler?.tokens?.toDict())
                 }
             }
         }
