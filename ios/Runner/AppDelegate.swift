@@ -38,13 +38,13 @@ import os.log
                 let sessionArgs_:[String: Any?] = (sessionArgs as! [String : Any?])
                 let session = Session(sessionData: sessionArgs_)
                 if let appAuthHandler = self.appAuthHandler {
-                    
+                    print("Calling Handler")
                     appAuthHandler.getAccessTokens(session) { (tokens) in
                         os_log("Token: %{public}@", log: .default, type: .default,tokens.toDict())
                         result(tokens.toDict())
                     } errorHandler : { (errorMessage) in
                         os_log("Error: %{public}@", log:.default, type: .error, errorMessage)
-                        result(errorMessage)
+                        result(FlutterError(code: "AppAuth", message: errorMessage, details: nil))
                     }
                 }
             }
@@ -54,11 +54,8 @@ import os.log
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
-    
     // Handle redirect from website
     override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        
-        print("Handle redirect")
         
         if let authorizationFlow = self.currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url) {
             self.currentAuthorizationFlow = nil

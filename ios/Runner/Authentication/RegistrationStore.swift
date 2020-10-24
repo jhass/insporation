@@ -15,7 +15,7 @@ class RegistrationStore {
     /// - Parameter userId: Diaspora UserId
     /// - Throws: <#description#>
     /// - Returns: <#description#>
-    static func fetchRegistration(userId: String) -> Registration? {
+    static func fetchRegistration(userId: String) -> Registration {
         
         let hostname = hostForUser(userId: userId)
         let key = "\(_registrationPrefix)\(hostname)"

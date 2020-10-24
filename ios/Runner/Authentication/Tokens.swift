@@ -22,4 +22,8 @@ class Tokens {
         return ["accessToken": accessToken, "idToken":idToken]
     }
     
+    func debugDescription() -> String {
+        return toDict().debugDescription
+    }
+    
 }

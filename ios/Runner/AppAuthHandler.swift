@@ -21,7 +21,7 @@ class AppAuthHandler : NSObject {
     }
     
     private var authState : OIDAuthState?
-    let kAppAuthExampleAuthStateKey = "authState" // plus name?
+    let kAppAuthAuthStateKey = "authState_" // Key is extended by UserID
     
     let APP_AUTH_SESSION_CHANNEL = "insporation/appauth_authorization_events"
     // A single slash between shema and path is recommended for iOS
@@ -41,6 +41,18 @@ class AppAuthHandler : NSObject {
         os_log("Init App Auth Handler")
     }
     
+    private func invokeCompletionHandler(tokens: Tokens) {
+        while !self.completionHandler.isEmpty {
+            self.completionHandler.removeFirst()(tokens)
+        }
+    }
+    
+    private func invokeErrorHandler(errorMessage : String) {
+        while !self.errorHandler.isEmpty {
+            self.errorHandler.removeFirst()(errorMessage)
+        }
+    }
+    
     /**
      Gets a token from auth
      */
@@ -49,9 +61,8 @@ class AppAuthHandler : NSObject {
         
         self.completionHandler.append(completionHandler)
         self.errorHandler.append(errorHandler)
-        
-        let state = session.state // Hier könnte von flutter schon ein Auth drinn sein?
-        
+                
+        let state = session.state // Provided session has a state in textform, need to get a valid state from userSettings
         
         // A incomming session could be searche internally for existing tokens
         
@@ -61,7 +72,43 @@ class AppAuthHandler : NSObject {
             } else {
                 NSLog("Provided session for fetching access token has no authorization, launching authorization process")
             }
+            authorizeUser()
+        } else {
+            if #available(iOS 10.0, *) {
+                os_log("State was set previously, refreshing token from State Sigh..")
+            } else {
+                NSLog("State was set previously, refreshing token from State Sigh..")
+            }
             
+            // A textual state was set, recover laste stored State Obejct
+            recoverToken()
+        }
+    }
+    
+    func recoverToken() {
+        guard let session = self.currentSession else {
+            os_log("Error in getting last session")
+            self.errorHandler.first?("Error in getting last session")
+            return
+        }
+        
+        if let authState = loadState(forUserId: session.userId) {
+            // State exists, perform refreshing
+            
+            if (!authState.isAuthorized) {
+                authorizeUser()
+                return
+            }
+            
+            guard let tokenResponse = authState.lastTokenResponse else {
+                self.invokeErrorHandler(errorMessage: "No token received")
+                return
+            }
+            let tokens = Tokens(accessToken: tokenResponse.accessToken!, idToken: tokenResponse.idToken!)
+            self.invokeCompletionHandler(tokens: tokens)
+            
+        } else {
+            // State do not exist, reauthenticate
             authorizeUser()
         }
     }
@@ -69,12 +116,12 @@ class AppAuthHandler : NSObject {
     func authorizeUser() {
         guard let userId = self.currentSession?.userId else {
             os_log("No userID set.")
-            self.errorHandler.first?("No user ID set")
+            self.invokeErrorHandler(errorMessage: "No user ID set")
             return
         }
         
-        // Get registration from devise store
-        guard let registration = RegistrationStore.fetchRegistration(userId: userId) else { return }
+        // Get registration from device store
+        let registration = RegistrationStore.fetchRegistration(userId: userId)
         guard let hostname = registration.host else {return }
         
         discoverConfiguration(hostname: hostname)
@@ -98,11 +145,15 @@ class AppAuthHandler : NSObject {
                     // Fallback on earlier versions
                     NSLog("Failed to discover service config for @s: @‚", hostname, error.localizedDescription)
                 }
-                self.errorHandler.first?("Failed to discover service")
+                self.invokeErrorHandler(errorMessage: "Failed to discover service")
                 return
             }
             
-            guard let configuration = configuration else { return }
+            guard let configuration = configuration else {
+                os_log("Configuration Object was empty")
+                self.invokeErrorHandler(errorMessage: "Configuraton object was empty")
+                return
+            }
             
             if #available(iOS 10.0, *) {
                 os_log("Discovered service config for '%{public}@'", log: .default, type: .debug, hostname)
@@ -116,23 +167,23 @@ class AppAuthHandler : NSObject {
     
     /// Query a registration,
     func doRegistrationRequest(configuration: OIDServiceConfiguration) {
-
+        
         os_log("Starting registration request with: %{public}@", log: .default, type: .debug, configuration)
         
         let registrationRequest = OIDRegistrationRequest(configuration: configuration,
                                                          redirectURIs: [APP_AUTH_REDIRECT_URI],
                                                          responseTypes: nil,
-                                                         grantTypes: ["authorization_code"],
+                                                         grantTypes: nil,
                                                          subjectType: nil,
                                                          tokenEndpointAuthMethod: nil,
                                                          additionalParameters: ["client_name":"insporation*"])
         
         OIDAuthorizationService.perform(registrationRequest) { (response, error) in
-    
+            
             if let error = error {
-                os_log("Failed registration client %{error}@", log: .default, type: .error,  error.localizedDescription)
+                os_log("Failed registration client %{error}@", log: .default, type: .error, error.localizedDescription)
                 self.setAuthState(nil) // Clear local store - if already stored
-                self.errorHandler.first?("Failed to register service: \(error.localizedDescription)")
+                self.invokeErrorHandler(errorMessage: "Failed to register service: \(error.localizedDescription)")
                 return
             }
             
@@ -158,7 +209,7 @@ class AppAuthHandler : NSObject {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             os_log("Error accessing AppDelegate")
-            self.errorHandler.first?("Error accessing AppDelegate")
+            self.invokeErrorHandler(errorMessage: "Error accessing AppDelegate")
             return
         }
         
@@ -182,29 +233,28 @@ class AppAuthHandler : NSObject {
         // performs authentication request
         os_log("Initiating authorization request with request: %{public}@", log: .default, type: .default,  request.debugDescription )
         
-        appDelegate.currentAuthorizationFlow = OIDAuthorizationService.present(request, presenting: self.controller) { (response, error) in
+        appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: self.controller) { authState, error in
             
             if let error = error {
                 os_log("Authorization error: %{public}@", log:.default, type: .error,  error.localizedDescription )
                 self.setAuthState(nil)
-                self.errorHandler.first?("Authorization error: \(error.localizedDescription)")
+                self.invokeErrorHandler(errorMessage: "Authorization error: \(error.localizedDescription)")
                 return
             }
             
-            if let response = response {
+            if let authState = authState {
                 
                 // Token setting should end waiting service
-                guard let accessToken = response.accessToken, let idToken = response.idToken else {
-                    self.errorHandler.first?("No token received")
+                guard let tokenResponse = authState.lastTokenResponse else {
+                    self.invokeErrorHandler(errorMessage: "No token received")
                     return
                 }
                 
-                let tokens = Tokens(accessToken: accessToken, idToken: idToken)
+                let tokens = Tokens(accessToken: tokenResponse.accessToken!, idToken: tokenResponse.idToken!)
                 
-                let authState = OIDAuthState(authorizationResponse: response)
                 os_log("Got authorization tokens")
                 self.setAuthState(authState)
-                self.completionHandler.first?(tokens)
+                self.invokeCompletionHandler(tokens: tokens)
             }
         }
     }
@@ -225,30 +275,64 @@ extension AppAuthHandler : OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate
 /// Load / Save Chnage States
 extension AppAuthHandler {
     
-    func saveState() {
-        
-        if let currentSession = self.currentSession {
-            storeSession(session: currentSession)
-        }
-    }
-    
-    func storeSession(session: Session) {
-       //  self.authMethodChannel.invokeMethod("storeSession", arguments: session.toDict())
-    }
-    
     func setAuthState(_ authState: OIDAuthState?) {
         if (self.authState == authState) {
             return;
         }
         
         self.authState = authState;
-        self.authState?.stateChangeDelegate = self;
-        // self.currentSession?.uppdate(state: authState!)
-        self.stateChanged()
+        if let currentSession = self.currentSession {
+            currentSession.update(state: authState)
+            storeSession(session: currentSession)
+            self.saveState(forUserId: currentSession.userId, state: authState)
+        }
     }
     
-    func stateChanged() {
-        self.saveState()
+    /// Stores session into Flutter system, by using state as a textual representation
+    func storeSession(session: Session) {
+        self.authMethodChannel.invokeMethod("storeSession", arguments: session.toDict())
     }
+    
+    /// Save State for full userID into device
+    /// - Parameters:
+    ///   - forUserId: Full userID (name and instance hostname)
+    ///   - state: Current State object
+    func saveState(forUserId userId: String, state: OIDAuthState?) {
+        
+        var data: Data? = nil
+        
+        if let authState = self.authState {
+            if #available(iOS 11.0, *) {
+                data = try? NSKeyedArchiver.archivedData(withRootObject: authState, requiringSecureCoding: true)
+            } else {
+                data = NSKeyedArchiver.archivedData(withRootObject: authState)
+            }
+        }
+        
+        let userIdAuthKey = kAppAuthAuthStateKey + userId
+        let userDefaults = UserDefaults()
+        userDefaults.set(data, forKey: userIdAuthKey)
+        userDefaults.synchronize()
+        
+    }
+    
+    
+    /// Loads and initializes a state object for userID from device
+    /// - Parameter userId: The full userId to get an authState for
+    /// - Returns: Nil if never set or unknown
+    func loadState(forUserId userId: String) -> OIDAuthState? {
+        let userIdAuthKey = kAppAuthAuthStateKey + userId
+        guard let data = UserDefaults().object(forKey: userIdAuthKey) as? Data else {
+            return nil
+        }
+        
+        if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
+            self.setAuthState(authState)
+            return authState
+        }
+        
+        return nil
+    }
+    
 }
 

@@ -12,7 +12,7 @@ class Session {
     
     var userId = ""
     var scopes = ""
-    var state : OIDAuthState?
+    var state : String?
     
     init() {
         
@@ -23,11 +23,15 @@ class Session {
         
         userId = (sessionData["userId"] as? String)!
         scopes = (sessionData["scopes"] as? String)!
-        state = (sessionData["state"] as? OIDAuthState)
+        state = (sessionData["state"] as? String)
     }
     
-    func uppdate(state: OIDAuthState) {
-        self.state = state
+    func update(state: OIDAuthState?) {
+        if let state = state {
+            self.state = state.description
+        } else {
+            self.state = nil
+        }
     }
     
     // TODO: Nicht JSON-Style machen, somndern für Data Serialisieren lassen
@@ -35,20 +39,11 @@ class Session {
         var dict = [String: Any?]()
         dict["userId"] = userId
         dict["scopes"] = scopes
-        
-        
-        if let data = try? NSKeyedArchiver.archivedData(withRootObject: self.state, requiringSecureCoding: false) {
-            do {
-                let encoder = JSONEncoder()
-                
-                if let json = try JSONSerialization.jsonObject(with: data, options: [.fragmentsAllowed]) as? [String: Any] {
-                // try to read out a string array
-                print("Converted to JSON: \(json)")
-            }
-            } catch {
-                print("\(error)")
-            }
-        }
+        dict["state"] = state
         return dict
+    }
+    
+    func debugDescription() -> String {
+        return toDict().debugDescription
     }
 }
