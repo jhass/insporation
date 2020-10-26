@@ -4,7 +4,6 @@
 //
 //  Created by Thorsten Claus on 18.10.20.
 //
-
 import Foundation
 
 class RegistrationStore {

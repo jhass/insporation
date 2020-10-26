@@ -66,7 +66,7 @@ class AppAuthHandler : NSObject {
             authorizeUser()
         } else {
             
-            os_log("State was set previously, refreshing token from State Sigh..")
+            os_log("State was set previously, refreshing token from State..")
             
             // A textual state was set, recover laste stored State Obejct
             recoverToken()
@@ -276,11 +276,7 @@ extension AppAuthHandler {
         var data: Data? = nil
         
         if let authState = self.authState {
-            if #available(iOS 11.0, *) {
-                data = try? NSKeyedArchiver.archivedData(withRootObject: authState, requiringSecureCoding: true)
-            } else {
-                data = NSKeyedArchiver.archivedData(withRootObject: authState)
-            }
+            data = try? NSKeyedArchiver.archivedData(withRootObject: authState, requiringSecureCoding: true)
         }
         
         let userIdAuthKey = kAppAuthAuthStateKey + userId
