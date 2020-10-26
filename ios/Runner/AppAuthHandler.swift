@@ -3,7 +3,6 @@
 //  Runner
 //
 //  Created by Thorsten Claus on 17.10.20.
-//  Copyright © 2020 The Chromium Authors. All rights reserved.
 //
 
 import AppAuth
@@ -16,17 +15,13 @@ typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?,
 
 class AppAuthHandler : NSObject {
     
-    enum AuthError: Error {
-        case runtimeError(String)
-    }
-    
     private var authState : OIDAuthState?
     let kAppAuthAuthStateKey = "authState_" // Key is extended by UserID
     
     let APP_AUTH_SESSION_CHANNEL = "insporation/appauth_authorization_events"
     // A single slash between shema and path is recommended for iOS
     let APP_AUTH_REDIRECT_URI =  URL.init(string: "eu.jhass.insporation:/callback/")!
-    let TIMEOUT = 6 // Seconds
+    
     let controller : UIViewController
     var registration : Registration?
     let authMethodChannel : FlutterMethodChannel
@@ -61,24 +56,17 @@ class AppAuthHandler : NSObject {
         
         self.completionHandler.append(completionHandler)
         self.errorHandler.append(errorHandler)
-                
+        
         let state = session.state // Provided session has a state in textform, need to get a valid state from userSettings
         
         // A incomming session could be searche internally for existing tokens
         
         if (state == nil) {
-            if #available(iOS 10.0, *) {
-                os_log("Provided session for fetching access token has no authorization, launching authorization process")
-            } else {
-                NSLog("Provided session for fetching access token has no authorization, launching authorization process")
-            }
+            os_log("Provided session for fetching access token has no authorization, launching authorization process")
             authorizeUser()
         } else {
-            if #available(iOS 10.0, *) {
-                os_log("State was set previously, refreshing token from State Sigh..")
-            } else {
-                NSLog("State was set previously, refreshing token from State Sigh..")
-            }
+            
+            os_log("State was set previously, refreshing token from State Sigh..")
             
             // A textual state was set, recover laste stored State Obejct
             recoverToken()
@@ -129,22 +117,13 @@ class AppAuthHandler : NSObject {
     }
     
     func discoverConfiguration(hostname: String) {
+        os_log("Discovering service config for '%{public}@'", log: .default, type: .debug, hostname)
         
         let discoveryURL = URL(string: "https://\(hostname)")!
-        if #available(iOS 10.0, *) {
-            os_log("Discovering service config for '%{public}@'", log: .default, type: .debug, hostname)
-        } else {
-            NSLog("Discovering service config for %s", hostname)
-        }
-        
         OIDAuthorizationService.discoverConfiguration(forIssuer: discoveryURL) { (configuration, error) in
+            
             if let error = error {
-                if #available(iOS 10.0, *) {
-                    os_log("Failed to discover service config for %{public}@: %{public}@", log: .default, type: .error, hostname, error.localizedDescription)
-                } else {
-                    // Fallback on earlier versions
-                    NSLog("Failed to discover service config for @s: @‚", hostname, error.localizedDescription)
-                }
+                os_log("Failed to discover service config for %{public}@: %{public}@", log: .default, type: .error, hostname, error.localizedDescription)
                 self.invokeErrorHandler(errorMessage: "Failed to discover service")
                 return
             }
@@ -155,12 +134,7 @@ class AppAuthHandler : NSObject {
                 return
             }
             
-            if #available(iOS 10.0, *) {
-                os_log("Discovered service config for '%{public}@'", log: .default, type: .debug, hostname)
-            } else {
-                NSLog("Discovered service config: \(hostname) ")
-            }
-            
+            os_log("Discovered service config for '%{public}@'", log: .default, type: .debug, hostname)
             self.doRegistrationRequest(configuration: configuration)
         }
     }
@@ -313,9 +287,7 @@ extension AppAuthHandler {
         let userDefaults = UserDefaults()
         userDefaults.set(data, forKey: userIdAuthKey)
         userDefaults.synchronize()
-        
     }
-    
     
     /// Loads and initializes a state object for userID from device
     /// - Parameter userId: The full userId to get an authState for
@@ -333,6 +305,4 @@ extension AppAuthHandler {
         
         return nil
     }
-    
 }
-
