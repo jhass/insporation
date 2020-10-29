@@ -13,7 +13,7 @@ import os.log
 typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?, _ registrationResponse: OIDRegistrationResponse?) -> Void
 
 
-class AppAuthHandler : NSObject {
+class AppAuthHandler {
     
     private var authState: OIDAuthState?
     let kAppAuthAuthStateKey = "authState_" // Key is extended by UserID
@@ -256,18 +256,6 @@ class AppAuthHandler : NSObject {
     }
 }
 
-extension AppAuthHandler: OIDAuthStateChangeDelegate, OIDAuthStateErrorDelegate {
-    
-    func didChange(_ state: OIDAuthState) {
-        os_log("Did change State")
-        setAuthState(state)
-    }
-    
-    func authState(_ state: OIDAuthState, didEncounterAuthorizationError error: Error) {
-        os_log("Received authorization error: %{public}@", log:.default, type:.error, error.localizedDescription)
-    }
-}
-
 /// Load / Save Chnage States
 extension AppAuthHandler {
     
@@ -275,8 +263,8 @@ extension AppAuthHandler {
         if (self.authState == authState) {
             return;
         }
-        
         self.authState = authState;
+        
         if let currentSession = self.currentSession {
             currentSession.update(state: authState)
             storeSession(session: currentSession)
@@ -292,14 +280,15 @@ extension AppAuthHandler {
         
         var data: Data? = nil
         
-        if let authState = self.authState {
-            data = try? NSKeyedArchiver.archivedData(withRootObject: authState, requiringSecureCoding: true)
+        if let authState = state {
+            // Attention! This arhcive-Methis is marked as depricated, but recommended method
+            // will not recover the OIDAuthState correctly
+            data = NSKeyedArchiver.archivedData(withRootObject: authState)
         }
         
         let userIdAuthKey = kAppAuthAuthStateKey + userId
         let userDefaults = UserDefaults()
         userDefaults.set(data, forKey: userIdAuthKey)
-        userDefaults.synchronize()
     }
     
     /// Loads and initializes a state object for userID from device
@@ -311,7 +300,9 @@ extension AppAuthHandler {
             return nil
         }
         
-        if let authState = try? NSKeyedUnarchiver.unarchivedObject(ofClass: OIDAuthState.self, from: data) {
+        // Attention! This arhcive-Methis is marked as depricated, but recommended method
+        // will not recover the OIDAuthState correctly
+        if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
             self.setAuthState(authState)
             return authState
         }
