@@ -8,7 +8,7 @@
 import UIKit
 import AppAuth
 
-class Session  {
+class Session {
     
     var userId = ""
     var scopes = ""

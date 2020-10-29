@@ -139,7 +139,7 @@ class AppAuthHandler {
         }
     }
     
-    /// If this client is already registered, use persisted ID. Request a registration else.
+    /// If this client is already registered, use persisted ID. Request a registration otherwise.
     func checkForRegistration(configuration: OIDServiceConfiguration, userId: String) {
         
         os_log("Starting registration request with: %{public}@", log: .default, type: .debug, configuration)
@@ -188,7 +188,7 @@ class AppAuthHandler {
             os_log("Got registration response: %{public}@", log: .default, type: .default, response)
             
             // Succesful registration
-            // Store registration in devise store
+            // Store registration in device store
             let hostname = StateHandler.hostForUser(userId: self.currentSession!.userId)
             let registration = Registration(host: hostname, clientSecret: response.clientSecret, clientId: response.clientID)
             RegistrationStore.storeRegistration(registration)

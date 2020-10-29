@@ -20,7 +20,6 @@ class RegistrationStore {
         }
         return nil
     }
-    
     static func storeRegistration(_ registration : Registration) {
         if let hostname = registration.host {
             let jsonenCoded = try? JSONEncoder().encode(registration)
