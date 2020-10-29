@@ -5,7 +5,19 @@ on:
     types: nightly
 
 jobs:
-  build:
+  update-translations:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update locales
+      run: |
+        script/update_locales
+        git config --local user.email "me+nightly-ci@jhass.eu"
+        git config --local user.name  "Github Actions Nightly Job"
+        git commit -m "regenerated locales for nightly build $GITHUB_RUN_NUMBER" || true
+        git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" main
+  build-android:
+    needs: update-translations
     runs-on: ubuntu-latest
     container:
       image: circleci/android:api-29-node
@@ -14,19 +26,14 @@ jobs:
       KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v1.3.2
     - name: Setup keystore
       run: |
        echo "$KEYSTORE" | base64 -d > "$KEYSTORE_PATH"
       env:
         KEYSTORE: ${{ secrets.KEYSTORE }}
-    - name: Update locales
-      run: |
-        script/update_locales
-        git config --local user.email "me+nightly-ci@jhass.eu"
-        git config --local user.name  "Github Actions Nightly Job"
-        git commit -m "regenerated locales for nightly build $GITHUB_RUN_NUMBER" || true
-        git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" main
     - name: Build
       run: |
         flutter build apk --release --build-number=$GITHUB_RUN_NUMBER
@@ -39,8 +46,8 @@ jobs:
       with:
         name: Application bundles
         path: dist
-  publish:
-    needs: build
+  publish-android:
+    needs: build-android
     runs-on: ubuntu-latest
     container:
       image: cgeo/fdroid-base
@@ -90,3 +97,20 @@ jobs:
       env:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEYSTORE_KEY_ALIAS: key
+  build-ios:
+    needs: update-translations
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: main # Ensure translations update is included
+    - uses: subosito/flutter-action@v1.3.2
+    - name: Build
+      run: |
+        flutter build ios --release  --no-codesign --build-number=$GITHUB_RUN_NUMBER
+        mkdir -p dist
+        cp -r build/ios/iphoneos/Runner.app dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo $GITHUB_RUN_NUMBER).app
+    - uses: actions/upload-artifact@v1
+      with:
+        name: Application bundle
+        path: dist

@@ -26,9 +26,9 @@ If you don't know how to build an Android or Flutter app, this is probably not f
 In case you want to dare anyways:
 
 1. Install [Flutter](https://flutter.dev)
-2. Install Android SDK
+2. Install Android SDK / Xcode
 3. Clone this repo
-4. Connect your ADB debugging enabled device and `flutter run` :)
+4. Connect your debugging enabled device and `flutter run` :)
 
 ## Contributing translations
 
@@ -37,6 +37,7 @@ Want to use insporation\* in your favorite language? Head over to [Weblate](http
 ## Implementation status
 
 * Android support
+* iOS support
 * Usable for content browsing and content creation
 
 ## Roadmap
@@ -46,7 +47,6 @@ Roughly in order of priority, but contributions towards any of these goals are a
 * Polish design
 * System notifications
 * Post preview in publisher
-* iOS support
 * macOS support
 * Linux desktop support
 * Web support
