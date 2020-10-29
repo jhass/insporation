@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: subosito/flutter-action@v1.3.2
+    - uses: subosito/flutter-action@v1
     - name: Update locales
       run: |
         script/update_locales
@@ -29,7 +29,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: main # Ensure translations update is included
-    - uses: subosito/flutter-action@v1.3.2
+    - uses: subosito/flutter-action@v1
     - name: Setup keystore
       run: |
        echo "$KEYSTORE" | base64 -d > "$KEYSTORE_PATH"
@@ -45,7 +45,7 @@ jobs:
         KEYSTORE_KEY_ALIAS: key
     - uses: actions/upload-artifact@v1
       with:
-        name: Application bundles
+        name: Android Application bundles
         path: dist
   publish-android:
     needs: build-android
@@ -64,7 +64,7 @@ jobs:
         apt install -y git
     - uses: actions/download-artifact@v1
       with:
-        name: Application bundles
+        name: Android Application bundles
         path: dist
     - uses: marvinpinto/action-automatic-releases@v0.2.2
       with:
@@ -105,7 +105,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: main # Ensure translations update is included
-    - uses: subosito/flutter-action@v1.3.2
+    - uses: subosito/flutter-action@v1
     - name: Build
       run: |
         flutter build ios --release  --no-codesign --build-number=$GITHUB_RUN_NUMBER
@@ -113,5 +113,5 @@ jobs:
         cp -r build/ios/iphoneos/Runner.app dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo $GITHUB_RUN_NUMBER).app
     - uses: actions/upload-artifact@v1
       with:
-        name: Application bundle
+        name: iOS Application bundle
         path: dist
