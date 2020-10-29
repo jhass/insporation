@@ -8,17 +8,13 @@
 import UIKit
 import AppAuth
 
-class Session {
+class Session  {
     
     var userId = ""
     var scopes = ""
     var state : String?
-    
-    init() {
         
-    }
-    
-    convenience init(sessionData : [String:Any?]) {
+    convenience init(sessionData: [String:Any?]) {
         self.init()
         
         userId = (sessionData["userId"] as? String)!
@@ -34,7 +30,13 @@ class Session {
         }
     }
     
-    // TODO: Nicht JSON-Style machen, somndern für Data Serialisieren lassen
+    func hasState() -> Bool {
+        guard let _ = self.state else {
+            return false
+        }
+        return true
+    }
+    
     func toDict() -> [String: Any?] {
         var dict = [String: Any?]()
         dict["userId"] = userId

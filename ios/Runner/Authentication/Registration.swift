@@ -6,27 +6,29 @@
 //
 
 import Foundation
+import AppAuth
+import os.log
 
-class Registration {
+struct Registration: Codable  {
     
-    var host : String?
-    var state : String?
+    let host: String?
+    let clientSecret: String?
+    let clientId: String?
     
-    var description : String {
-        return "Host: \(String(describing: host)), with state: \(String(describing: state))"
+    enum CodingKeys: String, CodingKey {
+        case host = "host"
+        case clientId = "clientId"
+        case clientSecret = "clientSecret"
     }
     
-    init(host: String, state: String) {
-        self.host = host
-        self.state = state
+    var description: String {
+        return "Host: \(String(describing: host)), clientId: \(String(describing: clientId)), clientSecret: \(String(describing: clientSecret)))"
     }
-    
-    init(dict : [String: Any?]) {
-        host = dict["host"] as? String
-        state = dict["state"] as? String
-    }
-    
-    func toDict() -> [String: Any?] {
-        return ["host": host, "state" : state]
+
+    func hasValidState() -> Bool {
+        guard let _ = clientId, let _ = clientSecret else {
+            return false
+        }
+        return true
     }
 }

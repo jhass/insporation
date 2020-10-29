@@ -25,5 +25,4 @@ class Tokens {
     func debugDescription() -> String {
         return toDict().debugDescription
     }
-    
 }
