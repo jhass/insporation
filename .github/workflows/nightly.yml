@@ -98,7 +98,7 @@ jobs:
       env:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEYSTORE_KEY_ALIAS: key
-  build-ios:
+  publish-ios:
     needs: update-translations
     runs-on: macos-latest
     steps:
@@ -108,10 +108,8 @@ jobs:
     - uses: subosito/flutter-action@v1
     - name: Build
       run: |
-        flutter build ios --release  --no-codesign --build-number=$GITHUB_RUN_NUMBER
-        mkdir -p dist
-        cp -r build/ios/iphoneos/Runner.app dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo $GITHUB_RUN_NUMBER).app
-    - uses: actions/upload-artifact@v1
-      with:
-        name: iOS Application bundle
-        path: dist
+        cd ios/fastlane
+        bundle --deployment
+        bundle exec fastlane beta
+      env:
+        FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
