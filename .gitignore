@@ -48,6 +48,8 @@ lib/generated_plugin_registrant.dart
 /ios/**/Icon?
 /ios/**/Pods/
 /ios/**/.symlinks/
+/ios/**/.bundle
+/ios/**/vendor
 /ios/**/profile
 /ios/**/xcuserdata
 /ios/.generated/
