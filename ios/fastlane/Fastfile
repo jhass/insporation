@@ -20,7 +20,7 @@ platform :ios do
   lane :beta do
     match(
       git_url: "git@github.com:jhass/insporation-certificates.git",
-      type: "appstore",
+      type: "development",
       readonly: true
     )
     increment_build_number(build_number: ENV["GITHUB_RUN_NUMBER"] || "1")
