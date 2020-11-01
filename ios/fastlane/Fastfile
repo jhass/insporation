@@ -33,7 +33,7 @@ platform :ios do
       git_url: "git@github.com:jhass/insporation-certificates.git",
       type: "development",
       keychain_name: 'fastlane_ci',
-      keychain_password: 'ci_keychain'
+      keychain_password: 'ci_keychain',
       readonly: true
     )
     build_app(
