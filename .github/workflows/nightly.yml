@@ -110,7 +110,8 @@ jobs:
       run: |
         flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
         cd ios/fastlane
-        bundle --deployment
+        bundle config set deployment 'true'
+        bundle
         bundle exec fastlane beta
       env:
         MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
