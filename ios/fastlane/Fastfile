@@ -55,6 +55,7 @@ platform :ios do
     upload_to_testflight(
       api_key: api_key,
       distribute_external: true,
+      groups: "Extern",
       # TODO: CI: move automatic release step into job running prior this
       # and fetch changelog from the release notes
       changelog: "Latest nightly build changes",
