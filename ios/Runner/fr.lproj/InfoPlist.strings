@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  Runner
+
+  Created by Thorsten Claus on 02.11.20.
+  
+*/
+
+NSPhotoLibraryUsageDescription = "Partager des photos";
+NSCameraUsageDescription = "Prenez des photos et partagez";
