@@ -109,7 +109,7 @@ jobs:
     - name: Build
       run: |
         flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
-        cd ios/fastlane
+        cd ios
         bundle config set deployment 'true'
         bundle
         bundle exec fastlane beta
