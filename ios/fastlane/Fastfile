@@ -49,7 +49,7 @@ platform :ios do
       distribute_external: true,
       # TODO: CI: move automatic release step into job running prior this
       # and fetch changelog from the release notes
-      changelog: "Latest nightly build changes"
+      changelog: "Latest nightly build changes",
       reject_build_waiting_for_review: true
     )
   end
