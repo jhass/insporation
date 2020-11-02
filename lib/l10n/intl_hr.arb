@@ -1,1 +1,1385 @@
-{}
+{
+  "notificationCommented": "{actorCount,plural, =0{Nitko nije komentirao tvoju {target}.}=1{{actors} je komentirao tvoju {target}.}other{{actors} su komentirali tvoju {target}.}}",
+  "@notificationCommented": {
+    "description": "Notification message for when some people commented on the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "manageContact": "{count,plural, =0{U nijednom aspektu}=1{U jednom aspektu}other{U {count} aspekta}}",
+  "@manageContact": {
+    "description": "Label for manage contact button. The zero case and one is never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "signInLabel": "diaspora* ID",
+  "@signInLabel": {
+    "description": "Label for sign in field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReplyToConversation": "Neuspjelo odgovaranje u konverzaciji",
+  "@failedToReplyToConversation": {
+    "description": "Error message after replying to a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertCodeBlock": "Blok koda",
+  "@insertCodeBlock": {
+    "description": "Tooltip for insert code block button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationBirthday": "{actorCount,plural, =0{Danas nitko nema rođendan.}=1{{actors} ima danas rođendan.}other{{actors} imaju danas rođendan.}}",
+  "@notificationBirthday": {
+    "description": "Notification message for when a contact of the user has their birthday. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "failedToResharePost": "Neuspjelo prosljeđivanje objave",
+  "@failedToResharePost": {
+    "description": "Error message after resharing a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPostPrompt": "Prijavi objavu",
+  "@reportPostPrompt": {
+    "description": "Title for report post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatStrikethrough": "Precrtano",
+  "@formatStrikethrough": {
+    "description": "Tooltip for format strikethrough button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profileInfoHeader": "Podaci",
+  "@profileInfoHeader": {
+    "description": "Header for info section on the profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileTagsLabel": "Oznake",
+  "@editProfileTagsLabel": {
+    "description": "Label for edit profile tags field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "showOriginalPost": "Pokaži izvornu proslijeđenu objavu",
+  "@showOriginalPost": {
+    "description": "Tooltip message for the show original post button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToSubscribeToPost": "Neuspjelo pretplaćivanje na objavu",
+  "@failedToSubscribeToPost": {
+    "description": "Error message after failing to subscribe to a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertBulletedList": "Nenumerirani popis",
+  "@insertBulletedList": {
+    "description": "Tooltip for insert bulleted list button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "startedSharing": "Započeto dijeljenje s {name}.",
+  "@startedSharing": {
+    "description": "Success message after the user started sharing with somebody",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "nsfwShieldTitle": "NSFW objava od {author}",
+  "@nsfwShieldTitle": {
+    "description": "Title on the NSFW shield",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      }
+    }
+  },
+  "navigationItemTitleSwitchUser": "Zamijeni korisnika",
+  "@navigationItemTitleSwitchUser": {
+    "description": "Title for the switch user navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationActorsForThreePeople": "{first}, {second} i {third}",
+  "@notificationActorsForThreePeople": {
+    "description": "Actors part of a notification message with exactly three actors",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      },
+      "third": {
+        "example": "Charlotte"
+      }
+    }
+  },
+  "notificationMentionedInCommentOnDeletedPost": "{actorCount,plural, =0{Nitko te nije spomenuo u komentaru izbrisane objave.}=1{{actors} te je spomenuo u komentaru izbrisane objave.}other{{actors} te je spomenulo u komentaru izbrisane objave.}}",
+  "@notificationMentionedInCommentOnDeletedPost": {
+    "description": "Notification message for when somebody mentioned the user in in comment on a deleted post. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "deselectAllButtonLabel": "Odznači sve",
+  "@deselectAllButtonLabel": {
+    "description": "Label for a deselect all button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertCode": "Kȏd",
+  "@insertCode": {
+    "description": "Tooltip for insert code button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactAspectsPrompt": "Odaberi askpekte za {name}",
+  "@contactAspectsPrompt": {
+    "description": "Title for the contact aspects prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "failedToAddConversationParticipantDuplicate": "{name} već je primatelj. Ne može se dvaput dodati.",
+  "@failedToAddConversationParticipantDuplicate": {
+    "description": "Error message after adding a conversation participant failed due to them already being part of the participants",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice McBoss"
+      }
+    }
+  },
+  "insertLinkPrompt": "Umetni poveznicu",
+  "@insertLinkPrompt": {
+    "description": "Title for insert link prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "uploadProfilePictureHeader": "Aktualiziraj sliku profila",
+  "@uploadProfilePictureHeader": {
+    "description": "Header for upload profile picture section on the edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUploadPhoto": "Neuspjelo prenošenje slike",
+  "@failedToUploadPhoto": {
+    "description": "Error message after uploading a photo failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deletedPostReshareHint": "Proslijedi izbrisanu objavu",
+  "@deletedPostReshareHint": {
+    "description": "Fallback message when showing a reshare of a deleted post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleContacts": "Kontakti",
+  "@navigationItemTitleContacts": {
+    "description": "Title for the contacts navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertNumberedList": "Numerirani popis",
+  "@insertNumberedList": {
+    "description": "Tooltip for insert numbered list button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "duplicateProfileTag": "Oznaka je već dodana",
+  "@duplicateProfileTag": {
+    "description": "Error message after trying to add a duplicate profile tag",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfilePublicLabel": "Javno prikazati podatke profila?",
+  "@editProfilePublicLabel": {
+    "description": "Label for edit profile public field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInHint": "korisničkoime@diaspora.pod",
+  "@signInHint": {
+    "description": "Hint text for sign in field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "hidePost": "Sakrij",
+  "@hidePost": {
+    "description": "Tooltip for hide post icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "replyToConversation": "Odgovori",
+  "@replyToConversation": {
+    "description": "Label for reply to conversation button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportComment": "Prijavi",
+  "@reportComment": {
+    "description": "Tooltip for report comment icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetAspects": "{count,plural, =0{Nema aspekata}=1{Jedan aspekt}other{{count} aspekta}}",
+  "@publishTargetAspects": {
+    "description": "Publish target label for a post to a list of aspects. The zero and one cases are never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "notificationReshared": "{actorCount,plural, =0{Nitko nije proslijedio tvoju objavu {target}.}=1{{actors} je proslijedio tvoju objavu {target}.}other{{actors} je proslijedilo tvoju objavu {target}.}}",
+  "@notificationReshared": {
+    "description": "Notification message for when some people reshared the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "newConversationMessageLabel": "Poruka",
+  "@newConversationMessageLabel": {
+    "description": "Label for new conversation message field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameLiked": "Sviđa mi se",
+  "@streamNameLiked": {
+    "description": "Name of the liked stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportCommentPrompt": "Komentar za prijavu",
+  "@reportCommentPrompt": {
+    "description": "Title for report comment prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deletePostPrompt": "Isbrisati objavu?",
+  "@deletePostPrompt": {
+    "description": "Title for delete post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileHeader": "Uredi profil",
+  "@editProfileHeader": {
+    "description": "Header for edit profile section on edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noItems": "K vragu, nema se što prikazati!",
+  "@noItems": {
+    "description": "Fallback message when something didn't return any items",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tagSearchDialogHint": "Traži oznaku",
+  "@tagSearchDialogHint": {
+    "description": "Hint text for the tag search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleConversations": "Konverzacije",
+  "@navigationItemTitleConversations": {
+    "description": "Title for the Conversations navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertImageURLPrompt": "Ugradi sliku",
+  "@insertImageURLPrompt": {
+    "description": "Title for insert image URL prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileTitle": "Uredi profil",
+  "@editProfileTitle": {
+    "description": "Title for edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertQuote": "Citiranje",
+  "@insertQuote": {
+    "description": "Tooltip for insert quote button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editPoll": "Uredi anketu",
+  "@editPoll": {
+    "description": "Label for the edit poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToFollowTag": "Neuspjelo praćenje oznake #{tag}",
+  "@failedToFollowTag": {
+    "description": "Error message after following a tag failed",
+    "type": "text",
+    "placeholders": {
+      "tag": {
+        "example": "newhere"
+      }
+    }
+  },
+  "selectAllButtonLabel": "Označi sve",
+  "@selectAllButtonLabel": {
+    "description": "Label for a select all button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleNotifications": "Obavijesti",
+  "@navigationItemTitleNotifications": {
+    "description": "Title for the notifications navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "removeButtonLabel": "Ukloni",
+  "@removeButtonLabel": {
+    "description": "Label for a dialog remove button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertMention": "Spominjanje",
+  "@insertMention": {
+    "description": "Tooltip for insert mention button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileNameLabel": "Ime",
+  "@editProfileNameLabel": {
+    "description": "Label for edit profile name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUnblockUser": "Neuspjelo deblokiranje korisnika {name}",
+  "@failedToUnblockUser": {
+    "description": "Error message after unblocking a user failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice, alice@pod.example.org"
+      }
+    }
+  },
+  "addPoll": "Dodaj anketu",
+  "@addPoll": {
+    "description": "Tooltip for the add poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationMentionedInComment": "{actorCount,plural, =0{Nitko te nije spomenuo u komentaru.}=1{{actors} te je spomenuo u komentaru.}other{{actors} te je spomenulo u komentaru.}}",
+  "@notificationMentionedInComment": {
+    "description": "Notification message for when somebody mentioned the user in a comment. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "failedToCommentOnPost": "Neuspjelo stvaranje komentara",
+  "@failedToCommentOnPost": {
+    "description": "Error message after commenting on a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationStartedSharing": "{actorCount,plural, =0{Nitko nije počeo s tobom dijeliti.}=1{{actors} je s tobom počeo dijeliti.}other{{actors} su s tobom počeli dijeliti.}}",
+  "@notificationStartedSharing": {
+    "description": "Notification message for when some people started sharing  with the user. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "peopleSearchDialogHint": "Traži osobu",
+  "@peopleSearchDialogHint": {
+    "description": "Hint text for the people search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInAction": "Prijava",
+  "@signInAction": {
+    "description": "Sign in button label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLinkURLHint": "URL",
+  "@insertLinkURLHint": {
+    "description": "Hint text for URL field in insert link dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameMain": "Kanal",
+  "@streamNameMain": {
+    "description": "Name of the main stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "followedTagsPageTitle": "Praćene oznake",
+  "@followedTagsPageTitle": {
+    "description": "Title for the followed tags page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteCommentPrompt": "Isbrisati komentar?",
+  "@deleteCommentPrompt": {
+    "description": "Title for delete comment prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToCreateAspect": "Neuspjelo stvaranje aspekta",
+  "@failedToCreateAspect": {
+    "description": "Error message after failing to create an aspect",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTagsHint": "Počni upisivati oznaku",
+  "@searchTagsHint": {
+    "description": "Hint text for the tags search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmReshare": "Proslijedi",
+  "@confirmReshare": {
+    "description": "Label for confirm button in the reshare prompt",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToLikePost": "Neuspjelo označivanje sa „Sviđa mi se”",
+  "@failedToLikePost": {
+    "description": "Error message after liking a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUnfollowTag": "Neuspjelo uklanjanje praćenja oznake #{tag}",
+  "@failedToUnfollowTag": {
+    "description": "Error message after unfollowing a tag failed",
+    "type": "text",
+    "placeholders": {
+      "tag": {
+        "example": "nsfw"
+      }
+    }
+  },
+  "takePhoto": "Snimi sliku",
+  "@takePhoto": {
+    "description": "Tooltip for the take a photo button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectsPrompt": "Odaberi askpekte",
+  "@aspectsPrompt": {
+    "description": "Title for the aspect selection dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createAspectPrompt": "Stvori aspekt",
+  "@createAspectPrompt": {
+    "description": "Title for the create aspect prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTypePeopleByTag": "Ljudi po oznakama",
+  "@searchTypePeopleByTag": {
+    "description": "Label for search type selector for the people by tag search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationMentionedInPost": "{actorCount,plural, =0{Nitko te nije spomenuo u {target}.}=1{{actors} te je spomenuo u {target}.}other{{actors} su te spomenuli u {target}.}}",
+  "@notificationMentionedInPost": {
+    "description": "Notification message for when somebody mentioned the user in a post. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "publishTargetPublic": "Javno",
+  "@publishTargetPublic": {
+    "description": "Publish target label for a public post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sentPostReport": "Prijava poslana.",
+  "@sentPostReport": {
+    "description": "Success message after a post report was sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusMutual": "Dijelite uzajamno",
+  "@contactStatusMutual": {
+    "description": "Contact status message for a contact that is sharing with the user and that the user is sharing with",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLinkDescriptionHint": "Opis (opcionalno)",
+  "@insertLinkDescriptionHint": {
+    "description": "Hint text for description field in insert link dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addContact": "Dodaj kontakt",
+  "@addContact": {
+    "description": "Label for add contact button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "uploadNewPicture": "Prenesi novu sliku",
+  "@uploadNewPicture": {
+    "description": "Label for upload a new picture button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToHideConversation": "Neuspjelo skrivanje konverzacije",
+  "@failedToHideConversation": {
+    "description": "Error message after hiding a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPost": "Prijavi",
+  "@reportPost": {
+    "description": "Tooltip for report post icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportCommentHint": "Opiši problem",
+  "@reportCommentHint": {
+    "description": "Hint text for comment report field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "startPostSubscription": "Aktiviraj obavijesti",
+  "@startPostSubscription": {
+    "description": "Tooltip for start post subscription icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPostHint": "Opiši problem",
+  "@reportPostHint": {
+    "description": "Hint text for post report field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertImageURL": "URL adresa slike",
+  "@insertImageURL": {
+    "description": "Tooltip for insert image URL button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatBold": "Podebljano",
+  "@formatBold": {
+    "description": "Tooltip for format bold button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publisherTitle": "Napiši novu objavu",
+  "@publisherTitle": {
+    "description": "Title for the publisher page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorSignInTimeout": "Vrijeme pokušaja autentifikacije je isteklo. Je li tvoj poslužitelj (pod) podržava API?",
+  "@errorSignInTimeout": {
+    "description": "Error message after authenticating timed out",
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalidDiasporaId": "Upiši potpunu diaspora* ID oznaku",
+  "@invalidDiasporaId": {
+    "description": "Error message after an invalid diaspora* ID was entered",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectNameHint": "Upiši ime",
+  "@aspectNameHint": {
+    "description": "Hint text for an aspect name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationActorsForMoreThanThreePeople": "{othersCount,plural, =0{{first}, {second} i nitko drugi}=1{{first}, {second} i još jedan}other{{first}, {second} i još {othersCount}}}",
+  "@notificationActorsForMoreThanThreePeople": {
+    "description": "Actors part of a notification message with more than three actors. The first two are given, the count is the count of how many more (at least two) there are. So the zero and one cases never come into use",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      },
+      "othersCount": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "noButtonLabel": "Ne",
+  "@noButtonLabel": {
+    "description": "Label for a dialog no button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "stoppedSharing": "Prekinuto dijeljenje s {name}.",
+  "@stoppedSharing": {
+    "description": "Success message after the user stopped sharing with somebody",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "failedToAddConversationParticipantNotSharingWith": "Ne dijeliš s {name}. Ne mogu se dodati kao primatelji!",
+  "@failedToAddConversationParticipantNotSharingWith": {
+    "description": "Error message after adding a conversation participant failed due to the user not sharing with them",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Stranger"
+      }
+    }
+  },
+  "searchTypePeople": "Ljudi",
+  "@searchTypePeople": {
+    "description": "Label for search type selector for the people search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkNotificationAsUnread": "Neuspjelo označivanje obavijesti kao nepročitane",
+  "@failedToMarkNotificationAsUnread": {
+    "description": "Error message after marking a notification  as unread failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameAspects": "Aspekti",
+  "@streamNameAspects": {
+    "description": "Name of the aspects stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkNotificationAsRead": "Neuspjelo označivanje obavijesti kao pročitane",
+  "@failedToMarkNotificationAsRead": {
+    "description": "Error message after marking a notification as read failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationLiked": "{actorCount,plural, =0{Nikome se ne sviđa tvoja objava {target}.}=1{{actors} se sviđa tvoja objava {target}.}other{{actors} se sviđa tvoja objava {target}.}}",
+  "@notificationLiked": {
+    "description": "Notification message for when some people liked the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "navigationItemTitleEditProfile": "Uredi profil",
+  "@navigationItemTitleEditProfile": {
+    "description": "Title for the edit profile navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToAddConversationParticipantNotSharing": "{name} ne dijeli s tobom. Ne mogu se dodati kao primatelji!",
+  "@failedToAddConversationParticipantNotSharing": {
+    "description": "Error message after adding a conversation participant failed due to them not sharing with the user",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Charlotte Idol"
+      }
+    }
+  },
+  "insertLink": "Poveznica",
+  "@insertLink": {
+    "description": "Tooltip for insert link button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "showAllNsfwPostsButtonLabel": "Pokaži sve NSFW objave",
+  "@showAllNsfwPostsButtonLabel": {
+    "description": "Label on show all NSFW posts button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "updatedProfile": "Profil je aktualiziran.",
+  "@updatedProfile": {
+    "description": "Success message after the profile was updated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileSubmit": "Aktualiziraj profil",
+  "@editProfileSubmit": {
+    "description": "Label for edit profile submit button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetPrompt": "Odaberi vidljivost objave",
+  "@publishTargetPrompt": {
+    "description": "Title for the publish target selection prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editAspectPrompt": "Uredi aspekt",
+  "@editAspectPrompt": {
+    "description": "Title for the edit aspect prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfile": "Uredi profil",
+  "@editProfile": {
+    "description": "Label for the edit profile button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReportPost": "Neuspjelo stvaranje izvještaja",
+  "@failedToReportPost": {
+    "description": "Error message after a post report couldn't be sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToDeleteAspect": "Neuspjelo uklanjanje aspekta {name}",
+  "@failedToDeleteAspect": {
+    "description": "Error message after deleting an aspect failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Leaders"
+      }
+    }
+  },
+  "failedToUnsubscribeFromPost": "Neuspjelo otkazivanje pretplate na objavu",
+  "@failedToUnsubscribeFromPost": {
+    "description": "Error message after failing to unsubscribe from a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmDeleteButtonLabel": "Potvrdi brisanje",
+  "@confirmDeleteButtonLabel": {
+    "description": "Label for a dialog confirm delete button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchPeopleHint": "Počni upisivati ime ili diaspora* ID",
+  "@searchPeopleHint": {
+    "description": "Hint text for the people search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToVote": "Neuspjelo glasanje za objavu",
+  "@failedToVote": {
+    "description": "Error message after voting on a poll failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToCreateConversation": "Neuspjelo stvaranje konverzacije",
+  "@failedToCreateConversation": {
+    "description": "Error message after sending a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUploadProfilePicture": "Neuspjelo prenošenje slike profila",
+  "@failedToUploadProfilePicture": {
+    "description": "Error message after uploading a profile picture failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusNotSharing": "Ne dijelite uzajamno.",
+  "@contactStatusNotSharing": {
+    "description": "Contact status message for somebody that is not sharing with the user nor the user is sharing with",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileSearchableLabel": "Dozvoliti pretraživanje?",
+  "@editProfileSearchableLabel": {
+    "description": "Label for edit profile searchable field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetDeletedPost": "izbrisana objava",
+  "@notificationTargetDeletedPost": {
+    "description": "Target part of a notification message for a deleted post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUpdateProfile": "Neuspjelo aktualiziranje profila",
+  "@failedToUpdateProfile": {
+    "description": "Error message after updating the profile failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameMentions": "Spominjanja",
+  "@streamNameMentions": {
+    "description": "Name of the mentions stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectStreamSelectorAllAspects": "Svi aspekti",
+  "@aspectStreamSelectorAllAspects": {
+    "description": "Aspect stream selector label for all aspects",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationTitle": "Započni novu konverzaciju",
+  "@newConversationTitle": {
+    "description": "Title for new conversation page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resharesHeader": "Proslijeđeno",
+  "@resharesHeader": {
+    "description": "Header for reshares list",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetPost": "objava",
+  "@notificationTargetPost": {
+    "description": "Target part of a notification message for a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "voteCount": "{count,plural, =0{Do sada nema glasova}=1{1 glas do sada}other{{count} glasova do sada}}",
+  "@voteCount": {
+    "description": "Label for how many votes are registered on a poll",
+    "type": "text",
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "submitButtonLabel": "Pošalji",
+  "@submitButtonLabel": {
+    "description": "Label for a dialog submit button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReportComment": "Neuspjelo stvaranje izvještaja",
+  "@failedToReportComment": {
+    "description": "Error message after a comment report couldn't be sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameActivity": "Aktivnost",
+  "@streamNameActivity": {
+    "description": "Name of the activity stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pollQuestionHint": "Upiši pitanje",
+  "@pollQuestionHint": {
+    "description": "Hint text for the poll question field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pollAnswerHint": "Upiši odgovor",
+  "@pollAnswerHint": {
+    "description": "Hint text for a poll answer field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sentCommentReport": "Prijava poslana.",
+  "@sentCommentReport": {
+    "description": "Success message after a comment report was sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatItalic": "Kurziv",
+  "@formatItalic": {
+    "description": "Tooltip for format italic button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationActorsForTwoPeople": "{first} i {second}",
+  "@notificationActorsForTwoPeople": {
+    "description": "Actors part of a notification message with exactly two actors",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      }
+    }
+  },
+  "oEmbedHeader": "{author} na {provider}:",
+  "@oEmbedHeader": {
+    "description": "Header above HTML style oEmbeds",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      },
+      "provider": {
+        "example": "Twitter"
+      }
+    }
+  },
+  "navigationItemTitleSearch": "Traži",
+  "@navigationItemTitleSearch": {
+    "description": "Title for the search navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameTag": "Oznaka",
+  "@streamNameTag": {
+    "description": "Name of a tag stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToDeletePost": "Neuspjelo brisanje objave",
+  "@failedToDeletePost": {
+    "description": "Error message after failing to delete a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleStream": "Kanal",
+  "@navigationItemTitleStream": {
+    "description": "Title for the Stream navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "takeNewPicture": "Snimi novu sliku",
+  "@takeNewPicture": {
+    "description": "Label for take a new picture button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToBlockUser": "Neuspjelo blokiranje korisnika {name}",
+  "@failedToBlockUser": {
+    "description": "Error message after blocking a user failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice, alice@pod.example.org"
+      }
+    }
+  },
+  "resharePrompt": "Prosljediti objavu?",
+  "@resharePrompt": {
+    "description": "Title for reshare post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactAspectsUpdated": "Aspekti su aktualizirani.",
+  "@contactAspectsUpdated": {
+    "description": "Success message after the user updated a contact's aspcts",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createPoll": "Stvori anketu",
+  "@createPoll": {
+    "description": "Label for the create poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "manageFollowedTags": "Upravljaj praćenim oznakama",
+  "@manageFollowedTags": {
+    "description": "Label for the manage followed tags button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createComment": "Komentiraj",
+  "@createComment": {
+    "description": "Label for create comment button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationAlsoCommented": "{actorCount,plural, =0{Nitko nije komentirao {target}.}=1{{actors} je također komentirao {target}.}other{{actors} su također komentirali {target}.}}",
+  "@notificationAlsoCommented": {
+    "description": "Notification message for when some people also commented on a post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "pollResultsButtonLabel": "Prikaz rezultata",
+  "@pollResultsButtonLabel": {
+    "description": "Label for view poll results button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertHeading": "Naslov",
+  "@insertHeading": {
+    "description": "Tooltip for insert heading button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileNsfwLabel": "Označiti profil kao #nsfw?",
+  "@editProfileNsfwLabel": {
+    "description": "Label for edit profile NSFW field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yesButtonLabel": "Da",
+  "@yesButtonLabel": {
+    "description": "Label for a dialog yes button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mentionUser": "Spomeni korisnika",
+  "@mentionUser": {
+    "description": "Tooltip for the mention user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createButtonLabel": "Stvori",
+  "@createButtonLabel": {
+    "description": "Label for a dialog create button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "showThisNsfwPostButtonLabel": "Pokaži ovu objavu",
+  "@showThisNsfwPostButtonLabel": {
+    "description": "Label on show this NSFW post button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishPost": "Objavi",
+  "@publishPost": {
+    "description": "Label for the publish post button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteAspectPrompt": "Isbrisati aspekt {name}?",
+  "@deleteAspectPrompt": {
+    "description": "Title for the delete aspect prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Colleagues"
+      }
+    }
+  },
+  "failedToAddConversationParticipant": "Neuspjelo dodavanje primatelja",
+  "@failedToAddConversationParticipant": {
+    "description": "Error message after adding a conversation participant failed for a general reason",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusReceiving": "Dijele s tobom.",
+  "@contactStatusReceiving": {
+    "description": "Contact status message for a contact that is sharing with the user, but the user is not sharing with the contact",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterAddressHint": "Upiši adresu",
+  "@enterAddressHint": {
+    "description": "Hint text for an address field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTypeTags": "Oznake",
+  "@searchTypeTags": {
+    "description": "Label for search type selector for the tags search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "unblockUser": "Deblokiraj",
+  "@unblockUser": {
+    "description": "Tooltip for the unblock user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchPeopleByTagHint": "Upiši oznaku",
+  "@searchPeopleByTagHint": {
+    "description": "Hint text for the the people by tag search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUpdateContactAspects": "Neuspjelo aktualiziranje aspekata",
+  "@failedToUpdateContactAspects": {
+    "description": "Error message after updating a contact's aspects failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectsListTitle": "Aspekti",
+  "@aspectsListTitle": {
+    "description": "Title for the aspects list page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "saveButtonLabel": "Spremi",
+  "@saveButtonLabel": {
+    "description": "Label for a dialog save button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetAllAspects": "Svi aspekti",
+  "@publishTargetAllAspects": {
+    "description": "Publish target label for a post to all aspects",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameFollowedTags": "Praćene oznake",
+  "@streamNameFollowedTags": {
+    "description": "Name of the followed tags stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addLocation": "Dodaj tvoju lokaciju",
+  "@addLocation": {
+    "description": "Tooltip for the add location button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameCommented": "Komentirani",
+  "@streamNameCommented": {
+    "description": "Name of the commented stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectButtonLabel": "Označi",
+  "@selectButtonLabel": {
+    "description": "Label for a dialog select button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "messageUser": "Poruka",
+  "@messageUser": {
+    "description": "Tooltip for the message user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchDialogHint": "Traži",
+  "@searchDialogHint": {
+    "description": "Hint text for the search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "likesHeader": "Sviđanja",
+  "@likesHeader": {
+    "description": "Header for likes list",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profilePostsHeader": "Objave",
+  "@profilePostsHeader": {
+    "description": "Header for posts section on the profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "commentsHeader": "Komentari",
+  "@commentsHeader": {
+    "description": "Header for comment stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusBlocked": "Blokiraš ih",
+  "@contactStatusBlocked": {
+    "description": "Contact status message for a blocked user",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusSharing": "Dijeliš s njima.",
+  "@contactStatusSharing": {
+    "description": "Contact status message for a contact that the user is sharing with, but the contact is not sharing with the user",
+    "type": "text",
+    "placeholders": {}
+  },
+  "oEmbedAuthor": "od {author}",
+  "@oEmbedAuthor": {
+    "description": "Subtitle on oEmbed thumbnails",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      }
+    }
+  },
+  "failedToDeleteComment": "Neuspjelo brisanje komentara",
+  "@failedToDeleteComment": {
+    "description": "Error message after deleting a comment failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertButtonLabel": "Umetni",
+  "@insertButtonLabel": {
+    "description": "Label for a dialog insert button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToSearchForAddresses": "Neuspjelo traženje adresa",
+  "@failedToSearchForAddresses": {
+    "description": "Error message after searching for the entered address failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationRecipientsLabel": "Primatelji",
+  "@newConversationRecipientsLabel": {
+    "description": "Label for new conversation recipients field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectStreamSelectorAspects": "{count,plural, =0{Nema aspekata}=1{Jedan aspekt}other{{count} aspekta}}",
+  "@aspectStreamSelectorAspects": {
+    "description": "Aspect stream selector label for a list of aspects. The zero and one cases are never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "insertHashtag": "Hashtag",
+  "@insertHashtag": {
+    "description": "Tooltip for insert hashtag button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "blockUser": "Blokiraj",
+  "@blockUser": {
+    "description": "Tooltip for the block user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "voteButtonLabel": "Glasaj",
+  "@voteButtonLabel": {
+    "description": "Label for poll vote submission",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancelPostSubscription": "Prekini obavijesti",
+  "@cancelPostSubscription": {
+    "description": "Tooltip for cancel post subscription icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUnlikePost": "Neuspjelo uklanjanje oznake sviđanja",
+  "@failedToUnlikePost": {
+    "description": "Error message after unliking a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileGenderLabel": "Spol",
+  "@editProfileGenderLabel": {
+    "description": "Label for edit profile gender field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToRenameAspect": "Neuspjelo preimenovanje aspekta {oldName} u {newName}",
+  "@failedToRenameAspect": {
+    "description": "Error message after renaming an aspect failed",
+    "type": "text",
+    "placeholders": {
+      "oldName": {
+        "example": "Friends"
+      },
+      "newName": {
+        "example": "Enemies"
+      }
+    }
+  },
+  "uploadPhoto": "Prenesi sliku",
+  "@uploadPhoto": {
+    "description": "Tooltip for the upload a photo button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToHidePost": "Neuspjelo skrivanje objave",
+  "@failedToHidePost": {
+    "description": "Error message after failing to hide a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileBirthdayLabel": "Rođendan",
+  "@editProfileBirthdayLabel": {
+    "description": "Label for edit profile birthday field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationSubjectLabel": "Tema",
+  "@newConversationSubjectLabel": {
+    "description": "Label for new conversation subject field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sendNewConversation": "Pošalji",
+  "@sendNewConversation": {
+    "description": "Label for new conversation send button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileLocationLabel": "Lokacija",
+  "@editProfileLocationLabel": {
+    "description": "Label for edit profile location field",
+    "type": "text",
+    "placeholders": {}
+  }
+}
