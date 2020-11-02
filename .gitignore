@@ -52,6 +52,10 @@ lib/generated_plugin_registrant.dart
 /ios/**/vendor
 /ios/**/profile
 /ios/**/xcuserdata
+/ios/**/*.hmap
+/ios/**/*.ipa
+/ios/**/*.dSYM.zip
+/ios/**/*.dSYM
 /ios/.generated/
 /ios/Flutter/.last_build_id
 /ios/Flutter/App.framework
