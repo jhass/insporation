@@ -36,7 +36,7 @@ platform :ios do
         readonly: true
       )
       api_key = app_store_connect_api_key(
-        key_id: "82XU3V4LLV",
+        key_id: "3MD33573G3",
         issuer_id: "69a6de86-40c8-47e3-e053-5b8c7c11a4d1",
         key_content: ENV["APPLE_API_KEY"],
         duration: 1200,
