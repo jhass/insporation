@@ -1376,5 +1376,11 @@
     "description": "Tooltip message for the show original post button",
     "type": "text",
     "placeholders": {}
+  },
+  "errorSignInTimeout": "Zeitüberschreitung beim Versuch der Authentifizierung. Sicher, dass dein Pod die API unterstützt?",
+  "@errorSignInTimeout": {
+    "description": "Error message after authenticating timed out",
+    "type": "text",
+    "placeholders": {}
   }
 }
