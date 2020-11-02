@@ -35,6 +35,13 @@ platform :ios do
         keychain_password: 'ci_keychain',
         readonly: true
       )
+      api_key = app_store_connect_api_key(
+        key_id: "82XU3V4LLV",
+        issuer_id: "69a6de86-40c8-47e3-e053-5b8c7c11a4d1",
+        key_content: ENV["APPLE_API_KEY"],
+        duration: 1200,
+        in_house: false
+      )
     else
       # please run bundle exec fastlane match appstore manually
     end
@@ -46,6 +53,7 @@ platform :ios do
     )
 
     upload_to_testflight(
+      api_key: api_key,
       distribute_external: true,
       # TODO: CI: move automatic release step into job running prior this
       # and fetch changelog from the release notes
