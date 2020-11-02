@@ -19,7 +19,7 @@ platform :ios do
 
   desc "Push a new beta build to TestFlight"
   lane :beta do
-    increment_build_number(build_number: ENV["GITHUB_RUN_NUMBER"] || "1")
+    increment_build_number(build_number: latest_testflight_build_number + 1 || "1")
     create_keychain(
       name: "fastlane_ci",
       password: "ci_keychain",
@@ -30,8 +30,7 @@ platform :ios do
     )
     match(
       profile_name: "match_profile",
-      git_url: "git@github.com:jhass/insporation-certificates.git",
-      type: "development",
+      type: "appstore",
       keychain_name: 'fastlane_ci',
       keychain_password: 'ci_keychain',
       readonly: true
@@ -43,8 +42,8 @@ platform :ios do
       export_options: {
         provisioningProfiles: {
           "eu.jhass.insporation" => "match_profile",
-        }
-      }
+       }
+    }
     )
     upload_to_testflight(skip_waiting_for_build_processing: true)
   end
