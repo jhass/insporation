@@ -8,11 +8,13 @@ A native [diaspora\*](https://diasporafoundation.org) client powered by Flutter.
 
 As soon as this is out of preview it will appear in the usual stores. Until then you have the following options:
 
-### Download latest nightly build
+### Android
+
+#### Download latest nightly build
 
 You can go to the [releases page](https://github.com/jhass/insporation/releases) to download and install the latest build manually.
 
-### F-Droid repository
+#### F-Droid repository
 
 The nightlies are also published to a F-Droid repository which you can add by scanning the following QR code:
 
@@ -20,9 +22,17 @@ The nightlies are also published to a F-Droid repository which you can add by sc
 
 or clicking [this link](https://jhass.github.io/insporation/fdroid/repo?fingerprint=EC792A58B39DF9FBB466FB100E30E3842F229FDBC6E28D32C417F6A5B30ECCAE) on your device that has F-Droid installed.
 
+### iOS
+
+Join the TestFlight group by scanning the following QR code:
+
+![](testflight.png)
+
+or clicking [this link](https://testflight.apple.com/join/K9N72Ysr).
+
 ### Build it yourself
 
-If you don't know how to build an Android or Flutter app, this is probably not for you!
+If you don't know how to build an Android, iOS or Flutter app, this is probably not for you!
 In case you want to dare anyways:
 
 1. Install [Flutter](https://flutter.dev)
