@@ -9,11 +9,13 @@ import 'posts.dart';
 import 'timeago.dart';
 
 // Keep timeagoLocaleMessages in timeago.dart in sync!
+// Add iOS specific translation files to the project via "Add Files to"
 const supportedLocales = [
   const Locale('ar'),
   const Locale('de'),
   const Locale('en'),
   const Locale('fr'),
+  const Locale('hr'),
   const Locale('it')
 ];
 

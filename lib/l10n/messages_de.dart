@@ -130,6 +130,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProfileTagsLabel" : MessageLookupByLibrary.simpleMessage("Tags"),
     "editProfileTitle" : MessageLookupByLibrary.simpleMessage("Profil"),
     "enterAddressHint" : MessageLookupByLibrary.simpleMessage("Gib eine Adresse ein"),
+    "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("Zeitüberschreitung beim Versuch der Authentifizierung. Sicher, dass dein Pod die API unterstützt?"),
     "failedToAddConversationParticipant" : MessageLookupByLibrary.simpleMessage("Empfänger konnte nicht hinzugefügt werden"),
     "failedToAddConversationParticipantDuplicate" : m3,
     "failedToAddConversationParticipantNotSharing" : m4,
