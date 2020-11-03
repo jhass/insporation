@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-10-10T11:47:20.152158",
+  "@@last_modified": "2020-11-05T11:42:04.863112",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -95,6 +95,16 @@
     "description": "Error message after authenticating timed out",
     "type": "text",
     "placeholders": {}
+  },
+  "deleteSessionPrompt": "Remove session for {userId} from insporation*?",
+  "@deleteSessionPrompt": {
+    "description": "Title for delete session prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
   },
   "navigationItemTitleStream": "Stream",
   "@navigationItemTitleStream": {
