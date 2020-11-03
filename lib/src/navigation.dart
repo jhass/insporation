@@ -60,7 +60,11 @@ class NavigationBar extends StatelessWidget with LocalizationHelpers {
             items: moreItems.map((item) => PopupMenuItem(child: Text(item.title), value: item) ).toList(),
           ).then((selected) {
             if (selected != null) {
-              Navigator.of(context).pushNamed(selected.route);
+              if (selected.resetNavigation) {
+                Navigator.pushNamedAndRemoveUntil(context, selected.route, (_) => false);
+              } else {
+                Navigator.pushNamed(context, selected.route);
+              }
             }
           });
         }
@@ -98,7 +102,7 @@ class NavigationBar extends StatelessWidget with LocalizationHelpers {
   List<_BarItem> _moreItems(InsporationLocalizations l) => <_BarItem>[
     _BarItem(PageType.contacts, null, l.navigationItemTitleContacts, "/contacts"),
     _BarItem(PageType.edit_profile, null, l.navigationItemTitleEditProfile, "/edit_profile"),
-    _BarItem(PageType.sign_in, null, l.navigationItemTitleSwitchUser, "/switch_user")
+    _BarItem(PageType.sign_in, null, l.navigationItemTitleSwitchUser, "/switch_user", resetNavigation: true)
   ];
 }
 
@@ -107,8 +111,9 @@ class _BarItem {
   final IconData icon;
   final String title;
   final String route;
+  final bool resetNavigation;
 
-  _BarItem(this.page, this.icon, this.title, this.route);
+  _BarItem(this.page, this.icon, this.title, this.route, {this.resetNavigation = false});
 }
 
 class UnreadNotificationsCount extends ItemCountNotifier<Notification> {
