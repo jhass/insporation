@@ -1,0 +1,54 @@
+# Uncomment the lines below you want to change by removing the # in the beginning
+
+# A list of devices you want to take the screenshots from
+
+# Take care! Runners App must be launched once before on specific simulator
+# A user account has to be logged-in and authenticate before taking screenshots
+
+# From Appstore:
+# For iPhone, screenshots for 6.5-inch iPhone Xs Max
+# and 5.5-inch devices (iPhone 6s Plus, iPhone 7 Plus, iPhone 8 Plus) are required.
+# These screenshots will scale down for smaller device sizes.
+
+ devices([
+#   "iPhone 8",
+"iPhone 8 Plus",
+"iPhone SE (2nd generation)",
+#   "iPhone X",
+"iPhone 11",
+#  "iPhone 11 Pro",
+"iPhone 11 Pro Max",
+#   "iPad Pro (12.9-inch)",
+#   "iPad Pro (9.7-inch)",
+#   "Apple TV 1080p"
+ ])
+
+localize_simulator(true)
+
+languages([
+   "en-US",
+#   "de-DE",
+#   "it-IT",
+#   ["pt", "pt_BR"] # Portuguese with Brazilian locale
+])
+
+# Set a visual style explicity
+dark_mode(false)
+
+# The name of the scheme which contains the UI Tests
+scheme("UI-Tests")
+
+# Where should the resulting screenshots be stored?
+# output_directory("./screenshots")
+
+# remove the '#' to clear all previously generated screenshots before creating new ones
+clear_previous_screenshots(true)
+
+# Remove the '#' to set the status bar to 9:41 AM, and show full battery and reception.
+override_status_bar(true)
+
+# Arguments to pass to the app on launch. See https://docs.fastlane.tools/actions/snapshot/#launch-arguments
+# launch_arguments(["-favColor red"])
+
+# For more information about all available options run
+# fastlane action snapshot
