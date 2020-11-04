@@ -15,7 +15,11 @@
 		65ABC372253AF959009FF783 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65ABC371253AF959009FF783 /* Session.swift */; };
 		65ABC374253B1127009FF783 /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65ABC373253B1127009FF783 /* Tokens.swift */; };
 		65ABC376253C393B009FF783 /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65ABC375253C393B009FF783 /* Registration.swift */; };
+<<<<<<< HEAD
 		65ADF0132551FF8F001F33C9 /* insporationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65ADF0122551FF8F001F33C9 /* insporationUITests.swift */; };
+=======
+		65ADF0132551FF8F001F33C9 /* InsporationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65ADF0122551FF8F001F33C9 /* InsporationUITests.swift */; };
+>>>>>>> Added automatic screenshot capabilities
 		65ADF02625520B3A001F33C9 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65ADF02525520B3A001F33C9 /* SnapshotHelper.swift */; };
 		65B7A7AE253CCF34006941BE /* RegistrationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B7A7AD253CCF08006941BE /* RegistrationStore.swift */; };
 		65D21BF0253ADF4C009B9EA3 /* AppAuthHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D21BEF253ADF4C009B9EA3 /* AppAuthHandler.swift */; };
@@ -81,7 +85,11 @@
 		65ABC373253B1127009FF783 /* Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokens.swift; sourceTree = "<group>"; };
 		65ABC375253C393B009FF783 /* Registration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
 		65ADF0102551FF8F001F33C9 /* insporationUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = insporationUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+<<<<<<< HEAD
 		65ADF0122551FF8F001F33C9 /* insporationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = insporationUITests.swift; sourceTree = "<group>"; };
+=======
+		65ADF0122551FF8F001F33C9 /* InsporationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsporationUITests.swift; sourceTree = "<group>"; };
+>>>>>>> Added automatic screenshot capabilities
 		65ADF0142551FF8F001F33C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65ADF02525520B3A001F33C9 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		65B7A7AD253CCF08006941BE /* RegistrationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationStore.swift; sourceTree = "<group>"; };
@@ -165,7 +173,11 @@
 			isa = PBXGroup;
 			children = (
 				65ADF02525520B3A001F33C9 /* SnapshotHelper.swift */,
+<<<<<<< HEAD
 				65ADF0122551FF8F001F33C9 /* insporationUITests.swift */,
+=======
+				65ADF0122551FF8F001F33C9 /* InsporationUITests.swift */,
+>>>>>>> Added automatic screenshot capabilities
 				65ADF0142551FF8F001F33C9 /* Info.plist */,
 			);
 			path = insporationUITests;
@@ -486,7 +498,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+<<<<<<< HEAD
 				65ADF0132551FF8F001F33C9 /* insporationUITests.swift in Sources */,
+=======
+				65ADF0132551FF8F001F33C9 /* InsporationUITests.swift in Sources */,
+>>>>>>> Added automatic screenshot capabilities
 				65ADF02625520B3A001F33C9 /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
