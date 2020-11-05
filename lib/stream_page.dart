@@ -146,7 +146,7 @@ class _StreamTypeSelector extends StatelessWidget with LocalizationHelpers {
           },
           items: const [StreamType.main, StreamType.activity, StreamType.aspects, StreamType.followedTags,
             StreamType.mentions, StreamType.liked, StreamType.commented].map((type) =>
-              DropdownMenuItem(child: Text(l(context).streamName(type),semanticsLabel: type.toString()), value: type)).toList()
+              DropdownMenuItem(child: Text(l(context).streamName(type), semanticsLabel: type.toString()), value: type)).toList()
         ),
       ),
     );
