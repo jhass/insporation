@@ -156,6 +156,15 @@ class InsporationLocalizations {
     locale: localeName
   );
 
+  String deleteSessionPrompt(String userId) => Intl.message(
+    'Remove session for $userId from insporation*?',
+    name: 'deleteSessionPrompt',
+    args: [userId],
+    desc: 'Title for delete session prompt dialog',
+    examples: const {'userId': 'user@example.org'},
+    locale: localeName
+  );
+
   String get navigationItemTitleStream => Intl.message(
     'Stream',
     name: 'navigationItemTitleStream',

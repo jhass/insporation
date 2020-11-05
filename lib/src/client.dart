@@ -18,8 +18,8 @@ class Client {
 
   Stream<AuthorizationEvent> get newAuthorizations => _appAuth.newAuthorizations;
 
-  Future<void> switchToUser(String diasporaId) async {
-    await _appAuth.switchToUser(diasporaId);
+  Future<void> switchToUser(String userId) async {
+    await _appAuth.switchToUser(userId);
   }
 
   Future<void> restoreSession() async {
@@ -35,9 +35,13 @@ class Client {
 
   Future<void> forgetSession() => _appAuth.forgetSession();
 
+  Future<void> destroySession(String userId) => _appAuth.destroySession(userId);
+
   bool get hasSession => _appAuth.hasSession;
 
   String get currentUserId => _appAuth.currentUserId;
+
+  Future<List<Session>> get allSessions => _appAuth.allSessions;
 
   Future<Profile> get currentUser {
     _fetch() async {

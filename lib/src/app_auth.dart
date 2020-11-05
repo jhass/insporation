@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:flutter/services.dart';
 import 'package:quiver/core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:clock/clock.dart';
 
 class AppAuth {
   static const _scopes =
@@ -26,6 +27,8 @@ class AppAuth {
     _channel.setMethodCallHandler(_dispatch);
     _listenToNewAuthorizations();
   }
+
+  Future<List<Session>> get allSessions => _store.allSessions;
 
   Future<void> switchToUser(String userId) async {
     if (_currentSession?.userId == userId) {
@@ -61,6 +64,14 @@ class AppAuth {
 
   Uri get currentBaseUri => currentUserId != null ? Uri(scheme: "https", host: _store.hostForUser(currentUserId)) : null;
 
+  Future<void> destroySession(String userId) async {
+    final session = await _store.fetchSession(userId);
+    if (session != null) {
+      session.state = null;
+      await _store.storeSession(session);
+    }
+  }
+
   Stream<AuthorizationEvent> get newAuthorizations {
     if (_newAuthorizations == null) {
       _newAuthorizations = _events.receiveBroadcastStream()
@@ -91,6 +102,10 @@ class AppAuth {
       _currentSession = await _store.fetchSession(_currentSession.userId);
       assert(hasSession, "We should have some session state after we got an access token");
 
+      // Update last used timestamp so sorting on the sign in page can work
+      _currentSession.markAsActiveNow();
+      await _store.storeSession(_currentSession);
+
       return tokens["accessToken"];
     } on PlatformException catch (e) {
       if (e.message?.toLowerCase()?.contains("network") == true) {
@@ -102,12 +117,12 @@ class AppAuth {
       }
 
       // our session is probably not worth anything anymore, destroy it
-      await destroySession("Failed to fetch access token: ${e.message}");
+      await _destroyCurrentSession("Failed to fetch access token: ${e.message}");
       return null; // Previous always raises
     }
   }
 
-  Future<void> destroySession(String message) async {
+  Future<void> _destroyCurrentSession(String message) async {
     if (_currentSession?.state != null) {
       _currentSession.state = null;
       await _store.storeSession(_currentSession);
@@ -185,6 +200,15 @@ class _SessionStore {
     await prefs.setString(key, jsonEncode(registration.toMap()));
   }
 
+  Future<List<Session>> get allSessions async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs
+        .getKeys()
+        .where((key) => key.startsWith(_sessionPrefix))
+        .map((key) => Session.fromMap(jsonDecode(prefs.getString(key))))
+        .toList();
+  }
+
   Future<Session> fetchSession(String userId) async {
     final key = "$_sessionPrefix$userId",
       prefs = await SharedPreferences.getInstance();
@@ -246,19 +270,26 @@ class Session {
   final String userId;
   final String scopes;
   String state;
+  int lastActiveAt;
 
-  Session({@required this.userId, @required this.scopes, this.state});
+  Session({@required this.userId, @required this.scopes, this.state, this.lastActiveAt = 0});
 
   factory Session.fromMap(Map<String, dynamic> data) => Session(
     userId: data["userId"],
     scopes: data["scopes"],
-    state: data["state"]
+    state: data["state"],
+    lastActiveAt: data["lastActiveAt"] ?? 0
   );
+
+  markAsActiveNow() {
+    lastActiveAt = clock.now().millisecondsSinceEpoch;
+  }
 
   Map<String, dynamic> toMap() => {
     "userId": userId,
     "scopes": scopes,
-    "state": state
+    "state": state,
+    "lastActiveAt": lastActiveAt
   };
 
   bool operator ==(other) => other is Session && other.userId == userId && other.scopes == scopes && other.state == state;
