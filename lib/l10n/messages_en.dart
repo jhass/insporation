@@ -25,6 +25,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m2(name) => "Delete aspect ${name}?";
 
+  static m32(userId) => "Remove session for ${userId} from insporation*?";
+
   static m3(name) => "${name} already is a recipient, cannot add them twice.";
 
   static m4(name) => "${name} is not sharing with you, cannot add them as a recipient!";
@@ -112,6 +114,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteAspectPrompt" : m2,
     "deleteCommentPrompt" : MessageLookupByLibrary.simpleMessage("Delete comment?"),
     "deletePostPrompt" : MessageLookupByLibrary.simpleMessage("Delete post?"),
+    "deleteSessionPrompt" : m32,
     "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Reshare of a deleted post"),
     "deselectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Deselect all"),
     "duplicateProfileTag" : MessageLookupByLibrary.simpleMessage("Tag already added"),
