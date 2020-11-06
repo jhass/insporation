@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-11-05T11:42:04.863112",
+  "@@last_modified": "2020-11-10T09:56:20.367026",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -93,6 +93,20 @@
   "errorSignInTimeout": "Timeout while trying to authenticate, are you sure your pod supports the API?",
   "@errorSignInTimeout": {
     "description": "Error message after authenticating timed out",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAuthorizationFailed": "Could not authorize to {userId}, is it spelled correctly, is your network running and is your pod running the latest development snapshot?",
+  "@errorAuthorizationFailed": {
+    "description": "Error message after authorization with the host failed",
+    "type": "text",
+    "placeholders": {
+      "userId": {}
+    }
+  },
+  "errorUnexpectedNetworkError": "A unexpected network error occurred",
+  "@errorUnexpectedNetworkError": {
+    "description": "A unspecified network error occurred",
     "type": "text",
     "placeholders": {}
   },

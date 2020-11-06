@@ -12,6 +12,10 @@ import os.log
 
 typealias PostRegistrationCallback = (_ configuration: OIDServiceConfiguration?, _ registrationResponse: OIDRegistrationResponse?) -> Void
 
+struct ErrorMessage {
+    var code: String
+    var message: String
+}
 
 class AppAuthHandler {
     
@@ -25,15 +29,36 @@ class AppAuthHandler {
     let authMethodChannel: FlutterMethodChannel
     var currentSession: Session?
     
+    private let TIMEOUT_IN_SECONDS = 6.0 // Wait a relative short ammout of time.
+    
     private var completionHandler: [(_ tokens:Tokens) -> Void] = []
-    private var errorHandler: [(_ errorMessage:String) -> Void] = []
+    private var errorHandler: [(_ code: String, _ errorMessage:String) -> Void] = []
+    
+    private let FAILED_TIMEOUT = "timeout"
+    private let FAILED_TOKEN_FETCH = "failed_token_fetch"
+    private let FAILED_AUTHORIZE = "failed_authorize"
+    private let FAILED_REGISTER = "failed_register"
+    private let FAILED_DISCOVERY = "failed_discovery" // Is the first call on new or unknown services, if this fails, service is not available or not the right API Version
+    
+    private let RUNTIME_ERROR = "runtime_error" // Not fixable by user
     
     init(methodChannel: FlutterMethodChannel, controller: UIViewController) {
         self.authMethodChannel = methodChannel
         self.controller = controller
         os_log("Init App Auth Handler")
+        predefineURLSession()
     }
     
+    // Set some custom configurations for authorization sessions
+    private func predefineURLSession() {
+        let sessionConfig = URLSessionConfiguration.default
+        sessionConfig.timeoutIntervalForResource = TIMEOUT_IN_SECONDS
+        let session = URLSession(configuration: sessionConfig)
+        OIDURLSessionProvider.setSession(session)
+    }
+    
+    
+    // Calls all stored handler
     private func invokeCompletionHandler(tokens: Tokens) {
         while !completionHandler.isEmpty {
             completionHandler.removeFirst()(tokens)
@@ -41,9 +66,10 @@ class AppAuthHandler {
         errorHandler.removeAll()
     }
     
-    private func invokeErrorHandler(errorMessage: String) {
+    // Calls all stored handler
+    private func invokeErrorHandler(code: String, errorMessage: String) {
         while !self.errorHandler.isEmpty {
-            self.errorHandler.removeFirst()(errorMessage)
+            self.errorHandler.removeFirst()(code, errorMessage)
         }
         completionHandler.removeAll()
     }
@@ -51,7 +77,7 @@ class AppAuthHandler {
     /**
      Gets a token from auth
      */
-    func getAccessTokens(_ session: Session, completionHandler: @escaping (Tokens) -> Void, errorHandler:@escaping (String) -> Void) {
+    func getAccessTokens(_ session: Session, completionHandler: @escaping (Tokens) -> Void, errorHandler: @escaping (String, String) -> Void) {
         self.currentSession = session
         
         self.completionHandler.append(completionHandler)
@@ -64,7 +90,7 @@ class AppAuthHandler {
             
         } else {
             os_log("State was set previously, refreshing token from existing state")
-            // A textual state was set, recover laste stored State Obejct
+            // A textual state was set, recover latest stored State Object
             recoverToken()
         }
     }
@@ -72,7 +98,7 @@ class AppAuthHandler {
     func recoverToken() {
         guard let session = self.currentSession else {
             os_log("Error in getting last session")
-            self.errorHandler.first?("Error in getting last session")
+            self.errorHandler.first?(FAILED_TOKEN_FETCH, "Internal error in getting last session")
             return
         }
         
@@ -85,7 +111,7 @@ class AppAuthHandler {
             }
             
             guard let tokenResponse = authState.lastTokenResponse else {
-                self.invokeErrorHandler(errorMessage: "No token received")
+                self.invokeErrorHandler(code: FAILED_TOKEN_FETCH, errorMessage: "No token received")
                 return
             }
             
@@ -95,7 +121,7 @@ class AppAuthHandler {
             authState.performAction { (accessToken, idToken, error) in
                 
                 if let error = error {
-                    self.invokeErrorHandler(errorMessage: error.localizedDescription)
+                    self.invokeErrorHandler(code: self.FAILED_TOKEN_FETCH, errorMessage: error.localizedDescription)
                     return
                 }
                 
@@ -121,7 +147,7 @@ class AppAuthHandler {
     func authorizeUser() {
         guard let userId = self.currentSession?.userId else {
             os_log("No userID set")
-            self.invokeErrorHandler(errorMessage: "No user ID set")
+            self.invokeErrorHandler(code: FAILED_AUTHORIZE, errorMessage: "No user ID set")
             return
         }
         discoverConfiguration(forUserId: userId)
@@ -130,20 +156,26 @@ class AppAuthHandler {
     func discoverConfiguration(forUserId userId: String) {
         
         let hostname = StateHandler.hostForUser(userId: userId)
-        os_log("Discovering service config for '%{public}@'", log: .default, type: .debug, hostname)
+        os_log("Discovering service config for '%{public}@'...", log: .default, type: .debug, hostname)
         
         let discoveryURL = URL(string: "https://\(hostname)")!
+        
         OIDAuthorizationService.discoverConfiguration(forIssuer: discoveryURL) { (configuration, error) in
-            
-            if let error = error {
+            if let error = error as NSError? {
+                if self.isTimeoutError(error) {
+                    os_log("The connection timed out. ")
+                    self.invokeErrorHandler(code: self.FAILED_TIMEOUT, errorMessage: "Timeout to discover service")
+                    return
+                }
+                
                 os_log("Failed to discover service config for %{public}@: %{public}@", log: .default, type: .error, hostname, error.localizedDescription)
-                self.invokeErrorHandler(errorMessage: "Failed to discover service")
+                self.invokeErrorHandler(code: self.FAILED_DISCOVERY, errorMessage: "Failed to discover service")
                 return
             }
             
             guard let configuration = configuration else {
                 os_log("Configuration Object was empty")
-                self.invokeErrorHandler(errorMessage: "Configuraton object was empty")
+                self.invokeErrorHandler(code: self.FAILED_DISCOVERY, errorMessage: "Configuraton object was empty")
                 return
             }
             
@@ -190,9 +222,16 @@ class AppAuthHandler {
         OIDAuthorizationService.perform(registrationRequest) { (response, error) in
             
             if let error = error {
+                
+                if self.isTimeoutError(error) {
+                    os_log("The connection timed out. ")
+                    self.invokeErrorHandler(code: self.RUNTIME_ERROR, errorMessage: "Timeout to register service")
+                    return
+                }
+                
                 os_log("Failed registration client %{error}@", log: .default, type: .error, error.localizedDescription)
                 self.setAuthState(nil) // Clear local store - if already stored
-                self.invokeErrorHandler(errorMessage: "Failed to register service: \(error.localizedDescription)")
+                self.invokeErrorHandler(code: self.FAILED_REGISTER, errorMessage: "Failed to register service: \(error.localizedDescription)")
                 return
             }
             
@@ -217,8 +256,8 @@ class AppAuthHandler {
     func doAuthWithAutoCodeExchange(configuration: OIDServiceConfiguration, scopes: String,  clientID: String, clientSecret: String?) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            os_log("Error accessing AppDelegate")
-            self.invokeErrorHandler(errorMessage: "Error accessing AppDelegate")
+            os_log("RuntimeError: AppDelegate not set in code.")
+            self.invokeErrorHandler(code: self.RUNTIME_ERROR, errorMessage: "AppDelegate not set in code")
             return
         }
         
@@ -240,14 +279,21 @@ class AppAuthHandler {
                                                                      "login_hint": login])
         
         // performs authentication request
-        os_log("Initiating authorization request with request: %{public}@", log: .default, type: .default,  request.debugDescription )
+        os_log("Initiating authorization request with request: '%{public}@'...", log: .default, type: .default,  request.debugDescription )
         
         appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, presenting: self.controller) { authState, error in
             
             if let error = error {
+                
+                if self.isTimeoutError(error) {
+                    os_log("The connection timed out. ")
+                    self.invokeErrorHandler(code: self.RUNTIME_ERROR, errorMessage: "Timeout to authorize")
+                    return
+                }
+                
                 os_log("Authorization error: %{public}@", log:.default, type: .error,  error.localizedDescription )
                 self.setAuthState(nil)
-                self.invokeErrorHandler(errorMessage: "Authorization error: \(error.localizedDescription)")
+                self.invokeErrorHandler(code: self.FAILED_AUTHORIZE, errorMessage: "Authorization error: \(error.localizedDescription)")
                 return
             }
             
@@ -255,7 +301,7 @@ class AppAuthHandler {
                 
                 // Token setting should end waiting service
                 guard let tokenResponse = authState.lastTokenResponse else {
-                    self.invokeErrorHandler(errorMessage: "No token received")
+                    self.invokeErrorHandler(code: self.FAILED_TOKEN_FETCH, errorMessage: "No token received")
                     return
                 }
                 
@@ -269,7 +315,7 @@ class AppAuthHandler {
     }
 }
 
-/// Load / Save Chnage States
+/// Load / Save changeable states
 extension AppAuthHandler {
     
     func setAuthState(_ authState: OIDAuthState?) {
@@ -294,7 +340,7 @@ extension AppAuthHandler {
         var data: Data? = nil
         
         if let authState = state {
-            // Attention! This arhcive-Methis is marked as depricated, but recommended method
+            // Attention! The archivedData method is marked as deprecated in iOS 12.0, but recommended method
             // will not recover the OIDAuthState correctly
             data = NSKeyedArchiver.archivedData(withRootObject: authState)
         }
@@ -313,7 +359,7 @@ extension AppAuthHandler {
             return nil
         }
         
-        // Attention! This arhcive-Methis is marked as depricated, but recommended method
+        // Attention! The archivedData method is marked as deprecated, but recommended method
         // will not recover the OIDAuthState correctly
         if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
             self.setAuthState(authState)
@@ -325,5 +371,17 @@ extension AppAuthHandler {
     /// Stores session into Flutter system, by using state as a textual representation
     func storeSession(session: Session) {
         self.authMethodChannel.invokeMethod("storeSession", arguments: session.toDict())
+    }
+}
+
+extension AppAuthHandler {
+    
+    func isTimeoutError(_ error: Error?) -> Bool {
+        if let error = error as NSError? {
+            if let uError = error.userInfo["NSUnderlyingError"] as! NSError? {
+                return uError.code == CFNetworkErrors.cfurlErrorTimedOut.rawValue
+            }
+        }
+        return false
     }
 }
