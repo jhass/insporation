@@ -256,6 +256,11 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
         _lastError = l.errorSignInTimeout;
         _loading = false;
       });
+    } on InvalidAPIException {
+      setState(() {
+        _lastError = l.errorSignInNoHost;
+        _loading = false;
+      });
     } catch (e) {
       setState(() {
         _lastError = e.toString();

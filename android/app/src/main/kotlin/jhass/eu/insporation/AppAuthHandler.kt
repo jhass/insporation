@@ -21,7 +21,7 @@ import kotlin.coroutines.suspendCoroutine
 private const val APP_AUTH_CHANNEL = "insporation/appauth"
 private const val APP_AUTH_SESSION_CHANNEL = "insporation/appauth_authorization_events"
 private val APP_AUTH_REDIRECT_URI : Uri = Uri.parse("eu.jhass.insporation://callback")
-private const val TIMEOUT = 60000L
+private const val TIMEOUT = 6_000L // In Milliseconds
 
 typealias OnLaunchAuthorizationIntent = (intent: Intent, data: String) -> Unit
 

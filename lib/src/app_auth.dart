@@ -108,17 +108,12 @@ class AppAuth {
 
       return tokens["accessToken"];
     } on PlatformException catch (e) {
-      if (e.message?.toLowerCase()?.contains("network") == true) {
-        throw e.message; // probably bad network
-      }
 
+      // Check code before message
       if (e.code.startsWith("timeout")) {
         throw TimeoutException(e.message);
       }
-
-      // our session is probably not worth anything anymore, destroy it
-      await _destroyCurrentSession("Failed to fetch access token: ${e.message}");
-      return null; // Previous always raises
+      throw InvalidAPIException(e.message);
     }
   }
 
@@ -317,4 +312,12 @@ class InvalidSessionError implements Exception {
 
   @override
   String toString() => "Invalid session: $message";
+}
+
+/**
+ * API is invalid
+ */
+class InvalidAPIException implements Exception {
+  InvalidAPIException(this.message);
+  final String message;
 }

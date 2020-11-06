@@ -156,6 +156,13 @@ class InsporationLocalizations {
     locale: localeName
   );
 
+  String get errorSignInNoHost => Intl.message(
+      'Unable to resolve host, are you sure this pod supports the API?',
+      name: 'errorSignInNoHost',
+      desc: 'Error message if no host can not be resolved',
+      locale: localeName
+  );
+
   String deleteSessionPrompt(String userId) => Intl.message(
     'Remove session for $userId from insporation*?',
     name: 'deleteSessionPrompt',
