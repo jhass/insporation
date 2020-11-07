@@ -49,7 +49,7 @@ class AppAuthHandler {
         predefineURLSession()
     }
     
-// Set some custom configurations for authorization sessions
+    // Set some custom configurations for authorization sessions
     private func predefineURLSession() {
         let sessionConfig = URLSessionConfiguration.default
         sessionConfig.timeoutIntervalForResource = TIMEOUT_IN_SECONDS
@@ -134,7 +134,7 @@ class AppAuthHandler {
     func authorizeUser() {
         guard let userId = self.currentSession?.userId else {
             os_log("No userID set")
-            self.invokeErrorHandler(code: self.FAILED_AUTHORIZE, errorMessage: "No user ID set")
+            self.invokeErrorHandler(code: FAILED_AUTHORIZE, errorMessage: "No user ID set")
             return
         }
         discoverConfiguration(forUserId: userId)
@@ -148,7 +148,6 @@ class AppAuthHandler {
         let discoveryURL = URL(string: "https://\(hostname)")!
         
         OIDAuthorizationService.discoverConfiguration(forIssuer: discoveryURL) { (configuration, error) in
-            // 1001: Timeout, 1003 = Hostnot found
             if let error = error as NSError? {
                 if self.isTimeoutError(error) {
                     os_log("The connection timed out. ")

@@ -115,7 +115,7 @@ class AppAuth {
 
       if (e.code.startsWith("failed_")) {
         // Catches all failed_discovery (Unknown service/API), failed_register, failed_auth. etc
-        throw InvalidAPIException(e.message);
+        throw AuthorizationFailedException(e.message);
       }
 
       // our session is probably not worth anything anymore, destroy it
