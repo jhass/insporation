@@ -156,10 +156,10 @@ class InsporationLocalizations {
     locale: localeName
   );
 
-  String get errorSignInNoHost => Intl.message(
-      'Unable to resolve host, are you sure this pod supports the API?',
-      name: 'errorSignInNoHost',
-      desc: 'Error message if no host can not be resolved',
+  String get errorInvalidAPI => Intl.message(
+      'Service did not respond as expected. Is the hostname right? Does the pod run at least version 0.8?',
+      name: 'errorInvalidAPI',
+      desc: 'Error message host did not respond. Either invalid hostname or pod run does not at least on version 0.8 or higher',
       locale: localeName
   );
 

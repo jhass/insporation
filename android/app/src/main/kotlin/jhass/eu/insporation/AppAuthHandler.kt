@@ -244,7 +244,7 @@ private class CallHandler(private val context: Context,
           continuation.resume(serviceConfig)
         } else {
           Log.d("AppAuth", "Failed to discover service config for $host: ${exception?.fullMessage()}")
-          continuation.resumeWithException(CallError("failed_register", "Failed to fetch service config", exception))
+          continuation.resumeWithException(CallError("failed_discovery", "Failed to discover service config", exception))
         }
       }
     }

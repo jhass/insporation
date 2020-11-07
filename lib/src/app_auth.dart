@@ -113,7 +113,15 @@ class AppAuth {
       if (e.code.startsWith("timeout")) {
         throw TimeoutException(e.message);
       }
-      throw InvalidAPIException(e.message);
+
+      if (e.code.startsWith("failed_")) {
+        // Catches all failed_discovery (Unknown service/API), failed_register, failed_auth. etc
+        throw InvalidAPIException(e.message);
+      }
+
+      await _destroyCurrentSession("Failed to fetch access token: ${e.message}");
+      return null; // Previous always raises
+
     }
   }
 
@@ -314,9 +322,6 @@ class InvalidSessionError implements Exception {
   String toString() => "Invalid session: $message";
 }
 
-/**
- * API is invalid
- */
 class InvalidAPIException implements Exception {
   InvalidAPIException(this.message);
   final String message;

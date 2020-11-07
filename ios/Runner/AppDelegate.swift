@@ -42,9 +42,9 @@ import os.log
                     appAuthHandler.getAccessTokens(session) { (tokens) in
                         os_log("Token: %{public}@", log: .default, type: .default,tokens.toDict())
                         result(tokens.toDict())
-                    } errorHandler : { (errorMessage) in
+                    } errorHandler : { (code, errorMessage) in
                         os_log("Error: %{public}@", log:.default, type: .error, errorMessage)
-                        result(FlutterError(code: "AppAuth", message: errorMessage, details: nil))
+                        result(FlutterError(code: code, message: errorMessage, details: nil))
                     }
                 }
             }
