@@ -156,7 +156,7 @@ class InsporationLocalizations {
     locale: localeName
   );
 
-  String get errorInvalidAPI => Intl.message(
+  String errorAuthorizationFailed(String user) => Intl.message(
       'Service did not respond as expected. Is the hostname right? Does the pod run at least version 0.8?',
       name: 'errorInvalidAPI',
       desc: 'Error message host did not respond. Either invalid hostname or pod run does not at least on version 0.8 or higher',
