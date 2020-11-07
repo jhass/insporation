@@ -157,7 +157,7 @@ class InsporationLocalizations {
   );
 
   String errorAuthorizationFailed(String user) => Intl.message(
-      'Service did not respond as expected. Is the hostname right? Does the pod run at least version 0.8?',
+      'Could not authorize to $user, is it spelled correctly, is your network running and is your pod running the latest development snapshot?', // TODO update message after diaspora 0.8 release
       name: 'errorInvalidAPI',
       desc: 'Error message host did not respond. Either invalid hostname or pod run does not at least on version 0.8 or higher',
       locale: localeName
