@@ -347,7 +347,7 @@ extension AppAuthHandler {
             return nil
         }
         
-        // Attention! This archivedData-method is marked as depricated, but recommended method
+        // Attention! The archivedData method is marked as deprecated, but recommended method
         // will not recover the OIDAuthState correctly
         if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
             self.setAuthState(authState)
