@@ -258,7 +258,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
       });
     } on InvalidAPIException {
       setState(() {
-        _lastError = l.errorInvalidAPI;
+        _lastError = l.errorAuthorizationFailed(userId);
         _loading = false;
       });
     } catch (e) {
