@@ -109,7 +109,6 @@ class AppAuth {
       return tokens["accessToken"];
     } on PlatformException catch (e) {
 
-      // Check code before message
       if (e.code.startsWith("timeout")) {
         throw TimeoutException(e.message);
       }
