@@ -119,6 +119,7 @@ class AppAuth {
         throw InvalidAPIException(e.message);
       }
 
+      // our session is probably not worth anything anymore, destroy it
       await _destroyCurrentSession("Failed to fetch access token: ${e.message}");
       return null; // Previous always raises
 
