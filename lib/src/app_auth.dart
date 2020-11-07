@@ -323,6 +323,6 @@ class InvalidSessionError implements Exception {
 }
 
 class AuthorizationFailedException implements Exception {
-  InvalidAPIException(this.message);
+  AuthorizationFailedException(this.message);
   final String message;
 }
