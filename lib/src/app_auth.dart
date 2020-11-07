@@ -322,7 +322,7 @@ class InvalidSessionError implements Exception {
   String toString() => "Invalid session: $message";
 }
 
-class InvalidAPIException implements Exception {
+class AuthorizationFailedException implements Exception {
   InvalidAPIException(this.message);
   final String message;
 }
