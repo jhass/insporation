@@ -744,7 +744,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "profilePostsHeader": "المنشورات",
+  "profilePostsHeader": "المشاركات",
   "@profilePostsHeader": {
     "description": "Header for posts section on the profile page",
     "type": "text",
@@ -826,7 +826,7 @@
       }
     }
   },
-  "notificationBirthday": "{actorCount,plural, =0{لا عيد ميلاد اليوم.}=1{عيد ميلاد {actors}اليوم.}other{عيد ميلاد {actors} اليوم.}}",
+  "notificationBirthday": "{actorCount,plural, =0{لا عيد ميلاد اليوم.}=1{عيد ميلاد {actors} اليوم.}other{عيد ميلاد {actors} اليوم.}}",
   "@notificationBirthday": {
     "description": "Notification message for when a contact of the user has their birthday. Currently only the one case is used",
     "type": "text",
@@ -1381,5 +1381,15 @@
     "description": "Error message after authenticating timed out",
     "type": "text",
     "placeholders": {}
+  },
+  "deleteSessionPrompt": "أتريد إزالة جلسة {userId} من إنسبوريشن؟",
+  "@deleteSessionPrompt": {
+    "description": "Title for delete session prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
   }
 }
