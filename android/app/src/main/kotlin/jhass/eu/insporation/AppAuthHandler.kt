@@ -114,7 +114,7 @@ private class CallHandler(private val context: Context,
             continuation.resume(Tokens(accessToken!!, idToken))
           } else {
             Log.d("AppAuth", "Failed to fetch access token for ${currentSession.userId}: ${exception?.fullMessage()}")
-            continuation.resumeWithException(CallError("failed_token_fetch", "Failed to obtain access token", exception))
+            continuation.resumeWithException(CallError("failed_token_fetch", "Failed to obtain access token"))
           }
         }
       }
@@ -200,7 +200,7 @@ private class CallHandler(private val context: Context,
 
     if (result.exception != null) {
       Log.d("AppAuth", "Failed to authorize $userId: ${result.exception.fullMessage()}")
-      throw CallError("failed_authorize", "Failed to authorize user", result.exception)
+      throw CallError("failed_authorize", "Failed to authorize user")
     }
 
     try {
@@ -226,7 +226,7 @@ private class CallHandler(private val context: Context,
 
     if (result.exception != null) {
       Log.d("AppAuth", "Failed to exchange authorization for ${session.userId} for tokens: ${result.exception.fullMessage()}")
-      throw CallError("failed_authorize", "Failed to exchange authorization token", result.exception)
+      throw CallError("failed_authorize", "Failed to exchange authorization token")
     }
 
     Log.d("AppAuth", "Successfully exchanged token for authorization for ${session.userId}")
@@ -244,7 +244,7 @@ private class CallHandler(private val context: Context,
           continuation.resume(serviceConfig)
         } else {
           Log.d("AppAuth", "Failed to discover service config for $host: ${exception?.fullMessage()}")
-          continuation.resumeWithException(CallError("failed_discovery", "Failed to discover service config", exception))
+          continuation.resumeWithException(CallError("failed_discovery", "Failed to discover service config"))
         }
       }
     }
@@ -261,7 +261,7 @@ private class CallHandler(private val context: Context,
           continuation.resume(response)
         } else {
           Log.d("AppAuth", "Failed to register to $host: ${exception?.fullMessage()}")
-          continuation.resumeWithException(CallError("failed_register", "Failed to register", exception))
+          continuation.resumeWithException(CallError("failed_register", "Failed to register"))
         }
       }
     }

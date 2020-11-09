@@ -256,9 +256,9 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
         _lastError = l.errorSignInTimeout;
         _loading = false;
       });
-    } on AuthorizationFailedException {
+    } on AuthorizationFailedException catch (e) {
       setState(() {
-        _lastError = l.errorAuthorizationFailed(userId);
+        _lastError = l.errorAuthorizationFailed(userId) + "\n" + e.message;
         _loading = false;
       });
     } catch (e) {
