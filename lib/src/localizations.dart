@@ -156,10 +156,18 @@ class InsporationLocalizations {
     locale: localeName
   );
 
-  String errorAuthorizationFailed(String user) => Intl.message(
-      'Could not authorize to $user, is it spelled correctly, is your network running and is your pod running the latest development snapshot?', // TODO update message after diaspora 0.8 release
-      name: 'errorInvalidAPI',
+  String errorAuthorizationFailed(String userId) => Intl.message(
+      'Could not authorize to $userId, is it spelled correctly, is your network running and is your pod running the latest development snapshot?', // TODO update message after diaspora 0.8 release
+      args: [userId],
+      name: 'errorAuthorizationFailed',
       desc: 'Error message after authorization with the host failed',
+      locale: localeName
+  );
+
+  String get errorUnexpectedNetworkError => Intl.message(
+      'A unexpected network error occurred',
+      name: 'errorUnexpectedNetworkError',
+      desc: 'A unspecified network error occurred',
       locale: localeName
   );
 

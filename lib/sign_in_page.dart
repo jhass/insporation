@@ -31,6 +31,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
   final _initialFocus = FocusNode();
   var _loading = true;
   String _lastError;
+  String _lastErrorDetails;
   Future<List<Session>> _sessions;
 
   @override
@@ -120,7 +121,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
               ]),
             ),
           ),
-          ErrorMessage(_lastError)
+          ErrorMessage(_lastError, errorDetails: _lastErrorDetails,)
         ]),
       )),
     );
@@ -160,6 +161,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
     setState(() {
       _loading = true;
       _lastError = null;
+      _lastErrorDetails = null;
     });
 
     if (persistentState.wasAuthorizing) {
@@ -207,7 +209,8 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
       debugPrintStack(label: "Failed to resume session: $e", stackTrace: s);
       setState(() {
         _loading = false;
-        _lastError = e.toString();
+        _lastError =  l.errorUnexpectedNetworkError;
+        _lastErrorDetails = e.toString();
       });
     }
   }
@@ -256,14 +259,16 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
         _lastError = l.errorSignInTimeout;
         _loading = false;
       });
-    } on AuthorizationFailedException catch (e) {
+    } on AuthorizationFailedException catch (e){
       setState(() {
-        _lastError = l.errorAuthorizationFailed(userId) + "\n" + e.message;
+        _lastError = l.errorAuthorizationFailed(userId);
+        _lastErrorDetails = e.message;
         _loading = false;
       });
     } catch (e) {
       setState(() {
-        _lastError = e.toString();
+        _lastError = l.errorUnexpectedNetworkError;
+        _lastErrorDetails = e.toString();
         _loading = false;
       });
     }

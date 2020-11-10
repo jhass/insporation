@@ -9,7 +9,7 @@ import 'client.dart';
 import 'colors.dart' as colors;
 
 class ErrorMessage extends StatelessWidget {
-  const ErrorMessage(this.message, {Key key, this.onRetry}) : super(key: key);
+  const ErrorMessage(this.message, {String errorDetails, Key key, this.onRetry}) : super(key: key);
 
   final String message;
   final Function onRetry;

@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-11-07T20:31:02.788952",
+  "@@last_modified": "2020-11-10T09:56:20.367026",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -96,9 +96,17 @@
     "type": "text",
     "placeholders": {}
   },
-  "errorInvalidAPI": "Service did not respond as expected. Is the hostname right? Does the pod run at least version 0.8?",
-  "@errorInvalidAPI": {
-    "description": "Error message host did not respond. Either invalid hostname or pod run does not at least on version 0.8 or higher",
+  "errorAuthorizationFailed": "Could not authorize to {userId}, is it spelled correctly, is your network running and is your pod running the latest development snapshot?",
+  "@errorAuthorizationFailed": {
+    "description": "Error message after authorization with the host failed",
+    "type": "text",
+    "placeholders": {
+      "userId": {}
+    }
+  },
+  "errorUnexpectedNetworkError": "A unexpected network error occurred",
+  "@errorUnexpectedNetworkError": {
+    "description": "A unspecified network error occurred",
     "type": "text",
     "placeholders": {}
   },
