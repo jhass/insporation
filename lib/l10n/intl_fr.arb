@@ -1375,5 +1375,21 @@
     "description": "Label for a dialog save button",
     "type": "text",
     "placeholders": {}
+  },
+  "deleteSessionPrompt": "Supprimer la session pour {userId} d'insporation* ?",
+  "@deleteSessionPrompt": {
+    "description": "Title for delete session prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
+  },
+  "errorSignInTimeout": "Délai d'attente lors de la tentative d'authentification, êtes-vous sûr·e que votre pod prend en charge l'API ?",
+  "@errorSignInTimeout": {
+    "description": "Error message after authenticating timed out",
+    "type": "text",
+    "placeholders": {}
   }
 }
