@@ -1071,5 +1071,21 @@
     "description": "Label for a dialog save button",
     "type": "text",
     "placeholders": {}
+  },
+  "deleteSessionPrompt": "Rimuovere la sessione per {userId} da insporation*?",
+  "@deleteSessionPrompt": {
+    "description": "Title for delete session prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
+  },
+  "errorSignInTimeout": "Tempo scaduto durante il tentativo di autenticazione, sei sicuro/a che il tuo pod supporti l'API?",
+  "@errorSignInTimeout": {
+    "description": "Error message after authenticating timed out",
+    "type": "text",
+    "placeholders": {}
   }
 }
