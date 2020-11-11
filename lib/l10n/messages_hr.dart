@@ -25,63 +25,63 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m2(name) => "Isbrisati aspekt ${name}?";
 
-  static m3(name) => "${name} već je primatelj. Ne može se dvaput dodati.";
+  static m4(name) => "${name} već je primatelj. Ne može se dvaput dodati.";
 
-  static m4(name) => "${name} ne dijeli s tobom. Ne mogu se dodati kao primatelji!";
+  static m5(name) => "${name} ne dijeli s tobom. Ne mogu se dodati kao primatelji!";
 
-  static m5(name) => "Ne dijeliš s ${name}. Ne mogu se dodati kao primatelji!";
+  static m6(name) => "Ne dijeliš s ${name}. Ne mogu se dodati kao primatelji!";
 
-  static m6(name) => "Neuspjelo blokiranje korisnika ${name}";
+  static m7(name) => "Neuspjelo blokiranje korisnika ${name}";
 
-  static m7(name) => "Neuspjelo uklanjanje aspekta ${name}";
+  static m8(name) => "Neuspjelo uklanjanje aspekta ${name}";
 
-  static m8(tag) => "Neuspjelo praćenje oznake #${tag}";
+  static m9(tag) => "Neuspjelo praćenje oznake #${tag}";
 
-  static m9(oldName, newName) => "Neuspjelo preimenovanje aspekta ${oldName} u ${newName}";
+  static m10(oldName, newName) => "Neuspjelo preimenovanje aspekta ${oldName} u ${newName}";
 
-  static m10(name) => "Neuspjelo deblokiranje korisnika ${name}";
+  static m11(name) => "Neuspjelo deblokiranje korisnika ${name}";
 
-  static m11(tag) => "Neuspjelo uklanjanje praćenja oznake #${tag}";
+  static m12(tag) => "Neuspjelo uklanjanje praćenja oznake #${tag}";
 
-  static m12(count) => "${Intl.plural(count, zero: 'U nijednom aspektu', one: 'U jednom aspektu', other: 'U ${count} aspekta')}";
+  static m13(count) => "${Intl.plural(count, zero: 'U nijednom aspektu', one: 'U jednom aspektu', other: 'U ${count} aspekta')}";
 
-  static m13(first, second, othersCount) => "${Intl.plural(othersCount, zero: '${first}, ${second} i nitko drugi', one: '${first}, ${second} i još jedan', other: '${first}, ${second} i još ${othersCount}')}";
+  static m14(first, second, othersCount) => "${Intl.plural(othersCount, zero: '${first}, ${second} i nitko drugi', one: '${first}, ${second} i još jedan', other: '${first}, ${second} i još ${othersCount}')}";
 
-  static m14(first, second, third) => "${first}, ${second} i ${third}";
+  static m15(first, second, third) => "${first}, ${second} i ${third}";
 
-  static m15(first, second) => "${first} i ${second}";
+  static m16(first, second) => "${first} i ${second}";
 
-  static m16(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Nitko nije komentirao ${target}.', one: '${actors} je također komentirao ${target}.', other: '${actors} su također komentirali ${target}.')}";
+  static m17(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Nitko nije komentirao ${target}.', one: '${actors} je također komentirao ${target}.', other: '${actors} su također komentirali ${target}.')}";
 
-  static m17(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Danas nitko nema rođendan.', one: '${actors} ima danas rođendan.', other: '${actors} imaju danas rođendan.')}";
+  static m18(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Danas nitko nema rođendan.', one: '${actors} ima danas rođendan.', other: '${actors} imaju danas rođendan.')}";
 
-  static m18(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Nitko nije komentirao tvoju ${target}.', one: '${actors} je komentirao tvoju ${target}.', other: '${actors} su komentirali tvoju ${target}.')}";
+  static m19(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Nitko nije komentirao tvoju ${target}.', one: '${actors} je komentirao tvoju ${target}.', other: '${actors} su komentirali tvoju ${target}.')}";
 
-  static m19(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Nikome se ne sviđa tvoja objava ${target}.', one: '${actors} se sviđa tvoja objava ${target}.', other: '${actors} se sviđa tvoja objava ${target}.')}";
+  static m20(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Nikome se ne sviđa tvoja objava ${target}.', one: '${actors} se sviđa tvoja objava ${target}.', other: '${actors} se sviđa tvoja objava ${target}.')}";
 
-  static m20(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Nitko te nije spomenuo u komentaru.', one: '${actors} te je spomenuo u komentaru.', other: '${actors} te je spomenulo u komentaru.')}";
+  static m21(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Nitko te nije spomenuo u komentaru.', one: '${actors} te je spomenuo u komentaru.', other: '${actors} te je spomenulo u komentaru.')}";
 
-  static m21(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Nitko te nije spomenuo u komentaru izbrisane objave.', one: '${actors} te je spomenuo u komentaru izbrisane objave.', other: '${actors} te je spomenulo u komentaru izbrisane objave.')}";
+  static m22(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Nitko te nije spomenuo u komentaru izbrisane objave.', one: '${actors} te je spomenuo u komentaru izbrisane objave.', other: '${actors} te je spomenulo u komentaru izbrisane objave.')}";
 
-  static m22(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Nitko te nije spomenuo u ${target}.', one: '${actors} te je spomenuo u ${target}.', other: '${actors} su te spomenuli u ${target}.')}";
+  static m23(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Nitko te nije spomenuo u ${target}.', one: '${actors} te je spomenuo u ${target}.', other: '${actors} su te spomenuli u ${target}.')}";
 
-  static m23(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Nitko nije proslijedio tvoju objavu ${target}.', one: '${actors} je proslijedio tvoju objavu ${target}.', other: '${actors} je proslijedilo tvoju objavu ${target}.')}";
+  static m24(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Nitko nije proslijedio tvoju objavu ${target}.', one: '${actors} je proslijedio tvoju objavu ${target}.', other: '${actors} je proslijedilo tvoju objavu ${target}.')}";
 
-  static m24(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Nitko nije počeo s tobom dijeliti.', one: '${actors} je s tobom počeo dijeliti.', other: '${actors} su s tobom počeli dijeliti.')}";
+  static m25(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Nitko nije počeo s tobom dijeliti.', one: '${actors} je s tobom počeo dijeliti.', other: '${actors} su s tobom počeli dijeliti.')}";
 
-  static m25(author) => "NSFW objava od ${author}";
+  static m26(author) => "NSFW objava od ${author}";
 
-  static m26(author) => "od ${author}";
+  static m27(author) => "od ${author}";
 
-  static m27(author, provider) => "${author} na ${provider}:";
+  static m28(author, provider) => "${author} na ${provider}:";
 
-  static m28(count) => "${Intl.plural(count, zero: 'Nema aspekata', one: 'Jedan aspekt', other: '${count} aspekta')}";
+  static m29(count) => "${Intl.plural(count, zero: 'Nema aspekata', one: 'Jedan aspekt', other: '${count} aspekta')}";
 
-  static m29(name) => "Započeto dijeljenje s ${name}.";
+  static m30(name) => "Započeto dijeljenje s ${name}.";
 
-  static m30(name) => "Prekinuto dijeljenje s ${name}.";
+  static m31(name) => "Prekinuto dijeljenje s ${name}.";
 
-  static m31(count) => "${Intl.plural(count, zero: 'Do sada nema glasova', one: '1 glas do sada', other: '${count} glasova do sada')}";
+  static m32(count) => "${Intl.plural(count, zero: 'Do sada nema glasova', one: '1 glas do sada', other: '${count} glasova do sada')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -132,31 +132,31 @@ class MessageLookup extends MessageLookupByLibrary {
     "enterAddressHint" : MessageLookupByLibrary.simpleMessage("Upiši adresu"),
     "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("Vrijeme pokušaja autentifikacije je isteklo. Je li tvoj poslužitelj (pod) podržava API?"),
     "failedToAddConversationParticipant" : MessageLookupByLibrary.simpleMessage("Neuspjelo dodavanje primatelja"),
-    "failedToAddConversationParticipantDuplicate" : m3,
-    "failedToAddConversationParticipantNotSharing" : m4,
-    "failedToAddConversationParticipantNotSharingWith" : m5,
-    "failedToBlockUser" : m6,
+    "failedToAddConversationParticipantDuplicate" : m4,
+    "failedToAddConversationParticipantNotSharing" : m5,
+    "failedToAddConversationParticipantNotSharingWith" : m6,
+    "failedToBlockUser" : m7,
     "failedToCommentOnPost" : MessageLookupByLibrary.simpleMessage("Neuspjelo stvaranje komentara"),
     "failedToCreateAspect" : MessageLookupByLibrary.simpleMessage("Neuspjelo stvaranje aspekta"),
     "failedToCreateConversation" : MessageLookupByLibrary.simpleMessage("Neuspjelo stvaranje konverzacije"),
-    "failedToDeleteAspect" : m7,
+    "failedToDeleteAspect" : m8,
     "failedToDeleteComment" : MessageLookupByLibrary.simpleMessage("Neuspjelo brisanje komentara"),
     "failedToDeletePost" : MessageLookupByLibrary.simpleMessage("Neuspjelo brisanje objave"),
-    "failedToFollowTag" : m8,
+    "failedToFollowTag" : m9,
     "failedToHideConversation" : MessageLookupByLibrary.simpleMessage("Neuspjelo skrivanje konverzacije"),
     "failedToHidePost" : MessageLookupByLibrary.simpleMessage("Neuspjelo skrivanje objave"),
     "failedToLikePost" : MessageLookupByLibrary.simpleMessage("Neuspjelo označivanje sa „Sviđa mi se”"),
     "failedToMarkNotificationAsRead" : MessageLookupByLibrary.simpleMessage("Neuspjelo označivanje obavijesti kao pročitane"),
     "failedToMarkNotificationAsUnread" : MessageLookupByLibrary.simpleMessage("Neuspjelo označivanje obavijesti kao nepročitane"),
-    "failedToRenameAspect" : m9,
+    "failedToRenameAspect" : m10,
     "failedToReplyToConversation" : MessageLookupByLibrary.simpleMessage("Neuspjelo odgovaranje u konverzaciji"),
     "failedToReportComment" : MessageLookupByLibrary.simpleMessage("Neuspjelo stvaranje izvještaja"),
     "failedToReportPost" : MessageLookupByLibrary.simpleMessage("Neuspjelo stvaranje izvještaja"),
     "failedToResharePost" : MessageLookupByLibrary.simpleMessage("Neuspjelo prosljeđivanje objave"),
     "failedToSearchForAddresses" : MessageLookupByLibrary.simpleMessage("Neuspjelo traženje adresa"),
     "failedToSubscribeToPost" : MessageLookupByLibrary.simpleMessage("Neuspjelo pretplaćivanje na objavu"),
-    "failedToUnblockUser" : m10,
-    "failedToUnfollowTag" : m11,
+    "failedToUnblockUser" : m11,
+    "failedToUnfollowTag" : m12,
     "failedToUnlikePost" : MessageLookupByLibrary.simpleMessage("Neuspjelo uklanjanje oznake sviđanja"),
     "failedToUnsubscribeFromPost" : MessageLookupByLibrary.simpleMessage("Neuspjelo otkazivanje pretplate na objavu"),
     "failedToUpdateContactAspects" : MessageLookupByLibrary.simpleMessage("Neuspjelo aktualiziranje aspekata"),
@@ -186,7 +186,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "insertQuote" : MessageLookupByLibrary.simpleMessage("Citiranje"),
     "invalidDiasporaId" : MessageLookupByLibrary.simpleMessage("Upiši potpunu diaspora* ID oznaku"),
     "likesHeader" : MessageLookupByLibrary.simpleMessage("Sviđanja"),
-    "manageContact" : m12,
+    "manageContact" : m13,
     "manageFollowedTags" : MessageLookupByLibrary.simpleMessage("Upravljaj praćenim oznakama"),
     "mentionUser" : MessageLookupByLibrary.simpleMessage("Spomeni korisnika"),
     "messageUser" : MessageLookupByLibrary.simpleMessage("Poruka"),
@@ -203,23 +203,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "newConversationTitle" : MessageLookupByLibrary.simpleMessage("Započni novu konverzaciju"),
     "noButtonLabel" : MessageLookupByLibrary.simpleMessage("Ne"),
     "noItems" : MessageLookupByLibrary.simpleMessage("K vragu, nema se što prikazati!"),
-    "notificationActorsForMoreThanThreePeople" : m13,
-    "notificationActorsForThreePeople" : m14,
-    "notificationActorsForTwoPeople" : m15,
-    "notificationAlsoCommented" : m16,
-    "notificationBirthday" : m17,
-    "notificationCommented" : m18,
-    "notificationLiked" : m19,
-    "notificationMentionedInComment" : m20,
-    "notificationMentionedInCommentOnDeletedPost" : m21,
-    "notificationMentionedInPost" : m22,
-    "notificationReshared" : m23,
-    "notificationStartedSharing" : m24,
+    "notificationActorsForMoreThanThreePeople" : m14,
+    "notificationActorsForThreePeople" : m15,
+    "notificationActorsForTwoPeople" : m16,
+    "notificationAlsoCommented" : m17,
+    "notificationBirthday" : m18,
+    "notificationCommented" : m19,
+    "notificationLiked" : m20,
+    "notificationMentionedInComment" : m21,
+    "notificationMentionedInCommentOnDeletedPost" : m22,
+    "notificationMentionedInPost" : m23,
+    "notificationReshared" : m24,
+    "notificationStartedSharing" : m25,
     "notificationTargetDeletedPost" : MessageLookupByLibrary.simpleMessage("izbrisana objava"),
     "notificationTargetPost" : MessageLookupByLibrary.simpleMessage("objava"),
-    "nsfwShieldTitle" : m25,
-    "oEmbedAuthor" : m26,
-    "oEmbedHeader" : m27,
+    "nsfwShieldTitle" : m26,
+    "oEmbedAuthor" : m27,
+    "oEmbedHeader" : m28,
     "peopleSearchDialogHint" : MessageLookupByLibrary.simpleMessage("Traži osobu"),
     "pollAnswerHint" : MessageLookupByLibrary.simpleMessage("Upiši odgovor"),
     "pollQuestionHint" : MessageLookupByLibrary.simpleMessage("Upiši pitanje"),
@@ -228,7 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "profilePostsHeader" : MessageLookupByLibrary.simpleMessage("Objave"),
     "publishPost" : MessageLookupByLibrary.simpleMessage("Objavi"),
     "publishTargetAllAspects" : MessageLookupByLibrary.simpleMessage("Svi aspekti"),
-    "publishTargetAspects" : m28,
+    "publishTargetAspects" : m29,
     "publishTargetPrompt" : MessageLookupByLibrary.simpleMessage("Odaberi vidljivost objave"),
     "publishTargetPublic" : MessageLookupByLibrary.simpleMessage("Javno"),
     "publisherTitle" : MessageLookupByLibrary.simpleMessage("Napiši novu objavu"),
@@ -262,8 +262,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "signInHint" : MessageLookupByLibrary.simpleMessage("korisničkoime@diaspora.pod"),
     "signInLabel" : MessageLookupByLibrary.simpleMessage("diaspora* ID"),
     "startPostSubscription" : MessageLookupByLibrary.simpleMessage("Aktiviraj obavijesti"),
-    "startedSharing" : m29,
-    "stoppedSharing" : m30,
+    "startedSharing" : m30,
+    "stoppedSharing" : m31,
     "streamNameActivity" : MessageLookupByLibrary.simpleMessage("Aktivnost"),
     "streamNameAspects" : MessageLookupByLibrary.simpleMessage("Aspekti"),
     "streamNameCommented" : MessageLookupByLibrary.simpleMessage("Komentirani"),
@@ -282,7 +282,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "uploadPhoto" : MessageLookupByLibrary.simpleMessage("Prenesi sliku"),
     "uploadProfilePictureHeader" : MessageLookupByLibrary.simpleMessage("Aktualiziraj sliku profila"),
     "voteButtonLabel" : MessageLookupByLibrary.simpleMessage("Glasaj"),
-    "voteCount" : m31,
+    "voteCount" : m32,
     "yesButtonLabel" : MessageLookupByLibrary.simpleMessage("Da")
   };
 }

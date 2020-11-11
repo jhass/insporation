@@ -21,25 +21,25 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m2(name) => "Eliminare l’aspetto ${name}?";
 
-  static m6(name) => "Impossibile bloccare ${name}";
+  static m7(name) => "Impossibile bloccare ${name}";
 
-  static m7(name) => "Impossibile rimuovere l’aspetto ${name}";
+  static m8(name) => "Impossibile rimuovere l’aspetto ${name}";
 
-  static m8(tag) => "Impossibile seguire #${tag}";
+  static m9(tag) => "Impossibile seguire #${tag}";
 
-  static m9(oldName, newName) => "Impossibile rinominare l’aspetto ${oldName} in ${newName}";
+  static m10(oldName, newName) => "Impossibile rinominare l’aspetto ${oldName} in ${newName}";
 
-  static m10(name) => "Impossibile sbloccare ${name}";
+  static m11(name) => "Impossibile sbloccare ${name}";
 
-  static m11(tag) => "Impossibile smettere di seguire #${tag}";
+  static m12(tag) => "Impossibile smettere di seguire #${tag}";
 
-  static m14(first, second, third) => "${first}, ${second} e ${third}";
+  static m15(first, second, third) => "${first}, ${second} e ${third}";
 
-  static m15(first, second) => "${first} e ${second}";
+  static m16(first, second) => "${first} e ${second}";
 
-  static m26(author) => "da ${author}";
+  static m27(author) => "da ${author}";
 
-  static m27(author, provider) => "${author} su ${provider}:";
+  static m28(author, provider) => "${author} su ${provider}:";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -81,27 +81,27 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProfileTagsLabel" : MessageLookupByLibrary.simpleMessage("Etichette"),
     "editProfileTitle" : MessageLookupByLibrary.simpleMessage("Modifica il profilo"),
     "enterAddressHint" : MessageLookupByLibrary.simpleMessage("Inserisci un indirizzo"),
-    "failedToBlockUser" : m6,
+    "failedToBlockUser" : m7,
     "failedToCommentOnPost" : MessageLookupByLibrary.simpleMessage("Aggiunta del commento non riuscita"),
     "failedToCreateAspect" : MessageLookupByLibrary.simpleMessage("Creazione dell’aspetto non riuscita"),
-    "failedToDeleteAspect" : m7,
+    "failedToDeleteAspect" : m8,
     "failedToDeleteComment" : MessageLookupByLibrary.simpleMessage("Eliminazione del commento non riuscita"),
     "failedToDeletePost" : MessageLookupByLibrary.simpleMessage("Eliminazione del post non riuscita"),
-    "failedToFollowTag" : m8,
+    "failedToFollowTag" : m9,
     "failedToHideConversation" : MessageLookupByLibrary.simpleMessage("Impossibile nascondere la conversazione"),
     "failedToHidePost" : MessageLookupByLibrary.simpleMessage("Non è stato possibile nascondere il post"),
     "failedToLikePost" : MessageLookupByLibrary.simpleMessage("Aggiunta della menzione «Mi piace» non riuscita"),
     "failedToMarkNotificationAsRead" : MessageLookupByLibrary.simpleMessage("Impossibile contrassegnare la notifica come già letta"),
     "failedToMarkNotificationAsUnread" : MessageLookupByLibrary.simpleMessage("Impossibile contrassegnare la notifica come da leggere"),
-    "failedToRenameAspect" : m9,
+    "failedToRenameAspect" : m10,
     "failedToReplyToConversation" : MessageLookupByLibrary.simpleMessage("Impossibile rispondere alla conversazione"),
     "failedToReportComment" : MessageLookupByLibrary.simpleMessage("Creazione della segnalazione non riuscita"),
     "failedToReportPost" : MessageLookupByLibrary.simpleMessage("Creazione della segnalazione non riuscita"),
     "failedToResharePost" : MessageLookupByLibrary.simpleMessage("Ricondivisione del post non riuscita"),
     "failedToSearchForAddresses" : MessageLookupByLibrary.simpleMessage("Impossibile cercare gli indirizzi"),
     "failedToSubscribeToPost" : MessageLookupByLibrary.simpleMessage("Iscrizione al post non riuscita"),
-    "failedToUnblockUser" : m10,
-    "failedToUnfollowTag" : m11,
+    "failedToUnblockUser" : m11,
+    "failedToUnfollowTag" : m12,
     "failedToUnlikePost" : MessageLookupByLibrary.simpleMessage("Eliminazione della menzione «Mi piace» non riuscita"),
     "failedToUnsubscribeFromPost" : MessageLookupByLibrary.simpleMessage("Cancellazione dell’iscrizione al post non riuscita"),
     "failedToUpdateContactAspects" : MessageLookupByLibrary.simpleMessage("Impossibile aggiornare gli aspetti"),
@@ -147,12 +147,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "newConversationTitle" : MessageLookupByLibrary.simpleMessage("Inizia una nuova conversazione"),
     "noButtonLabel" : MessageLookupByLibrary.simpleMessage("No"),
     "noItems" : MessageLookupByLibrary.simpleMessage("Che peccato, niente da mostrare!"),
-    "notificationActorsForThreePeople" : m14,
-    "notificationActorsForTwoPeople" : m15,
+    "notificationActorsForThreePeople" : m15,
+    "notificationActorsForTwoPeople" : m16,
     "notificationTargetDeletedPost" : MessageLookupByLibrary.simpleMessage("post eliminato"),
     "notificationTargetPost" : MessageLookupByLibrary.simpleMessage("post"),
-    "oEmbedAuthor" : m26,
-    "oEmbedHeader" : m27,
+    "oEmbedAuthor" : m27,
+    "oEmbedHeader" : m28,
     "peopleSearchDialogHint" : MessageLookupByLibrary.simpleMessage("Cerca una persona"),
     "pollAnswerHint" : MessageLookupByLibrary.simpleMessage("Inserisci una risposta"),
     "pollQuestionHint" : MessageLookupByLibrary.simpleMessage("Inserisci una domanda"),

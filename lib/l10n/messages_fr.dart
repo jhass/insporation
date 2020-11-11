@@ -25,63 +25,63 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m2(name) => "Supprimer l’aspect ${name} ?";
 
-  static m3(name) => "${name} est déjà destinataire ; impossible de l’ajouter deux fois.";
+  static m4(name) => "${name} est déjà destinataire ; impossible de l’ajouter deux fois.";
 
-  static m4(name) => "${name} ne partage pas avec vous ; impossible de l’ajouter comme destinataire !";
+  static m5(name) => "${name} ne partage pas avec vous ; impossible de l’ajouter comme destinataire !";
 
-  static m5(name) => "Vous ne partagez pas avec ${name} ; impossible de l’ajouter comme destinataire !";
+  static m6(name) => "Vous ne partagez pas avec ${name} ; impossible de l’ajouter comme destinataire !";
 
-  static m6(name) => "Échec du blocage de ${name}";
+  static m7(name) => "Échec du blocage de ${name}";
 
-  static m7(name) => "Échec de la suppression de l’aspect ${name}";
+  static m8(name) => "Échec de la suppression de l’aspect ${name}";
 
-  static m8(tag) => "Échec du suivi de #${tag}";
+  static m9(tag) => "Échec du suivi de #${tag}";
 
-  static m9(oldName, newName) => "Échec du renommage de l’aspect ${oldName} en ${newName}";
+  static m10(oldName, newName) => "Échec du renommage de l’aspect ${oldName} en ${newName}";
 
-  static m10(name) => "Échec du déblocage de ${name}";
+  static m11(name) => "Échec du déblocage de ${name}";
 
-  static m11(tag) => "Échec de l’arrêt du suivi de #${tag}";
+  static m12(tag) => "Échec de l’arrêt du suivi de #${tag}";
 
-  static m12(count) => "${Intl.plural(count, zero: 'Dans aucun aspect', one: 'Dans un aspect', other: 'Dans ${count} aspects')}";
+  static m13(count) => "${Intl.plural(count, zero: 'Dans aucun aspect', one: 'Dans un aspect', other: 'Dans ${count} aspects')}";
 
-  static m13(first, second, othersCount) => "${Intl.plural(othersCount, zero: '${first}, ${second} et personne d’autre', one: '${first}, ${second} et un de plus', other: '${first}, ${second} et ${othersCount} autres')}";
+  static m14(first, second, othersCount) => "${Intl.plural(othersCount, zero: '${first}, ${second} et personne d’autre', one: '${first}, ${second} et un de plus', other: '${first}, ${second} et ${othersCount} autres')}";
 
-  static m14(first, second, third) => "${first}, ${second} et ${third}";
+  static m15(first, second, third) => "${first}, ${second} et ${third}";
 
-  static m15(first, second) => "${first} et ${second}";
+  static m16(first, second) => "${first} et ${second}";
 
-  static m16(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Personne n’a commenté ${target}.', one: '${actors} a commenté ${target}.', other: '${actors} ont commenté ${target}.')}";
+  static m17(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Personne n’a commenté ${target}.', one: '${actors} a commenté ${target}.', other: '${actors} ont commenté ${target}.')}";
 
-  static m17(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Personne n’a son anniveraire aujourd’hui.', one: '${actors} a son anniversaire ajourd’hui.', other: '${actors} ont leur anniversaire aujourd’hui.')}";
+  static m18(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Personne n’a son anniveraire aujourd’hui.', one: '${actors} a son anniversaire ajourd’hui.', other: '${actors} ont leur anniversaire aujourd’hui.')}";
 
-  static m18(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Personne n’a commenté votre ${target}.', one: '${actors} a commenté votre ${target}.', other: '${actors} ont commenté votre ${target}.')}";
+  static m19(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Personne n’a commenté votre ${target}.', one: '${actors} a commenté votre ${target}.', other: '${actors} ont commenté votre ${target}.')}";
 
-  static m19(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Personne n’a aimé votre ${target}.', one: '${actors} a aimé votre ${target}.', other: '${actors} ont aimé votre ${target}.')}";
+  static m20(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Personne n’a aimé votre ${target}.', one: '${actors} a aimé votre ${target}.', other: '${actors} ont aimé votre ${target}.')}";
 
-  static m20(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Personne ne vous a mentionné·e dans un commentaire.', one: '${actors} vous a mentionné·e dans un commentaire.', other: '${actors} vous ont mentionné·e dans un commentaire.')}";
+  static m21(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Personne ne vous a mentionné·e dans un commentaire.', one: '${actors} vous a mentionné·e dans un commentaire.', other: '${actors} vous ont mentionné·e dans un commentaire.')}";
 
-  static m21(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Personne ne vous a mentionné·e dans un commentaire sur une publication supprimée.', one: '${actors} vous a mentionné·e dans un commentaire sur une publication supprimée.', other: '${actors} vous ont mentionné·e dans un commentaire sur une publication supprimée.')}";
+  static m22(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Personne ne vous a mentionné·e dans un commentaire sur une publication supprimée.', one: '${actors} vous a mentionné·e dans un commentaire sur une publication supprimée.', other: '${actors} vous ont mentionné·e dans un commentaire sur une publication supprimée.')}";
 
-  static m22(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Personne ne vous a mentionné·e dans une ${target}.', one: '${actors} vous a mentionné·e dans une ${target}.', other: '${actors} vous ont mentionné·e dans une ${target}.')}";
+  static m23(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Personne ne vous a mentionné·e dans une ${target}.', one: '${actors} vous a mentionné·e dans une ${target}.', other: '${actors} vous ont mentionné·e dans une ${target}.')}";
 
-  static m23(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Personne n’a repartagé votre ${target}.', one: '${actors} a repartagé votre ${target}.', other: '${actors} ont repartagé votre ${target}.')}";
+  static m24(actorCount, actors, target) => "${Intl.plural(actorCount, zero: 'Personne n’a repartagé votre ${target}.', one: '${actors} a repartagé votre ${target}.', other: '${actors} ont repartagé votre ${target}.')}";
 
-  static m24(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Personne n’a commencé à partager avec vous.', one: '${actors} a commencé à partager avec vous.', other: '${actors} ont commencé à partager avec vous.')}";
+  static m25(actorCount, actors) => "${Intl.plural(actorCount, zero: 'Personne n’a commencé à partager avec vous.', one: '${actors} a commencé à partager avec vous.', other: '${actors} ont commencé à partager avec vous.')}";
 
-  static m25(author) => "Publication sensible de ${author}";
+  static m26(author) => "Publication sensible de ${author}";
 
-  static m26(author) => "par ${author}";
+  static m27(author) => "par ${author}";
 
-  static m27(author, provider) => "${author} sur ${provider} :";
+  static m28(author, provider) => "${author} sur ${provider} :";
 
-  static m28(count) => "${Intl.plural(count, zero: 'Aucun aspect', one: 'Un aspect', other: '${count} aspects')}";
+  static m29(count) => "${Intl.plural(count, zero: 'Aucun aspect', one: 'Un aspect', other: '${count} aspects')}";
 
-  static m29(name) => "Vous partagez désormais avec ${name}.";
+  static m30(name) => "Vous partagez désormais avec ${name}.";
 
-  static m30(name) => "Vous avez arrêté de partager avec ${name}.";
+  static m31(name) => "Vous avez arrêté de partager avec ${name}.";
 
-  static m31(count) => "${Intl.plural(count, zero: 'Aucun vote jusqu’à présent', one: '1 vote jusqu’à présent', other: '${count} votes jusqu’à présent')}";
+  static m32(count) => "${Intl.plural(count, zero: 'Aucun vote jusqu’à présent', one: '1 vote jusqu’à présent', other: '${count} votes jusqu’à présent')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -131,31 +131,31 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProfileTitle" : MessageLookupByLibrary.simpleMessage("Modifier le profil"),
     "enterAddressHint" : MessageLookupByLibrary.simpleMessage("Entrez une adresse"),
     "failedToAddConversationParticipant" : MessageLookupByLibrary.simpleMessage("Échec de l’ajout du destinataire"),
-    "failedToAddConversationParticipantDuplicate" : m3,
-    "failedToAddConversationParticipantNotSharing" : m4,
-    "failedToAddConversationParticipantNotSharingWith" : m5,
-    "failedToBlockUser" : m6,
+    "failedToAddConversationParticipantDuplicate" : m4,
+    "failedToAddConversationParticipantNotSharing" : m5,
+    "failedToAddConversationParticipantNotSharingWith" : m6,
+    "failedToBlockUser" : m7,
     "failedToCommentOnPost" : MessageLookupByLibrary.simpleMessage("Échec de la création du commentaire"),
     "failedToCreateAspect" : MessageLookupByLibrary.simpleMessage("Échec de la création de l’aspect"),
     "failedToCreateConversation" : MessageLookupByLibrary.simpleMessage("Échec de la création de la conversation"),
-    "failedToDeleteAspect" : m7,
+    "failedToDeleteAspect" : m8,
     "failedToDeleteComment" : MessageLookupByLibrary.simpleMessage("Échec de la suppression du commentaire"),
     "failedToDeletePost" : MessageLookupByLibrary.simpleMessage("Échec de la suppression de la publication"),
-    "failedToFollowTag" : m8,
+    "failedToFollowTag" : m9,
     "failedToHideConversation" : MessageLookupByLibrary.simpleMessage("Échec du masquage de la conversation"),
     "failedToHidePost" : MessageLookupByLibrary.simpleMessage("Échec du masquage de la publication"),
     "failedToLikePost" : MessageLookupByLibrary.simpleMessage("Échec de l’ajout de la mention j’aime"),
     "failedToMarkNotificationAsRead" : MessageLookupByLibrary.simpleMessage("Échec du marquage de la publication comme lue"),
     "failedToMarkNotificationAsUnread" : MessageLookupByLibrary.simpleMessage("Échec du marquage de la notification comme non lue"),
-    "failedToRenameAspect" : m9,
+    "failedToRenameAspect" : m10,
     "failedToReplyToConversation" : MessageLookupByLibrary.simpleMessage("Échec de la réponse à la conversation"),
     "failedToReportComment" : MessageLookupByLibrary.simpleMessage("Échec de la création du signalement"),
     "failedToReportPost" : MessageLookupByLibrary.simpleMessage("Échec de la création du signalement"),
     "failedToResharePost" : MessageLookupByLibrary.simpleMessage("Échec du repartage de la publication"),
     "failedToSearchForAddresses" : MessageLookupByLibrary.simpleMessage("Échec de la recherche d’adresses"),
     "failedToSubscribeToPost" : MessageLookupByLibrary.simpleMessage("Échec de l’abonnement à la publication"),
-    "failedToUnblockUser" : m10,
-    "failedToUnfollowTag" : m11,
+    "failedToUnblockUser" : m11,
+    "failedToUnfollowTag" : m12,
     "failedToUnlikePost" : MessageLookupByLibrary.simpleMessage("Échec de la suppression du j’aime"),
     "failedToUnsubscribeFromPost" : MessageLookupByLibrary.simpleMessage("Échec du désabonnement de la publication"),
     "failedToUpdateContactAspects" : MessageLookupByLibrary.simpleMessage("Échec de la mise à jour des aspects"),
@@ -185,7 +185,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "insertQuote" : MessageLookupByLibrary.simpleMessage("Citation"),
     "invalidDiasporaId" : MessageLookupByLibrary.simpleMessage("Entrez un identifiant diaspora* complet"),
     "likesHeader" : MessageLookupByLibrary.simpleMessage("J’aime"),
-    "manageContact" : m12,
+    "manageContact" : m13,
     "manageFollowedTags" : MessageLookupByLibrary.simpleMessage("Gérer les étiquettes suivies"),
     "mentionUser" : MessageLookupByLibrary.simpleMessage("Mentionner un utilisateur"),
     "messageUser" : MessageLookupByLibrary.simpleMessage("Écrire un message"),
@@ -202,23 +202,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "newConversationTitle" : MessageLookupByLibrary.simpleMessage("Démarrer une nouvelle conversation"),
     "noButtonLabel" : MessageLookupByLibrary.simpleMessage("Non"),
     "noItems" : MessageLookupByLibrary.simpleMessage("Mince, rien à afficher !"),
-    "notificationActorsForMoreThanThreePeople" : m13,
-    "notificationActorsForThreePeople" : m14,
-    "notificationActorsForTwoPeople" : m15,
-    "notificationAlsoCommented" : m16,
-    "notificationBirthday" : m17,
-    "notificationCommented" : m18,
-    "notificationLiked" : m19,
-    "notificationMentionedInComment" : m20,
-    "notificationMentionedInCommentOnDeletedPost" : m21,
-    "notificationMentionedInPost" : m22,
-    "notificationReshared" : m23,
-    "notificationStartedSharing" : m24,
+    "notificationActorsForMoreThanThreePeople" : m14,
+    "notificationActorsForThreePeople" : m15,
+    "notificationActorsForTwoPeople" : m16,
+    "notificationAlsoCommented" : m17,
+    "notificationBirthday" : m18,
+    "notificationCommented" : m19,
+    "notificationLiked" : m20,
+    "notificationMentionedInComment" : m21,
+    "notificationMentionedInCommentOnDeletedPost" : m22,
+    "notificationMentionedInPost" : m23,
+    "notificationReshared" : m24,
+    "notificationStartedSharing" : m25,
     "notificationTargetDeletedPost" : MessageLookupByLibrary.simpleMessage("publication supprimée"),
     "notificationTargetPost" : MessageLookupByLibrary.simpleMessage("publication"),
-    "nsfwShieldTitle" : m25,
-    "oEmbedAuthor" : m26,
-    "oEmbedHeader" : m27,
+    "nsfwShieldTitle" : m26,
+    "oEmbedAuthor" : m27,
+    "oEmbedHeader" : m28,
     "peopleSearchDialogHint" : MessageLookupByLibrary.simpleMessage("Rechercher une personne"),
     "pollAnswerHint" : MessageLookupByLibrary.simpleMessage("Entrez une réponse"),
     "pollQuestionHint" : MessageLookupByLibrary.simpleMessage("Entrez une question"),
@@ -227,7 +227,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "profilePostsHeader" : MessageLookupByLibrary.simpleMessage("Publications"),
     "publishPost" : MessageLookupByLibrary.simpleMessage("Publier"),
     "publishTargetAllAspects" : MessageLookupByLibrary.simpleMessage("Tous les aspects"),
-    "publishTargetAspects" : m28,
+    "publishTargetAspects" : m29,
     "publishTargetPrompt" : MessageLookupByLibrary.simpleMessage("Sélectionner la visibilité de la publication"),
     "publishTargetPublic" : MessageLookupByLibrary.simpleMessage("Publique"),
     "publisherTitle" : MessageLookupByLibrary.simpleMessage("Écrire une nouvelle publication"),
@@ -261,8 +261,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "signInHint" : MessageLookupByLibrary.simpleMessage("nom_dutilisateur@diaspora.pod"),
     "signInLabel" : MessageLookupByLibrary.simpleMessage("Identifiant diaspora*"),
     "startPostSubscription" : MessageLookupByLibrary.simpleMessage("Activer les notifications"),
-    "startedSharing" : m29,
-    "stoppedSharing" : m30,
+    "startedSharing" : m30,
+    "stoppedSharing" : m31,
     "streamNameActivity" : MessageLookupByLibrary.simpleMessage("Activité"),
     "streamNameAspects" : MessageLookupByLibrary.simpleMessage("Aspects"),
     "streamNameCommented" : MessageLookupByLibrary.simpleMessage("Commenté"),
@@ -281,7 +281,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "uploadPhoto" : MessageLookupByLibrary.simpleMessage("Téléverser une photo"),
     "uploadProfilePictureHeader" : MessageLookupByLibrary.simpleMessage("Mettre à jour l’image du profil"),
     "voteButtonLabel" : MessageLookupByLibrary.simpleMessage("Voter"),
-    "voteCount" : m31,
+    "voteCount" : m32,
     "yesButtonLabel" : MessageLookupByLibrary.simpleMessage("Oui")
   };
 }
