@@ -150,9 +150,9 @@ class _UnreadItemsIndicatorIconState<T extends ItemCountNotifier> extends State<
                         minWidth: 12,
                         minHeight: 12,
                       ),
-                      child: new Text(
+                      child: Text(
                         unreadCount.count.toString(),
-                        style: new TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                           fontSize: 8,
                         ),
