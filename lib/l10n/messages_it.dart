@@ -21,6 +21,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m2(name) => "Eliminare l’aspetto ${name}?";
 
+  static m3(userId) => "Rimuovere la sessione per ${userId} da insporation*?";
+
   static m7(name) => "Impossibile bloccare ${name}";
 
   static m8(name) => "Impossibile rimuovere l’aspetto ${name}";
@@ -64,6 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteAspectPrompt" : m2,
     "deleteCommentPrompt" : MessageLookupByLibrary.simpleMessage("Eliminare il commento?"),
     "deletePostPrompt" : MessageLookupByLibrary.simpleMessage("Eliminare il post?"),
+    "deleteSessionPrompt" : m3,
     "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Ricondivisione di un post eliminato"),
     "deselectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Deseleziona tutto"),
     "duplicateProfileTag" : MessageLookupByLibrary.simpleMessage("Etichetta già aggiunta"),
@@ -81,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProfileTagsLabel" : MessageLookupByLibrary.simpleMessage("Etichette"),
     "editProfileTitle" : MessageLookupByLibrary.simpleMessage("Modifica il profilo"),
     "enterAddressHint" : MessageLookupByLibrary.simpleMessage("Inserisci un indirizzo"),
+    "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("Tempo scaduto durante il tentativo di autenticazione, sei sicuro/a che il tuo pod supporti l\'API?"),
     "failedToBlockUser" : m7,
     "failedToCommentOnPost" : MessageLookupByLibrary.simpleMessage("Aggiunta del commento non riuscita"),
     "failedToCreateAspect" : MessageLookupByLibrary.simpleMessage("Creazione dell’aspetto non riuscita"),

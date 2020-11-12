@@ -25,6 +25,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m2(name) => "Supprimer l’aspect ${name} ?";
 
+  static m3(userId) => "Supprimer la session pour ${userId} d\'insporation* ?";
+
   static m4(name) => "${name} est déjà destinataire ; impossible de l’ajouter deux fois.";
 
   static m5(name) => "${name} ne partage pas avec vous ; impossible de l’ajouter comme destinataire !";
@@ -112,6 +114,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteAspectPrompt" : m2,
     "deleteCommentPrompt" : MessageLookupByLibrary.simpleMessage("Supprimer le commentaire ?"),
     "deletePostPrompt" : MessageLookupByLibrary.simpleMessage("Supprimer la publication ?"),
+    "deleteSessionPrompt" : m3,
     "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Repartage d’une publication supprimée"),
     "deselectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Tout désélectionner"),
     "duplicateProfileTag" : MessageLookupByLibrary.simpleMessage("Étiquette déjà ajoutée"),
@@ -130,6 +133,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProfileTagsLabel" : MessageLookupByLibrary.simpleMessage("Étiquettes"),
     "editProfileTitle" : MessageLookupByLibrary.simpleMessage("Modifier le profil"),
     "enterAddressHint" : MessageLookupByLibrary.simpleMessage("Entrez une adresse"),
+    "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("Délai d\'attente lors de la tentative d\'authentification, êtes-vous sûr·e que votre pod prend en charge l\'API ?"),
     "failedToAddConversationParticipant" : MessageLookupByLibrary.simpleMessage("Échec de l’ajout du destinataire"),
     "failedToAddConversationParticipantDuplicate" : m4,
     "failedToAddConversationParticipantNotSharing" : m5,
