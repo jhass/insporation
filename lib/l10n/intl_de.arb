@@ -204,7 +204,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "duplicateProfileTag": "Markierung wurde bereits hinzugefügt",
+  "duplicateProfileTag": "Tag wurde bereits hinzugefügt",
   "@duplicateProfileTag": {
     "description": "Error message after trying to add a duplicate profile tag",
     "type": "text",
@@ -282,7 +282,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "editProfileTagsLabel": "Markierungen",
+  "editProfileTagsLabel": "Tags",
   "@editProfileTagsLabel": {
     "description": "Label for edit profile tags field",
     "type": "text",
@@ -493,7 +493,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "followedTagsPageTitle": "Verfolgte Markierungen",
+  "followedTagsPageTitle": "Verfolgte Tags",
   "@followedTagsPageTitle": {
     "description": "Title for the followed tags page",
     "type": "text",
@@ -547,7 +547,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "insertHashtag": "Markierung",
+  "insertHashtag": "Tag",
   "@insertHashtag": {
     "description": "Tooltip for insert hashtag button",
     "type": "text",
@@ -623,7 +623,7 @@
       }
     }
   },
-  "manageFollowedTags": "Verfolgte Markierungen verwalten",
+  "manageFollowedTags": "Verfolgte Tags verwalten",
   "@manageFollowedTags": {
     "description": "Label for the manage followed tags button",
     "type": "text",
@@ -1065,7 +1065,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "searchPeopleByTagHint": "Gib eine Markierung ein",
+  "searchPeopleByTagHint": "Gib einen Tag ein",
   "@searchPeopleByTagHint": {
     "description": "Hint text for the the people by tag search field",
     "type": "text",
@@ -1077,7 +1077,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "searchTagsHint": "Gib eine Markierung ein",
+  "searchTagsHint": "Gib einen Tag ein",
   "@searchTagsHint": {
     "description": "Hint text for the tags search field",
     "type": "text",
@@ -1089,13 +1089,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "searchTypePeopleByTag": "Leute mit Markierung",
+  "searchTypePeopleByTag": "Leute mit Tag",
   "@searchTypePeopleByTag": {
     "description": "Label for search type selector for the people by tag search",
     "type": "text",
     "placeholders": {}
   },
-  "searchTypeTags": "Markierungen",
+  "searchTypeTags": "Tags",
   "@searchTypeTags": {
     "description": "Label for search type selector for the tags search",
     "type": "text",
@@ -1181,7 +1181,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "streamNameFollowedTags": "Verfolgte Markierungen",
+  "streamNameFollowedTags": "Verfolgte Tags",
   "@streamNameFollowedTags": {
     "description": "Name of the followed tags stream",
     "type": "text",
@@ -1205,7 +1205,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "streamNameTag": "Markierung",
+  "streamNameTag": "Tag",
   "@streamNameTag": {
     "description": "Name of a tag stream",
     "type": "text",
@@ -1217,7 +1217,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "tagSearchDialogHint": "Suche nach einer Markierung",
+  "tagSearchDialogHint": "Suche nach einem Tag",
   "@tagSearchDialogHint": {
     "description": "Hint text for the tag search dialog input field",
     "type": "text",
