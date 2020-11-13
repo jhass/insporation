@@ -54,7 +54,7 @@ class ErrorMessage extends StatelessWidget {
   }
 }
 
-SnackBar errorSnackbar(BuildContext context, String message) {
+SnackBar errorSnackBar(BuildContext context, String message) {
   final theme = Theme.of(context);
   return SnackBar(
     content: Text(message, style: TextStyle(color: theme.colorScheme.onError)),

@@ -436,7 +436,7 @@ class _EditProfileState extends State<_EditProfile> with StateLocalizationHelper
           }
 
           if (_tags.contains(response)) {
-            Scaffold.of(context).showSnackBar(errorSnackbar(context, l.duplicateProfileTag));
+            Scaffold.of(context).showSnackBar(errorSnackBar(context, l.duplicateProfileTag));
             return;
           }
 
