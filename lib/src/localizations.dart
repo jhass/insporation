@@ -86,6 +86,13 @@ class InsporationLocalizations {
     locale: localeName
   );
 
+  String get retryLabel => Intl.message(
+    'Retry',
+    name: 'retryLabel',
+    desc: 'Label for a retry button',
+    locale: localeName
+  );
+
   String get confirmDeleteButtonLabel => Intl.message(
     'Confirm delete',
     name: 'confirmDeleteButtonLabel',
@@ -121,6 +128,27 @@ class InsporationLocalizations {
     locale: localeName
   );
 
+  String get detailsOnErrorLabel => Intl.message(
+    'Help',
+    name: 'detailsOnErrorLabel',
+    desc: 'Label for the show details button in error messages',
+    locale: localeName
+  );
+
+  String get detailsOnErrorDescription => Intl.message(
+    'The following internal error occurred. Please include this when asking for help.',
+    name: 'detailsOnErrorDescription',
+    desc: 'Label for the show details button in error messages',
+    locale: localeName
+  );
+
+  String get detailsOnErrorCopied => Intl.message(
+    'Error trace copied to clipboard.',
+    name: 'detailsOnErrorCopied',
+    desc: 'Success message after error details were copied to clipboard',
+    locale: localeName
+  );
+
   String get signInAction => Intl.message(
     'Sign in',
     name: 'signInAction',
@@ -150,25 +178,33 @@ class InsporationLocalizations {
   );
 
   String get errorSignInTimeout => Intl.message(
-    'Timeout while trying to authenticate, are you sure your pod supports the API?',
+    'Timeout while trying to authorize, are you sure your pod supports the API?', // TODO update after AppAuth-Android#611
     name: 'errorSignInTimeout',
-    desc: 'Error message after authenticating timed out',
+    desc: 'Error message after authorization timed out',
     locale: localeName
   );
 
   String errorAuthorizationFailed(String userId) => Intl.message(
-      'Could not authorize to $userId, is it spelled correctly, is your network running and is your pod running the latest development snapshot?', // TODO update message after diaspora 0.8 release
+      'Could not authorize to $userId, is it spelled correctly, is your network working and is your pod running the latest development snapshot?', // TODO update message after diaspora 0.8 release
       args: [userId],
       name: 'errorAuthorizationFailed',
-      desc: 'Error message after authorization with the host failed',
+      desc: 'Error message after authorization failed',
+      examples: const {'userId': 'user@example.org'},
       locale: localeName
   );
 
-  String get errorUnexpectedNetworkError => Intl.message(
-      'A unexpected network error occurred',
-      name: 'errorUnexpectedNetworkError',
-      desc: 'A unspecified network error occurred',
+  String get errorNetworkErrorOnAuthorization => Intl.message(
+      'A network error occurred, please ensure that you spelled your pod correctly and that you have a good reception, then try again.',
+      name: 'errorNetworkErrorOnAuthorization',
+      desc: 'Error message after a network error occurred during authorization',
       locale: localeName
+  );
+
+  String get errorUnexpectedErrorOnAuthorization => Intl.message(
+    'An unexpected error happened while trying to sign in.',
+    name: 'errorUnexpectedErrorOnAuthorization',
+    desc: 'Error message after an unexpected error happened during authorization',
+    locale: localeName
   );
 
   String deleteSessionPrompt(String userId) => Intl.message(

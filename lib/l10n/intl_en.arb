@@ -36,6 +36,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "retryLabel": "Retry",
+  "@retryLabel": {
+    "description": "Label for a retry button",
+    "type": "text",
+    "placeholders": {}
+  },
   "confirmDeleteButtonLabel": "Confirm delete",
   "@confirmDeleteButtonLabel": {
     "description": "Label for a dialog confirm delete button",
@@ -66,6 +72,24 @@
     "type": "text",
     "placeholders": {}
   },
+  "detailsOnErrorLabel": "Help",
+  "@detailsOnErrorLabel": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorDescription": "The following internal error occurred. Please include this when asking for help.",
+  "@detailsOnErrorDescription": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorCopied": "Error trace copied to clipboard.",
+  "@detailsOnErrorCopied": {
+    "description": "Success message after error details were copied to clipboard",
+    "type": "text",
+    "placeholders": {}
+  },
   "signInAction": "Sign in",
   "@signInAction": {
     "description": "Sign in button label",
@@ -90,23 +114,31 @@
     "type": "text",
     "placeholders": {}
   },
-  "errorSignInTimeout": "Timeout while trying to authenticate, are you sure your pod supports the API?",
+  "errorSignInTimeout": "Timeout while trying to authorize, are you sure your pod supports the API?",
   "@errorSignInTimeout": {
-    "description": "Error message after authenticating timed out",
+    "description": "Error message after authorization timed out",
     "type": "text",
     "placeholders": {}
   },
-  "errorAuthorizationFailed": "Could not authorize to {userId}, is it spelled correctly, is your network running and is your pod running the latest development snapshot?",
+  "errorAuthorizationFailed": "Could not authorize to {userId}, is it spelled correctly, is your network working and is your pod running the latest development snapshot?",
   "@errorAuthorizationFailed": {
-    "description": "Error message after authorization with the host failed",
+    "description": "Error message after authorization failed",
     "type": "text",
     "placeholders": {
-      "userId": {}
+      "userId": {
+        "example": "user@example.org"
+      }
     }
   },
-  "errorUnexpectedNetworkError": "A unexpected network error occurred",
-  "@errorUnexpectedNetworkError": {
-    "description": "A unspecified network error occurred",
+  "errorNetworkErrorOnAuthorization": "A network error occurred, please ensure that you spelled your pod correctly and that you have a good reception, then try again.",
+  "@errorNetworkErrorOnAuthorization": {
+    "description": "Error message after a network error occurred during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorUnexpectedErrorOnAuthorization": "An unexpected error happened while trying to sign in.",
+  "@errorUnexpectedErrorOnAuthorization": {
+    "description": "Error message after an unexpected error happened during authorization",
     "type": "text",
     "placeholders": {}
   },

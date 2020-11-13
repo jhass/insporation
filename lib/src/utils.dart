@@ -56,6 +56,12 @@ String _debugPrintError(String message, exception, stack) {
   return exceptionMessage;
 }
 
+String formatErrorTrace(Exception exception, StackTrace stackTrace) {
+  stackTrace = FlutterError.demangleStackTrace(stackTrace);
+  Iterable<String> lines = stackTrace.toString().trimRight().split('\n');
+  return "$exception\n${FlutterError.defaultStackFilter(lines).join('\n')}";
+}
+
 class CancelableFuture<T> {
   final Future<T> _future;
   bool _canceled = false;

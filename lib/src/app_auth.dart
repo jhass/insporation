@@ -121,13 +121,13 @@ class AppAuth {
         throw TimeoutException(e.message);
       }
 
-      if (e.code.startsWith("failed_")) {
-        // Catches all failed_discovery (Unknown service/API), failed_register, failed_auth. etc
-        throw AuthorizationFailedException(e.code, e.message);
+      if (e.message?.toLowerCase()?.contains("network") == true) { // probably bad network
+        throw AuthorizationFailedException("bad_network", e.message, e.details);
       }
 
-      if (e.message?.toLowerCase()?.contains("network") == true) {
-        throw e.message; // probably bad network
+      if (e.code.startsWith("failed_")) {
+        // Catches all failed_discovery (Unknown service/API), failed_register, failed_auth. etc
+        throw AuthorizationFailedException(e.code, e.message, e.details);
       }
 
       // our session is probably not worth anything anymore, destroy it
@@ -326,7 +326,8 @@ class InvalidSessionError implements Exception {
 }
 
 class AuthorizationFailedException implements Exception {
-  AuthorizationFailedException(this.code, this.message);
+  AuthorizationFailedException(this.code, this.message, this.trace);
   final String code;
   final String message;
+  final String trace;
 }

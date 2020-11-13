@@ -31,7 +31,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
   final _initialFocus = FocusNode();
   var _loading = true;
   String _lastError;
-  String _lastErrorDetails;
+  String _lastErrorTrace;
   Future<List<Session>> _sessions;
 
   @override
@@ -51,12 +51,13 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Theme.of(context).colorScheme.surface,
-      child: Center(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: Center(
           child: ConstrainedBox(
         constraints: BoxConstraints.tightFor(width: 300),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+          ErrorMessage(_lastError, trace: _lastErrorTrace),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Image.asset("assets/icons/icon_round.png"),
@@ -121,7 +122,6 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
               ]),
             ),
           ),
-          ErrorMessage(_lastError, errorDetails: _lastErrorDetails,)
         ]),
       )),
     );
@@ -161,7 +161,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
     setState(() {
       _loading = true;
       _lastError = null;
-      _lastErrorDetails = null;
+      _lastErrorTrace = null;
     });
 
     if (persistentState.wasAuthorizing) {
@@ -186,10 +186,10 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
       }
     }
 
-    try {
-      await client.restoreSession();
-      _diasporaIdController.text = client.currentUserId;
+    await client.restoreSession();
+    _diasporaIdController.text = client.currentUserId;
 
+    _withErrorHandling(() async {
       if (client.currentUserId != null) {
         await _ensureAuthorization();
       }
@@ -200,19 +200,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
         setState(() => _loading = false);
         _maybeFocusInput();
       }
-    } on TimeoutException {
-      setState(() {
-        _loading = false;
-        _lastError = l.errorSignInTimeout;
-      });
-    } catch (e, s) {
-      debugPrintStack(label: "Failed to resume session: $e", stackTrace: s);
-      setState(() {
-        _loading = false;
-        _lastError =  l.errorUnexpectedNetworkError;
-        _lastErrorDetails = e.toString();
-      });
-    }
+    }, userId: client.currentUserId);
   }
 
   _promptNewSession() {
@@ -249,29 +237,12 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
     });
 
     final client = Provider.of<Client>(context, listen: false);
-    try {
+    _withErrorHandling(() async {
       await client.switchToUser(userId);
       await _ensureAuthorization();
 
       _onSession(client);
-    } on TimeoutException {
-      setState(() {
-        _lastError = l.errorSignInTimeout;
-        _loading = false;
-      });
-    } on AuthorizationFailedException catch (e){
-      setState(() {
-        _lastError = l.errorAuthorizationFailed(userId);
-        _lastErrorDetails = e.message;
-        _loading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _lastError = l.errorUnexpectedNetworkError;
-        _lastErrorDetails = e.toString();
-        _loading = false;
-      });
-    }
+    }, userId: userId);
   }
 
   Future<void> _ensureAuthorization() async {
@@ -314,5 +285,30 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
 
     // Move to stream
     Navigator.pushReplacementNamed(context, '/stream');
+  }
+
+  _withErrorHandling(Future Function() action, {@required String userId}) async {
+    try {
+      await action();
+    } on TimeoutException {
+      setState(() {
+        _lastError = l.errorSignInTimeout;
+        _loading = false;
+      });
+    } on AuthorizationFailedException catch (e) {
+      setState(() {
+        _lastError = e.code == "bad_network" ?
+          l.errorNetworkErrorOnAuthorization :
+          l.errorAuthorizationFailed(userId);
+        _lastErrorTrace = e.trace;
+        _loading = false;
+      });
+    } catch (e, s) {
+      setState(() {
+        _lastError = l.errorUnexpectedErrorOnAuthorization;
+        _lastErrorTrace = formatErrorTrace(e, s);
+        _loading = false;
+      });
+    }
   }
 }

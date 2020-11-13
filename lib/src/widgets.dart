@@ -3,15 +3,18 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide Page;
+import 'package:flutter/services.dart';
+import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
 
 import 'client.dart';
 import 'colors.dart' as colors;
 
-class ErrorMessage extends StatelessWidget {
-  const ErrorMessage(this.message, {String errorDetails, Key key, this.onRetry}) : super(key: key);
+class ErrorMessage extends StatelessWidget with LocalizationHelpers {
+  const ErrorMessage(this.message, {Key key, this.trace, this.onRetry}) : super(key: key);
 
   final String message;
+  final String trace;
   final Function onRetry;
 
   @override
@@ -28,29 +31,63 @@ class ErrorMessage extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Icon(Icons.warning, color: theme.colorScheme.onError),
-                  SizedBox(width: 8),
+                  if (trace == null) Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Icon(Icons.warning, color: theme.colorScheme.onError),
+                  ),
                   Expanded(
                     child: Text(
                       message ?? "",
                       style: TextStyle(color: theme.colorScheme.onError))
                     ),
+                  if (trace != null) IconButton(
+                    onPressed: () => _showTrace(context),
+                    icon: Icon(Icons.help, color: theme.colorScheme.onError),
+                    tooltip: l(context).detailsOnErrorLabel,
+                  )
                 ],
               ),
-              Visibility(
-                visible: onRetry != null,
-                child: FlatButton.icon(
-                  onPressed: onRetry,
-                  icon: Icon(Icons.refresh),
-                  textColor: theme.colorScheme.onError,
-                  label: Text("Retry")
-                )
+              if (onRetry != null) FlatButton.icon(
+                onPressed: onRetry,
+                icon: Icon(Icons.refresh, color: theme.colorScheme.onError),
+                label: Text(l(context).retryLabel, style: TextStyle(color: theme.colorScheme.onError))
               )
             ],
           ),
         ),
       ),
     );
+  }
+
+  _showTrace(context) async {
+    final bool copied = await showDialog(context: context, builder: (dialogContext) => AlertDialog(
+      content: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(l(dialogContext).detailsOnErrorDescription),
+            Divider(),
+            SelectableText(trace, style: TextStyle(fontFamily: 'monospace', fontFamilyFallback: ['Courier']),),
+          ],
+        ),
+      ),
+      actions: [
+        FlatButton(
+          child: Text(ml(dialogContext).copyButtonLabel),
+          onPressed: () async {
+            await Clipboard.setData(ClipboardData(text: trace));
+            Navigator.pop(dialogContext, true);
+          },
+        ),
+        FlatButton(
+          child: Text(ml(dialogContext).okButtonLabel),
+          onPressed: () => Navigator.pop(dialogContext, false),
+        )
+      ],
+    ));
+
+    if (copied) {
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text(l(context).detailsOnErrorCopied)));
+    }
   }
 }
 
