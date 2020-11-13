@@ -134,25 +134,31 @@ class UnreadItemsIndicatorIcon<T extends ItemCountNotifier> extends StatefulWidg
 class _UnreadItemsIndicatorIconState<T extends ItemCountNotifier> extends State<UnreadItemsIndicatorIcon> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Icon(widget.icon),
-        Positioned(
+    return Stack(children: <Widget>[
+      Icon(widget.icon),
+      Positioned(
           right: 0,
           child: Consumer<T>(
-            builder: (context, unreadCount, child) => Visibility(visible: unreadCount.count > 0, child: child),
-            child: Container(
-              decoration: BoxDecoration(
-                color: colors.unreadIndicator,
-                shape: BoxShape.circle
-              ),
-              width: 10,
-              height: 10
-            )
-          )
-        )
-      ]
-    );
+              builder: (context, unreadCount, child) => Visibility(
+                  visible: unreadCount.count > 0,
+                  child: Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                          color: colors.unreadIndicator,
+                          borderRadius: BorderRadius.circular(6)),
+                      constraints: BoxConstraints(
+                        minWidth: 12,
+                        minHeight: 12,
+                      ),
+                      child: Text(
+                        unreadCount.count.toString(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 8,
+                        ),
+                        textAlign: TextAlign.center,
+                      )))))
+    ]);
   }
 }
 
