@@ -29,7 +29,7 @@ class AppAuthHandler {
     let authMethodChannel: FlutterMethodChannel
     var currentSession: Session?
     
-    private let TIMEOUT_IN_SECONDS = 6.0 // Wait a relative short ammout of time.
+    private let TIMEOUT_IN_SECONDS = 30.0
     
     private var completionHandler: [(_ tokens:Tokens) -> Void] = []
     private var errorHandler: [(_ code: String, _ errorMessage:String) -> Void] = []
