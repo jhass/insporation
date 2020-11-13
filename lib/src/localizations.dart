@@ -1395,7 +1395,7 @@ class InsporationLocalizations {
   String get contactAspectsUpdated => Intl.message(
     'Aspects updated.',
     name: 'contactAspectsUpdated',
-    desc: "Success message after the user updated a contact's aspcts",
+    desc: "Success message after the user updated a contact's aspects",
     locale: localeName
   );
 

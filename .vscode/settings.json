@@ -1,4 +1,17 @@
 {
   "dart.lineLength": 120,
-  "dart.enableSdkFormatter": false
+  "dart.enableSdkFormatter": false,
+  "spellright.language": [
+    "en"
+  ],
+  "spellright.documentTypes": [
+    "markdown",
+    "latex",
+    "plaintext"
+  ],
+  "spellright.parserByClass": {
+    "dart": {
+      "parser": "code"
+    }
+  }
 }

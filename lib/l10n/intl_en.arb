@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-11-10T09:56:20.367026",
+  "@@last_modified": "2020-11-14T00:47:39.773540",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -1207,7 +1207,7 @@
   },
   "contactAspectsUpdated": "Aspects updated.",
   "@contactAspectsUpdated": {
-    "description": "Success message after the user updated a contact's aspcts",
+    "description": "Success message after the user updated a contact's aspects",
     "type": "text",
     "placeholders": {}
   },
