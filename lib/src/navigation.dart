@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide Notification, Page;
 import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:provider/provider.dart';
 
 import 'client.dart';
 import 'localizations.dart';
@@ -19,6 +20,11 @@ enum PageType {
   post
 }
 
+class CurrentNavigationItemReselectedEvents extends ChangeNotifier {
+  @override
+  void notifyListeners() => super.notifyListeners(); // make public
+}
+
 class NavigationBar extends StatelessWidget with LocalizationHelpers {
   NavigationBar({Key key, @required this.currentPage}) : super(key: key);
 
@@ -32,7 +38,8 @@ class NavigationBar extends StatelessWidget with LocalizationHelpers {
       items = mainItems.map(_buildMainItem).toList();
     items.add(BottomNavigationBarItem(label: "", icon: Icon(Icons.more_horiz)));
 
-    final theme = Theme.of(context);
+    final theme = Theme.of(context),
+      reselectionEvents = Provider.of<CurrentNavigationItemReselectedEvents>(context);
 
     return BottomNavigationBar(
       unselectedItemColor: colors.unselectedNavigationItem(theme),
@@ -40,6 +47,7 @@ class NavigationBar extends StatelessWidget with LocalizationHelpers {
       currentIndex: currentIndex,
       onTap: (index) {
         if (index == currentIndex) {
+          reselectionEvents.notifyListeners();
           return;
         }
         if (index < mainItems.length) {

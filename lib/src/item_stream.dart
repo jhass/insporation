@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'app_auth.dart';
 import 'client.dart';
 import 'localizations.dart';
+import 'navigation.dart';
 import 'utils.dart';
 import 'widgets.dart';
 
@@ -187,6 +188,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
   String _lastError;
   ScrollController _listScrollController = ScrollController();
   var _upButtonVisibility = false;
+  CurrentNavigationItemReselectedEvents _reselectionEvents;
 
   @protected
   ItemStream<T> get items => _items;
@@ -227,6 +229,15 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
         _loadItems();
       }
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _reselectionEvents?.removeListener(_scrollToTop);
+    _reselectionEvents = Provider.of<CurrentNavigationItemReselectedEvents>(context);
+    _reselectionEvents.addListener(_scrollToTop);
   }
 
   @override
@@ -280,8 +291,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
                           padding: const EdgeInsets.all(0),
                           iconSize: 48,
                           icon: Icon(Icons.keyboard_arrow_up),
-                          onPressed: () =>
-                            scrollController.animateTo(1, duration: Duration(seconds: 1), curve: Curves.easeOut),
+                          onPressed: _scrollToTop,
                         ),
                       ),
                     ),
@@ -305,6 +315,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
   @mustCallSuper
   dispose() {
     _listScrollController.dispose();
+    _reselectionEvents?.removeListener(_scrollToTop);
     super.dispose();
   }
 
@@ -336,6 +347,10 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
         });
       }
     }
+  }
+
+  _scrollToTop() {
+    scrollController.animateTo(1, duration: Duration(seconds: 1), curve: Curves.easeOut);
   }
 }
 
