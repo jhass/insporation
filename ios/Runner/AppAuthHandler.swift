@@ -225,7 +225,7 @@ class AppAuthHandler {
                 
                 if self.isTimeoutError(error) {
                     os_log("The connection timed out. ")
-                    self.invokeErrorHandler(code: self.RUNTIME_ERROR, errorMessage: "Timeout to register service")
+                    self.invokeErrorHandler(code: self.FAILED_TIMEOUT, errorMessage: "Timeout to register service")
                     return
                 }
                 
@@ -287,7 +287,7 @@ class AppAuthHandler {
                 
                 if self.isTimeoutError(error) {
                     os_log("The connection timed out. ")
-                    self.invokeErrorHandler(code: self.RUNTIME_ERROR, errorMessage: "Timeout to authorize")
+                    self.invokeErrorHandler(code: self.FAILED_TIMEOUT, errorMessage: "Timeout to authorize")
                     return
                 }
                 
