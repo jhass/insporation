@@ -34,7 +34,7 @@ class AppAuthHandler {
     private var completionHandler: [(_ tokens:Tokens) -> Void] = []
     private var errorHandler: [(_ code: String, _ errorMessage:String) -> Void] = []
     
-    private let FAILED_TIMEOUT = "timeout"
+    private let FAILED_TIMEOUT = "timeout_"
     private let FAILED_TOKEN_FETCH = "failed_token_fetch"
     private let FAILED_AUTHORIZE = "failed_authorize"
     private let FAILED_REGISTER = "failed_register"
