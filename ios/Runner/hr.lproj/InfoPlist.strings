@@ -1,5 +1,5 @@
 
 
 
-"NSCameraUsageDescription" = "Snimaj slike i dijeli ih";
-"NSPhotoLibraryUsageDescription" = "Dijeli slike";
+NSCameraUsageDescription = "Snimaj slike i dijeli ih";
+NSPhotoLibraryUsageDescription = "Dijeli slike";
