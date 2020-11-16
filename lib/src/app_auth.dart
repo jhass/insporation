@@ -72,6 +72,14 @@ class AppAuth {
     }
   }
 
+  Future<void> destroyCurrentSession(String message) async {
+    if (_currentSession?.state != null) {
+      _currentSession.state = null;
+      await _store.storeSession(_currentSession);
+      throw InvalidSessionError(message);
+    }
+  }
+
   Stream<AuthorizationEvent> get newAuthorizations {
     if (_newAuthorizations == null) {
       _newAuthorizations = _events.receiveBroadcastStream()
@@ -117,16 +125,8 @@ class AppAuth {
       }
 
       // our session is probably not worth anything anymore, destroy it
-      await _destroyCurrentSession("Failed to fetch access token: ${e.message}");
+      await destroyCurrentSession("Failed to fetch access token: ${e.message}");
       return null; // Previous always raises
-    }
-  }
-
-  Future<void> _destroyCurrentSession(String message) async {
-    if (_currentSession?.state != null) {
-      _currentSession.state = null;
-      await _store.storeSession(_currentSession);
-      throw InvalidSessionError(message);
     }
   }
 
