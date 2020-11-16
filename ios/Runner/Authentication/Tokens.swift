@@ -11,15 +11,22 @@ import Foundation
 class Tokens {
     
     var accessToken: String
-    var idToken: String
+    var idToken: String?
     
-    init(accessToken: String, idToken: String) {
+    init(accessToken: String, idToken: String?) {
         self.accessToken = accessToken
         self.idToken = idToken
     }
     
     func toDict() -> [String:String] {
-        return ["accessToken": accessToken, "idToken":idToken]
+        var dict = [String:String]()
+        dict["accessToken"] = accessToken
+        
+        if let idToken = idToken {
+            dict["idToken"] =  idToken
+        }
+        
+        return dict
     }
     
     func debugDescription() -> String {

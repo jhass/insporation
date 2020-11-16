@@ -106,12 +106,7 @@ class AppAuthHandler {
                 }
                 
                 // Got new token
-                var tokens : Tokens!
-                if let idToken = idToken {
-                    tokens = Tokens(accessToken: accessToken!, idToken: idToken)
-                } else {
-                    tokens = Tokens(accessToken: accessToken!, idToken: "")
-                }
+                let tokens = Tokens(accessToken: accessToken!, idToken: idToken)
             
                 self.setAuthState(self.authState)
                 self.invokeCompletionHandler(tokens: tokens)
