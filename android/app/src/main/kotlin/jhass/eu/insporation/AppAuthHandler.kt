@@ -21,7 +21,7 @@ import kotlin.coroutines.suspendCoroutine
 private const val APP_AUTH_CHANNEL = "insporation/appauth"
 private const val APP_AUTH_SESSION_CHANNEL = "insporation/appauth_authorization_events"
 private val APP_AUTH_REDIRECT_URI : Uri = Uri.parse("eu.jhass.insporation://callback")
-private const val TIMEOUT = 60000L
+private const val TIMEOUT = 30_000L // In Milliseconds
 
 typealias OnLaunchAuthorizationIntent = (intent: Intent, data: String) -> Unit
 
@@ -75,9 +75,9 @@ private class CallHandler(private val context: Context,
           result.notImplemented()
         }
       } catch (e: CallError) {
-        result.error(e.code, e.fullMessage(), null)
+        result.error(e.code, e.fullMessage(), e.stackTraceToString())
       } catch (e : Throwable) {
-        result.error("unhandled_exception", e.fullMessage(), null)
+        result.error("unhandled_exception", e.message, e.stackTraceToString())
       }
     }
   }
@@ -206,7 +206,7 @@ private class CallHandler(private val context: Context,
     try {
       return buildSessionFromAuthorization(state, session, result.response!!)
     } catch (e : TimeoutCancellationException) {
-      throw CallError("timeout_token_fetch", "Timed out while trying to fetch token")
+      throw CallError("timeout_token_fetch", "Timed out while trying to fetch token", e)
     }
   }
 
@@ -244,7 +244,7 @@ private class CallHandler(private val context: Context,
           continuation.resume(serviceConfig)
         } else {
           Log.d("AppAuth", "Failed to discover service config for $host: ${exception?.fullMessage()}")
-          continuation.resumeWithException(CallError("failed_register", "Failed to fetch service config", exception))
+          continuation.resumeWithException(CallError("failed_discovery", "Failed to discover service config", exception))
         }
       }
     }

@@ -41,7 +41,7 @@ void tryShowErrorSnackBar(State widget, String message, exception, stack) {
 void showErrorSnackBar(ScaffoldState scaffold, String message, exception, stack) {
   final exceptionMessage = _debugPrintError(message, exception, stack);
   if (scaffold.mounted) {
-    scaffold.showSnackBar(errorSnackbar(scaffold.context, "$message: $exceptionMessage"));
+    scaffold.showSnackBar(errorSnackBar(scaffold.context, "$message: $exceptionMessage"));
   }
 }
 
@@ -54,6 +54,12 @@ String _debugPrintError(String message, exception, stack) {
   debugPrintStack(label: "$message: $exceptionMessage", stackTrace: stack);
 
   return exceptionMessage;
+}
+
+String formatErrorTrace(Exception exception, StackTrace stackTrace) {
+  stackTrace = FlutterError.demangleStackTrace(stackTrace);
+  Iterable<String> lines = stackTrace.toString().trimRight().split('\n');
+  return "$exception\n${FlutterError.defaultStackFilter(lines).join('\n')}";
 }
 
 class CancelableFuture<T> {

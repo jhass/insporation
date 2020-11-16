@@ -295,7 +295,7 @@ class Client {
 
     assert(toAdd.isNotEmpty || toRemove.isNotEmpty, "Don't call updateAspectMemberships with an empty update");
 
-    // Add first so we don't accidentially stop sharing
+    // Add first so we don't accidentally stop sharing
     if (toAdd.isNotEmpty) {
       await Future.wait(toAdd.map((aspect) => addToAspect(person, aspect)));
     }

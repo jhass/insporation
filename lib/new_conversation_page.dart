@@ -132,7 +132,7 @@ class _NewConversationPageBodyState extends State<_NewConversationPageBody> with
     }
 
     if (_recipients.contains(response)) {
-        Scaffold.of(context).showSnackBar(errorSnackbar(context, l.failedToAddConversationParticipantDuplicate(response.nameOrId)));
+        Scaffold.of(context).showSnackBar(errorSnackBar(context, l.failedToAddConversationParticipantDuplicate(response.nameOrId)));
         return;
       }
 
