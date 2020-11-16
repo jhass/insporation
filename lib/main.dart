@@ -42,7 +42,8 @@ void main() => runApp(MultiProvider(
         ..listenToNotifications(notificationsCount)
         ..listenToConversations(conversationsCount),
       lazy: false
-    )
+    ),
+    ChangeNotifierProvider(create: (_) => CurrentNavigationItemReselectedEvents())
   ],
   child: Insporation(),
 ));
