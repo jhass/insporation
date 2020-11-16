@@ -32,7 +32,7 @@ class AppAuthHandler {
     private let TIMEOUT_IN_SECONDS = 30.0
     
     private var completionHandler: [(_ tokens:Tokens) -> Void] = []
-    private var errorHandler: [(_ code: String, _ errorMessage:String) -> Void] = []
+    private var errorHandler: [(_ code: String, _ errorMessage: String, _ details: String?) -> Void] = []
     
     private let FAILED_TIMEOUT = "timeout_"
     private let FAILED_TOKEN_FETCH = "failed_token_fetch"
@@ -67,9 +67,9 @@ class AppAuthHandler {
     }
     
     // Calls all stored handler
-    private func invokeErrorHandler(code: String, errorMessage: String) {
+    private func invokeErrorHandler(code: String, errorMessage: String, details: String?) {
         while !self.errorHandler.isEmpty {
-            self.errorHandler.removeFirst()(code, errorMessage)
+            self.errorHandler.removeFirst()(code, errorMessage, details)
         }
         completionHandler.removeAll()
     }
@@ -77,7 +77,7 @@ class AppAuthHandler {
     /**
      Gets a token from auth
      */
-    func getAccessTokens(_ session: Session, completionHandler: @escaping (Tokens) -> Void, errorHandler: @escaping (String, String) -> Void) {
+    func getAccessTokens(_ session: Session, completionHandler: @escaping (Tokens) -> Void, errorHandler: @escaping (String, String, String?) -> Void) {
         self.currentSession = session
         
         self.completionHandler.append(completionHandler)
@@ -98,7 +98,7 @@ class AppAuthHandler {
     func recoverToken() {
         guard let session = self.currentSession else {
             os_log("Error in getting last session")
-            self.errorHandler.first?(FAILED_TOKEN_FETCH, "Internal error in getting last session")
+            self.invokeErrorHandler(code: FAILED_TOKEN_FETCH, errorMessage: "Internal error in getting last session", details: "A session must be provided to the iOS part.")
             return
         }
         
@@ -111,7 +111,7 @@ class AppAuthHandler {
             }
             
             guard let tokenResponse = authState.lastTokenResponse else {
-                self.invokeErrorHandler(code: FAILED_TOKEN_FETCH, errorMessage: "No token received")
+                self.invokeErrorHandler(code: FAILED_TOKEN_FETCH, errorMessage: "No token received", details: "The service should send a token.")
                 return
             }
             
@@ -121,7 +121,7 @@ class AppAuthHandler {
             authState.performAction { (accessToken, idToken, error) in
                 
                 if let error = error {
-                    self.invokeErrorHandler(code: self.FAILED_TOKEN_FETCH, errorMessage: error.localizedDescription)
+                    self.invokeErrorHandler(code: self.FAILED_TOKEN_FETCH, errorMessage: error.localizedDescription, details: error.localizedDescription)
                     return
                 }
                 
@@ -147,7 +147,7 @@ class AppAuthHandler {
     func authorizeUser() {
         guard let userId = self.currentSession?.userId else {
             os_log("No userID set")
-            self.invokeErrorHandler(code: FAILED_AUTHORIZE, errorMessage: "No user ID set")
+            self.invokeErrorHandler(code: FAILED_AUTHORIZE, errorMessage: "No user ID set", details: nil)
             return
         }
         discoverConfiguration(forUserId: userId)
@@ -164,18 +164,18 @@ class AppAuthHandler {
             if let error = error as NSError? {
                 if self.isTimeoutError(error) {
                     os_log("The connection timed out. ")
-                    self.invokeErrorHandler(code: self.FAILED_TIMEOUT, errorMessage: "Timeout to discover service")
+                    self.invokeErrorHandler(code: self.FAILED_TIMEOUT, errorMessage: "Timeout to discover service", details: error.localizedDescription)
                     return
                 }
                 
                 os_log("Failed to discover service config for %{public}@: %{public}@", log: .default, type: .error, hostname, error.localizedDescription)
-                self.invokeErrorHandler(code: self.FAILED_DISCOVERY, errorMessage: "Failed to discover service")
+                self.invokeErrorHandler(code: self.FAILED_DISCOVERY, errorMessage: "Failed to discover service", details: error.localizedDescription)
                 return
             }
             
             guard let configuration = configuration else {
                 os_log("Configuration Object was empty")
-                self.invokeErrorHandler(code: self.FAILED_DISCOVERY, errorMessage: "Configuraton object was empty")
+                self.invokeErrorHandler(code: self.FAILED_DISCOVERY, errorMessage: "Configuraton object was empty", details: "Expected an OpenID configuration from pod.")
                 return
             }
             
@@ -225,13 +225,13 @@ class AppAuthHandler {
                 
                 if self.isTimeoutError(error) {
                     os_log("The connection timed out. ")
-                    self.invokeErrorHandler(code: self.FAILED_TIMEOUT, errorMessage: "Timeout to register service")
+                    self.invokeErrorHandler(code: self.FAILED_TIMEOUT, errorMessage: "Timeout to register service",details: error.localizedDescription)
                     return
                 }
                 
                 os_log("Failed registration client %{error}@", log: .default, type: .error, error.localizedDescription)
                 self.setAuthState(nil) // Clear local store - if already stored
-                self.invokeErrorHandler(code: self.FAILED_REGISTER, errorMessage: "Failed to register service: \(error.localizedDescription)")
+                self.invokeErrorHandler(code: self.FAILED_REGISTER, errorMessage: "Failed to register client", details: error.localizedDescription)
                 return
             }
             
@@ -257,7 +257,7 @@ class AppAuthHandler {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             os_log("RuntimeError: AppDelegate not set in code.")
-            self.invokeErrorHandler(code: self.RUNTIME_ERROR, errorMessage: "AppDelegate not set in code")
+            self.invokeErrorHandler(code: self.RUNTIME_ERROR, errorMessage: "Internal runtime error", details: "AppDelegate not set in code")
             return
         }
         
@@ -287,13 +287,13 @@ class AppAuthHandler {
                 
                 if self.isTimeoutError(error) {
                     os_log("The connection timed out. ")
-                    self.invokeErrorHandler(code: self.FAILED_TIMEOUT, errorMessage: "Timeout to authorize")
+                    self.invokeErrorHandler(code: self.FAILED_TIMEOUT, errorMessage: "Timeout to authorize", details: error.localizedDescription)
                     return
                 }
                 
                 os_log("Authorization error: %{public}@", log:.default, type: .error,  error.localizedDescription )
                 self.setAuthState(nil)
-                self.invokeErrorHandler(code: self.FAILED_AUTHORIZE, errorMessage: "Authorization error: \(error.localizedDescription)")
+                self.invokeErrorHandler(code: self.FAILED_AUTHORIZE, errorMessage: "Authorization error", details: error.localizedDescription)
                 return
             }
             
@@ -301,7 +301,7 @@ class AppAuthHandler {
                 
                 // Token setting should end waiting service
                 guard let tokenResponse = authState.lastTokenResponse else {
-                    self.invokeErrorHandler(code: self.FAILED_TOKEN_FETCH, errorMessage: "No token received")
+                    self.invokeErrorHandler(code: self.FAILED_TOKEN_FETCH, errorMessage: "No token received", details: "Pod should send a token - but did not")
                     return
                 }
                 

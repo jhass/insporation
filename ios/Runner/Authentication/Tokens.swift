@@ -30,6 +30,16 @@ class Tokens {
     }
     
     func debugDescription() -> String {
-        return toDict().debugDescription
+        var debugDescription = "{ "
+        debugDescription.append("accessToken = ")
+        debugDescription.append(contentsOf: accessToken.prefix(5))
+        debugDescription.append("...; ")
+        if let idToken = idToken {
+            debugDescription.append("idToken = ")
+            debugDescription.append(contentsOf: idToken.prefix(5))
+            debugDescription.append("...; ")
+        }
+        debugDescription.append(" }")
+        return debugDescription
     }
 }

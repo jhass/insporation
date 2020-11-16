@@ -39,11 +39,11 @@ import os.log
                 let session = Session(sessionData: sessionArgs_)
                 if let appAuthHandler = self.appAuthHandler {
                     appAuthHandler.getAccessTokens(session) { (tokens) in
-                        os_log("Token: %{public}@", log: .default, type: .default,tokens.toDict())
+                        os_log("Got token: %{public}@", log: .default, type: .default,tokens.debugDescription())
                         result(tokens.toDict())
-                    } errorHandler : { (code, errorMessage) in
+                    } errorHandler : { (code, errorMessage, details) in
                         os_log("Error: %{public}@", log:.default, type: .error, errorMessage)
-                        result(FlutterError(code: code, message: errorMessage, details: nil))
+                        result(FlutterError(code: code, message: errorMessage, details: details))
                     }
                 }
             }
