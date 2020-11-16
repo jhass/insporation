@@ -18,7 +18,7 @@ class AppAuthHandler {
     private var authState: OIDAuthState?
     let kAppAuthAuthStateKey = "authState_" // Key is extended by UserID
     
-    // A single slash between shema and path is recommended for iOS
+    // A single slash between schema and path is recommended for iOS
     let APP_AUTH_REDIRECT_URI =  URL.init(string: "eu.jhass.insporation:/callback/")!
     
     let controller: UIViewController
@@ -35,15 +35,17 @@ class AppAuthHandler {
     }
     
     private func invokeCompletionHandler(tokens: Tokens) {
-        while !self.completionHandler.isEmpty {
-            self.completionHandler.removeFirst()(tokens)
+        while !completionHandler.isEmpty {
+            completionHandler.removeFirst()(tokens)
         }
+        errorHandler.removeAll()
     }
     
     private func invokeErrorHandler(errorMessage: String) {
         while !self.errorHandler.isEmpty {
             self.errorHandler.removeFirst()(errorMessage)
         }
+        completionHandler.removeAll()
     }
     
     /**
@@ -87,6 +89,8 @@ class AppAuthHandler {
                 return
             }
             
+            let currentAccessToken = tokenResponse.accessToken
+            
             // Request fresh token
             authState.performAction { (accessToken, idToken, error) in
                 
@@ -94,8 +98,22 @@ class AppAuthHandler {
                     self.invokeErrorHandler(errorMessage: error.localizedDescription)
                     return
                 }
+                
+                if currentAccessToken != accessToken {
+                    os_log("Access token was refreshed automatically")
+                } else {
+                    os_log("Access token was fresh and not updated")
+                }
+                
                 // Got new token
-                let tokens = Tokens(accessToken: tokenResponse.accessToken!, idToken: tokenResponse.idToken!)
+                var tokens : Tokens!
+                if let idToken = idToken {
+                    tokens = Tokens(accessToken: accessToken!, idToken: idToken)
+                } else {
+                    tokens = Tokens(accessToken: accessToken!, idToken: "")
+                }
+            
+                self.setAuthState(self.authState)
                 self.invokeCompletionHandler(tokens: tokens)
             }
             

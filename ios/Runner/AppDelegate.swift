@@ -38,7 +38,6 @@ import os.log
                 let sessionArgs_:[String: Any?] = (sessionArgs as! [String : Any?])
                 let session = Session(sessionData: sessionArgs_)
                 if let appAuthHandler = self.appAuthHandler {
-                    print("Calling Handler")
                     appAuthHandler.getAccessTokens(session) { (tokens) in
                         os_log("Token: %{public}@", log: .default, type: .default,tokens.toDict())
                         result(tokens.toDict())
