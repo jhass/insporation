@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m3(userId) => "Remove session for ${userId} from insporation*?";
 
+  static m33(userId) => "Could not authorize to ${userId}, is it spelled correctly, is your network working and is your pod running the latest development snapshot?";
+
   static m4(name) => "${name} already is a recipient, cannot add them twice.";
 
   static m5(name) => "${name} is not sharing with you, cannot add them as a recipient!";
@@ -117,6 +119,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteSessionPrompt" : m3,
     "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Reshare of a deleted post"),
     "deselectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Deselect all"),
+    "detailsOnErrorCopied" : MessageLookupByLibrary.simpleMessage("Error trace copied to clipboard."),
+    "detailsOnErrorDescription" : MessageLookupByLibrary.simpleMessage("The following internal error occurred. Please include this when asking for help."),
+    "detailsOnErrorLabel" : MessageLookupByLibrary.simpleMessage("Help"),
     "duplicateProfileTag" : MessageLookupByLibrary.simpleMessage("Tag already added"),
     "editAspectPrompt" : MessageLookupByLibrary.simpleMessage("Edit aspect"),
     "editPoll" : MessageLookupByLibrary.simpleMessage("Edit poll"),
@@ -133,7 +138,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProfileTagsLabel" : MessageLookupByLibrary.simpleMessage("Tags"),
     "editProfileTitle" : MessageLookupByLibrary.simpleMessage("Edit profile"),
     "enterAddressHint" : MessageLookupByLibrary.simpleMessage("Enter an address"),
-    "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("Timeout while trying to authenticate, are you sure your pod supports the API?"),
+    "errorAuthorizationFailed" : m33,
+    "errorNetworkErrorOnAuthorization" : MessageLookupByLibrary.simpleMessage("A network error occurred, please ensure that you spelled your pod correctly and that you have a good reception, then try again."),
+    "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("Timeout while trying to authorize, are you sure your pod supports the API?"),
+    "errorUnexpectedErrorOnAuthorization" : MessageLookupByLibrary.simpleMessage("An unexpected error happened while trying to sign in."),
     "failedToAddConversationParticipant" : MessageLookupByLibrary.simpleMessage("Failed to add recipient"),
     "failedToAddConversationParticipantDuplicate" : m4,
     "failedToAddConversationParticipantNotSharing" : m5,
@@ -245,6 +253,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportPostPrompt" : MessageLookupByLibrary.simpleMessage("Report post"),
     "resharePrompt" : MessageLookupByLibrary.simpleMessage("Reshare post?"),
     "resharesHeader" : MessageLookupByLibrary.simpleMessage("Reshares"),
+    "retryLabel" : MessageLookupByLibrary.simpleMessage("Retry"),
     "saveButtonLabel" : MessageLookupByLibrary.simpleMessage("Save"),
     "searchDialogHint" : MessageLookupByLibrary.simpleMessage("Search"),
     "searchPeopleByTagHint" : MessageLookupByLibrary.simpleMessage("Enter a tag"),
