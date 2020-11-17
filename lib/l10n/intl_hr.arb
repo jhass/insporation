@@ -643,7 +643,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "errorSignInTimeout": "Vrijeme pokušaja autentifikacije je isteklo. Je li tvoj poslužitelj (pod) podržava API?",
+  "errorSignInTimeout": "Vrijeme pokušaja autorizacije je isteklo. Je li tvoj „pod” podržava API?",
   "@errorSignInTimeout": {
     "description": "Error message after authenticating timed out",
     "type": "text",
@@ -1379,6 +1379,62 @@
   "editProfileLocationLabel": "Lokacija",
   "@editProfileLocationLabel": {
     "description": "Label for edit profile location field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorNetworkErrorOnAuthorization": "Dogodila se mrežna greška. Provjeri ispravnost tvog „poda” i kvalitetu prijema. Zatim pokušaj ponovo.",
+  "@errorNetworkErrorOnAuthorization": {
+    "description": "Error message after a network error occurred during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAuthorizationFailed": "Nije moguće autorizirati {userId}. Provjeri unos, provjeri tvoju mrežu i provjeri je li tvoj „pod” pokreće najnoviju snimku razvoja?",
+  "@errorAuthorizationFailed": {
+    "description": "Error message after authorization failed",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
+  },
+  "deleteSessionPrompt": "Ukloniti sesiju za {userId} iz insporation*?",
+  "@deleteSessionPrompt": {
+    "description": "Title for delete session prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
+  },
+  "errorUnexpectedErrorOnAuthorization": "Došlo je do neočekivane greške prilikom pokušaja prijave.",
+  "@errorUnexpectedErrorOnAuthorization": {
+    "description": "Error message after an unexpected error happened during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorCopied": "Trag greške kopiran je u međuspremnik.",
+  "@detailsOnErrorCopied": {
+    "description": "Success message after error details were copied to clipboard",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorDescription": "Dogodila se sljedeća interna greška. Uključi ove podatke kad zatražiš pomoć.",
+  "@detailsOnErrorDescription": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorLabel": "Pomoć",
+  "@detailsOnErrorLabel": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "retryLabel": "Ponovi",
+  "@retryLabel": {
+    "description": "Label for a retry button",
     "type": "text",
     "placeholders": {}
   }
