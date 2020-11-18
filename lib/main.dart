@@ -69,7 +69,7 @@ class _InsporationState extends State<Insporation> {
       shareEventsSubscription = _shareEventsChannel.receiveBroadcastStream().listen(_onShareIntent);
 
       // same for pushing a new route in response to a new session
-      sessionEventsSubscription = Provider.of<Client>(context, listen: false).newAuthorizations.listen(_onAuthorizationEvent);
+      sessionEventsSubscription = context.read<Client>().newAuthorizations.listen(_onAuthorizationEvent);
     });
   }
 
@@ -99,7 +99,7 @@ class _InsporationState extends State<Insporation> {
         '/switch_user': (context) => SignInPage(resumeLastSession: false),
         '/stream': (context) {
           final StreamOptions options = ModalRoute.of(context).settings.arguments;
-          final lastOptions = Provider.of<PersistentState>(context, listen: false).lastStreamOptions;
+          final lastOptions = context.watch<PersistentState>().lastStreamOptions;
           return StreamPage(options: options ?? lastOptions ?? const StreamOptions());
         },
         '/stream/tag': (context) {

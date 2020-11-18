@@ -43,7 +43,7 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> with St
                 groupValue: items.type,
                 onValueChanged: (type) => setState(() {
                   items.type = type;
-                  items.load(Provider.of<Client>(context, listen: false));
+                  items.load(context.read<Client>());
                 }),
               ),
             ),
@@ -58,7 +58,7 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> with St
                 ),
                 onChanged: (query) {
                   items.query = query;
-                  items.load(Provider.of<Client>(context, listen: false));
+                  items.load(context.read<Client>());
                 },
               ),
             ),

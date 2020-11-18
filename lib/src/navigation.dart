@@ -39,7 +39,7 @@ class NavigationBar extends StatelessWidget with LocalizationHelpers {
     items.add(BottomNavigationBarItem(label: "", icon: Icon(Icons.more_horiz)));
 
     final theme = Theme.of(context),
-      reselectionEvents = Provider.of<CurrentNavigationItemReselectedEvents>(context);
+      reselectionEvents = context.watch<CurrentNavigationItemReselectedEvents>();
 
     return BottomNavigationBar(
       unselectedItemColor: colors.unselectedNavigationItem(theme),

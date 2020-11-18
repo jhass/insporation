@@ -150,7 +150,7 @@ class _NsfwShieldState extends State<NsfwShield> with StateLocalizationHelpers {
 
   @override
   Widget build(BuildContext context) {
-    final showNsfw = tryProvide<ShowNsfwPosts>(context, listen: true);
+    final showNsfw = context.tryWatch<ShowNsfwPosts>();
 
     return Visibility(
         visible: widget.nsfwPost == true && _hide != false && (showNsfw != null && showNsfw.value == false),

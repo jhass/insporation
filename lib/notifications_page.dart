@@ -143,8 +143,8 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
       return;
     }
 
-    final client = Provider.of<Client>(context, listen: false),
-      unreadCount = Provider.of<UnreadNotificationsCount>(context, listen: false);
+    final client = context.read<Client>(),
+      unreadCount = context.read<UnreadNotificationsCount>();
 
     setState(() => widget.notification.read = newStatus);
     if (newStatus) {

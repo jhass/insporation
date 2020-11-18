@@ -56,8 +56,8 @@ class _AddAspectButtonState extends State<_AddAspectButton> with StateLocalizati
       title: l.createAspectPrompt,
       actionText: l.createButtonLabel
     )),
-      client = Provider.of<Client>(context, listen: false),
-      items = Provider.of<ItemStream<Aspect>>(context, listen: false);
+      client = context.read<Client>(),
+      items = context.read<ItemStream<Aspect>>();
 
     if (name == null) {
       return; // user cancelled dialog
@@ -122,8 +122,8 @@ class _AspectItemState extends State<_AspectItem> with StateLocalizationHelpers 
       actionText: l.saveButtonLabel,
       initialValue: oldName,
     )),
-      client = Provider.of<Client>(context, listen: false),
-      items = Provider.of<ItemStream<Aspect>>(context, listen: false);
+      client = context.read<Client>(),
+      items = context.read<ItemStream<Aspect>>();
 
     if (newName == null) {
       return; // user canceled dialog
@@ -148,8 +148,8 @@ class _AspectItemState extends State<_AspectItem> with StateLocalizationHelpers 
         FlatButton(child: Text(l.confirmDeleteButtonLabel), onPressed: () => Navigator.pop(context, true))
       ],
     ));
-    final client = Provider.of<Client>(context, listen: false),
-      items = Provider.of<ItemStream<Aspect>>(context, listen: false);
+    final client = context.read<Client>(),
+      items = context.read<ItemStream<Aspect>>();
 
     if (confirmed != true) {
       return; // user rejected or canceled dialog

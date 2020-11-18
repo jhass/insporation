@@ -25,7 +25,7 @@ class _EditProfilePageState extends State<EditProfilePage> with StateLocalizatio
   void initState() {
     super.initState();
 
-    Provider.of<Client>(context, listen: false).currentUser
+    context.read<Client>().currentUser
       .then((profile) => setState(() => _profile = profile));
   }
   @override
@@ -143,7 +143,7 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
         scale: _crop.currentState.scale
       );
 
-      final photo = await Provider.of<Client>(context, listen: false).uploadProfilePicture(croppedImage);
+      final photo = await context.read<Client>().uploadProfilePicture(croppedImage);
       setState(() {
         widget.profile.avatar = photo.sizes;
         _uploading = false;
@@ -490,7 +490,7 @@ class _EditProfileState extends State<_EditProfile> with StateLocalizationHelper
   }
 
   _submit() async {
-    final client = Provider.of<Client>(context, listen: false);
+    final client = context.read<Client>();
 
     setState(() => _submitting = true);
 

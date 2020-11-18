@@ -322,7 +322,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
 
   _toggleLike() async {
     final scaffold = Scaffold.of(context),
-      client = Provider.of<Client>(context, listen: false),
+      client = context.read<Client>(),
       current = widget.post.interactions.liked,
       currentCount = widget.post.interactions.likes;
     setState(() {
@@ -376,8 +376,8 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
 
   _createReshare() async {
     final scaffold = Scaffold.of(context),
-      client = Provider.of<Client>(context, listen: false),
-      postStream = tryProvide<ItemStream<Post>>(context) as PostStream;
+      client = context.read<Client>(),
+      postStream = context.tryRead<ItemStream<Post>>() as PostStream;
     setState(() {
       widget.post.interactions.reshared = true;
       widget.post.interactions.reshares++;
@@ -458,7 +458,7 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
 
   _toggleSubscription() async {
     final scaffold = Scaffold.of(context),
-      client = Provider.of<Client>(context, listen: false),
+      client = context.read<Client>(),
       current = widget.post.interactions.subscribed;
     setState(() {
       _updatingSubscription = true;
@@ -513,8 +513,8 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
 
   _removePost() async {
     final scaffold = Scaffold.of(context),
-      client = Provider.of<Client>(context, listen: false),
-      postStream = tryProvide<ItemStream<Post>>(context);
+      client = context.read<Client>(),
+      postStream = context.tryRead<ItemStream<Post>>();
 
     Slidable.of(context)?.close();
 
@@ -572,7 +572,7 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
 
   _createReport(String report) async {
     final scaffold = Scaffold.of(context),
-      client = Provider.of<Client>(context, listen: false);
+      client = context.read<Client>();
     setState(() => widget.post.interactions.reported = true);
     Slidable.of(context)?.close();
 
@@ -773,7 +773,7 @@ class _PollViewState extends State<_PollView> with StateLocalizationHelpers {
       answer.own = true;
     });
 
-    final client = Provider.of<Client>(context, listen: false);
+    final client = context.read<Client>();
     try {
       await client.vote(widget.post, answer);
     } catch(e, s) {

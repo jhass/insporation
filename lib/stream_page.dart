@@ -29,7 +29,7 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStream
     super.didChangeDependencies();
 
     if (widget.options.type != StreamType.tag) {
-      Provider.of<PersistentState>(context, listen: false).lastStreamOptions = widget.options;
+      context.read<PersistentState>().lastStreamOptions = widget.options;
     }
   }
 
@@ -93,7 +93,7 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStream
                   pageBuilder: (context, _, __) => _FollowedTagsPage()
                 ));
 
-                items.load(Provider.of<Client>(context, listen: false), reset: true);
+                items.load(context.read<Client>(), reset: true);
               },
             )
           )
@@ -248,13 +248,13 @@ class _FollowedTagsPageState extends State<_FollowedTagsPage> with StateLocaliza
   );
 
   _fetch() {
-    Provider.of<Client>(context, listen: false).fetchFollowedTags()
+    context.read<Client>().fetchFollowedTags()
       .then((tags) => setState(() => _tags = tags))
       .catchError((error) => setState(() => _lastError = error.toString()));
   }
 
   _addTag() async {
-    final client = Provider.of<Client>(context, listen: false),
+    final client = context.read<Client>(),
       tag = await showDialog(context: context, builder: (context) => TagSearchDialog());
 
     if (tag == null) {
@@ -273,7 +273,7 @@ class _FollowedTagsPageState extends State<_FollowedTagsPage> with StateLocaliza
   }
 
   _removeTag(String tag) async {
-    final client = Provider.of<Client>(context, listen: false),
+    final client = context.read<Client>(),
       position = _tags.indexOf(tag);
 
     setState(() => _tags.removeAt(position));

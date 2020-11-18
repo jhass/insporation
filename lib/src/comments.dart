@@ -42,7 +42,7 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
   void initState() {
     super.initState();
 
-    final state = Provider.of<PersistentState>(context, listen: false);
+    final state = context.read<PersistentState>();
     _newComment.text = state.getCommentDraft(widget.post) ?? "";
     _draftObserver = DraftObserver(context: context, controller: _newComment, onPersist: (text) =>
       state.setCommentDraft(widget.post, text));
@@ -99,8 +99,8 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
   }
 
   Future<bool> _insertComment(String value) async {
-    final client = Provider.of<Client>(context, listen: false),
-      state = Provider.of<PersistentState>(context, listen: false);
+    final client = context.read<Client>(),
+      state = context.read<PersistentState>();
 
     try {
       final comment = await client.commentPost(widget.post, value);
@@ -219,8 +219,8 @@ class _CommentActionsViewState extends State<_CommentActionsView> with StateLoca
   }
 
   _delete() async {
-    final client = Provider.of<Client>(context, listen: false),
-      items = tryProvide<ItemStream<Comment>>(context);
+    final client = context.read<Client>(),
+      items = context.tryRead<ItemStream<Comment>>();
     int oldPosition = 0;
 
     if (items != null) {
@@ -271,7 +271,7 @@ class _CommentActionsViewState extends State<_CommentActionsView> with StateLoca
 
   _createReport(String report) async {
     final scaffold = Scaffold.of(context),
-      client = Provider.of<Client>(context, listen: false);
+      client = context.read<Client>();
     setState(() => widget.comment.reported = true);
     Slidable.of(context)?.close();
 

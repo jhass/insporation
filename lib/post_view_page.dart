@@ -57,7 +57,7 @@ class _PostViewPageState extends State<PostViewPage> {
   bool get _loading => _post == null && _lastError == null;
 
   _fetch() async {
-    final client = Provider.of<Client>(context, listen: false);
+    final client = context.read<Client>();
 
     try {
       final post = await client.fetchPost(widget.postId);
@@ -115,7 +115,7 @@ class _PostWithInteractionsViewState extends CommentListViewState {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    final client = Provider.of<Client>(context, listen: false);
+    final client = context.read<Client>();
 
     if (_likes == null || _likes.post != widget.post) {
       _likes = _LikesStream(post: widget.post);
@@ -181,4 +181,3 @@ class _ListPeopleView extends StatelessWidget {
     );
   }
 }
-

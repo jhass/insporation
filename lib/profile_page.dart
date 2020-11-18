@@ -74,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   _fetch() async {
-    final client = Provider.of<Client>(context, listen: false);
+    final client = context.read<Client>();
 
     try {
       var personId = widget.personId;
@@ -307,8 +307,8 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
     final newState = !widget.profile.blocked,
       profile = widget.profile,
       person = profile.person,
-      profileNotifier = Provider.of<_ProfileNotifier>(context, listen: false),
-      client = Provider.of<Client>(context, listen: false);
+      profileNotifier = context.read<_ProfileNotifier>(),
+      client = context.read<Client>();
 
     profile.blocked = newState;
     profileNotifier.updated();
@@ -398,8 +398,8 @@ class _AspectMembershipViewState extends State<_AspectMembershipView> with State
   }
 
   void _updateAspects() async {
-    final client = Provider.of<Client>(context, listen: false),
-      profile = Provider.of<_ProfileNotifier>(context, listen: false),
+    final client = context.read<Client>(),
+      profile = context.read<_ProfileNotifier>(),
       oldAspects = List.of(profile.value.aspects);
 
     List<Aspect> newAspects = await showDialog(

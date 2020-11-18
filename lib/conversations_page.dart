@@ -91,7 +91,7 @@ class _ConversationsPageState extends ItemStreamState<Conversation, Conversation
 
   _show(Conversation conversation) {
     setState(() => conversation.read = true);
-    Provider.of<UnreadConversationsCount>(context, listen: false).decrement();
+    context.read<UnreadConversationsCount>().decrement();
     Navigator.push(context, PageRouteBuilder(
       pageBuilder: (context, _, __) => _ConversationMessagesPage(conversation: conversation),
       transitionsBuilder: (context, animation, _, child) => SlideTransition(
@@ -103,7 +103,7 @@ class _ConversationsPageState extends ItemStreamState<Conversation, Conversation
   }
 
   _hide(Conversation conversation) async {
-    final client = Provider.of<Client>(context, listen: false),
+    final client = context.read<Client>(),
       position = items.remove(conversation);
 
     try {
@@ -143,7 +143,7 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
   @override
   void initState() {
     super.initState();
-    final state = Provider.of<PersistentState>(context, listen: false);
+    final state = context.read<PersistentState>();
     _newMessage.text = state.getMessageDraft(widget.conversation);
     _draftObserver = DraftObserver(context: context, controller: _newMessage, onPersist: (text) =>
       state.setMessageDraft(widget.conversation, text));
@@ -229,8 +229,8 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
   }
 
   Future<bool> _submit(String body) async {
-    final client = Provider.of<Client>(context, listen: false),
-      state = Provider.of<PersistentState>(context, listen: false);
+    final client = context.read<Client>(),
+      state = context.read<PersistentState>();
     try {
       final message = await client.createMessage(widget.conversation, body);
       items.add(message);

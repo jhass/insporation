@@ -5,13 +5,20 @@ import 'package:provider/provider.dart';
 
 import 'widgets.dart';
 
-T tryProvide<T>(BuildContext context, {bool listen = false}) {
-  try {
-    return Provider.of(context, listen: listen);
-  } on ProviderNotFoundException {
-    return null;
+extension TryProvide on BuildContext {
+  T tryRead<T>() => tryProvide<T>(listen: false);
+
+  T tryWatch<T>() => tryProvide<T>(listen: true);
+
+  T tryProvide<T>({bool listen = false}) {
+    try {
+      return Provider.of(this, listen: listen);
+    } on ProviderNotFoundException {
+      return null;
+    }
   }
 }
+
 bool containSameElements(Iterable a, Iterable b) {
   if ((a == null && b != null) || (a != null && b == null)) {
     return false;

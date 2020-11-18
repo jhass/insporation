@@ -236,7 +236,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
     super.didChangeDependencies();
 
     _reselectionEvents?.removeListener(_scrollToTop);
-    _reselectionEvents = Provider.of<CurrentNavigationItemReselectedEvents>(context);
+    _reselectionEvents = context.read<CurrentNavigationItemReselectedEvents>();
     _reselectionEvents.addListener(_scrollToTop);
   }
 
@@ -321,7 +321,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
 
   _loadItems({bool reset = false}) async {
     try {
-      final client = Provider.of<Client>(context, listen: false);
+      final client = context.read<Client>();
       Future<void> progress;
       setState(() {
         _lastError = null;

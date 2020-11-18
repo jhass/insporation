@@ -140,7 +140,7 @@ class _NewConversationPageBodyState extends State<_NewConversationPageBody> with
   }
 
   Future<bool> _submit(String body) async {
-    final client = Provider.of<Client>(context, listen: false);
+    final client = context.read<Client>();
 
     try {
       final conversation = await client.createConversation(NewConversation(

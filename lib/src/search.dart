@@ -161,7 +161,7 @@ abstract class _SearchDialogState<T extends StatefulWidget> extends ItemStreamSt
         final stream = (items as SearchResultStream);
         stream.query = value;
         setState(() => _loading = true);
-        await stream.load(Provider.of<Client>(context, listen: false));
+        await stream.load(context.read<Client>());
         if (mounted) {
           setState(() => _loading = false);
         }

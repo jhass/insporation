@@ -33,7 +33,7 @@ class _AspectSelectionListState extends State<AspectSelectionList> with StateLoc
   @override
   void initState() {
     super.initState();
-    final client = Provider.of<Client>(context, listen: false);
+    final client = context.read<Client>();
     client.currentUserAspects.then((aspects) => setState(() => _userAspects = aspects));
   }
 

@@ -133,7 +133,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
     _diasporaIdController.dispose();
   }
 
-  Future<List<Session>> get _recentSessions => Provider.of<Client>(context, listen: false).allSessions.then((sessions) {
+  Future<List<Session>> get _recentSessions => context.read<Client>().allSessions.then((sessions) {
         sessions = sessions.where((session) => session.state != null).toList();
         sessions.sort((a, b) => a.lastActiveAt == 0
             ? 1
@@ -144,7 +144,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
       });
 
   _showInitialError() async {
-    final client = Provider.of<Client>(context, listen: false);
+    final client = context.read<Client>();
     await client.restoreSession();
     _diasporaIdController.text = client.currentUserId;
     setState(() {
@@ -154,8 +154,8 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
   }
 
   _resumeLastSession() async {
-    final client = Provider.of<Client>(context, listen: false),
-      persistentState = Provider.of<PersistentState>(context, listen: false);
+    final client = context.read<Client>(),
+      persistentState = context.read<PersistentState>();
     await persistentState.restore();
 
     setState(() {
@@ -204,7 +204,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
   }
 
   _promptNewSession() {
-    Provider.of<Client>(context, listen: false).forgetSession();
+    context.read<Client>().forgetSession();
     setState(() => _loading = false);
     _maybeFocusInput();
   }
@@ -236,7 +236,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
       _lastError = null;
     });
 
-    final client = Provider.of<Client>(context, listen: false);
+    final client = context.read<Client>();
     _withErrorHandling(() async {
       await client.switchToUser(userId);
       await _ensureAuthorization();
@@ -246,8 +246,8 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
   }
 
   Future<void> _ensureAuthorization() async {
-    final client = Provider.of<Client>(context, listen: false),
-      persistentState = Provider.of<PersistentState>(context, listen: false);
+    final client = context.read<Client>(),
+      persistentState = context.read<PersistentState>();
     try {
       persistentState.wasAuthorizing = true;
       await client.ensureAuthorization();
@@ -267,7 +267,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
               FlatButton(
                 child: Text(ml.okButtonLabel),
                 onPressed: () async {
-                  await Provider.of<Client>(context, listen: false).destroySession(userId);
+                  await context.read<Client>().destroySession(userId);
 
                   if (mounted) {
                     setState(() { _sessions = _recentSessions; });
@@ -280,8 +280,8 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
 
   _onSession(Client client) {
     // refresh unread counts now that we have a session
-    tryProvide<UnreadNotificationsCount>(context)?.update(client);
-    tryProvide<UnreadConversationsCount>(context)?.update(client);
+    context.tryRead<UnreadNotificationsCount>()?.update(client);
+    context.tryRead<UnreadConversationsCount>()?.update(client);
 
     // Move to stream
     Navigator.pushReplacementNamed(context, '/stream');

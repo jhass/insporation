@@ -77,7 +77,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   void initState() {
     super.initState();
 
-    final state = Provider.of<PersistentState>(context, listen: false);
+    final state = context.read<PersistentState>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_initialFocus);
@@ -232,7 +232,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   }
 
   _uploadPhotoFile(File picture) async {
-    final client = Provider.of<Client>(context, listen: false);
+    final client = context.read<Client>();
     final upload = client.uploadPictureForPublishing(picture),
       attachedPhoto = _AttachedPhoto(picture, upload);
 
@@ -288,8 +288,8 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   }
 
   _submit() async {
-    final client = Provider.of<Client>(context, listen: false),
-      state = Provider.of<PersistentState>(context, listen: false),
+    final client = context.read<Client>(),
+      state = context.read<PersistentState>(),
       photos = _attachedPhotos.map((photo) => photo.guid).toList();
 
     setState(() => _submitting = true);
@@ -401,7 +401,7 @@ class _PublishTargetSelectionDialogState extends State<_PublishTargetSelectionDi
   }
 
   _fetch() {
-    Provider.of<Client>(context, listen: false).currentUserAspects
+    context.read<Client>().currentUserAspects
       .then((aspects) => setState(() => _aspects = aspects))
       .catchError((error) => _lastError = error.toString());
   }
