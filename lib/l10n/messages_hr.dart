@@ -25,6 +25,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m2(name) => "Isbrisati aspekt ${name}?";
 
+  static m3(userId) => "Ukloniti sesiju za ${userId} iz insporation*?";
+
+  static m33(userId) => "Nije moguće autorizirati ${userId}. Provjeri unos, provjeri tvoju mrežu i provjeri je li tvoj „pod” pokreće najnoviju snimku razvoja?";
+
   static m4(name) => "${name} već je primatelj. Ne može se dvaput dodati.";
 
   static m5(name) => "${name} ne dijeli s tobom. Ne mogu se dodati kao primatelji!";
@@ -112,8 +116,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteAspectPrompt" : m2,
     "deleteCommentPrompt" : MessageLookupByLibrary.simpleMessage("Isbrisati komentar?"),
     "deletePostPrompt" : MessageLookupByLibrary.simpleMessage("Isbrisati objavu?"),
+    "deleteSessionPrompt" : m3,
     "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Proslijedi izbrisanu objavu"),
     "deselectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Odznači sve"),
+    "detailsOnErrorCopied" : MessageLookupByLibrary.simpleMessage("Trag greške kopiran je u međuspremnik."),
+    "detailsOnErrorDescription" : MessageLookupByLibrary.simpleMessage("Dogodila se sljedeća interna greška. Uključi ove podatke kad zatražiš pomoć."),
+    "detailsOnErrorLabel" : MessageLookupByLibrary.simpleMessage("Pomoć"),
     "duplicateProfileTag" : MessageLookupByLibrary.simpleMessage("Oznaka je već dodana"),
     "editAspectPrompt" : MessageLookupByLibrary.simpleMessage("Uredi aspekt"),
     "editPoll" : MessageLookupByLibrary.simpleMessage("Uredi anketu"),
@@ -130,7 +138,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProfileTagsLabel" : MessageLookupByLibrary.simpleMessage("Oznake"),
     "editProfileTitle" : MessageLookupByLibrary.simpleMessage("Uredi profil"),
     "enterAddressHint" : MessageLookupByLibrary.simpleMessage("Upiši adresu"),
-    "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("Vrijeme pokušaja autentifikacije je isteklo. Je li tvoj poslužitelj (pod) podržava API?"),
+    "errorAuthorizationFailed" : m33,
+    "errorNetworkErrorOnAuthorization" : MessageLookupByLibrary.simpleMessage("Dogodila se mrežna greška. Provjeri ispravnost tvog „poda” i kvalitetu prijema. Zatim pokušaj ponovo."),
+    "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("Vrijeme pokušaja autorizacije je isteklo. Je li tvoj „pod” podržava API?"),
+    "errorUnexpectedErrorOnAuthorization" : MessageLookupByLibrary.simpleMessage("Došlo je do neočekivane greške prilikom pokušaja prijave."),
     "failedToAddConversationParticipant" : MessageLookupByLibrary.simpleMessage("Neuspjelo dodavanje primatelja"),
     "failedToAddConversationParticipantDuplicate" : m4,
     "failedToAddConversationParticipantNotSharing" : m5,
@@ -242,6 +253,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportPostPrompt" : MessageLookupByLibrary.simpleMessage("Prijavi objavu"),
     "resharePrompt" : MessageLookupByLibrary.simpleMessage("Prosljediti objavu?"),
     "resharesHeader" : MessageLookupByLibrary.simpleMessage("Proslijeđeno"),
+    "retryLabel" : MessageLookupByLibrary.simpleMessage("Ponovi"),
     "saveButtonLabel" : MessageLookupByLibrary.simpleMessage("Spremi"),
     "searchDialogHint" : MessageLookupByLibrary.simpleMessage("Traži"),
     "searchPeopleByTagHint" : MessageLookupByLibrary.simpleMessage("Upiši oznaku"),
