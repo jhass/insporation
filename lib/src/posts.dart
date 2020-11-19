@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expandable_widget/expandable.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_html/style.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
 
 import 'client.dart';
 import 'comments.dart';
@@ -314,10 +317,25 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
             label: Text(widget.post.interactions.likes.toString()),
             textColor: colors.postInteractionIcon(theme),
             onPressed: _updatingLike || !widget.post.canLike ? null : _toggleLike
-          )
+          ),
+          FlatButton.icon(
+            icon: Icon(
+                (Platform.isIOS ? Icons.ios_share : Icons.share),
+                size: 16
+            ),
+            label: Text(""),
+            onPressed: _sharePost
+          ),
         ]
       ),
     );
+  }
+
+  _sharePost() {
+    Client client = context.read<Client>();
+    String hostname = client.currentUserId.split('@').last;
+    String guid = widget.post.guid;
+    Share.share("https://$hostname/posts/$guid", subject: truncateWithEllipsis(60, widget.post.body));
   }
 
   _toggleLike() async {
@@ -408,6 +426,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
       }
     }
   }
+
 }
 
 class PostActionsView extends StatefulWidget {

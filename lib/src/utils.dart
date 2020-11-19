@@ -63,6 +63,12 @@ String _debugPrintError(String message, exception, stack) {
   return exceptionMessage;
 }
 
+String truncateWithEllipsis(int cutoff, String myString) {
+  return (myString.length <= cutoff)
+      ? myString
+      : '${myString.substring(0, cutoff)}...';
+}
+
 String formatErrorTrace(Exception exception, StackTrace stackTrace) {
   stackTrace = FlutterError.demangleStackTrace(stackTrace);
   Iterable<String> lines = stackTrace.toString().trimRight().split('\n');
