@@ -613,7 +613,7 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
     Client client = context.read<Client>();
     String hostname = client.currentUserId.split('@').last;
     String guid = widget.post.guid;
-    Share.share("https://$hostname/posts/$guid", subject: truncateWithEllipsis(60, widget.post.body));
+    Share.share("https://$hostname/posts/$guid");
   }
 
 }
