@@ -318,24 +318,9 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
             textColor: colors.postInteractionIcon(theme),
             onPressed: _updatingLike || !widget.post.canLike ? null : _toggleLike
           ),
-          FlatButton.icon(
-            icon: Icon(
-                (Platform.isIOS ? Icons.ios_share : Icons.share),
-                size: 16
-            ),
-            label: Text(""),
-            onPressed: _sharePost
-          ),
         ]
       ),
     );
-  }
-
-  _sharePost() {
-    Client client = context.read<Client>();
-    String hostname = client.currentUserId.split('@').last;
-    String guid = widget.post.guid;
-    Share.share("https://$hostname/posts/$guid", subject: truncateWithEllipsis(60, widget.post.body));
   }
 
   _toggleLike() async {
@@ -426,7 +411,6 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
       }
     }
   }
-
 }
 
 class PostActionsView extends StatefulWidget {
@@ -466,6 +450,16 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
       actions.add(IconButton(icon: Icon(Icons.keyboard_return), onPressed: _showOriginalPost, tooltip: l.showOriginalPost));
     }
 
+    if (widget.post.public) {
+      actions.add(
+        IconButton(
+            icon: Icon(
+                (Platform.isIOS ? Icons.ios_share : Icons.share)
+            ),
+            onPressed: _sharePost
+        ),
+      );
+    }
     return widget.orientation ==  Axis.vertical ? Column(children: actions) : Row(mainAxisSize: MainAxisSize.min, children: actions);
   }
 
@@ -614,6 +608,14 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
   }
 
   _showOriginalPost() => Navigator.pushNamed(context, "/post", arguments: widget.post.root);
+
+  _sharePost() {
+    Client client = context.read<Client>();
+    String hostname = client.currentUserId.split('@').last;
+    String guid = widget.post.guid;
+    Share.share("https://$hostname/posts/$guid", subject: truncateWithEllipsis(60, widget.post.body));
+  }
+
 }
 
 class _PhotoSlider extends StatefulWidget {
