@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expandable_widget/expandable.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_html/style.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
 
 import 'client.dart';
 import 'comments.dart';
@@ -314,7 +317,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
             label: Text(widget.post.interactions.likes.toString()),
             textColor: colors.postInteractionIcon(theme),
             onPressed: _updatingLike || !widget.post.canLike ? null : _toggleLike
-          )
+          ),
         ]
       ),
     );
@@ -447,6 +450,14 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
       actions.add(IconButton(icon: Icon(Icons.keyboard_return), onPressed: _showOriginalPost, tooltip: l.showOriginalPost));
     }
 
+    if (widget.post.public) {
+      actions.add(
+        IconButton(
+            icon: Icon(Platform.isIOS ? Icons.ios_share : Icons.share),
+            onPressed: _sharePost
+        ),
+      );
+    }
     return widget.orientation ==  Axis.vertical ? Column(children: actions) : Row(mainAxisSize: MainAxisSize.min, children: actions);
   }
 
@@ -595,6 +606,14 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
   }
 
   _showOriginalPost() => Navigator.pushNamed(context, "/post", arguments: widget.post.root);
+
+  _sharePost() {
+    final client = context.read<Client>(),
+      hostname = client.currentUserId.split('@').last,
+      guid = widget.post.guid;
+    Share.share("https://$hostname/posts/$guid");
+  }
+
 }
 
 class _PhotoSlider extends StatefulWidget {

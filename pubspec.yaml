@@ -30,6 +30,7 @@ dependencies:
   geojson: ^0.9.1
   quiver: ^2.0.5
   expandable_widget: ^1.0.5
+  share: ^0.6.5+4
 
 dev_dependencies:
   flutter_test:
