@@ -453,9 +453,7 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
     if (widget.post.public) {
       actions.add(
         IconButton(
-            icon: Icon(
-                (Platform.isIOS ? Icons.ios_share : Icons.share)
-            ),
+            icon: Icon(Platform.isIOS ? Icons.ios_share : Icons.share),
             onPressed: _sharePost
         ),
       );
@@ -610,9 +608,9 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
   _showOriginalPost() => Navigator.pushNamed(context, "/post", arguments: widget.post.root);
 
   _sharePost() {
-    Client client = context.read<Client>();
-    String hostname = client.currentUserId.split('@').last;
-    String guid = widget.post.guid;
+    final client = context.read<Client>(),
+      hostname = client.currentUserId.split('@').last,
+      guid = widget.post.guid;
     Share.share("https://$hostname/posts/$guid");
   }
 
