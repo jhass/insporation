@@ -1376,7 +1376,7 @@
       }
     }
   },
-  "errorSignInTimeout": "انتهت مهلة الاستيثاق، أمتأكد من دعم خادمك لل API ؟",
+  "errorSignInTimeout": "انتهت مهلة التصريح، أمتأكد من دعم خادمك لل API ؟",
   "@errorSignInTimeout": {
     "description": "Error message after authenticating timed out",
     "type": "text",
@@ -1391,5 +1391,29 @@
         "example": "user@example.org"
       }
     }
+  },
+  "errorUnexpectedErrorOnAuthorization": "حدث خطأ غير متوقع أثناء محاولة .",
+  "@errorUnexpectedErrorOnAuthorization": {
+    "description": "Error message after an unexpected error happened during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorDescription": "حدث الخطأ الداخلي التالي. رجاء ضمن هذا عند طلب المساعدة.",
+  "@detailsOnErrorDescription": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorLabel": "مساعدة",
+  "@detailsOnErrorLabel": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "retryLabel": "أعد المحاولة",
+  "@retryLabel": {
+    "description": "Label for a retry button",
+    "type": "text",
+    "placeholders": {}
   }
 }
