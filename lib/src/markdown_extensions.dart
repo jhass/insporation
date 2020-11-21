@@ -26,7 +26,7 @@ class SuperscriptSyntax extends TagSyntax {
 }
 
 class TagLinkSyntax extends InlineSyntax  {
-  TagLinkSyntax() : super(r'(?<=^|\s)#([' + pbe.word +  r'\u055b\u055c\u055e\u058a_\-]+|<3)\b');
+  TagLinkSyntax() : super(r'(?<=^|\s)#([' + pbe.word +  r'\u055b\u055c\u055e\u058a_\-]+|<3)');
 
   @override
   bool onMatch(InlineParser parser, Match match) {
