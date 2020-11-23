@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-11-14T00:47:39.773540",
+  "@@last_modified": "2020-11-23T19:11:40.391100",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -1438,5 +1438,29 @@
         "example": "nsfw"
       }
     }
+  },
+  "CatcherLocalization_dialogReportModeTitle": "insporation* crashed :(",
+  "@CatcherLocalization_dialogReportModeTitle": {
+    "description": "Title for crash report dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeDescription": "An unexpected error occurred, an error report is ready to be send to the developers.",
+  "@CatcherLocalization_dialogReportModeDescription": {
+    "description": "Description for crash report page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeAccept": "Send report",
+  "@CatcherLocalization_dialogReportModeAccept": {
+    "description": "Button label for accepting to send a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeCancel": "Dismiss",
+  "@CatcherLocalization_dialogReportModeCancel": {
+    "description": "Button label for dismissing a crash report",
+    "type": "text",
+    "placeholders": {}
   }
 }

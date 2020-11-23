@@ -31,6 +31,7 @@ dependencies:
   quiver: ^2.0.5
   expandable_widget: ^1.0.5
   share: ^0.6.5+4
+  catcher: ^0.3.22
 
 dev_dependencies:
   flutter_test:

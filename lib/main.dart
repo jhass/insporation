@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -24,29 +25,54 @@ import 'src/persistence.dart';
 import 'src/posts.dart';
 import 'stream_page.dart';
 
-void main() => runApp(MultiProvider(
-  providers: [
-    Provider(create: (_) => PersistentState()..restore(), dispose: (_, state) => state.persist(), lazy: false),
-    Provider(create: (_) => Client()),
-    ChangeNotifierProxyProvider<Client, UnreadNotificationsCount>(
-      create: (context) => UnreadNotificationsCount(),
-      update: (context, client, count) => count..update(client)
-    ),
-    ChangeNotifierProxyProvider<Client, UnreadConversationsCount>(
-      create: (context) => UnreadConversationsCount(),
-      update: (context, client, count) => count..update(client)
-    ),
-    ProxyProvider2<UnreadNotificationsCount, UnreadConversationsCount, BadgeUpdater>(
-      create: (context) => BadgeUpdater(),
-      update: (context, notificationsCount, conversationsCount, updater) => updater
-        ..listenToNotifications(notificationsCount)
-        ..listenToConversations(conversationsCount),
-      lazy: false
-    ),
-    ChangeNotifierProvider(create: (_) => CurrentNavigationItemReselectedEvents())
-  ],
-  child: Insporation(),
-));
+
+final _navigator = GlobalKey<NavigatorState>();
+// HttpException is probably just a failed image load
+final _explicitErrorReportMode = {'HttpException': SilentReportMode()};
+final _explicitErrorHandler = {'HttpException': ConsoleHandler(
+  enableApplicationParameters: false,
+  enableDeviceParameters: false,
+  enableStackTrace: false
+)};
+
+void main() => Catcher(
+  MultiProvider(
+    providers: [
+        Provider(create: (_) => PersistentState()..restore(), dispose: (_, state) => state.persist(), lazy: false),
+        Provider(create: (_) => Client()),
+        ChangeNotifierProxyProvider<Client, UnreadNotificationsCount>(
+        create: (context) => UnreadNotificationsCount(),
+        update: (context, client, count) => count..update(client)
+      ),
+      ChangeNotifierProxyProvider<Client, UnreadConversationsCount>(
+        create: (context) => UnreadConversationsCount(),
+        update: (context, client, count) => count..update(client)
+      ),
+      ProxyProvider2<UnreadNotificationsCount, UnreadConversationsCount, BadgeUpdater>(
+        create: (context) => BadgeUpdater(),
+        update: (context, notificationsCount, conversationsCount, updater) => updater
+          ..listenToNotifications(notificationsCount)
+          ..listenToConversations(conversationsCount),
+        lazy: false
+      ),
+      ChangeNotifierProvider(create: (_) => CurrentNavigationItemReselectedEvents())
+    ],
+    child: Insporation(),
+  ),
+  debugConfig: CatcherOptions(
+    SilentReportMode(),
+    [ConsoleHandler()],
+    localizationOptions: catcherLocalizationOptions
+  ),
+  releaseConfig: CatcherOptions(
+    DialogReportMode(),
+    [EmailManualHandler(['insporation-bugs@jhass.eu'], emailTitle: "insporation* crash report")],
+    explicitExceptionReportModesMap: _explicitErrorReportMode,
+    explicitExceptionHandlersMap: _explicitErrorHandler,
+    localizationOptions: catcherLocalizationOptions
+  ),
+  navigatorKey: _navigator
+);
 
 class Insporation extends StatefulWidget {
   @override
@@ -55,7 +81,6 @@ class Insporation extends StatefulWidget {
 
 class _InsporationState extends State<Insporation> {
   final _shareEventsChannel = EventChannel("insporation/share_receiver");
-  final _navigator = GlobalKey<NavigatorState>();
   StreamSubscription shareEventsSubscription;
   StreamSubscription sessionEventsSubscription;
 
