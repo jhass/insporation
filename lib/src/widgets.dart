@@ -66,7 +66,7 @@ class ErrorMessage extends StatelessWidget with LocalizationHelpers {
           children: [
             Text(l(dialogContext).detailsOnErrorDescription),
             Divider(),
-            SelectableText(trace, style: TextStyle(fontFamily: 'monospace', fontFamilyFallback: ['Courier']),),
+            SelectableText(trace, style: TextStyle(fontFamily: 'monospace', fontFamilyFallback: ['Courier'])),
           ],
         ),
       ),

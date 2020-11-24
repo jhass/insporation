@@ -213,8 +213,11 @@ class PostView extends StatelessWidget with LocalizationHelpers {
           visible: post.photos != null && post.photos.length > 0,
           child: _PhotoSlider(photos: post.photos ?? const <Photo>[])
         ),
-        !post.reshareOfDeleted ? Message(body: post.body, mentionedPeople: post.mentionedPeople) :
-        Container(
+        !post.reshareOfDeleted ? Message(
+          body: post.body,
+          mentionedPeople: post.mentionedPeople,
+          debugInfo: "Post ${post.guid}"
+        ) : Container(
           padding: EdgeInsets.all(16),
           color: Colors.black87,
           child: Row(

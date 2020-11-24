@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:gesture_zoom_box/gesture_zoom_box.dart';
 import 'package:markdown/markdown.dart' as md;
@@ -44,55 +45,88 @@ class PersonHeader extends StatelessWidget {
   }
 }
 
-class Message extends StatelessWidget {
-  Message({Key key, @required this.body, this.mentionedPeople}) : super(key: key);
+class Message extends StatelessWidget with LocalizationHelpers {
+  Message({Key key, @required this.body, this.mentionedPeople, this.debugInfo}) : super(key: key);
 
   final String body;
   final Map<String, Person> mentionedPeople;
+  final String debugInfo;
 
   @override
   Widget build(BuildContext context) {
-    return Html(
-      shrinkWrap: true,
-      data: md.markdownToHtml(
-        body,
-        blockSyntaxes: [
-          md.TableSyntax(),
-          md.FencedCodeBlockSyntax()
-        ],
-        inlineSyntaxes: [
-          md.InlineHtmlSyntax(),
-          mde.SuperscriptSyntax(),
-          mde.SubscriptSyntax(),
-          md.StrikethroughSyntax(),
-          md.AutolinkExtensionSyntax(),
-          mde.TagLinkSyntax(),
-          mde.MentionLinkSyntax((diasporaId, inlineName) =>
-            mentionedPeople != null ? mentionedPeople[diasporaId] : null),
-          mde.DiasporaAutolinkSyntax()
-        ],
-      ),
-      onLinkTap: (url) {
-        if (url.startsWith('eu.jhass.insporation://tags/')) {
-          final tag = Uri.decodeFull(url.split(r'/').last);
-          Navigator.pushNamed(context, '/stream/tag', arguments: tag);
-        } else if (url.startsWith('eu.jhass.insporation://people/')) {
-          Navigator.pushNamed(context, '/profile', arguments: url.split('/').last);
-        } else if (url.startsWith("/people?q=")) {
-          Navigator.pushNamed(context, '/profile', arguments: url.split("q=").last);
-        } else if (url.startsWith('eu.jhass.insporation://posts/')) {
-          Navigator.pushNamed(context, '/post', arguments: url.split('/').last);
-        } else if (url.startsWith("/posts/")) {
-          final guid = url.split('/').last;
-          if (guid.length >= 16) {
-            Navigator.pushNamed(context, '/post', arguments: guid);
+    try {
+      return Html(
+        shrinkWrap: true,
+        data: md.markdownToHtml(
+          body,
+          blockSyntaxes: [
+            md.TableSyntax(),
+            md.FencedCodeBlockSyntax()
+          ],
+          inlineSyntaxes: [
+            md.InlineHtmlSyntax(),
+            mde.SuperscriptSyntax(),
+            mde.SubscriptSyntax(),
+            md.StrikethroughSyntax(),
+            md.AutolinkExtensionSyntax(),
+            mde.TagLinkSyntax(),
+            mde.MentionLinkSyntax((diasporaId, inlineName) =>
+              mentionedPeople != null ? mentionedPeople[diasporaId] : null),
+            mde.DiasporaAutolinkSyntax()
+          ],
+        ),
+        onLinkTap: (url) {
+          if (url.startsWith('eu.jhass.insporation://tags/')) {
+            final tag = Uri.decodeFull(url.split(r'/').last);
+            Navigator.pushNamed(context, '/stream/tag', arguments: tag);
+          } else if (url.startsWith('eu.jhass.insporation://people/')) {
+            Navigator.pushNamed(context, '/profile', arguments: url.split('/').last);
+          } else if (url.startsWith("/people?q=")) {
+            Navigator.pushNamed(context, '/profile', arguments: url.split("q=").last);
+          } else if (url.startsWith('eu.jhass.insporation://posts/')) {
+            Navigator.pushNamed(context, '/post', arguments: url.split('/').last);
+          } else if (url.startsWith("/posts/")) {
+            final guid = url.split('/').last;
+            if (guid.length >= 16) {
+              Navigator.pushNamed(context, '/post', arguments: guid);
+            }
+          } else {
+            launch(url);
           }
-        } else {
-          launch(url);
-        }
-      },
-      onImageTap: (url) => Photobox.show(context, url)
-    );
+        },
+        onImageTap: (url) => Photobox.show(context, url)
+      );
+    } catch (e) {
+      final theme = Theme.of(context);
+      return Container(
+        color: theme.colorScheme.error,
+        alignment: Alignment.center,
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              l(context).failedToRenderMessage,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: theme.colorScheme.onError)),
+          ),
+          if (debugInfo != null) Row(children: [
+            IconButton(
+              icon: Icon(Icons.copy),
+              color: theme.colorScheme.onError,
+              onPressed: () {
+                Clipboard.setData(ClipboardData(text: debugInfo));
+                Scaffold.of(context).showSnackBar(SnackBar(content: Text(l(context).detailsOnErrorCopied)));
+              }
+            ),
+            SelectableText(debugInfo, style: TextStyle(
+              color: theme.colorScheme.onError,
+              fontFamily: 'monospace',
+              fontFamilyFallback: ['Courier']
+            ))
+          ])
+        ],)
+      );
+    }
   }
 }
 

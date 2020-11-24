@@ -154,7 +154,11 @@ class CommentView extends StatelessWidget {
             ],
           ),
           Divider(),
-          Message(body: comment.body, mentionedPeople: comment.mentionedPeople)
+          Message(
+            body: comment.body,
+            mentionedPeople: comment.mentionedPeople,
+            debugInfo: "Comment ${comment.guid}"
+          )
         ],
       ),
     ),
