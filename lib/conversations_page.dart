@@ -207,8 +207,8 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
   );
 
   @override
-  Widget buildFooter(BuildContext context, String lastError) => lastError != null ?
-    super.buildFooter(context, lastError) : ConstrainedBox(
+  Widget buildFooter(BuildContext context, String lastError, String lastErrorDetails) => lastError != null ?
+    super.buildFooter(context, lastError, lastErrorDetails) : ConstrainedBox(
     constraints: BoxConstraints(maxHeight: 400),
     child: Padding(
       padding: EdgeInsets.all(8),

@@ -161,6 +161,13 @@ class InsporationLocalizations {
     locale: localeName
   );
 
+  String get failedToLoadContent => Intl.message(
+    'An error occured while trying to load the content.',
+    name: 'failedToLoadContent',
+    desc: 'Generic failure message after loading some content failed due to an unknown reason.',
+    locale: localeName
+  );
+
   String get signInAction => Intl.message(
     'Sign in',
     name: 'signInAction',
