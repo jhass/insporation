@@ -307,11 +307,10 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
     final newState = !widget.profile.blocked,
       profile = widget.profile,
       person = profile.person,
-      profileNotifier = context.read<_ProfileNotifier>(),
       client = context.read<Client>();
 
     profile.blocked = newState;
-    profileNotifier.updated();
+    _profile.updated();
 
     try {
       if (newState) {
@@ -323,7 +322,7 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
       tryShowErrorSnackBar(this, newState ? l.failedToBlockUser(person.nameOrId) : l.failedToUnblockUser(person.nameOrId), e, s);
 
       profile.blocked = !newState;
-      profileNotifier.updated();
+      _profile.updated();
     }
   }
 }
