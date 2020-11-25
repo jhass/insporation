@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-11-23T19:11:40.391100",
+  "@@last_modified": "2020-11-24T15:01:42.073799",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -87,6 +87,12 @@
   "detailsOnErrorCopied": "Error trace copied to clipboard.",
   "@detailsOnErrorCopied": {
     "description": "Success message after error details were copied to clipboard",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToLoadContent": "An error occured while trying to load the content.",
+  "@failedToLoadContent": {
+    "description": "Generic failure message after loading some content failed due to an unknown reason.",
     "type": "text",
     "placeholders": {}
   },

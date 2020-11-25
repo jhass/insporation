@@ -186,6 +186,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
   final _refreshIndicator = GlobalKey<RefreshIndicatorState>();
   ItemStream<T> _items;
   String _lastError;
+  String _lastErrorDetails;
   ScrollController _listScrollController = ScrollController();
   var _upButtonVisibility = false;
   CurrentNavigationItemReselectedEvents _reselectionEvents;
@@ -202,9 +203,10 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
 
   Widget buildItem(BuildContext context, T item);
 
-  Widget buildFooter(BuildContext context, String lastError) => Center(
+  Widget buildFooter(BuildContext context, String lastError, String lastErrorDetails) => Center(
     child: ErrorMessage(
       lastError,
+      trace: lastErrorDetails,
       onRetry: () => _items.length == 0 ? _refreshIndicator.currentState.show() : _loadItems()
     )
   );
@@ -272,7 +274,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
                           child: items.hasMore && _lastError == null ? Padding(
                             padding: const EdgeInsets.all(16),
                             child: Center(child: CircularProgressIndicator()),
-                          ) : buildFooter(context, _lastError) ?? SizedBox.shrink()
+                          ) : buildFooter(context, _lastError, _lastErrorDetails) ?? SizedBox.shrink()
                         ) :
                         buildItem(context, items[position -1])
                 ),
@@ -301,7 +303,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
             ),
             replacement: _StreamFallback(
               header: buildHeader(context) ?? SizedBox.shrink(),
-              footer: buildFooter(context, _lastError) ?? SizedBox.shrink(),
+              footer: buildFooter(context, _lastError, _lastErrorDetails) ?? SizedBox.shrink(),
               loading: _items.loading,
               error: _lastError != null,
             )
@@ -325,6 +327,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
       Future<void> progress;
       setState(() {
         _lastError = null;
+        _lastErrorDetails = null;
         progress = _items.load(client, reset: reset);
       });
       if (reset) {
@@ -343,7 +346,8 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
       debugPrintStack(label: e.toString(), stackTrace:  s);
       if (mounted) {
         setState(() {
-          _lastError = e.toString();
+          _lastError = l.failedToLoadContent; // TODO give more helpful message based on exception type
+          _lastErrorDetails = formatErrorTrace(e, s);
         });
       }
     }
