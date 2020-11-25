@@ -155,7 +155,7 @@ class InsporationLocalizations {
   );
 
   String get detailsOnErrorCopied => Intl.message(
-    'Error trace copied to clipboard.',
+    'Error details copied to clipboard.',
     name: 'detailsOnErrorCopied',
     desc: 'Success message after error details were copied to clipboard',
     locale: localeName
@@ -165,6 +165,13 @@ class InsporationLocalizations {
     'An error occured while trying to load the content.',
     name: 'failedToLoadContent',
     desc: 'Generic failure message after loading some content failed due to an unknown reason.',
+    locale: localeName
+  );
+
+  String get failedToRenderMessage => Intl.message(
+    'Could not render this content. Please report this with the error details below, if present.',
+    name: 'failedToRenderMessage',
+    desc: 'Failure message after rendering some content failed.',
     locale: localeName
   );
 

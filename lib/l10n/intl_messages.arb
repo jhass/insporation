@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-11-24T15:01:42.073799",
+  "@@last_modified": "2020-11-24T16:40:15.755363",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -84,7 +84,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "detailsOnErrorCopied": "Error trace copied to clipboard.",
+  "detailsOnErrorCopied": "Error details copied to clipboard.",
   "@detailsOnErrorCopied": {
     "description": "Success message after error details were copied to clipboard",
     "type": "text",
@@ -93,6 +93,12 @@
   "failedToLoadContent": "An error occured while trying to load the content.",
   "@failedToLoadContent": {
     "description": "Generic failure message after loading some content failed due to an unknown reason.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToRenderMessage": "Could not render this content. Please report this with the error details below, if present.",
+  "@failedToRenderMessage": {
+    "description": "Failure message after rendering some content failed.",
     "type": "text",
     "placeholders": {}
   },
