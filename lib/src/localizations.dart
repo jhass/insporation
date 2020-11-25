@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:catcher/model/localization_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,7 @@ import 'posts.dart';
 import 'timeago.dart';
 
 // Keep timeagoLocaleMessages in timeago.dart in sync!
+// Keep catcherLocalizationOptions below in sync!
 // Add iOS specific translation files to the project via "Add Files to"
 const supportedLocales = [
   const Locale('ar'),
@@ -17,6 +19,16 @@ const supportedLocales = [
   const Locale('fr'),
   const Locale('hr'),
   const Locale('it')
+];
+
+
+final catcherLocalizationOptions = [
+  CatcherLocalization('ar'),
+  CatcherLocalization('de'),
+  CatcherLocalization('en'),
+  CatcherLocalization('fr', defaults: LocalizationOptions.buildDefaultFrenchOptions()),
+  CatcherLocalization('hr'),
+  CatcherLocalization('it', defaults: LocalizationOptions.buildDefaultItalianOptions())
 ];
 
 mixin LocalizationHelpers {
@@ -1680,4 +1692,62 @@ class _InsporationLocalizationsDelegate extends LocalizationsDelegate<Insporatio
 
   @override
   bool shouldReload(_InsporationLocalizationsDelegate old) => false;
+}
+
+class CatcherLocalization implements LocalizationOptions {
+  final String languageCode;
+  final LocalizationOptions defaults;
+
+  CatcherLocalization(this.languageCode, {LocalizationOptions defaults}) :
+    this.defaults = defaults ?? LocalizationOptions.buildDefaultEnglishOptions();
+
+  @override
+  String get dialogReportModeTitle => Intl.message(
+    'insporation* crashed :(',
+    name: 'CatcherLocalization_dialogReportModeTitle',
+    desc: 'Title for crash report dialog',
+    locale: languageCode
+  );
+
+  @override
+  String get dialogReportModeDescription => Intl.message(
+    'An unexpected error occurred, an error report is ready to be send to the developers.',
+    name: 'CatcherLocalization_dialogReportModeDescription',
+    desc: 'Description for crash report page',
+    locale: languageCode
+  );
+
+  @override
+  String get dialogReportModeAccept => Intl.message(
+    'Send report',
+    name: 'CatcherLocalization_dialogReportModeAccept',
+    desc: 'Button label for accepting to send a crash report',
+    locale: languageCode
+  );
+
+  @override
+  String get dialogReportModeCancel => Intl.message(
+    'Dismiss',
+    name: 'CatcherLocalization_dialogReportModeCancel',
+    desc: 'Button label for dismissing a crash report',
+    locale: languageCode
+  );
+
+  @override
+  String get notificationReportModeTitle => defaults.notificationReportModeTitle;
+
+  @override
+  String get notificationReportModeContent => defaults.notificationReportModeContent;
+
+  @override
+  String get pageReportModeTitle => defaults.pageReportModeTitle;
+
+  @override
+  String get pageReportModeDescription => defaults.pageReportModeDescription;
+
+  @override
+  String get pageReportModeAccept => defaults.pageReportModeAccept;
+
+  @override
+  String get pageReportModeCancel => defaults.pageReportModeCancel;
 }

@@ -10,6 +10,8 @@ import os.log
     var currentAuthorizationFlow: OIDExternalUserAgentSession?
     
     private let APP_AUTH_CHANNEL = "insporation/appauth"
+    private let APP_AUTH_EVENTS = "insporation/appauth_authorization_events"
+    private let SHARE_EVENTS = "insporation/share_receiver"
     var appAuthHandler : AppAuthHandler?
     
     
@@ -48,7 +50,19 @@ import os.log
                 }
             }
         }
-        
+
+        // Stub, this is used with Android to deliver authorization results
+        // after the app died in the background while the user was using the browser
+        // to authenticate. This, the app dying in the background, does not happen on iOS
+        let appAuthEvents = FlutterEventChannel(name: APP_AUTH_EVENTS,
+                                                binaryMessenger: controller.binaryMessenger)
+        appAuthEvents.setStreamHandler(StubEventStreamHandler())
+
+        // TODO receive share events and send them to this channel, see ShareEventStream in Android
+        let shareEvents = FlutterEventChannel(name: SHARE_EVENTS,
+                                              binaryMessenger: controller.binaryMessenger)
+        shareEvents.setStreamHandler(StubEventStreamHandler())
+
         GeneratedPluginRegistrant.register(with: self)
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
@@ -64,4 +78,13 @@ import os.log
         return false
     }
     
+    class StubEventStreamHandler : NSObject, FlutterStreamHandler {
+        func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
+            return nil
+        }
+
+        func onCancel(withArguments arguments: Any?) -> FlutterError? {
+            return nil
+        }
+    }
 }
