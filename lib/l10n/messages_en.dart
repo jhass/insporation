@@ -89,6 +89,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "CatcherLocalization_dialogReportModeAccept" : MessageLookupByLibrary.simpleMessage("Send report"),
+    "CatcherLocalization_dialogReportModeCancel" : MessageLookupByLibrary.simpleMessage("Dismiss"),
+    "CatcherLocalization_dialogReportModeDescription" : MessageLookupByLibrary.simpleMessage("An unexpected error occurred, an error report is ready to be send to the developers."),
+    "CatcherLocalization_dialogReportModeTitle" : MessageLookupByLibrary.simpleMessage("insporation* crashed :("),
     "addContact" : MessageLookupByLibrary.simpleMessage("Add contact"),
     "addLocation" : MessageLookupByLibrary.simpleMessage("Add your location"),
     "addPoll" : MessageLookupByLibrary.simpleMessage("Add a poll"),
@@ -119,7 +123,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteSessionPrompt" : m3,
     "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Reshare of a deleted post"),
     "deselectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Deselect all"),
-    "detailsOnErrorCopied" : MessageLookupByLibrary.simpleMessage("Error trace copied to clipboard."),
+    "detailsOnErrorCopied" : MessageLookupByLibrary.simpleMessage("Error details copied to clipboard."),
     "detailsOnErrorDescription" : MessageLookupByLibrary.simpleMessage("The following internal error occurred. Please include this when asking for help."),
     "detailsOnErrorLabel" : MessageLookupByLibrary.simpleMessage("Help"),
     "duplicateProfileTag" : MessageLookupByLibrary.simpleMessage("Tag already added"),
@@ -157,9 +161,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToHideConversation" : MessageLookupByLibrary.simpleMessage("Failed to hide conversation"),
     "failedToHidePost" : MessageLookupByLibrary.simpleMessage("Failed to hide the post"),
     "failedToLikePost" : MessageLookupByLibrary.simpleMessage("Failed to like the post"),
+    "failedToLoadContent" : MessageLookupByLibrary.simpleMessage("An error occured while trying to load the content."),
     "failedToMarkNotificationAsRead" : MessageLookupByLibrary.simpleMessage("Failed to mark notification as read"),
     "failedToMarkNotificationAsUnread" : MessageLookupByLibrary.simpleMessage("Failed to mark notification as unread"),
     "failedToRenameAspect" : m10,
+    "failedToRenderMessage" : MessageLookupByLibrary.simpleMessage("Could not render this content. Please report this with the error details below, if present."),
     "failedToReplyToConversation" : MessageLookupByLibrary.simpleMessage("Failed to reply to conversation"),
     "failedToReportComment" : MessageLookupByLibrary.simpleMessage("Failed to create the report"),
     "failedToReportPost" : MessageLookupByLibrary.simpleMessage("Failed to create report"),
