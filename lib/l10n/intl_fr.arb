@@ -1386,9 +1386,91 @@
       }
     }
   },
-  "errorSignInTimeout": "Délai d'attente lors de la tentative d'authentification, êtes-vous sûr·e que votre pod prend en charge l'API ?",
+  "errorSignInTimeout": "Délai d'attente expiré lors de la tentative d'autorisation, êtes-vous sûr·e que votre pod prend en charge l'API ?",
   "@errorSignInTimeout": {
     "description": "Error message after authenticating timed out",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAuthorizationFailed": "Impossible d'autoriser {userId}, est-il correctement orthographié, votre réseau fonctionne-t-il et votre pod exécute-t-il le dernier instantané de développement ?",
+  "@errorAuthorizationFailed": {
+    "description": "Error message after authorization failed",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
+  },
+  "CatcherLocalization_dialogReportModeCancel": "Ignorer",
+  "@CatcherLocalization_dialogReportModeCancel": {
+    "description": "Button label for dismissing a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeAccept": "Envoyer le rapport",
+  "@CatcherLocalization_dialogReportModeAccept": {
+    "description": "Button label for accepting to send a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeDescription": "Une erreur inattendue s'est produite ; un rapport d'erreur est prêt à être envoyé aux développeurs.",
+  "@CatcherLocalization_dialogReportModeDescription": {
+    "description": "Description for crash report page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeTitle": "insporation* a planté :(",
+  "@CatcherLocalization_dialogReportModeTitle": {
+    "description": "Title for crash report dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorUnexpectedErrorOnAuthorization": "Une erreur inattendue s'est produite lors de la tentative de connexion.",
+  "@errorUnexpectedErrorOnAuthorization": {
+    "description": "Error message after an unexpected error happened during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorNetworkErrorOnAuthorization": "Une erreur réseau s'est produite, veuillez vous assurer que vous avez correctement orthographié votre pod et que vous avez une bonne réception, puis réessayez.",
+  "@errorNetworkErrorOnAuthorization": {
+    "description": "Error message after a network error occurred during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToRenderMessage": "Impossible de rendre ce contenu. Veuillez le signaler avec les détails de l'erreur ci-dessous, le cas échéant.",
+  "@failedToRenderMessage": {
+    "description": "Failure message after rendering some content failed.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToLoadContent": "Une erreur s'est produite lors de la tentative de chargement du contenu.",
+  "@failedToLoadContent": {
+    "description": "Generic failure message after loading some content failed due to an unknown reason.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorCopied": "Détails de l'erreur copiés dans le presse-papiers.",
+  "@detailsOnErrorCopied": {
+    "description": "Success message after error details were copied to clipboard",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorDescription": "L'erreur interne suivante s'est produite. Veuillez l'inclure lorsque vous demandez de l'aide.",
+  "@detailsOnErrorDescription": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorLabel": "Aide",
+  "@detailsOnErrorLabel": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "retryLabel": "Réessayer",
+  "@retryLabel": {
+    "description": "Label for a retry button",
     "type": "text",
     "placeholders": {}
   }
