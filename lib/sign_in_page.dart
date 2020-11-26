@@ -283,6 +283,8 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
     context.tryRead<UnreadNotificationsCount>()?.update(client);
     context.tryRead<UnreadConversationsCount>()?.update(client);
 
+    client.publishSessionActive();
+
     // Move to stream
     Navigator.pushReplacementNamed(context, '/stream');
   }

@@ -15,6 +15,8 @@ class Client {
   final _appAuth = AppAuth();
   Future<Profile> _currentUser;
   Future<List<Aspect>> _currentUserAspects;
+  bool _currentSessionActive = false;
+  StreamController<bool> _activeSessionEvents;
 
   Stream<AuthorizationEvent> get newAuthorizations => _appAuth.newAuthorizations;
 
@@ -31,6 +33,24 @@ class Client {
     if (currentUserId != null) {
       await _appAuth.accessToken;
     }
+  }
+
+  Future<void> waitForActiveSession() {
+    if (_currentSessionActive) {
+      return Future.value();
+    }
+
+    if (_activeSessionEvents == null) {
+      _activeSessionEvents = StreamController.broadcast();
+    }
+
+    return _activeSessionEvents.stream.firstWhere((active) => active);
+  }
+
+  void publishSessionActive() {
+    _currentSessionActive = true;
+    _activeSessionEvents?.add(true);
+    _activeSessionEvents?.close();
   }
 
   Future<void> forgetSession() => _appAuth.forgetSession();

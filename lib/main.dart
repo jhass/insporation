@@ -167,7 +167,7 @@ class _InsporationState extends State<Insporation> {
     );
   }
 
-  void _onShareIntent(event) {
+  void _onShareIntent(event) async {
     if (event is! Map) {
       return;
     }
@@ -176,6 +176,13 @@ class _InsporationState extends State<Insporation> {
 
     if (!shareEvent.containsKey("type")) {
         return;
+    }
+
+    // Wait for sign in page to push its route
+    await context.read<Client>().waitForActiveSession();
+
+    if (!mounted) {
+      return;
     }
 
     switch (shareEvent["type"]) {

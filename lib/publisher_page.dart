@@ -72,6 +72,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   String _lastError;
   PublishTarget _currentTarget;
   DraftObserver _draftObserver;
+  bool _handledInitialPhotos = false;
 
   @override
   void initState() {
@@ -88,11 +89,16 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
     _controller.addListener(_onTextChanged);
     _controller.text = presence(widget.options.prefill) ?? state.postDraft;
     _draftObserver = DraftObserver(context: context, controller: _controller, onPersist: (text) => state.postDraft = text);
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // We can't yet call Provider.of from initState, so delay a bit
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!_handledInitialPhotos) {
       widget.options.images.forEach((uri) => _uploadPhotoUri(uri));
-    });
+      _handledInitialPhotos = true;
+    }
   }
 
   @override
@@ -184,7 +190,11 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
       newValid = (hasText || hasPhotos) && !hasPendingPhotos;
 
     if (newValid != _valid) {
-      setState(() => _valid = newValid);
+      // We might be called from an asynchronous callback, so make sure it's safe to call setState
+      _valid = newValid;
+      if (mounted) {
+        setState(() {});
+      }
     }
   }
 
@@ -433,7 +443,14 @@ class _AttachedPhotoViewState extends State<_AttachedPhotoView> {
   void initState() {
     super.initState();
 
-    widget.photo.upload.whenComplete(() => setState(() => _loading = false));
+    widget.photo.upload.whenComplete(() {
+      // On cold boot this might complete without being attached for some reason
+      // so we update _loading always
+      _loading = false;
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   @override
