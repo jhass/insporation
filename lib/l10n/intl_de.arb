@@ -1392,5 +1392,17 @@
         "example": "user@example.org"
       }
     }
+  },
+  "detailsOnErrorLabel": "Hilfe",
+  "@detailsOnErrorLabel": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "retryLabel": "Erneut versuchen",
+  "@retryLabel": {
+    "description": "Label for a retry button",
+    "type": "text",
+    "placeholders": {}
   }
 }
