@@ -101,6 +101,10 @@ class SearchResultStream extends ItemStream<SearchResult> {
       return Page.empty();
     }
 
+    if (_type == SearchType.tags && _query == '#') {
+      return Page.empty();
+    }
+
     bool _matchPerson(Person person) =>
       person.nameOrId.contains(_query) || person.diasporaId.contains(RegExp(RegExp.escape(_query), caseSensitive: false));
 
