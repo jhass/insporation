@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m3(userId) => "Supprimer la session pour ${userId} d\'insporation* ?";
 
+  static m33(userId) => "Impossible d\'autoriser ${userId}, est-il correctement orthographié, votre réseau fonctionne-t-il et votre pod exécute-t-il le dernier instantané de développement ?";
+
   static m4(name) => "${name} est déjà destinataire ; impossible de l’ajouter deux fois.";
 
   static m5(name) => "${name} ne partage pas avec vous ; impossible de l’ajouter comme destinataire !";
@@ -87,6 +89,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "CatcherLocalization_dialogReportModeAccept" : MessageLookupByLibrary.simpleMessage("Envoyer le rapport"),
+    "CatcherLocalization_dialogReportModeCancel" : MessageLookupByLibrary.simpleMessage("Ignorer"),
+    "CatcherLocalization_dialogReportModeDescription" : MessageLookupByLibrary.simpleMessage("Une erreur inattendue s\'est produite ; un rapport d\'erreur est prêt à être envoyé aux développeurs."),
+    "CatcherLocalization_dialogReportModeTitle" : MessageLookupByLibrary.simpleMessage("insporation* a planté :("),
     "addContact" : MessageLookupByLibrary.simpleMessage("Ajouter un contact"),
     "addLocation" : MessageLookupByLibrary.simpleMessage("Ajouter votre position"),
     "addPoll" : MessageLookupByLibrary.simpleMessage("Ajouter un sondage"),
@@ -117,6 +123,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteSessionPrompt" : m3,
     "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Repartage d’une publication supprimée"),
     "deselectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Tout désélectionner"),
+    "detailsOnErrorCopied" : MessageLookupByLibrary.simpleMessage("Détails de l\'erreur copiés dans le presse-papiers."),
+    "detailsOnErrorDescription" : MessageLookupByLibrary.simpleMessage("L\'erreur interne suivante s\'est produite. Veuillez l\'inclure lorsque vous demandez de l\'aide."),
+    "detailsOnErrorLabel" : MessageLookupByLibrary.simpleMessage("Aide"),
     "duplicateProfileTag" : MessageLookupByLibrary.simpleMessage("Étiquette déjà ajoutée"),
     "editAspectPrompt" : MessageLookupByLibrary.simpleMessage("Modifier l’aspect"),
     "editPoll" : MessageLookupByLibrary.simpleMessage("Modifier le sondage"),
@@ -133,7 +142,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProfileTagsLabel" : MessageLookupByLibrary.simpleMessage("Étiquettes"),
     "editProfileTitle" : MessageLookupByLibrary.simpleMessage("Modifier le profil"),
     "enterAddressHint" : MessageLookupByLibrary.simpleMessage("Entrez une adresse"),
-    "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("Délai d\'attente lors de la tentative d\'authentification, êtes-vous sûr·e que votre pod prend en charge l\'API ?"),
+    "errorAuthorizationFailed" : m33,
+    "errorNetworkErrorOnAuthorization" : MessageLookupByLibrary.simpleMessage("Une erreur réseau s\'est produite, veuillez vous assurer que vous avez correctement orthographié votre pod et que vous avez une bonne réception, puis réessayez."),
+    "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("Délai d\'attente expiré lors de la tentative d\'autorisation, êtes-vous sûr·e que votre pod prend en charge l\'API ?"),
+    "errorUnexpectedErrorOnAuthorization" : MessageLookupByLibrary.simpleMessage("Une erreur inattendue s\'est produite lors de la tentative de connexion."),
     "failedToAddConversationParticipant" : MessageLookupByLibrary.simpleMessage("Échec de l’ajout du destinataire"),
     "failedToAddConversationParticipantDuplicate" : m4,
     "failedToAddConversationParticipantNotSharing" : m5,
@@ -149,9 +161,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToHideConversation" : MessageLookupByLibrary.simpleMessage("Échec du masquage de la conversation"),
     "failedToHidePost" : MessageLookupByLibrary.simpleMessage("Échec du masquage de la publication"),
     "failedToLikePost" : MessageLookupByLibrary.simpleMessage("Échec de l’ajout de la mention j’aime"),
+    "failedToLoadContent" : MessageLookupByLibrary.simpleMessage("Une erreur s\'est produite lors de la tentative de chargement du contenu."),
     "failedToMarkNotificationAsRead" : MessageLookupByLibrary.simpleMessage("Échec du marquage de la publication comme lue"),
     "failedToMarkNotificationAsUnread" : MessageLookupByLibrary.simpleMessage("Échec du marquage de la notification comme non lue"),
     "failedToRenameAspect" : m10,
+    "failedToRenderMessage" : MessageLookupByLibrary.simpleMessage("Impossible de rendre ce contenu. Veuillez le signaler avec les détails de l\'erreur ci-dessous, le cas échéant."),
     "failedToReplyToConversation" : MessageLookupByLibrary.simpleMessage("Échec de la réponse à la conversation"),
     "failedToReportComment" : MessageLookupByLibrary.simpleMessage("Échec de la création du signalement"),
     "failedToReportPost" : MessageLookupByLibrary.simpleMessage("Échec de la création du signalement"),
@@ -245,6 +259,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportPostPrompt" : MessageLookupByLibrary.simpleMessage("Signaler la publication"),
     "resharePrompt" : MessageLookupByLibrary.simpleMessage("Repartager la publication ?"),
     "resharesHeader" : MessageLookupByLibrary.simpleMessage("Repartages"),
+    "retryLabel" : MessageLookupByLibrary.simpleMessage("Réessayer"),
     "saveButtonLabel" : MessageLookupByLibrary.simpleMessage("Enregistrer"),
     "searchDialogHint" : MessageLookupByLibrary.simpleMessage("Rechercher"),
     "searchPeopleByTagHint" : MessageLookupByLibrary.simpleMessage("Entrez une étiquette"),
