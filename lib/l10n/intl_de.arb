@@ -1377,7 +1377,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "errorSignInTimeout": "Zeitüberschreitung beim Versuch der Authentifizierung. Sicher, dass dein Pod die API unterstützt?",
+  "errorSignInTimeout": "Zeitüberschreitung beim Versuch der Autorisierung. Sicher, dass dein Pod die API unterstützt?",
   "@errorSignInTimeout": {
     "description": "Error message after authenticating timed out",
     "type": "text",
@@ -1402,6 +1402,76 @@
   "retryLabel": "Erneut versuchen",
   "@retryLabel": {
     "description": "Label for a retry button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorNetworkErrorOnAuthorization": "Ein Netzwerkfehler ist aufgetreten. Stelle sicher, dass dein Pod richtig geschrieben ist und dass du guten Empfang hast. Versuche es dann erneut.",
+  "@errorNetworkErrorOnAuthorization": {
+    "description": "Error message after a network error occurred during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAuthorizationFailed": "Konnte {userId} nicht autorisieren. Ist die Schreibweise richtig? Funktioniert dein Netzwerk? Läuft dein Pod mit der neuesten Entwicklungs-Version?",
+  "@errorAuthorizationFailed": {
+    "description": "Error message after authorization failed",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
+  },
+  "CatcherLocalization_dialogReportModeCancel": "Verwerfen",
+  "@CatcherLocalization_dialogReportModeCancel": {
+    "description": "Button label for dismissing a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeAccept": "Bericht senden",
+  "@CatcherLocalization_dialogReportModeAccept": {
+    "description": "Button label for accepting to send a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeDescription": "Ein unerwarteter Fehler ist aufgetreten. Ein Fehlerbericht kann an die Entwickler gesendet werden.",
+  "@CatcherLocalization_dialogReportModeDescription": {
+    "description": "Description for crash report page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeTitle": "insporation* ist abgestürzt :(",
+  "@CatcherLocalization_dialogReportModeTitle": {
+    "description": "Title for crash report dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorUnexpectedErrorOnAuthorization": "Beim Anmelden ist ein unerwarteter Fehler aufgetreten.",
+  "@errorUnexpectedErrorOnAuthorization": {
+    "description": "Error message after an unexpected error happened during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToRenderMessage": "Dieser Inhalt kann nicht wiedergeben werden. Bitte melde diesen Fehler sammt untenstehender Fehlerdetails, falls vorhanden.",
+  "@failedToRenderMessage": {
+    "description": "Failure message after rendering some content failed.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToLoadContent": "Beim Laden des Inhalts ist ein Fehler aufgetreten.",
+  "@failedToLoadContent": {
+    "description": "Generic failure message after loading some content failed due to an unknown reason.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorCopied": "Fehlerdetails in die Zwischenablage kopiert.",
+  "@detailsOnErrorCopied": {
+    "description": "Success message after error details were copied to clipboard",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorDescription": "Aufgetreten ist der folgende interne Fehler. Bitte angeben, wenn du um Hilfe bittest.",
+  "@detailsOnErrorDescription": {
+    "description": "Label for the show details button in error messages",
     "type": "text",
     "placeholders": {}
   }
