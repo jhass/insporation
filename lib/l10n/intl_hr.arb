@@ -1414,7 +1414,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "detailsOnErrorCopied": "Trag greške kopiran je u međuspremnik.",
+  "detailsOnErrorCopied": "Detalji greške su kopirani u međuspremnik.",
   "@detailsOnErrorCopied": {
     "description": "Success message after error details were copied to clipboard",
     "type": "text",
@@ -1435,6 +1435,42 @@
   "retryLabel": "Ponovi",
   "@retryLabel": {
     "description": "Label for a retry button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToRenderMessage": "Nije moguće prikazati ovaj sadržaj. Prijavi ovaj problem s dolje navedenim detaljima greške, ako postoje.",
+  "@failedToRenderMessage": {
+    "description": "Failure message after rendering some content failed.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeCancel": "Odbaci",
+  "@CatcherLocalization_dialogReportModeCancel": {
+    "description": "Button label for dismissing a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeAccept": "Pošalji izvještaj",
+  "@CatcherLocalization_dialogReportModeAccept": {
+    "description": "Button label for accepting to send a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeDescription": "Dogodila se neočekivana greška. Izvještaj o grešci je spreman za slanje programerima.",
+  "@CatcherLocalization_dialogReportModeDescription": {
+    "description": "Description for crash report page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeTitle": "insporation* je prekinuo rad :(",
+  "@CatcherLocalization_dialogReportModeTitle": {
+    "description": "Title for crash report dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToLoadContent": "Dogodila se greška prilikom pokušaja učitavanja sadržaja.",
+  "@failedToLoadContent": {
+    "description": "Generic failure message after loading some content failed due to an unknown reason.",
     "type": "text",
     "placeholders": {}
   }
