@@ -87,14 +87,38 @@ jobs:
         KEYSTORE: ${{ secrets.KEYSTORE }}
     - name: Update F-Droid repository
       run: |
-        cp dist/*.apk pages/fdroid/repo
-        cd pages/fdroid
-        fdroid update
-        git add .
+        cd pages
+
         git config --local user.email "me+nightly-ci@jhass.eu"
         git config --local user.name  "Github Actions Nightly Job"
+
+        # Truncate history
+        git checkout --orphan new-pages
+        git commit -m "Import previous state"
+
+        cd fdroid
+
+        # Add new build
+        cp ../../dist/*.apk repo/
+
+        # Cleanup archive
+        find archive -name '*.apk' | sort -V | head -n-2 | xargs -r rm
+
+        # Rebuild repos
+        fdroid update
+
+        # Cleanup icons
+        for icon in archive/icons/*.*.png; do
+          base="$(basename "$icon" .png)"
+          if [ ! -e "archive/$base.apk" ]; then
+            rm archive/icons*/"$base".{png,xml}
+          fi
+        done
+
+        # Publish
+        git add .
         git commit -m "Update fdroid repository for nightly build $GITHUB_RUN_NUMBER"
-        git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" gh-pages
+        git push -f "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" new-pages:gh-pages
       env:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEYSTORE_KEY_ALIAS: key
