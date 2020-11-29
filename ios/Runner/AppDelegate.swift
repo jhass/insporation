@@ -67,18 +67,17 @@ import os.log
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
-    // Handle redirect from website
     override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         
-        if let authorizationFlow = self.currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url) {
-            self.currentAuthorizationFlow = nil
-            return true
-        }
+        // Share Receiver
+        // Todo: Read from user settings and open 'publisher'
+        // Can has Text and image data.
         
-        return false
+        return true
     }
     
     class StubEventStreamHandler : NSObject, FlutterStreamHandler {
+        // Is not called when it should be
         func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
             return nil
         }

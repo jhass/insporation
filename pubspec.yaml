@@ -32,6 +32,7 @@ dependencies:
   expandable_widget: ^1.0.5
   share: ^0.6.5+4
   catcher: ^0.3.22
+  receive_sharing_intent: ^1.4.2
 
 dev_dependencies:
   flutter_test:
