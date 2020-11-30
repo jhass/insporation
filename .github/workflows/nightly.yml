@@ -113,10 +113,11 @@ jobs:
         fdroid update
 
         # Cleanup icons
-        for icon in archive/icons/*.*.png; do
+        for icon in {repo,archive}/icons/*.*.png; do
+          repo="$(dirname "$icon")"
           base="$(basename "$icon" .png)"
-          if [ ! -e "archive/$base.apk" ]; then
-            rm archive/icons*/"$base".{png,xml}
+          if [ ! -e "$repo/$base.apk" ]; then
+            rm $repo/icons*/$base.{png,xml} || echo "No icons for $repo/$base.apk present"
           fi
         done
 
