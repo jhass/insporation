@@ -89,6 +89,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "CatcherLocalization_dialogReportModeAccept" : MessageLookupByLibrary.simpleMessage("Pošalji izvještaj"),
+    "CatcherLocalization_dialogReportModeCancel" : MessageLookupByLibrary.simpleMessage("Odbaci"),
+    "CatcherLocalization_dialogReportModeDescription" : MessageLookupByLibrary.simpleMessage("Dogodila se neočekivana greška. Izvještaj o grešci je spreman za slanje programerima."),
+    "CatcherLocalization_dialogReportModeTitle" : MessageLookupByLibrary.simpleMessage("insporation* je prekinuo rad :("),
     "addContact" : MessageLookupByLibrary.simpleMessage("Dodaj kontakt"),
     "addLocation" : MessageLookupByLibrary.simpleMessage("Dodaj tvoju lokaciju"),
     "addPoll" : MessageLookupByLibrary.simpleMessage("Dodaj anketu"),
@@ -119,7 +123,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteSessionPrompt" : m3,
     "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Proslijedi izbrisanu objavu"),
     "deselectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Odznači sve"),
-    "detailsOnErrorCopied" : MessageLookupByLibrary.simpleMessage("Trag greške kopiran je u međuspremnik."),
+    "detailsOnErrorCopied" : MessageLookupByLibrary.simpleMessage("Detalji greške su kopirani u međuspremnik."),
     "detailsOnErrorDescription" : MessageLookupByLibrary.simpleMessage("Dogodila se sljedeća interna greška. Uključi ove podatke kad zatražiš pomoć."),
     "detailsOnErrorLabel" : MessageLookupByLibrary.simpleMessage("Pomoć"),
     "duplicateProfileTag" : MessageLookupByLibrary.simpleMessage("Oznaka je već dodana"),
@@ -157,9 +161,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToHideConversation" : MessageLookupByLibrary.simpleMessage("Neuspjelo skrivanje konverzacije"),
     "failedToHidePost" : MessageLookupByLibrary.simpleMessage("Neuspjelo skrivanje objave"),
     "failedToLikePost" : MessageLookupByLibrary.simpleMessage("Neuspjelo označivanje sa „Sviđa mi se”"),
+    "failedToLoadContent" : MessageLookupByLibrary.simpleMessage("Dogodila se greška prilikom pokušaja učitavanja sadržaja."),
     "failedToMarkNotificationAsRead" : MessageLookupByLibrary.simpleMessage("Neuspjelo označivanje obavijesti kao pročitane"),
     "failedToMarkNotificationAsUnread" : MessageLookupByLibrary.simpleMessage("Neuspjelo označivanje obavijesti kao nepročitane"),
     "failedToRenameAspect" : m10,
+    "failedToRenderMessage" : MessageLookupByLibrary.simpleMessage("Nije moguće prikazati ovaj sadržaj. Prijavi ovaj problem s dolje navedenim detaljima greške, ako postoje."),
     "failedToReplyToConversation" : MessageLookupByLibrary.simpleMessage("Neuspjelo odgovaranje u konverzaciji"),
     "failedToReportComment" : MessageLookupByLibrary.simpleMessage("Neuspjelo stvaranje izvještaja"),
     "failedToReportPost" : MessageLookupByLibrary.simpleMessage("Neuspjelo stvaranje izvještaja"),

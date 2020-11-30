@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m3(userId) => "Sitzung für ${userId} aus insporation* entfernen?";
 
+  static m33(userId) => "Konnte ${userId} nicht autorisieren. Ist die Schreibweise richtig? Funktioniert dein Netzwerk? Läuft dein Pod mit der neuesten Entwicklungs-Version?";
+
   static m4(name) => "${name} ist bereits ein Empfänger, kann nicht erneut hinzugefügt werden.";
 
   static m5(name) => "${name} teilt nicht mit dir, kann nicht als Empfänger hinzugefügt werden.";
@@ -87,6 +89,10 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "CatcherLocalization_dialogReportModeAccept" : MessageLookupByLibrary.simpleMessage("Bericht senden"),
+    "CatcherLocalization_dialogReportModeCancel" : MessageLookupByLibrary.simpleMessage("Verwerfen"),
+    "CatcherLocalization_dialogReportModeDescription" : MessageLookupByLibrary.simpleMessage("Ein unerwarteter Fehler ist aufgetreten. Ein Fehlerbericht kann an die Entwickler gesendet werden."),
+    "CatcherLocalization_dialogReportModeTitle" : MessageLookupByLibrary.simpleMessage("insporation* ist abgestürzt :("),
     "addContact" : MessageLookupByLibrary.simpleMessage("Kontakt hinzufügen"),
     "addLocation" : MessageLookupByLibrary.simpleMessage("Eigenen Standort hinzufügen"),
     "addPoll" : MessageLookupByLibrary.simpleMessage("Eine Umfrage hinzufügen"),
@@ -117,6 +123,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteSessionPrompt" : m3,
     "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Weitersagung eines gelöschten Beitrags"),
     "deselectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Alle abwählen"),
+    "detailsOnErrorCopied" : MessageLookupByLibrary.simpleMessage("Fehlerdetails in die Zwischenablage kopiert."),
+    "detailsOnErrorDescription" : MessageLookupByLibrary.simpleMessage("Aufgetreten ist der folgende interne Fehler. Bitte angeben, wenn du um Hilfe bittest."),
     "detailsOnErrorLabel" : MessageLookupByLibrary.simpleMessage("Hilfe"),
     "duplicateProfileTag" : MessageLookupByLibrary.simpleMessage("Tag wurde bereits hinzugefügt"),
     "editAspectPrompt" : MessageLookupByLibrary.simpleMessage("Aspekt bearbeiten"),
@@ -134,7 +142,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProfileTagsLabel" : MessageLookupByLibrary.simpleMessage("Tags"),
     "editProfileTitle" : MessageLookupByLibrary.simpleMessage("Profil"),
     "enterAddressHint" : MessageLookupByLibrary.simpleMessage("Gib eine Adresse ein"),
-    "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("Zeitüberschreitung beim Versuch der Authentifizierung. Sicher, dass dein Pod die API unterstützt?"),
+    "errorAuthorizationFailed" : m33,
+    "errorNetworkErrorOnAuthorization" : MessageLookupByLibrary.simpleMessage("Ein Netzwerkfehler ist aufgetreten. Stelle sicher, dass dein Pod richtig geschrieben ist und dass du guten Empfang hast. Versuche es dann erneut."),
+    "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("Zeitüberschreitung beim Versuch der Autorisierung. Sicher, dass dein Pod die API unterstützt?"),
+    "errorUnexpectedErrorOnAuthorization" : MessageLookupByLibrary.simpleMessage("Beim Anmelden ist ein unerwarteter Fehler aufgetreten."),
     "failedToAddConversationParticipant" : MessageLookupByLibrary.simpleMessage("Empfänger konnte nicht hinzugefügt werden"),
     "failedToAddConversationParticipantDuplicate" : m4,
     "failedToAddConversationParticipantNotSharing" : m5,
@@ -150,9 +161,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToHideConversation" : MessageLookupByLibrary.simpleMessage("Die Unterhaltung konnte nicht versteckt werden"),
     "failedToHidePost" : MessageLookupByLibrary.simpleMessage("Der Beitrag konnte nicht versteckt werden"),
     "failedToLikePost" : MessageLookupByLibrary.simpleMessage("Konnte den Beitrag nicht mit einem „Gefällt mir“ markieren"),
+    "failedToLoadContent" : MessageLookupByLibrary.simpleMessage("Beim Laden des Inhalts ist ein Fehler aufgetreten."),
     "failedToMarkNotificationAsRead" : MessageLookupByLibrary.simpleMessage("Konnte Benachrichtigung nicht als gelesen markieren"),
     "failedToMarkNotificationAsUnread" : MessageLookupByLibrary.simpleMessage("Konnte Benachrichtigung nicht als ungelesen markieren"),
     "failedToRenameAspect" : m10,
+    "failedToRenderMessage" : MessageLookupByLibrary.simpleMessage("Dieser Inhalt kann nicht wiedergeben werden. Bitte melde diesen Fehler sammt untenstehender Fehlerdetails, falls vorhanden."),
     "failedToReplyToConversation" : MessageLookupByLibrary.simpleMessage("Konnte auf die Unterhaltung nicht antworten"),
     "failedToReportComment" : MessageLookupByLibrary.simpleMessage("Konnte den Kommentar nicht melden"),
     "failedToReportPost" : MessageLookupByLibrary.simpleMessage("Konnte den Beitrag nicht melden"),
