@@ -92,6 +92,8 @@ jobs:
         KEYSTORE: ${{ secrets.KEYSTORE }}
     - name: Update F-Droid repository
       run: |
+        set -Be +f
+
         cd pages
 
         git config --local user.email "me+nightly-ci@jhass.eu"
