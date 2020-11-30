@@ -114,7 +114,7 @@ jobs:
 
         # Cleanup icons
         for icon in {repo,archive}/icons/*.*.png; do
-          repo="$(dirname "$icon")"
+          repo="$(dirname "$(dirname "$icon")")"
           base="$(basename "$icon" .png)"
           if [ ! -e "$repo/$base.apk" ]; then
             rm $repo/icons*/$base.{png,xml} || echo "No icons for $repo/$base.apk present"
