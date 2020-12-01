@@ -27,13 +27,23 @@ import 'stream_page.dart';
 
 
 final _navigator = GlobalKey<NavigatorState>();
-// HttpException is probably just a failed image load
-final _explicitErrorReportMode = {'HttpException': SilentReportMode()};
-final _explicitErrorHandler = {'HttpException': ConsoleHandler(
+final _skipReportMode = SilentReportMode();
+final _skipErrorHandler = ConsoleHandler(
   enableApplicationParameters: false,
   enableDeviceParameters: false,
   enableStackTrace: false
-)};
+);
+final _explicitErrorReportMode = {
+  // Probably just a failed image load or so. Critical API errors should have been catched or at least rewrapped.
+  'HttpException': _skipReportMode,
+  // Probably the video player didn't like a broken URL in the poster attribute some platforms send us,
+  // or the image proxy didn't like to proxy us that video
+  'PlatformException(VideoError': _skipReportMode
+};
+final _explicitErrorHandler = {
+  'HttpException': _skipErrorHandler,
+  'PlatformException(VideoError': _skipErrorHandler
+};
 
 void main() => Catcher(
   MultiProvider(
@@ -62,6 +72,8 @@ void main() => Catcher(
   debugConfig: CatcherOptions(
     SilentReportMode(),
     [ConsoleHandler()],
+    explicitExceptionReportModesMap: _explicitErrorReportMode,
+    explicitExceptionHandlersMap: _explicitErrorHandler,
     localizationOptions: catcherLocalizationOptions
   ),
   releaseConfig: CatcherOptions(
