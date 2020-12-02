@@ -19,10 +19,10 @@ class ShareViewController: SLComposeServiceViewController {
     // Put this into a shared AppSetting
     // Send this to Application
     
-    
-    // TODO: IMPORTANT: This should be your host app bundle identifier
     let hostAppBundleIdentifier = "eu.jhass.insporation"
+    let sharedSubjectKey = "SharedSubjectKey"
     let sharedTextKey = "SharedTextKey"
+    let sharedUrlKey = "SharedUrlKey"
     let sharedMediaKey = "SharedMediaKey"
     
     var sharedMedia: [SharedMediaFile] = []
@@ -63,6 +63,13 @@ class ShareViewController: SLComposeServiceViewController {
         }
     }
     
+    private func setSubjectText(_ content: NSExtensionItem) {
+        let userDefaults = UserDefaults(suiteName: "group.\(hostAppBundleIdentifier)")
+        if let subjectText = contentText {
+            userDefaults?.set(subjectText, forKey: sharedSubjectKey)
+        }
+    }
+    
     private func handleText (content: NSExtensionItem, attachment: NSItemProvider, index: Int) {
         attachment.loadItem(forTypeIdentifier: textContentType, options: nil) { [weak self] data, error in
             
@@ -84,6 +91,9 @@ class ShareViewController: SLComposeServiceViewController {
     }
     
     private func handleUrl (content: NSExtensionItem, attachment: NSItemProvider, index: Int) {
+        
+        setSubjectText(content)
+        
         attachment.loadItem(forTypeIdentifier: urlContentType, options: nil) { [weak self] data, error in
             
             if error == nil, let item = data as? URL, let this = self {
@@ -93,7 +103,7 @@ class ShareViewController: SLComposeServiceViewController {
                 // If this is the last item, save imagesData in userDefaults and redirect to host app
                 if index == (content.attachments?.count)! - 1 {
                     let userDefaults = UserDefaults(suiteName: "group.\(this.hostAppBundleIdentifier)")
-                    userDefaults?.set(this.sharedText, forKey: this.sharedTextKey)
+                    userDefaults?.set(this.sharedText, forKey: this.sharedUrlKey)
                     this.redirectToHostApp()
                 }
                 
@@ -104,6 +114,9 @@ class ShareViewController: SLComposeServiceViewController {
     }
     
     private func handleImages (content: NSExtensionItem, attachment: NSItemProvider, index: Int) {
+        
+        setSubjectText(content)
+        
         attachment.loadItem(forTypeIdentifier: imageContentType, options: nil) { [weak self] data, error in
             
             if error == nil, let url = data as? URL, let this = self {
@@ -267,33 +280,7 @@ extension ShareViewController {
             .appendingPathComponent("\(fileName).jpg")
         return path
     }
-    
-    class SharedMediaFile: Codable {
-        var path: String; // can be image, video or url path. It can also be text content
-        var thumbnail: String?; // video thumbnail
-        var duration: Double?; // video duration in milliseconds
-        var type: SharedMediaType;
-        
-        
-        init(path: String, thumbnail: String?, duration: Double?, type: SharedMediaType) {
-            self.path = path
-            self.thumbnail = thumbnail
-            self.duration = duration
-            self.type = type
-        }
-        
-        // Debug method to print out SharedMediaFile details in the console
-        func toString() {
-            print("[SharedMediaFile] \n\tpath: \(self.path)\n\tthumbnail: \(String(describing: self.thumbnail))\n\tduration: \(String(describing: self.duration))\n\ttype: \(self.type)")
-        }
-    }
-    
-    enum SharedMediaType: Int, Codable {
-        case image
-        case video
-        case file
-    }
-    
+            
     func toData(data: [SharedMediaFile]) -> Data {
         let encodedData = try? JSONEncoder().encode(data)
         return encodedData!

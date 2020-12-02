@@ -193,7 +193,9 @@ class _InsporationState extends State<Insporation> {
         _navigator.currentState.pushNamed("/publisher", arguments: PublisherOptions(prefill: prefill));
         break;
       case "images":
+        final text = shareEvent["text"]?.isNotEmpty == true ? shareEvent["text"] : "";
         _navigator.currentState.pushNamed("/publisher", arguments: PublisherOptions(
+          prefill: text,
           images: shareEvent["images"].cast<String>()
         ));
         break;

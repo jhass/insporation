@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		65276AED257838F10062EB79 /* SharedHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65276AEC257838F10062EB79 /* SharedHandler.swift */; };
+		65276AFC257850300062EB79 /* SharedMediaFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65276AFB257850300062EB79 /* SharedMediaFile.swift */; };
+		65276AFD257850300062EB79 /* SharedMediaFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65276AFB257850300062EB79 /* SharedMediaFile.swift */; };
 		653F1C082550818F008C9925 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 653F1C0B2550818F008C9925 /* InfoPlist.strings */; };
 		653F1C092550818F008C9925 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 653F1C0B2550818F008C9925 /* InfoPlist.strings */; };
 		65A846EA2549568A0019829C /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65ABC375253C393B009FF783 /* Registration.swift */; };
@@ -79,6 +82,8 @@
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		4CB862BAD751E83225CF5A00 /* Pods_insporationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_insporationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		65276AEC257838F10062EB79 /* SharedHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedHandler.swift; sourceTree = "<group>"; };
+		65276AFB257850300062EB79 /* SharedMediaFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SharedMediaFile.swift; path = "insporation-share/SharedMediaFile.swift"; sourceTree = SOURCE_ROOT; };
 		653F1BFC255075BB008C9925 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		653F1BFD255075BB008C9925 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		653F1BFF255075D4008C9925 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
@@ -183,6 +188,7 @@
 				65CEA7432572303000B53DD7 /* ShareViewController.swift */,
 				65CEA7452572303000B53DD7 /* MainInterface.storyboard */,
 				65CEA7482572303000B53DD7 /* Info.plist */,
+				65276AFB257850300062EB79 /* SharedMediaFile.swift */,
 			);
 			path = "Insporation-Share";
 			sourceTree = "<group>";
@@ -247,6 +253,7 @@
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 				65D21BEF253ADF4C009B9EA3 /* AppAuthHandler.swift */,
 				653F1C0B2550818F008C9925 /* InfoPlist.strings */,
+				65276AEC257838F10062EB79 /* SharedHandler.swift */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -506,6 +513,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65CEA7442572303000B53DD7 /* ShareViewController.swift in Sources */,
+				65276AFD257850300062EB79 /* SharedMediaFile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,6 +540,8 @@
 				65ABC376253C393B009FF783 /* Registration.swift in Sources */,
 				65D21BF0253ADF4C009B9EA3 /* AppAuthHandler.swift in Sources */,
 				65B7A7AE253CCF34006941BE /* RegistrationStore.swift in Sources */,
+				65276AED257838F10062EB79 /* SharedHandler.swift in Sources */,
+				65276AFC257850300062EB79 /* SharedMediaFile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,10 +666,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = MYEC2JCSBB;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -677,7 +687,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = eu.jhass.insporation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore eu.jhass.insporation";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -694,7 +704,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "Insporation-Share/Insporation-Share.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MYEC2JCSBB;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -705,10 +715,12 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.Insporation-Share";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -737,6 +749,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.Insporation-Share";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -766,6 +779,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.Insporation-Share";
 				PRODUCT_NAME = "$(TARGET_NAME)";
