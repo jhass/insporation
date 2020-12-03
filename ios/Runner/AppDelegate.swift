@@ -62,10 +62,10 @@ import os.log
         // TODO receive share events and send them to this channel, see ShareEventStream in Android
         let shareEvents = FlutterEventChannel(name: SHARE_EVENTS,
                                               binaryMessenger: controller.binaryMessenger)
-        if self.shareStreamHandler == nil {
-            self.shareStreamHandler = StreamHandler()
+        if shareStreamHandler == nil {
+            shareStreamHandler = StreamHandler()
         }
-        shareEvents.setStreamHandler(self.shareStreamHandler)
+        shareEvents.setStreamHandler(shareStreamHandler)
 
         GeneratedPluginRegistrant.register(with: self)
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
@@ -75,7 +75,7 @@ import os.log
         
         // Get a map to share, or nil
         let shared = SharedHandler.buildMapFromSharedUserDefaults()
-        self.shareStreamHandler?.eventSink?(shared)
+        shareStreamHandler?.eventSink?(shared)
         
         return true
     }
