@@ -55,8 +55,6 @@ class ShareViewController: SLComposeServiceViewController {
                         handleText(content: content, attachment: attachment, index: index)
                     } else if attachment.hasItemConformingToTypeIdentifier(urlContentType) {
                         handleUrl(content: content, attachment: attachment, index: index)
-                    } else if attachment.hasItemConformingToTypeIdentifier(videoContentType) {
-                        handleVideos(content: content, attachment: attachment, index: index)
                     }
                 }
             }
@@ -143,37 +141,7 @@ class ShareViewController: SLComposeServiceViewController {
             }
         }
     }
-    
-    private func handleVideos (content: NSExtensionItem, attachment: NSItemProvider, index: Int) {
-        attachment.loadItem(forTypeIdentifier: videoContentType, options: nil) { [weak self] data, error in
-            
-            if error == nil, let url = data as? URL, let this = self {
-                
-                // Always copy
-                let fileName = this.getFileName(from: url, type: .video)
-                let newPath = FileManager.default
-                    .containerURL(forSecurityApplicationGroupIdentifier: "group.\(this.hostAppBundleIdentifier)")!
-                    .appendingPathComponent(fileName)
-                let copied = this.copyFile(at: url, to: newPath)
-                if(copied) {
-                    guard let sharedFile = this.getSharedMediaFile(forVideo: newPath) else {
-                        return
-                    }
-                    this.sharedMedia.append(sharedFile)
-                }
-                
-                // If this is the last item, save imagesData in userDefaults and redirect to host app
-                if index == (content.attachments?.count)! - 1 {
-                    let userDefaults = UserDefaults(suiteName: "group.\(this.hostAppBundleIdentifier)")
-                    userDefaults?.set(this.toData(data: this.sharedMedia), forKey: this.sharedMediaKey)
-                    this.redirectToHostApp()
-                }
-                
-            } else {
-                self?.dismissWithError()
-            }
-        }
-    }
+
     private func dismissWithError() {
         print("[ERROR] Error loading data!")
         let alert = UIAlertController(title: "Error", message: "Error loading data", preferredStyle: .alert)
