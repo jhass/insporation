@@ -4,7 +4,7 @@ storage_mode("git")
 
 type("development") # The default type, can be: appstore, adhoc, enterprise or development
 
-app_identifier(["eu.jhass.insporation"])
+app_identifier(["eu.jhass.insporation", "eu.jhass.insporation.Insporation-Share"])
 
 # For all available options run `fastlane match --help`
 # Remove the # in the beginning of the line to enable the other options

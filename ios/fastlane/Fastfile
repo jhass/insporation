@@ -29,7 +29,6 @@ platform :ios do
         lock_when_sleeps: false
       )
       match(
-        git_url: "git@github.com:jhass/insporation-certificates.git",
         type: "appstore",
         keychain_name: 'fastlane_ci',
         keychain_password: 'ci_keychain',
