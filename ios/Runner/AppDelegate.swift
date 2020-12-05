@@ -9,11 +9,12 @@ import os.log
     // property of the app's AppDelegate
     var currentAuthorizationFlow: OIDExternalUserAgentSession?
     
+    static let hostAppBundleIdentifier = "eu.jhass.insporation"
     private let APP_AUTH_CHANNEL = "insporation/appauth"
     private let APP_AUTH_EVENTS = "insporation/appauth_authorization_events"
     private let SHARE_EVENTS = "insporation/share_receiver"
-    var appAuthHandler : AppAuthHandler?
-    
+    private var appAuthHandler : AppAuthHandler?
+    private var shareStreamHandler : StreamHandler?
     
     override func application(
         _ application: UIApplication,
@@ -56,30 +57,34 @@ import os.log
         // to authenticate. This, the app dying in the background, does not happen on iOS
         let appAuthEvents = FlutterEventChannel(name: APP_AUTH_EVENTS,
                                                 binaryMessenger: controller.binaryMessenger)
-        appAuthEvents.setStreamHandler(StubEventStreamHandler())
+        appAuthEvents.setStreamHandler(StreamHandler())
 
         // TODO receive share events and send them to this channel, see ShareEventStream in Android
         let shareEvents = FlutterEventChannel(name: SHARE_EVENTS,
                                               binaryMessenger: controller.binaryMessenger)
-        shareEvents.setStreamHandler(StubEventStreamHandler())
+        if shareStreamHandler == nil {
+            shareStreamHandler = StreamHandler()
+        }
+        shareEvents.setStreamHandler(shareStreamHandler)
 
         GeneratedPluginRegistrant.register(with: self)
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
-    // Handle redirect from website
     override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         
-        if let authorizationFlow = self.currentAuthorizationFlow, authorizationFlow.resumeExternalUserAgentFlow(with: url) {
-            self.currentAuthorizationFlow = nil
-            return true
-        }
+        // Get a map to share, or nil
+        let shared = SharedHandler.buildMapFromSharedUserDefaults()
+        shareStreamHandler?.eventSink?(shared)
         
-        return false
+        return true
     }
     
-    class StubEventStreamHandler : NSObject, FlutterStreamHandler {
+    class StreamHandler : NSObject, FlutterStreamHandler {
+        var eventSink : FlutterEventSink?
+        
         func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
+            self.eventSink = events
             return nil
         }
 

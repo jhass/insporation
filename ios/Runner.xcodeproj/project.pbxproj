@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		65276AED257838F10062EB79 /* SharedHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65276AEC257838F10062EB79 /* SharedHandler.swift */; };
+		65276AFC257850300062EB79 /* SharedMediaFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65276AFB257850300062EB79 /* SharedMediaFile.swift */; };
+		65276AFD257850300062EB79 /* SharedMediaFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65276AFB257850300062EB79 /* SharedMediaFile.swift */; };
 		653F1C082550818F008C9925 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 653F1C0B2550818F008C9925 /* InfoPlist.strings */; };
 		653F1C092550818F008C9925 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 653F1C0B2550818F008C9925 /* InfoPlist.strings */; };
 		65A846EA2549568A0019829C /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65ABC375253C393B009FF783 /* Registration.swift */; };
@@ -16,6 +19,9 @@
 		65ABC374253B1127009FF783 /* Tokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65ABC373253B1127009FF783 /* Tokens.swift */; };
 		65ABC376253C393B009FF783 /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65ABC375253C393B009FF783 /* Registration.swift */; };
 		65B7A7AE253CCF34006941BE /* RegistrationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B7A7AD253CCF08006941BE /* RegistrationStore.swift */; };
+		65CEA7442572303000B53DD7 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CEA7432572303000B53DD7 /* ShareViewController.swift */; };
+		65CEA7472572303000B53DD7 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65CEA7452572303000B53DD7 /* MainInterface.storyboard */; };
+		65CEA74B2572303000B53DD7 /* Insporation-Share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 65CEA7412572303000B53DD7 /* Insporation-Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		65D21BF0253ADF4C009B9EA3 /* AppAuthHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D21BEF253ADF4C009B9EA3 /* AppAuthHandler.swift */; };
 		65EDF8232547F90C008DF3BA /* StateHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EDF8222547F90C008DF3BA /* StateHandler.swift */; };
 		65EDF82B2547FC0E008DF3BA /* insporationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EDF82A2547FC0E008DF3BA /* insporationTests.swift */; };
@@ -30,6 +36,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		65CEA7492572303000B53DD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 65CEA7402572303000B53DD7;
+			remoteInfo = "Insporation-Share";
+		};
 		65EDF82D2547FC0E008DF3BA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
@@ -40,6 +53,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		65C230C5256F0DCC00AE1B20 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				65CEA74B2572303000B53DD7 /* Insporation-Share.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -58,6 +82,8 @@
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		4CB862BAD751E83225CF5A00 /* Pods_insporationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_insporationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		65276AEC257838F10062EB79 /* SharedHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedHandler.swift; sourceTree = "<group>"; };
+		65276AFB257850300062EB79 /* SharedMediaFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SharedMediaFile.swift; path = "insporation-share/SharedMediaFile.swift"; sourceTree = SOURCE_ROOT; };
 		653F1BFC255075BB008C9925 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		653F1BFD255075BB008C9925 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		653F1BFF255075D4008C9925 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
@@ -72,6 +98,12 @@
 		65ABC373253B1127009FF783 /* Tokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokens.swift; sourceTree = "<group>"; };
 		65ABC375253C393B009FF783 /* Registration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
 		65B7A7AD253CCF08006941BE /* RegistrationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationStore.swift; sourceTree = "<group>"; };
+		65CEA6BF2570E11400B53DD7 /* RunnerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerRelease.entitlements; sourceTree = "<group>"; };
+		65CEA7412572303000B53DD7 /* Insporation-Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Insporation-Share.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		65CEA7432572303000B53DD7 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		65CEA7462572303000B53DD7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		65CEA7482572303000B53DD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		65CEA7A62572D7F700B53DD7 /* Insporation-Share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Insporation-Share.entitlements"; sourceTree = "<group>"; };
 		65D21BEF253ADF4C009B9EA3 /* AppAuthHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAuthHandler.swift; sourceTree = "<group>"; };
 		65EDF8222547F90C008DF3BA /* StateHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateHandler.swift; sourceTree = "<group>"; };
 		65EDF8282547FC0E008DF3BA /* insporationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = insporationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +130,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		65CEA73E2572303000B53DD7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		65EDF8252547FC0E008DF3BA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -142,6 +181,18 @@
 			path = Authentication;
 			sourceTree = "<group>";
 		};
+		65CEA7422572303000B53DD7 /* Insporation-Share */ = {
+			isa = PBXGroup;
+			children = (
+				65CEA7A62572D7F700B53DD7 /* Insporation-Share.entitlements */,
+				65CEA7432572303000B53DD7 /* ShareViewController.swift */,
+				65CEA7452572303000B53DD7 /* MainInterface.storyboard */,
+				65CEA7482572303000B53DD7 /* Info.plist */,
+				65276AFB257850300062EB79 /* SharedMediaFile.swift */,
+			);
+			path = "Insporation-Share";
+			sourceTree = "<group>";
+		};
 		65EDF8292547FC0E008DF3BA /* insporationTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +219,7 @@
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				65EDF8292547FC0E008DF3BA /* insporationTests */,
+				65CEA7422572303000B53DD7 /* Insporation-Share */,
 				97C146EF1CF9000F007C117D /* Products */,
 				0ACC1C228B405A36174998C3 /* Pods */,
 				FC32877D27B858AD262E1EBE /* Frameworks */,
@@ -179,6 +231,7 @@
 			children = (
 				97C146EE1CF9000F007C117D /* Runner.app */,
 				65EDF8282547FC0E008DF3BA /* insporationTests.xctest */,
+				65CEA7412572303000B53DD7 /* Insporation-Share.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -186,6 +239,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				65CEA6BF2570E11400B53DD7 /* RunnerRelease.entitlements */,
 				C18775CE2550449500BCCBC8 /* Runner.entitlements */,
 				65ABC370253AF927009FF783 /* Authentication */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
@@ -199,6 +253,7 @@
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 				65D21BEF253ADF4C009B9EA3 /* AppAuthHandler.swift */,
 				653F1C0B2550818F008C9925 /* InfoPlist.strings */,
+				65276AEC257838F10062EB79 /* SharedHandler.swift */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -222,6 +277,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		65CEA7402572303000B53DD7 /* Insporation-Share */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 65CEA74C2572303000B53DD7 /* Build configuration list for PBXNativeTarget "Insporation-Share" */;
+			buildPhases = (
+				65CEA73D2572303000B53DD7 /* Sources */,
+				65CEA73E2572303000B53DD7 /* Frameworks */,
+				65CEA73F2572303000B53DD7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Insporation-Share";
+			productName = "Insporation-Share";
+			productReference = 65CEA7412572303000B53DD7 /* Insporation-Share.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		65EDF8272547FC0E008DF3BA /* insporationTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 65EDF82F2547FC0E008DF3BA /* Build configuration list for PBXNativeTarget "insporationTests" */;
@@ -253,10 +325,12 @@
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				C85ABC9E2209E8ECD5129C3C /* [CP] Embed Pods Frameworks */,
+				65C230C5256F0DCC00AE1B20 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				65CEA74A2572303000B53DD7 /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
@@ -269,10 +343,13 @@
 		97C146E61CF9000F007C117D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1210;
+				LastSwiftUpdateCheck = 1220;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
+					65CEA7402572303000B53DD7 = {
+						CreatedOnToolsVersion = 12.2;
+					};
 					65EDF8272547FC0E008DF3BA = {
 						CreatedOnToolsVersion = 12.1;
 						TestTargetID = 97C146ED1CF9000F007C117D;
@@ -302,11 +379,20 @@
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
 				65EDF8272547FC0E008DF3BA /* insporationTests */,
+				65CEA7402572303000B53DD7 /* Insporation-Share */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		65CEA73F2572303000B53DD7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65CEA7472572303000B53DD7 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		65EDF8262547FC0E008DF3BA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -400,7 +486,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
 		};
 		C85ABC9E2209E8ECD5129C3C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -422,6 +508,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		65CEA73D2572303000B53DD7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65CEA7442572303000B53DD7 /* ShareViewController.swift in Sources */,
+				65276AFD257850300062EB79 /* SharedMediaFile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		65EDF8242547FC0E008DF3BA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -445,12 +540,19 @@
 				65ABC376253C393B009FF783 /* Registration.swift in Sources */,
 				65D21BF0253ADF4C009B9EA3 /* AppAuthHandler.swift in Sources */,
 				65B7A7AE253CCF34006941BE /* RegistrationStore.swift in Sources */,
+				65276AED257838F10062EB79 /* SharedHandler.swift in Sources */,
+				65276AFC257850300062EB79 /* SharedMediaFile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		65CEA74A2572303000B53DD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 65CEA7402572303000B53DD7 /* Insporation-Share */;
+			targetProxy = 65CEA7492572303000B53DD7 /* PBXContainerItemProxy */;
+		};
 		65EDF82E2547FC0E008DF3BA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 97C146ED1CF9000F007C117D /* Runner */;
@@ -469,6 +571,14 @@
 				C109B24C255224A90017B6C6 /* hr */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		65CEA7452572303000B53DD7 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				65CEA7462572303000B53DD7 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 		97C146FA1CF9000F007C117D /* Main.storyboard */ = {
@@ -555,8 +665,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = MYEC2JCSBB;
 				ENABLE_BITCODE = NO;
@@ -565,7 +675,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -576,11 +686,106 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = eu.jhass.insporation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore eu.jhass.insporation";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Profile;
+		};
+		65CEA74D2572303000B53DD7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Insporation-Share/Insporation-Share.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MYEC2JCSBB;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Insporation-Share/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.Insporation-Share";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		65CEA74E2572303000B53DD7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Insporation-Share/Insporation-Share.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MYEC2JCSBB;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Insporation-Share/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.Insporation-Share";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		65CEA74F2572303000B53DD7 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Insporation-Share/Insporation-Share.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MYEC2JCSBB;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Insporation-Share/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.Insporation-Share";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Profile;
 		};
@@ -802,7 +1007,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -828,7 +1033,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Runner/RunnerRelease.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
@@ -839,7 +1044,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -861,6 +1066,16 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		65CEA74C2572303000B53DD7 /* Build configuration list for PBXNativeTarget "Insporation-Share" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65CEA74D2572303000B53DD7 /* Debug */,
+				65CEA74E2572303000B53DD7 /* Release */,
+				65CEA74F2572303000B53DD7 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		65EDF82F2547FC0E008DF3BA /* Build configuration list for PBXNativeTarget "insporationTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
