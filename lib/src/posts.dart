@@ -227,7 +227,11 @@ class PostView extends StatelessWidget with LocalizationHelpers {
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 child: Icon(Icons.warning, color: Colors.white)
               ),
-              Text(l(context).deletedPostReshareHint, style: TextStyle(color: Colors.white))
+              Expanded(child: Text(
+                l(context).deletedPostReshareHint,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white)
+              ))
             ]
           )
         ),
