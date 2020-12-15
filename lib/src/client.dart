@@ -941,7 +941,7 @@ abstract class HtmlTextOEmbed extends OEmbed {
 }
 
 class YoutubeOEmbed extends ThumbnailOEmbed {
-  static RegExp _embedUrlPattern = RegExp(r'https://www.youtube.com/embed/([^?/]+)');
+  static RegExp _embedUrlPattern = RegExp(r'https?://www.youtube.com/embed/([^?/]+)');
   static String _urlTemplate = "https://www.youtube.com/watch?v=ID";
 
   YoutubeOEmbed({@required String provider, @required String author, @required String title,
