@@ -36,6 +36,7 @@ final _skipErrorHandler = ConsoleHandler(
 final _explicitErrorReportMode = {
   // Probably just a failed image load or so. Critical API errors should have been catched or at least rewrapped.
   'HttpException': _skipReportMode,
+  'HTTP request failed, statusCode: 4': _skipReportMode,
   // Probably the video player didn't like a broken URL in the poster attribute some platforms send us,
   // or the image proxy didn't like to proxy us that video
   'PlatformException(VideoError': _skipReportMode,
@@ -44,6 +45,7 @@ final _explicitErrorReportMode = {
 };
 final _explicitErrorHandler = {
   'HttpException': _skipErrorHandler,
+  'HTTP request failed, statusCode: 4': _skipErrorHandler,
   'PlatformException(VideoError': _skipErrorHandler,
   'SocketException': _skipErrorHandler
 };
