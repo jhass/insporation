@@ -41,13 +41,15 @@ final _explicitErrorReportMode = {
   // or the image proxy didn't like to proxy us that video
   'PlatformException(VideoError': _skipReportMode,
   // System was probably switching networks or so, nothing we can do anything about
-  'SocketException': _skipReportMode
+  'SocketException': _skipReportMode,
+  'Connection closed before full header was received': _skipReportMode
 };
 final _explicitErrorHandler = {
   'HttpException': _skipErrorHandler,
   'HTTP request failed, statusCode: 4': _skipErrorHandler,
   'PlatformException(VideoError': _skipErrorHandler,
-  'SocketException': _skipErrorHandler
+  'SocketException': _skipErrorHandler,
+  'Connection closed before full header was received': _skipErrorHandler
 };
 
 void main() => Catcher(
