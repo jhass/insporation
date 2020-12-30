@@ -387,7 +387,8 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
   _createReshare() async {
     final scaffold = Scaffold.of(context),
       client = context.read<Client>(),
-      postStream = context.tryRead<ItemStream<Post>>() as PostStream;
+      itemStream = context.tryRead<ItemStream<Post>>(),
+      postStream = itemStream is PostStream ? itemStream : null;
     setState(() {
       widget.post.interactions.reshared = true;
       widget.post.interactions.reshares++;
