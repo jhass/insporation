@@ -1082,9 +1082,33 @@
       }
     }
   },
-  "errorSignInTimeout": "Tempo scaduto durante il tentativo di autenticazione, sei sicuro/a che il tuo pod supporti l'API?",
+  "errorSignInTimeout": "Tempo scaduto durante il tentativo di autorizzazione, sei sicuro/a che il tuo pod supporti l'API?",
   "@errorSignInTimeout": {
     "description": "Error message after authenticating timed out",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeAccept": "Inviare il rapporto",
+  "@CatcherLocalization_dialogReportModeAccept": {
+    "description": "Button label for accepting to send a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CatcherLocalization_dialogReportModeCancel": "Abbandona",
+  "@CatcherLocalization_dialogReportModeCancel": {
+    "description": "Button label for dismissing a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorLabel": "Aiuto",
+  "@detailsOnErrorLabel": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "retryLabel": "Riprova",
+  "@retryLabel": {
+    "description": "Label for a retry button",
     "type": "text",
     "placeholders": {}
   }
