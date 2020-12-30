@@ -42,14 +42,17 @@ final _explicitErrorReportMode = {
   'PlatformException(VideoError': _skipReportMode,
   // System was probably switching networks or so, nothing we can do anything about
   'SocketException': _skipReportMode,
-  'Connection closed before full header was received': _skipReportMode
+  'Connection closed before full header was received': _skipReportMode,
+  // Suppress non-fatal framework bug. Should be fixed with https://github.com/flutter/flutter/pull/70638
+  "NoSuchMethodError: The getter 'status' was called on null": _skipReportMode
 };
 final _explicitErrorHandler = {
   'HttpException': _skipErrorHandler,
   'HTTP request failed, statusCode: 4': _skipErrorHandler,
   'PlatformException(VideoError': _skipErrorHandler,
   'SocketException': _skipErrorHandler,
-  'Connection closed before full header was received': _skipErrorHandler
+  'Connection closed before full header was received': _skipErrorHandler,
+  "NoSuchMethodError: The getter 'status' was called on null": _skipErrorHandler
 };
 
 void main() => Catcher(
