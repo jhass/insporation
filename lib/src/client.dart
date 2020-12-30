@@ -21,6 +21,9 @@ class Client {
   Stream<AuthorizationEvent> get newAuthorizations => _appAuth.newAuthorizations;
 
   Future<void> switchToUser(String userId) async {
+    _currentUserAspects = null;
+    _currentUser = null;
+    _currentSessionActive = false;
     await _appAuth.switchToUser(userId);
   }
 
