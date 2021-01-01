@@ -45,6 +45,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "CatcherLocalization_dialogReportModeAccept" : MessageLookupByLibrary.simpleMessage("Inviare il rapporto"),
+    "CatcherLocalization_dialogReportModeCancel" : MessageLookupByLibrary.simpleMessage("Abbandona"),
     "addContact" : MessageLookupByLibrary.simpleMessage("Aggiungi contatto"),
     "addLocation" : MessageLookupByLibrary.simpleMessage("Aggiungi la tua posizione"),
     "addPoll" : MessageLookupByLibrary.simpleMessage("Aggiungi un sondaggio"),
@@ -69,6 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteSessionPrompt" : m3,
     "deletedPostReshareHint" : MessageLookupByLibrary.simpleMessage("Ricondivisione di un post eliminato"),
     "deselectAllButtonLabel" : MessageLookupByLibrary.simpleMessage("Deseleziona tutto"),
+    "detailsOnErrorLabel" : MessageLookupByLibrary.simpleMessage("Aiuto"),
     "duplicateProfileTag" : MessageLookupByLibrary.simpleMessage("Etichetta già aggiunta"),
     "editAspectPrompt" : MessageLookupByLibrary.simpleMessage("Modifica l’aspetto"),
     "editPoll" : MessageLookupByLibrary.simpleMessage("Modifica il sondaggio"),
@@ -84,7 +87,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "editProfileTagsLabel" : MessageLookupByLibrary.simpleMessage("Etichette"),
     "editProfileTitle" : MessageLookupByLibrary.simpleMessage("Modifica il profilo"),
     "enterAddressHint" : MessageLookupByLibrary.simpleMessage("Inserisci un indirizzo"),
-    "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("Tempo scaduto durante il tentativo di autenticazione, sei sicuro/a che il tuo pod supporti l\'API?"),
+    "errorSignInTimeout" : MessageLookupByLibrary.simpleMessage("Tempo scaduto durante il tentativo di autorizzazione, sei sicuro/a che il tuo pod supporti l\'API?"),
     "failedToBlockUser" : m7,
     "failedToCommentOnPost" : MessageLookupByLibrary.simpleMessage("Aggiunta del commento non riuscita"),
     "failedToCreateAspect" : MessageLookupByLibrary.simpleMessage("Creazione dell’aspetto non riuscita"),
@@ -178,6 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reportPostPrompt" : MessageLookupByLibrary.simpleMessage("Segnala il post"),
     "resharePrompt" : MessageLookupByLibrary.simpleMessage("Ricondividere il post?"),
     "resharesHeader" : MessageLookupByLibrary.simpleMessage("Ricondivisioni"),
+    "retryLabel" : MessageLookupByLibrary.simpleMessage("Riprova"),
     "saveButtonLabel" : MessageLookupByLibrary.simpleMessage("Salva"),
     "searchDialogHint" : MessageLookupByLibrary.simpleMessage("Cerca"),
     "searchPeopleByTagHint" : MessageLookupByLibrary.simpleMessage("Inserisci un’etichetta"),
