@@ -25,35 +25,32 @@ import 'src/persistence.dart';
 import 'src/posts.dart';
 import 'stream_page.dart';
 
-
-final _navigator = GlobalKey<NavigatorState>();
-final _skipReportMode = SilentReportMode();
-final _skipErrorHandler = ConsoleHandler(
+const _skipableErrors = <String>[
+  // Non fatal and nothing we can handle in any way
+  'Invalid image data',
+  // Probably just a failed image load or so. Critical API errors should have been catched or at least rewrapped.
+  'HttpException',
+  'HTTP request failed, statusCode: 4',
+  // Probably the video player didn't like a broken URL in the poster attribute some platforms send us,
+  // or the image proxy didn't like to proxy us that video
+  'PlatformException(VideoError',
+  // System was probably switching networks or so, nothing we can do anything about
+  'SocketException',
+  'Connection closed before full header was received',
+  // Suppress non-fatal framework bug. Should be fixed with https://github.com/flutter/flutter/pull/70638
+  "NoSuchMethodError: The getter 'status' was called on null"
+];
+final _navigator = GlobalKey<NavigatorState>(),
+  _skipReportMode = SilentReportMode(),
+  _skipErrorHandler = ConsoleHandler(
   enableApplicationParameters: false,
   enableDeviceParameters: false,
   enableStackTrace: false
 );
-final _explicitErrorReportMode = {
-  // Probably just a failed image load or so. Critical API errors should have been catched or at least rewrapped.
-  'HttpException': _skipReportMode,
-  'HTTP request failed, statusCode: 4': _skipReportMode,
-  // Probably the video player didn't like a broken URL in the poster attribute some platforms send us,
-  // or the image proxy didn't like to proxy us that video
-  'PlatformException(VideoError': _skipReportMode,
-  // System was probably switching networks or so, nothing we can do anything about
-  'SocketException': _skipReportMode,
-  'Connection closed before full header was received': _skipReportMode,
-  // Suppress non-fatal framework bug. Should be fixed with https://github.com/flutter/flutter/pull/70638
-  "NoSuchMethodError: The getter 'status' was called on null": _skipReportMode
-};
-final _explicitErrorHandler = {
-  'HttpException': _skipErrorHandler,
-  'HTTP request failed, statusCode: 4': _skipErrorHandler,
-  'PlatformException(VideoError': _skipErrorHandler,
-  'SocketException': _skipErrorHandler,
-  'Connection closed before full header was received': _skipErrorHandler,
-  "NoSuchMethodError: The getter 'status' was called on null": _skipErrorHandler
-};
+final Map<String, ReportMode> _explicitErrorReportMode =
+  Map.fromIterable(_skipableErrors, value: (_) => _skipReportMode);
+final Map<String, ReportHandler> _explicitErrorHandler =
+  Map.fromIterable(_skipableErrors, value: (_) => _skipErrorHandler);
 
 void main() => Catcher(
   MultiProvider(
