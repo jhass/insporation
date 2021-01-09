@@ -542,7 +542,7 @@ class _SimpleComposerState extends State<SimpleComposer> with StateLocalizationH
     if (widget.onSubmit != null) {
       setState(() => _submitting = true);
       final success = await widget.onSubmit(_effectiveController.text);
-      if (success) {
+      if (success && mounted) {
         _effectiveController.text = "";
       }
       setState(() => _submitting = false);
