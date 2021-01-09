@@ -275,7 +275,8 @@ class _CommentActionsViewState extends State<_CommentActionsView> with StateLoca
 
   _createReport(String report) async {
     final scaffold = Scaffold.of(context),
-      client = context.read<Client>();
+      client = context.read<Client>(),
+      l = this.l;
     setState(() => widget.comment.reported = true);
     Slidable.of(context)?.close();
 
