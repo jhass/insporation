@@ -38,7 +38,9 @@ const _skipableErrors = <String>[
   'SocketException',
   'Connection closed before full header was received',
   // Suppress non-fatal framework bug. Should be fixed with https://github.com/flutter/flutter/pull/70638
-  "NoSuchMethodError: The getter 'status' was called on null"
+  "NoSuchMethodError: The getter 'status' was called on null",
+  // Not much we can do about bad setups
+  'CERTIFICATE_VERIFY_FAILED'
 ];
 final _navigator = GlobalKey<NavigatorState>(),
   _skipReportMode = SilentReportMode(),
