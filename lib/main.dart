@@ -37,6 +37,7 @@ const _skipableErrors = <String>[
   // System was probably switching networks or so, nothing we can do anything about
   'SocketException',
   'Connection closed before full header was received',
+  'Connection closed while receiving data',
   // Suppress non-fatal framework bug. Should be fixed with https://github.com/flutter/flutter/pull/70638
   "NoSuchMethodError: The getter 'status' was called on null",
   // Not much we can do about bad setups
