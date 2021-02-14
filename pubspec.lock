@@ -84,14 +84,14 @@ packages:
       name: chewie
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.10"
+    version: "0.12.2"
   chewie_audio:
     dependency: transitive
     description:
       name: chewie_audio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0+1"
+    version: "1.1.2"
   cli_util:
     dependency: transitive
     description:
@@ -148,6 +148,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.2"
+  cupertino_icons:
+    dependency: transitive
+    description:
+      name: cupertino_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   dart_style:
     dependency: transitive
     description:
@@ -243,7 +250,14 @@ packages:
       name: flutter_html
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.2.0"
+  flutter_layout_grid:
+    dependency: transitive
+    description:
+      name: flutter_layout_grid
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.10.5"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -276,7 +290,7 @@ packages:
       name: flutter_svg
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.18.1"
+    version: "0.19.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -371,6 +385,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
+  import_js_library:
+    dependency: transitive
+    description:
+      name: import_js_library
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   intl:
     dependency: "direct main"
     description:
@@ -473,13 +494,6 @@ packages:
     dependency: transitive
     description:
       name: octo_image
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
-  open_iconic_flutter:
-    dependency: transitive
-    description:
-      name: open_iconic_flutter
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
@@ -616,13 +630,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.24.1"
-  screen:
-    dependency: transitive
-    description:
-      name: screen
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.5"
   sentry:
     dependency: transitive
     description:
@@ -851,7 +858,7 @@ packages:
       name: video_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.12+5"
+    version: "1.0.1"
   video_player_platform_interface:
     dependency: transitive
     description:
@@ -872,7 +879,21 @@ packages:
       name: wakelock
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.4+2"
+    version: "0.2.1+1"
+  wakelock_platform_interface:
+    dependency: transitive
+    description:
+      name: wakelock_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0+1"
+  wakelock_web:
+    dependency: transitive
+    description:
+      name: wakelock_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0+3"
   watcher:
     dependency: transitive
     description:
@@ -886,7 +907,7 @@ packages:
       name: webview_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.24"
+    version: "1.0.7"
   win32:
     dependency: transitive
     description:
@@ -917,4 +938,4 @@ packages:
     version: "2.2.1"
 sdks:
   dart: ">=2.10.0-110 <2.11.0"
-  flutter: ">=1.20.0 <2.0.0"
+  flutter: ">=1.22.0 <2.0.0"

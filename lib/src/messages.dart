@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:html/dom.dart' as dom;
 import 'package:gesture_zoom_box/gesture_zoom_box.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:url_launcher/url_launcher.dart';
@@ -94,7 +95,9 @@ class Message extends StatelessWidget with LocalizationHelpers {
             launch(url);
           }
         },
-        onImageTap: (url) => Photobox.show(context, url)
+        customRender: {
+          'img': (_, __, attributes, node) =>_renderImage(context, attributes, node)
+        }
       );
     } catch (e) {
       final theme = Theme.of(context);
@@ -127,6 +130,18 @@ class Message extends StatelessWidget with LocalizationHelpers {
         ],)
       );
     }
+  }
+
+  _renderImage(BuildContext context, Map<String, String> attributes, dom.Element node) {
+    return GestureDetector(
+      onTap: () {
+        // Workaround onImageTap not being suppressable for anchor linked images
+        if (node.parent?.localName != 'a') {
+          Photobox.show(context, attributes['src']);
+        }
+      },
+      child: CachedNetworkImage(imageUrl: attributes['src'], placeholder: (_, __) => Center(child: CircularProgressIndicator())),
+    );
   }
 }
 
