@@ -350,12 +350,11 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
         setState(() => _updatingLike = false);
       }
     } catch (e, s) {
-      showErrorSnackBar(scaffold, current ? l.failedToUnlikePost : l.failedToLikePost, e, s);
-
       widget.post.interactions.liked = current;
       widget.post.interactions.likes = currentCount;
 
       if (mounted) {
+        showErrorSnackBar(scaffold, current ? l.failedToUnlikePost : l.failedToLikePost, e, s);
         setState(() => _updatingLike = false);
       }
     }
