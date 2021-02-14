@@ -641,7 +641,7 @@ class _PhotoSliderState extends State<_PhotoSlider> {
       children: <Widget>[
         CarouselSlider.builder(
           itemCount: widget.photos.length,
-          itemBuilder: (context, index) => GestureDetector(
+          itemBuilder: (context, index, _) => GestureDetector(
             onTap: () => Photobox.show(context, widget.photos[index].sizes.large),
             child: CachedNetworkImage(
               placeholder: (context, url) => Center(child: CircularProgressIndicator()),

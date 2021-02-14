@@ -56,7 +56,7 @@ final Map<String, ReportHandler> _explicitErrorHandler =
   Map.fromIterable(_skipableErrors, value: (_) => _skipErrorHandler);
 
 void main() => Catcher(
-  MultiProvider(
+  rootWidget: MultiProvider(
     providers: [
         Provider(create: (_) => PersistentState()..restore(), dispose: (_, state) => state.persist(), lazy: false),
         Provider(create: (_) => Client()),

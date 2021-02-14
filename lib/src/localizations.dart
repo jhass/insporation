@@ -1778,4 +1778,7 @@ class CatcherLocalization implements LocalizationOptions {
 
   @override
   String get pageReportModeCancel => defaults.pageReportModeCancel;
+
+  @override
+  String get toastHandlerDescription => defaults.toastHandlerDescription;
 }
