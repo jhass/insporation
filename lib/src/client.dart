@@ -281,8 +281,8 @@ class Client {
     }
   }
 
-  Future<Page<Notification>> fetchNotifications({bool onlyUnread = false, String page}) async {
-    final response = await _call("GET", "notifications", query: {"only_unread": onlyUnread.toString()}, page: page);
+  Future<Page<Notification>> fetchNotifications({bool onlyUnread = false, String page, int perPage}) async {
+    final response = await _call("GET", "notifications", query: {"only_unread": onlyUnread.toString()}, page: page, perPage: perPage);
     return _makePage(await compute(_parseNotificationsJson, response.body), response);
   }
 
@@ -395,8 +395,8 @@ class Client {
     return _makePage(await compute(_parsePeopleJson, response.body), response);
   }
 
-  Future<Page<Conversation>> fetchConversations({bool onlyUnread = false, String page}) async {
-    final response  = await _call("GET", "conversations", query: {"only_unread": onlyUnread.toString()}, page: page);
+  Future<Page<Conversation>> fetchConversations({bool onlyUnread = false, String page, int perPage}) async {
+    final response  = await _call("GET", "conversations", query: {"only_unread": onlyUnread.toString()}, page: page, perPage: perPage);
     return _makePage(await compute(_parseConversationsJson, response.body), response);
   }
 
@@ -518,9 +518,9 @@ class Client {
     return initialPage;
   }
 
-  Future<http.Response> _call(String method, String endpoint, {Map<String, dynamic> query = const {}, body, page}) async {
+  Future<http.Response> _call(String method, String endpoint, {Map<String, dynamic> query = const {}, body, String page, int perPage}) async {
     final token = await _appAuth.accessToken,
-      uri = _computeUri(endpoint, query: query, page: page),
+      uri = _computeUri(endpoint, query: query, page: page, perPage: perPage),
       request = http.Request(method, uri);
     request.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
 
@@ -550,13 +550,23 @@ class Client {
     }
   }
 
-  Uri _computeUri(String endpoint, {Map<String, dynamic> query, page}) {
+  Uri _computeUri(String endpoint, {Map<String, dynamic> query, String page, int perPage}) {
+    Uri uri;
+
     if (page != null) {
-      return Uri.parse(page);
+      uri = Uri.parse(page);
     } else {
       final newSegments = _appAuth.currentBaseUri.pathSegments + endpoint.split(r'/');
-      return _appAuth.currentBaseUri.replace(pathSegments: const ['api', 'v1'] + newSegments, queryParameters: query);
+      uri = _appAuth.currentBaseUri.replace(pathSegments: const ['api', 'v1'] + newSegments, queryParameters: query);
     }
+
+    if (perPage != null) {
+      final query = Map<String, String>.from(uri.queryParameters);
+      query["per_page"] = perPage.toString();
+      uri = uri.replace(queryParameters: query);
+    }
+
+    return uri;
   }
 
   Page<T> _makePage<T>(List<T> content, http.Response response) {

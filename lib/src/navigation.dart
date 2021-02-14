@@ -127,13 +127,13 @@ class _BarItem {
 class UnreadNotificationsCount extends ItemCountNotifier<Notification> {
   @override
   Future<Page<Notification>> fetchFirstPage(Client client) async =>
-    client.fetchNotifications(onlyUnread: true);
+    client.fetchNotifications(onlyUnread: true, perPage: pageSize);
 }
 
 class UnreadConversationsCount extends ItemCountNotifier<Conversation> {
   @override
   Future<Page<Conversation>> fetchFirstPage(Client client) async =>
-    client.fetchConversations(onlyUnread: true);
+    client.fetchConversations(onlyUnread: true, perPage: pageSize);
 }
 
 class BadgeUpdater {

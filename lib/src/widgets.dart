@@ -188,7 +188,7 @@ class _UnreadItemsIndicatorIconState<T extends ItemCountNotifier> extends State<
                         minHeight: 12,
                       ),
                       child: Text(
-                        unreadCount.count.toString(),
+                        unreadCount.indicatorText,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 8,
@@ -200,23 +200,45 @@ class _UnreadItemsIndicatorIconState<T extends ItemCountNotifier> extends State<
 }
 
 abstract class ItemCountNotifier<T> extends ChangeNotifier {
+  // Limit of items to fetch for the first page
+  int pageSize = 9;
+
   Timer _timer;
   bool _evenMore = false;
   int _count = 0;
+  Client _lastClient;
 
   int get count => _count;
+
+  String get indicatorText => evenMore ? "$count+" : _count.toString();
 
   // We only poll the first page of unread notifications, this indicates whether there's more pages.
   bool get evenMore => _evenMore;
 
   void increment() {
-    _count++;
-    notifyListeners();
+    if (evenMore) {
+      return; // already maxed out
+    } else if (_count >= pageSize) {
+      // more than one page now
+      _evenMore = true;
+      notifyListeners();
+    } else {
+      _count++;
+      notifyListeners();
+    }
   }
 
   void decrement() {
-    _count--;
-    notifyListeners();
+    if (evenMore) {
+      // We can't know how many items there are after decrementing because we didn't know
+      // the exact number in the first place, trigger a refresh instead
+      // Since the decrement may happen before an actual update call we delay it slightly.
+      Timer(Duration(seconds: 3), () => _fetch(_lastClient));
+      _fetch(_lastClient);
+    } else {
+      _count--;
+      notifyListeners();
+    }
   }
 
   void update(Client client) {
@@ -226,6 +248,7 @@ abstract class ItemCountNotifier<T> extends ChangeNotifier {
 
     _fetch(client);
     _timer = Timer.periodic(Duration(minutes: 1, seconds: 30), (timer) => _fetch(client));
+    _lastClient = client;
   }
 
   _fetch(Client client) async {
@@ -233,7 +256,9 @@ abstract class ItemCountNotifier<T> extends ChangeNotifier {
       try {
         final page = await fetchFirstPage(client);
         final newCount = page.content.length;
-        final newEvenMore = page.nextPage != null;
+        // TODO: The backend always returns a next page link in some cases even when that page is empty.
+        // We're working around this for now but it should be fixed in the backend (see also the todo in ItemStream)
+        final newEvenMore = newCount >= pageSize && page.nextPage != null;
 
         if (newCount != _count || newEvenMore != _evenMore) {
           _count = newCount;
