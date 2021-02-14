@@ -1107,6 +1107,20 @@ class InsporationLocalizations {
     locale: localeName
   );
 
+  String get failedToMarkConversationAsRead => Intl.message(
+    'Failed to mark conversation as read',
+    name: 'failedToMarkConversationAsRead',
+    desc: 'Error message after marking a conversation as read failed',
+    locale: localeName
+  );
+
+  String get failedToMarkConversationAsUnread => Intl.message(
+    'Failed to mark conversation as unread',
+    name: 'failedToMarkConversationAsUnread',
+    desc: 'Error message after marking a conversation  as unread failed',
+    locale: localeName
+  );
+
   String get notificationTargetPost => Intl.message(
     'post',
     name: 'notificationTargetPost',

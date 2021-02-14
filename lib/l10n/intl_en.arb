@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-11-24T16:40:15.755363",
+  "@@last_modified": "2021-02-14T15:21:51.551124",
   "saveButtonLabel": "Save",
   "@saveButtonLabel": {
     "description": "Label for a dialog save button",
@@ -907,6 +907,18 @@
   "failedToCreateConversation": "Failed to create conversation",
   "@failedToCreateConversation": {
     "description": "Error message after sending a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkConversationAsRead": "Failed to mark conversation as read",
+  "@failedToMarkConversationAsRead": {
+    "description": "Error message after marking a conversation as read failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkConversationAsUnread": "Failed to mark conversation as unread",
+  "@failedToMarkConversationAsUnread": {
+    "description": "Error message after marking a conversation  as unread failed",
     "type": "text",
     "placeholders": {}
   },

@@ -133,7 +133,7 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
   }
 
   Future<bool> _toggleRead(_) async {
-    _setRead(!widget.notification.read);
+    await _setRead(!widget.notification.read);
 
     return false;
   }

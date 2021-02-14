@@ -55,13 +55,30 @@ class _ConversationsPageState extends ItemStreamState<Conversation, Conversation
 
     return InkWell(
       child: Slidable(
-        key: UniqueKey(),
+        key: ValueKey(conversation.guid),
         actionPane: SlidableStrechActionPane(),
         dismissal: SlidableDismissal(
           child: SlidableDrawerDismissal(),
-          onDismissed: (_) => _hide(conversation),
+          closeOnCanceled: true,
+          onWillDismiss: (type) {
+            if (type == SlideActionType.primary) {
+              _toggleRead(conversation);
+              return false;
+            }
+
+            return true;
+          },
+          onDismissed: (type) => type == SlideActionType.primary ? _toggleRead(conversation) : _hide(conversation),
         ),
         actions: <Widget>[
+          IconSlideAction(
+            icon: Icons.done,
+            foregroundColor: theme.iconTheme.color,
+            color: conversation.read ? theme.colorScheme.secondary : Colors.transparent,
+            onTap: () => _toggleRead(conversation),
+          )
+        ],
+        secondaryActions: [
           IconSlideAction(
             icon: Icons.delete,
             color: Colors.red,
@@ -90,8 +107,7 @@ class _ConversationsPageState extends ItemStreamState<Conversation, Conversation
   }
 
   _show(Conversation conversation) {
-    setState(() => conversation.read = true);
-    context.read<UnreadConversationsCount>().decrement();
+    _setRead(conversation, true);
     Navigator.push(context, PageRouteBuilder(
       pageBuilder: (context, _, __) => _ConversationMessagesPage(conversation: conversation),
       transitionsBuilder: (context, animation, _, child) => SlideTransition(
@@ -102,12 +118,53 @@ class _ConversationsPageState extends ItemStreamState<Conversation, Conversation
     ));
   }
 
+  _toggleRead(Conversation conversation) {
+    _setRead(conversation, !conversation.read);
+  }
+
+  Future<void> _setRead(Conversation conversation, bool newStatus) async {
+    if (conversation.read == newStatus) {
+      return;
+    }
+
+    final client = context.read<Client>(),
+      unreadCount = context.read<UnreadConversationsCount>();
+
+    setState(() => conversation.read = newStatus);
+    if (newStatus) {
+      unreadCount.decrement();
+    } else {
+      unreadCount.increment();
+    }
+
+    try {
+      await client.setConversationRead(conversation, isRead: newStatus);
+    } catch (e, s)  {
+      tryShowErrorSnackBar(this, newStatus ? l.failedToMarkConversationAsRead : l.failedToMarkConversationAsUnread, e, s);
+
+      if (mounted) {
+        setState(() => conversation.read = !newStatus);
+      }
+
+      if (newStatus) {
+        unreadCount.increment();
+      } else {
+        unreadCount.decrement();
+      }
+    }
+  }
+
   _hide(Conversation conversation) async {
     final client = context.read<Client>(),
+      unreadCount = context.read<UnreadConversationsCount>(),
       position = items.remove(conversation);
 
     try {
       await client.hideConversation(conversation);
+
+      if (!conversation.read) {
+        unreadCount.decrement();
+      }
     } catch (e, s) {
       tryShowErrorSnackBar(this, l.failedToHideConversation, e, s);
 

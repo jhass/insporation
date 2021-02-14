@@ -400,6 +400,10 @@ class Client {
     return _makePage(await compute(_parseConversationsJson, response.body), response);
   }
 
+  Future<void> setConversationRead(Conversation conversation, {isRead = true}) async {
+    await _call("PATCH", "conversations/${conversation.guid}", body: {"read": isRead});
+  }
+
   Future<Conversation> createConversation(NewConversation conversation) async {
     final response = await _call("POST", "/conversations", body: conversation);
     return Conversation.from(jsonDecode(response.body));
