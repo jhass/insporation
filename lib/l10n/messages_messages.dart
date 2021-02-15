@@ -162,6 +162,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToHidePost" : MessageLookupByLibrary.simpleMessage("Failed to hide the post"),
     "failedToLikePost" : MessageLookupByLibrary.simpleMessage("Failed to like the post"),
     "failedToLoadContent" : MessageLookupByLibrary.simpleMessage("An error occured while trying to load the content."),
+    "failedToMarkConversationAsRead" : MessageLookupByLibrary.simpleMessage("Failed to mark conversation as read"),
+    "failedToMarkConversationAsUnread" : MessageLookupByLibrary.simpleMessage("Failed to mark conversation as unread"),
     "failedToMarkNotificationAsRead" : MessageLookupByLibrary.simpleMessage("Failed to mark notification as read"),
     "failedToMarkNotificationAsUnread" : MessageLookupByLibrary.simpleMessage("Failed to mark notification as unread"),
     "failedToRenameAspect" : m10,
