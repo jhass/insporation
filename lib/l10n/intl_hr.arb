@@ -1473,5 +1473,17 @@
     "description": "Generic failure message after loading some content failed due to an unknown reason.",
     "type": "text",
     "placeholders": {}
+  },
+  "failedToMarkConversationAsUnread": "Neuspjelo označavanje razgovora kao nepročitan",
+  "@failedToMarkConversationAsUnread": {
+    "description": "Error message after marking a conversation  as unread failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkConversationAsRead": "Neuspjelo označavanje razgovora kao pročitan",
+  "@failedToMarkConversationAsRead": {
+    "description": "Error message after marking a conversation as read failed",
+    "type": "text",
+    "placeholders": {}
   }
 }
