@@ -162,6 +162,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "failedToHidePost" : MessageLookupByLibrary.simpleMessage("Neuspjelo skrivanje objave"),
     "failedToLikePost" : MessageLookupByLibrary.simpleMessage("Neuspjelo označivanje sa „Sviđa mi se”"),
     "failedToLoadContent" : MessageLookupByLibrary.simpleMessage("Dogodila se greška prilikom pokušaja učitavanja sadržaja."),
+    "failedToMarkConversationAsRead" : MessageLookupByLibrary.simpleMessage("Neuspjelo označavanje razgovora kao pročitan"),
+    "failedToMarkConversationAsUnread" : MessageLookupByLibrary.simpleMessage("Neuspjelo označavanje razgovora kao nepročitan"),
     "failedToMarkNotificationAsRead" : MessageLookupByLibrary.simpleMessage("Neuspjelo označivanje obavijesti kao pročitane"),
     "failedToMarkNotificationAsUnread" : MessageLookupByLibrary.simpleMessage("Neuspjelo označivanje obavijesti kao nepročitane"),
     "failedToRenameAspect" : m10,
