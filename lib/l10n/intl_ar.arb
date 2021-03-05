@@ -1415,5 +1415,17 @@
     "description": "Label for a retry button",
     "type": "text",
     "placeholders": {}
+  },
+  "failedToLoadContent": "حدث خطأ أثناء تحميل المحتوى.",
+  "@failedToLoadContent": {
+    "description": "Generic failure message after loading some content failed due to an unknown reason.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorCopied": "نُسخت تفاصيل الخطأ الى الحافظة.",
+  "@detailsOnErrorCopied": {
+    "description": "Success message after error details were copied to clipboard",
+    "type": "text",
+    "placeholders": {}
   }
 }
