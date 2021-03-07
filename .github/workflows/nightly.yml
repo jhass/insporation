@@ -10,6 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '1.22'
     - name: Update locales
       run: |
         script/update_locales
@@ -30,6 +32,8 @@ jobs:
       with:
         ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '1.22'
     - name: Setup keystore
       run: |
        echo "$KEYSTORE" | base64 -d > "$KEYSTORE_PATH"
@@ -138,6 +142,8 @@ jobs:
       with:
         ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '1.22'
     - name: Build
       run: |
         flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
