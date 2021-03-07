@@ -29,5 +29,4 @@ jobs:
       with:
         flutter-version: '1.22'
     - name: Build
-    - name: Build
       run: flutter build ios --debug --no-codesign
