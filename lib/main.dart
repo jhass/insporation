@@ -43,7 +43,8 @@ const _skipableErrors = <String>[
   // Suppress non-fatal framework bug. Should be fixed with https://github.com/flutter/flutter/pull/70638
   "NoSuchMethodError: The getter 'status' was called on null",
   // Not much we can do about bad setups
-  'CERTIFICATE_VERIFY_FAILED'
+  'CERTIFICATE_VERIFY_FAILED',
+  'HandshakeException'
 ];
 final _navigator = GlobalKey<NavigatorState>(),
   _skipReportMode = SilentReportMode(),
