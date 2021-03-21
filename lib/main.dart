@@ -28,6 +28,8 @@ import 'stream_page.dart';
 const _skipableErrors = <String>[
   // Non fatal and nothing we can handle in any way
   'Invalid image data',
+  // Not much we can do about the server returning us an URL without a host
+  'Invalid argument(s): No host specified in URI '
   // Probably just a failed image load or so. Critical API errors should have been catched or at least rewrapped.
   'HttpException',
   'HTTP request failed, statusCode: 4',
