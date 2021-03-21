@@ -1088,14 +1088,14 @@
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeAccept": "Inviare il rapporto",
-  "@CatcherLocalization_dialogReportModeAccept": {
+  "catcherLocalizationDialogReportModeAccept": "Inviare il rapporto",
+  "@catcherLocalizationDialogReportModeAccept": {
     "description": "Button label for accepting to send a crash report",
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeCancel": "Abbandona",
-  "@CatcherLocalization_dialogReportModeCancel": {
+  "catcherLocalizationDialogReportModeCancel": "Abbandona",
+  "@catcherLocalizationDialogReportModeCancel": {
     "description": "Button label for dismissing a crash report",
     "type": "text",
     "placeholders": {}

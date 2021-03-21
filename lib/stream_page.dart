@@ -15,7 +15,7 @@ import 'src/utils.dart';
 import 'src/widgets.dart';
 
 class StreamPage extends StatefulWidget {
-  StreamPage({Key key, this.options = const StreamOptions()}) : super(key: key);
+  StreamPage({Key? key, this.options = const StreamOptions()}) : super(key: key);
 
   final StreamOptions options;
 
@@ -46,13 +46,13 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStream
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () async {
-          PublisherOptions options;
+          PublisherOptions? options;
           if (widget.options.type == StreamType.tag) {
             options = PublisherOptions(prefill: "#${widget.options.tag} ");
           } else if (widget.options.type == StreamType.aspects && widget.options.aspects != null) {
             options = PublisherOptions(target: PublishTarget.aspects(widget.options.aspects));
           }
-          final post = await Navigator.pushNamed(context, "/publisher", arguments: options);
+          final Post? post = await Navigator.pushNamed(context, "/publisher", arguments: options);
 
           if (post == null) {
             return; // user canceled
@@ -86,7 +86,7 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStream
           selector,
           Padding(
             padding: EdgeInsets.all(8),
-            child: OutlineButton(
+            child: OutlinedButton(
               child: Text(l.manageFollowedTags, style: TextStyle(fontSize: 16)),
               onPressed: () async {
                 await Navigator.push(context, PageRouteBuilder(
@@ -115,7 +115,7 @@ class _StreamPageState extends ItemStreamState<Post, StreamPage> with PostStream
 }
 
 class _StreamTypeSelector extends StatelessWidget with LocalizationHelpers {
-  _StreamTypeSelector({Key key, @required this.currentType}) : super(key: key);
+  _StreamTypeSelector({Key? key, required this.currentType}) : super(key: key);
 
   final StreamType currentType;
 
@@ -139,8 +139,8 @@ class _StreamTypeSelector extends StatelessWidget with LocalizationHelpers {
               color: Theme.of(context).colorScheme.onSurface
           ),
           underline: SizedBox.shrink(),
-          onChanged: (newValue) {
-            if (newValue != currentType) {
+          onChanged: (StreamType? newValue) {
+            if (newValue != null && newValue != currentType) {
               Navigator.pushReplacementNamed(context, '/stream', arguments: StreamOptions(type: newValue));
             }
           },
@@ -154,9 +154,9 @@ class _StreamTypeSelector extends StatelessWidget with LocalizationHelpers {
 }
 
 class _AspectsSelector extends StatefulWidget {
-  _AspectsSelector({Key key, @required this.currentSelection}) : super(key: key);
+  _AspectsSelector({Key? key, required this.currentSelection}) : super(key: key);
 
-  final List<Aspect> currentSelection;
+  final List<Aspect>? currentSelection;
 
   @override
   State<StatefulWidget> createState() => _AspectsSelectorState();
@@ -164,24 +164,25 @@ class _AspectsSelector extends StatefulWidget {
 
 class _AspectsSelectorState extends State<_AspectsSelector> with StateLocalizationHelpers {
   @override
-  Widget build(BuildContext context) => OutlineButton.icon(
+  Widget build(BuildContext context) => OutlinedButton.icon(
     icon: Icon(Icons.arrow_drop_down, size: 28),
     label: Text(_label, style: TextStyle(fontSize: 16)),
     onPressed: _updateAspects
   );
 
   String get _label {
-    if (widget.currentSelection == null || widget.currentSelection.length == 0) {
+    final currentSelection = widget.currentSelection;
+    if (currentSelection == null || currentSelection.length == 0) {
       return l.aspectStreamSelectorAllAspects;
-    } else if (widget.currentSelection.length == 1) {
-      return widget.currentSelection.first.name;
+    } else if (currentSelection.length == 1) {
+      return currentSelection.first.name;
     } else {
-      return l.aspectStreamSelectorAspects(widget.currentSelection.length);
+      return l.aspectStreamSelectorAspects(currentSelection.length);
     }
   }
 
   void _updateAspects() async {
-    List<Aspect> newAspects = await showDialog(
+    List<Aspect>? newAspects = await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AspectSelectionList.buildDialog(
@@ -212,9 +213,8 @@ class _FollowedTagsPage extends StatefulWidget {
 }
 
 class _FollowedTagsPageState extends State<_FollowedTagsPage> with StateLocalizationHelpers {
-  final _scaffold = GlobalKey<ScaffoldState>();
-  List<String> _tags;
-  String _lastError;
+  List<String> _tags = <String>[];
+  String? _lastError;
 
   @override
   void initState() {
@@ -225,15 +225,13 @@ class _FollowedTagsPageState extends State<_FollowedTagsPage> with StateLocaliza
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    key: _scaffold,
     appBar: AppBar(title: Text(l.followedTagsPageTitle)),
     floatingActionButton: FloatingActionButton(
       child: Icon(Icons.add),
       onPressed: _addTag
     ),
-    body: _tags == null && _lastError == null ?
+    body: _tags.isEmpty && _lastError == null ? Center(child: CircularProgressIndicator()) :
       _lastError != null ? ErrorMessage(_lastError, onRetry: _fetch) :
-      Center(child: CircularProgressIndicator()) :
       ListView.builder(
         padding: EdgeInsets.only(bottom: 72),
         itemCount: _tags.length,
@@ -255,7 +253,7 @@ class _FollowedTagsPageState extends State<_FollowedTagsPage> with StateLocaliza
 
   _addTag() async {
     final client = context.read<Client>(),
-      tag = await showDialog(context: context, builder: (context) => TagSearchDialog());
+      tag = await showDialog(context: context, builder: (context) => TagSearchDialog()) as String?;
 
     if (tag == null) {
       return; // user canceled
@@ -266,7 +264,7 @@ class _FollowedTagsPageState extends State<_FollowedTagsPage> with StateLocaliza
     try {
       await client.followTag(tag);
     } catch (e, s) {
-      showErrorSnackBar(_scaffold.currentState, l.failedToFollowTag(tag), e, s);
+      showErrorSnackBar(ScaffoldMessenger.of(context), l.failedToFollowTag(tag), e, s);
 
       setState(() => _tags.remove(tag));
     }
@@ -281,7 +279,7 @@ class _FollowedTagsPageState extends State<_FollowedTagsPage> with StateLocaliza
     try {
       await client.unfollowTag(tag);
     } catch (e, s) {
-      showErrorSnackBar(_scaffold.currentState, l.failedToUnfollowTag(tag), e, s);
+      showErrorSnackBar(ScaffoldMessenger.of(context), l.failedToUnfollowTag(tag), e, s);
 
       setState(() => _tags.insert(position, tag));
     }

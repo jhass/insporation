@@ -11,11 +11,11 @@ import 'client.dart';
 import 'colors.dart' as colors;
 
 class ErrorMessage extends StatelessWidget with LocalizationHelpers {
-  const ErrorMessage(this.message, {Key key, this.trace, this.onRetry}) : super(key: key);
+  const ErrorMessage(this.message, {Key? key, this.trace, this.onRetry}) : super(key: key);
 
-  final String message;
-  final String trace;
-  final Function onRetry;
+  final String? message;
+  final String? trace;
+  final void Function()? onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class ErrorMessage extends StatelessWidget with LocalizationHelpers {
                   )
                 ],
               ),
-              if (onRetry != null) FlatButton.icon(
+              if (onRetry != null) TextButton.icon(
                 onPressed: onRetry,
                 icon: Icon(Icons.refresh, color: theme.colorScheme.onError),
                 label: Text(l(context).retryLabel, style: TextStyle(color: theme.colorScheme.onError))
@@ -66,19 +66,19 @@ class ErrorMessage extends StatelessWidget with LocalizationHelpers {
           children: [
             Text(l(dialogContext).detailsOnErrorDescription),
             Divider(),
-            SelectableText(trace, style: TextStyle(fontFamily: 'monospace', fontFamilyFallback: ['Courier'])),
+            SelectableText(trace!, style: TextStyle(fontFamily: 'monospace', fontFamilyFallback: ['Courier'])),
           ],
         ),
       ),
       actions: [
-        FlatButton(
+        TextButton(
           child: Text(ml(dialogContext).copyButtonLabel),
           onPressed: () async {
             await Clipboard.setData(ClipboardData(text: trace));
             Navigator.pop(dialogContext, true);
           },
         ),
-        FlatButton(
+        TextButton(
           child: Text(ml(dialogContext).okButtonLabel),
           onPressed: () => Navigator.pop(dialogContext, false),
         )
@@ -86,7 +86,7 @@ class ErrorMessage extends StatelessWidget with LocalizationHelpers {
     ));
 
     if (copied) {
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text(l(context).detailsOnErrorCopied)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l(context).detailsOnErrorCopied)));
     }
   }
 }
@@ -100,9 +100,9 @@ SnackBar errorSnackBar(BuildContext context, String message) {
 }
 
 class Avatar extends StatelessWidget {
-  Avatar({Key key, Person person, String url, this.size = 24}) : this.url = url ?? person?.avatar, super(key: key);
+  Avatar({Key? key, Person? person, String? url, this.size = 24}) : this.url = url ?? person?.avatar, super(key: key);
 
-  final String url;
+  final String? url;
   final double size;
 
   @override
@@ -114,7 +114,7 @@ class Avatar extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         child: CachedNetworkImage(
           placeholder: (context, url) => Icon(Icons.person),
-          imageUrl: url,
+          imageUrl: url!,
           fadeInDuration: Duration(milliseconds: 250),
           fit: BoxFit.cover,
         )
@@ -124,7 +124,7 @@ class Avatar extends StatelessWidget {
 }
 
 class AvatarStack extends StatelessWidget {
-  AvatarStack({Key key, this.people}) : super(key: key);
+  AvatarStack({Key? key, required this.people}) : super(key: key);
 
   final List<Person> people;
 
@@ -148,7 +148,7 @@ class AvatarStack extends StatelessWidget {
                   width: 46,
                   height: 46,
                   fit: BoxFit.cover,
-                  imageUrl: people[displayCount - index -1].avatar
+                  imageUrl: people[displayCount - index -1].avatar!
                 ),
               )
             )
@@ -160,7 +160,7 @@ class AvatarStack extends StatelessWidget {
 }
 
 class UnreadItemsIndicatorIcon<T extends ItemCountNotifier> extends StatefulWidget {
-  UnreadItemsIndicatorIcon(this.icon, {Key key}) : super(key: key);
+  UnreadItemsIndicatorIcon(this.icon, {Key? key}) : super(key: key);
 
   final IconData icon;
 
@@ -203,10 +203,10 @@ abstract class ItemCountNotifier<T> extends ChangeNotifier {
   // Limit of items to fetch for the first page
   int pageSize = 9;
 
-  Timer _timer;
+  Timer? _timer;
   bool _evenMore = false;
   int _count = 0;
-  Client _lastClient;
+  Client? _lastClient;
 
   int get count => _count;
 
@@ -242,17 +242,15 @@ abstract class ItemCountNotifier<T> extends ChangeNotifier {
   }
 
   void update(Client client) {
-    if (_timer != null) {
-      _timer.cancel();
-    }
+    _timer?.cancel();
 
     _fetch(client);
     _timer = Timer.periodic(Duration(minutes: 1, seconds: 30), (timer) => _fetch(client));
     _lastClient = client;
   }
 
-  _fetch(Client client) async {
-    if (client.hasSession) {
+  _fetch(Client? client) async {
+    if (client != null && client.hasSession) {
       try {
         final page = await fetchFirstPage(client);
         final newCount = page.content.length;
@@ -275,10 +273,8 @@ abstract class ItemCountNotifier<T> extends ChangeNotifier {
 
   @override
   void dispose() {
-    if (_timer != null) {
-      _timer.cancel();
-      _timer = null;
-    }
+    _timer?.cancel();
+    _timer = null;
 
     super.dispose();
   }
@@ -286,8 +282,7 @@ abstract class ItemCountNotifier<T> extends ChangeNotifier {
 
 
 class TextIcon extends StatelessWidget {
-  TextIcon({Key key, @required this.character}) : super(key: key) {
-    assert(character != null);
+  TextIcon({Key? key, required this.character}) : super(key: key) {
     assert(character.length == 1);
   }
 
@@ -296,7 +291,7 @@ class TextIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = IconTheme.of(context),
-      fontSize = theme.size -2;
+      fontSize = theme.size != null ? theme.size! - 2 : null;
     return Padding(
       padding: EdgeInsets.only(bottom: 2),
       child: Text(

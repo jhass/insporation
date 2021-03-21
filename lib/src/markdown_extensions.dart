@@ -9,19 +9,20 @@ class SubscriptSyntax extends TagSyntax {
   SubscriptSyntax() : super(r'~(?!~)');
 
   @override
-  bool onMatchEnd(InlineParser parser, Match match, TagState state) {
-    parser.addNode(Element('sub', state.children));
-    return true;
+  Node close(InlineParser parser, Delimiter opener, Delimiter closer,
+      {required List<Node> Function() getChildren}) {
+    return Element('sub', getChildren());
   }
 }
 
 class SuperscriptSyntax extends TagSyntax {
   SuperscriptSyntax() : super(r'\^', startCharacter: 0x5e);
 
+
   @override
-  bool onMatchEnd(InlineParser parser, Match match, TagState state) {
-    parser.addNode(Element('sup', state.children));
-    return true;
+  Node close(InlineParser parser, Delimiter opener, Delimiter closer,
+      {required List<Node> Function() getChildren}) {
+    return Element('sup', getChildren());
   }
 }
 
@@ -30,7 +31,7 @@ class TagLinkSyntax extends InlineSyntax  {
 
   @override
   bool onMatch(InlineParser parser, Match match) {
-    final tag = match[0], name = match[1], url =  'eu.jhass.insporation://tags/$name';
+    final tag = match[0]!, name = match[1], url =  'eu.jhass.insporation://tags/$name';
     final anchor = Element.text('a', parser.document.encodeHtml ? HtmlEscape(HtmlEscapeMode.element).convert(tag) : tag);
     anchor.attributes['href'] = Uri.encodeFull(url);
     parser.addNode(anchor);
@@ -39,7 +40,7 @@ class TagLinkSyntax extends InlineSyntax  {
   }
 }
 
-typedef MentionNameLookup = Person Function(String diasporaId, String inlineName);
+typedef MentionNameLookup = Person? Function(String diasporaId, String? inlineName);
 
 class MentionLinkSyntax extends InlineSyntax {
   final MentionNameLookup lookup;
@@ -48,7 +49,7 @@ class MentionLinkSyntax extends InlineSyntax {
 
   @override
   bool onMatch(InlineParser parser, Match match) {
-    final diasporaId = match[2].trim(), inlineName = _presence(match[1]?.trim());
+    final diasporaId = match[2]!.trim(), inlineName = _presence(match[1]?.trim());
     final person = lookup(diasporaId, inlineName);
     if (person != null) {
       final url = 'eu.jhass.insporation://people/${person.guid}',
@@ -63,7 +64,7 @@ class MentionLinkSyntax extends InlineSyntax {
   }
 }
 
-String _presence(String string) {
+String? _presence(String? string) {
   if (string == null || string.trim().isEmpty) {
     return null;
   } else {

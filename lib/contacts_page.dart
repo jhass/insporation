@@ -14,7 +14,7 @@ class ContactsPage extends StatefulWidget {
 
 class _AspectsStream extends ItemStream<Aspect> {
   @override
-  Future<Page<Aspect>> loadPage({Client client, String page}) async {
+  Future<Page<Aspect>> loadPage({required Client client, String? page}) async {
     final aspects = await client.currentUserAspects;
     return Page(content: aspects);
   }
@@ -77,7 +77,7 @@ class _AddAspectButtonState extends State<_AddAspectButton> with StateLocalizati
 }
 
 class _AspectItem extends StatefulWidget {
-  const _AspectItem({Key key, @required this.aspect}) : super(key: key);
+  const _AspectItem({Key? key, required this.aspect}) : super(key: key);
 
   final Aspect aspect;
 
@@ -144,8 +144,8 @@ class _AspectItemState extends State<_AspectItem> with StateLocalizationHelpers 
     bool confirmed = await showDialog(context: context, builder: (context) => AlertDialog(
       title: Text(l.deleteAspectPrompt(widget.aspect.name)),
       actions: <Widget>[
-        FlatButton(child: Text(ml.cancelButtonLabel), onPressed: () => Navigator.pop(context)),
-        FlatButton(child: Text(l.confirmDeleteButtonLabel), onPressed: () => Navigator.pop(context, true))
+        TextButton(child: Text(ml.cancelButtonLabel), onPressed: () => Navigator.pop(context)),
+        TextButton(child: Text(l.confirmDeleteButtonLabel), onPressed: () => Navigator.pop(context, true))
       ],
     ));
     final client = context.read<Client>(),
@@ -167,7 +167,7 @@ class _AspectItemState extends State<_AspectItem> with StateLocalizationHelpers 
 }
 
 class _AspectContactsPage extends StatefulWidget {
-  _AspectContactsPage(this.aspect, {Key key}) : super(key: key);
+  _AspectContactsPage(this.aspect, {Key? key}) : super(key: key);
 
   final Aspect aspect;
 
@@ -181,7 +181,7 @@ class _AspectContactsStream extends ItemStream<Person> {
   final Aspect aspect;
 
   @override
-  Future<Page<Person>> loadPage({Client client, String page}) =>
+  Future<Page<Person>> loadPage({required Client client, String? page}) =>
     client.fetchAspectContacts(aspect, page: page);
 
 }
@@ -210,11 +210,11 @@ class _AspectContactsPageState extends ItemStreamState<Person, _AspectContactsPa
 }
 
 class _AspectNameDialog extends StatefulWidget {
-  _AspectNameDialog({Key key, @required this.title, @required this.actionText, this.initialValue}) : super(key: key);
+  _AspectNameDialog({Key? key, required this.title, required this.actionText, this.initialValue}) : super(key: key);
 
   final String title;
   final String actionText;
-  final String initialValue;
+  final String? initialValue;
 
   @override
   State<StatefulWidget> createState() => _AspectNameDialogState();
@@ -241,12 +241,12 @@ class _AspectNameDialogState extends State<_AspectNameDialog> with StateLocaliza
       onSubmitted: _submit,
     ),
     actions: <Widget>[
-      FlatButton(child: Text(ml.cancelButtonLabel), onPressed: () => Navigator.pop(context)),
-      FlatButton(child: Text(widget.actionText), onPressed: _valid ? _submit : null)
+      TextButton(child: Text(ml.cancelButtonLabel), onPressed: () => Navigator.pop(context)),
+      TextButton(child: Text(widget.actionText), onPressed: _valid ? _submit : null)
     ],
   );
 
-  _submit([String _]) async {
+  _submit([_]) async {
     final name = _name.text.trim();
 
     if (name.isEmpty) {

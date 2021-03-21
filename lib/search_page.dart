@@ -19,8 +19,8 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> with St
 
   @override
   Widget buildBody(BuildContext context) {
-    final SearchResultStream items = this.items;
-    final theme = Theme.of(context);
+    final items = this.items as SearchResultStream,
+      theme = Theme.of(context);
 
     return Scaffold(
       bottomNavigationBar: NavigationBar(currentPage: PageType.search),
@@ -41,7 +41,7 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> with St
                   SearchType.tags: Text(l.searchTypeTags)
                 },
                 groupValue: items.type,
-                onValueChanged: (type) => setState(() {
+                onValueChanged: (SearchType type) => setState(() {
                   items.type = type;
                   items.load(context.read<Client>());
                 }),
@@ -93,11 +93,9 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> with St
       case SearchType.tags:
         return l.searchTagsHint;
     }
-
-    return null; // case is exhaustive, never reached
   }
 
-  Widget _buildLeading(SearchResult item) {
+  Widget? _buildLeading(SearchResult item) {
     if (item.person != null) {
       return Avatar(person: item.person, size: 36);
     } else {
@@ -105,7 +103,7 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> with St
     }
   }
 
-  String _formatTitle(SearchResult item) => item.tag != null ? "#${item.tag}" : item.person.nameOrId;
+  String _formatTitle(SearchResult item) => item.tag != null ? "#${item.tag}" : item.person!.nameOrId;
 
   void _launchItem(SearchResult item) {
     if (item.person != null) {

@@ -19,7 +19,7 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> with StateLocalizationHelpers {
-  Profile _profile;
+  Profile? _profile;
 
   @override
   void initState() {
@@ -37,9 +37,9 @@ class _EditProfilePageState extends State<EditProfilePage> with StateLocalizatio
           padding: const EdgeInsets.only(bottom: 48),
           child: Column(
             children: <Widget>[
-              _EditAvatar(_profile),
+              _EditAvatar(_profile!),
               Divider(),
-              _EditProfile(_profile),
+              _EditProfile(_profile!),
             ]
           ),
         )
@@ -62,7 +62,7 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
 
   final _crop = GlobalKey<CropState>();
   final _imagePicker = ImagePicker();
-  File _newImage;
+  File? _newImage;
   bool _uploading = false;
 
   @override
@@ -83,14 +83,14 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
               height: _size,
               child: _uploading ? Stack(
                 children: <Widget>[
-                  Image.file(_newImage),
+                  Image.file(_newImage!),
                   Center(child: CircularProgressIndicator())
                 ],
               ) : Crop(
                 key: _crop,
                 aspectRatio: 1,
                 alwaysShowGrid: true,
-                image: FileImage(_newImage),
+                image: FileImage(_newImage!),
               )
             ) : widget.profile.avatar != null ? ClipRRect(
               borderRadius: BorderRadius.circular(5),
@@ -98,7 +98,7 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
                 width: _size,
                 height: _size,
                 fit: BoxFit.fitWidth,
-                imageUrl: widget.profile.avatar.large,
+                imageUrl: widget.profile.avatar!.large,
                 placeholder: (context, url) => placeholder)
               ) : placeholder
           )
@@ -110,11 +110,11 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
               alignment: WrapAlignment.center,
               spacing: 4,
               children: _newImage == null ? <Widget>[
-                OutlineButton.icon(icon: Icon(Icons.photo_camera), label: Text(l.takeNewPicture), onPressed: () => _pick(ImageSource.camera)),
-                OutlineButton.icon(icon: Icon(Icons.photo_library), label: Text(l.uploadNewPicture), onPressed: () => _pick(ImageSource.gallery))
+                OutlinedButton.icon(icon: Icon(Icons.photo_camera), label: Text(l.takeNewPicture), onPressed: () => _pick(ImageSource.camera)),
+                OutlinedButton.icon(icon: Icon(Icons.photo_library), label: Text(l.uploadNewPicture), onPressed: () => _pick(ImageSource.gallery))
               ] : !_uploading ? <Widget>[
-                OutlineButton(child: Text(l.saveButtonLabel), onPressed: _upload),
-                OutlineButton(child: Text(ml.cancelButtonLabel), onPressed: () => setState(() => _newImage = null))
+                OutlinedButton(child: Text(l.saveButtonLabel), onPressed: _upload),
+                OutlinedButton(child: Text(ml.cancelButtonLabel), onPressed: () => setState(() => _newImage = null))
               ] : <Widget>[],
             ),
           )
@@ -138,9 +138,9 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
     setState(() => _uploading = true);
     try {
       final croppedImage = await ImageCrop.cropImage(
-        file: _newImage,
-        area: _crop.currentState.area,
-        scale: _crop.currentState.scale
+        file: _newImage!,
+        area: _crop.currentState!.area!,
+        scale: _crop.currentState!.scale
       );
 
       final photo = await context.read<Client>().uploadProfilePicture(croppedImage);
@@ -170,7 +170,7 @@ class _EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<_EditProfile> with StateLocalizationHelpers {
-  Profile _profile;
+  late Profile _profile;
   final _name = TextEditingController();
   final _nameFocus = FocusNode();
   final _location = TextEditingController();
@@ -181,12 +181,12 @@ class _EditProfileState extends State<_EditProfile> with StateLocalizationHelper
   final _bioFocus = FocusNode();
   bool _bioInFocus = false;
   final _birthdayController = TextEditingController();
-  DateTime _birthday;
-  bool _birthdayIncludeYear;
-  bool _publicProfile;
-  bool _searchable;
-  bool _nsfw;
-  List<String> _tags;
+  DateTime? _birthday;
+  late bool _birthdayIncludeYear;
+  late bool _publicProfile;
+  late bool _searchable;
+  late bool _nsfw;
+  late List<String> _tags;
   bool _hasChanges = false;
   bool _submitting = false;
 
@@ -331,7 +331,7 @@ class _EditProfileState extends State<_EditProfile> with StateLocalizationHelper
                   child: Visibility(
                     visible: !_submitting,
                     replacement: CircularProgressIndicator(),
-                    child: OutlineButton(
+                    child: OutlinedButton(
                       child: Text(l.editProfileSubmit),
                       onPressed: _hasChanges ? _submit : null,
                     ),
@@ -369,11 +369,11 @@ class _EditProfileState extends State<_EditProfile> with StateLocalizationHelper
 
     setState(() {
       _birthday = _profile.birthday;
-      _birthdayIncludeYear = _birthday == null || _birthday.year > Profile.birthdayYearThreshold;
+      _birthdayIncludeYear = _birthday == null || _birthday!.year > Profile.birthdayYearThreshold;
       _publicProfile = _profile.public;
       _searchable = _profile.searchable;
       _nsfw = _profile.nsfw;
-      _tags = List.of(_profile.tags ?? <String>[]);
+      _tags = List.of(_profile.tags);
     });
   }
 
@@ -401,15 +401,16 @@ class _EditProfileState extends State<_EditProfile> with StateLocalizationHelper
   }
 
   _updateBirthday() {
-    if (_birthday == null) {
+    final birthday = _birthday;
+    if (birthday == null) {
       _birthdayController.text = "";
     } else if (_birthdayIncludeYear) {
-      final date = _birthday.year > Profile.birthdayYearThreshold ? _birthday :
-        DateTime(DateTime.now().year, _birthday.month, _birthday.day);
-      _birthdayController.text = Profile.formatBirthday(date);
+      final date = birthday.year > Profile.birthdayYearThreshold ? _birthday :
+        DateTime(DateTime.now().year, birthday.month, birthday.day);
+      _birthdayController.text = Profile.formatBirthday(date) ?? "";
     } else {
       _birthdayController.text = Profile.formatBirthday(DateTime(
-        Profile.birthdayYearThreshold, _birthday.month, _birthday.day));
+        Profile.birthdayYearThreshold, birthday.month, birthday.day)) ?? "";
     }
 
     _validate();
@@ -436,7 +437,7 @@ class _EditProfileState extends State<_EditProfile> with StateLocalizationHelper
           }
 
           if (_tags.contains(response)) {
-            Scaffold.of(context).showSnackBar(errorSnackBar(context, l.duplicateProfileTag));
+            ScaffoldMessenger.of(context).showSnackBar(errorSnackBar(context, l.duplicateProfileTag));
             return;
           }
 
@@ -467,20 +468,22 @@ class _EditProfileState extends State<_EditProfile> with StateLocalizationHelper
   }
 
   bool get _birthdayHasChanges {
-    if (_birthday == null) {
-      return _profile.birthday != null;
-    } else if (_profile.birthday == null) {
-      return _birthday != null;
-    }
+    final birthday = _birthday, profileBirthday = _profile.birthday;
 
-    if (_birthday.month != _profile.birthday.month ||
-        _birthday.day != _profile.birthday.day) {
+    if (birthday == null) {
+      return profileBirthday != null;
+    } else if (profileBirthday == null) {
       return true;
     }
 
-    if (_profile.birthday.year > Profile.birthdayYearThreshold) {
+    if (birthday.month != profileBirthday.month ||
+        birthday.day != profileBirthday.day) {
+      return true;
+    }
+
+    if (profileBirthday.year > Profile.birthdayYearThreshold) {
       if (_birthdayIncludeYear) {
-        return _birthday.year != _profile.birthday.year; // both say include year, check if it changed
+        return birthday.year != profileBirthday.year; // both say include year, check if it changed
       } else {
         return true; // changed to hide year
       }
@@ -495,7 +498,7 @@ class _EditProfileState extends State<_EditProfile> with StateLocalizationHelper
     setState(() => _submitting = true);
 
     final birthday = _birthday == null || _birthdayIncludeYear ? _birthday :
-      DateTime(Profile.birthdayYearThreshold, _birthday.month, _birthday.day);
+      DateTime(Profile.birthdayYearThreshold, _birthday!.month, _birthday!.day);
 
     try {
       final newProfile = await client.updateProfile(ProfileUpdate(
@@ -513,7 +516,7 @@ class _EditProfileState extends State<_EditProfile> with StateLocalizationHelper
       _profile = newProfile;
       _validate();
 
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text(l.updatedProfile)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.updatedProfile)));
     } catch (e, s) {
       tryShowErrorSnackBar(this, l.failedToUpdateProfile, e, s);
     } finally {

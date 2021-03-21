@@ -6,11 +6,11 @@ import 'package:provider/provider.dart';
 import 'widgets.dart';
 
 extension TryProvide on BuildContext {
-  T tryRead<T>() => tryProvide<T>(listen: false);
+  T? tryRead<T>() => tryProvide<T>(listen: false);
 
-  T tryWatch<T>() => tryProvide<T>(listen: true);
+  T? tryWatch<T>() => tryProvide<T>(listen: true);
 
-  T tryProvide<T>({bool listen = false}) {
+  T? tryProvide<T>({bool listen = false}) {
     try {
       return Provider.of(this, listen: listen);
     } on ProviderNotFoundException {
@@ -19,13 +19,11 @@ extension TryProvide on BuildContext {
   }
 }
 
-bool containSameElements(Iterable a, Iterable b) {
-  if ((a == null && b != null) || (a != null && b == null)) {
+bool containSameElements(Iterable? a, Iterable? b) {
+  if (a == null) {
+    return b == null;
+  } else if (b == null) {
     return false;
-  }
-
-  if (a == null && b == null) {
-    return true;
   }
 
   if (a.length != b.length) {
@@ -35,17 +33,17 @@ bool containSameElements(Iterable a, Iterable b) {
   return a.toSet().containsAll(b);
 }
 
-String presence(String value) => value == null || value.isEmpty || value.trim().isEmpty ?  null : value;
+String? presence(String? value) => value == null || value.isEmpty || value.trim().isEmpty ?  null : value;
 
 void tryShowErrorSnackBar(State widget, String message, exception, stack) {
   if (widget.mounted) {
-    showErrorSnackBar(Scaffold.of(widget.context), message, exception, stack);
+    showErrorSnackBar(ScaffoldMessenger.of(widget.context), message, exception, stack);
   } else {
     _debugPrintError(message, exception, stack);
   }
 }
 
-void showErrorSnackBar(ScaffoldState scaffold, String message, exception, stack) {
+void showErrorSnackBar(ScaffoldMessengerState scaffold, String message, exception, stack) {
   final exceptionMessage = _debugPrintError(message, exception, stack);
   if (scaffold.mounted) {
     scaffold.showSnackBar(errorSnackBar(scaffold.context, "$message: $exceptionMessage"));

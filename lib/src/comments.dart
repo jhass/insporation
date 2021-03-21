@@ -18,15 +18,15 @@ class CommentStream extends ItemStream<Comment> {
   final Post post;
 
   @override
-  Future<Page<Comment>> loadPage({Client client, String page}) =>
+  Future<Page<Comment>> loadPage({required Client client, String? page}) =>
     client.fetchComments(post, page: page);
 }
 
 class CommentListView extends StatefulWidget {
-  CommentListView({Key key, @required this.post, this.controller}) : super(key: key);
+  CommentListView({Key? key, required this.post, this.controller}) : super(key: key);
 
   final Post post;
-  final ScrollController controller;
+  final ScrollController? controller;
 
   @override
   State<StatefulWidget> createState() => CommentListViewState();
@@ -34,7 +34,7 @@ class CommentListView extends StatefulWidget {
 
 class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
   final _newComment = TextEditingController();
-  DraftObserver _draftObserver;
+  late DraftObserver _draftObserver;
 
   CommentListViewState() : super(enableUpButton: false);
 
@@ -65,7 +65,7 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
   );
 
   @override
-  Widget buildFooter(BuildContext context, String lastError, String lastErrorDetails) => lastError != null ?
+  Widget? buildFooter(BuildContext context, String? lastError, String? lastErrorDetails) => lastError != null ?
     super.buildFooter(context, lastError, lastErrorDetails) : ConstrainedBox(
     constraints: BoxConstraints(maxHeight: 400),
     child: Padding(
@@ -81,7 +81,7 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
 
   @override
   void dispose() {
-    _draftObserver?.dispose();
+    _draftObserver.dispose();
     _newComment.dispose();
     super.dispose();
   }
@@ -89,7 +89,7 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
   SearchablePeople _mentionablePeople() {
     if (widget.post.public) {
       return SearchablePeople.all();
-    } else if (items == null) {
+    } else if (items.isEmpty) {
       return SearchablePeople.none();
     } else {
       return SearchablePeople.list(
@@ -118,7 +118,7 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
 }
 
 class CommentView extends StatelessWidget {
-  CommentView({Key key, @required this.comment}) : super(key: key);
+  CommentView({Key? key, required this.comment}) : super(key: key);
 
   final Comment comment;
 
@@ -168,7 +168,7 @@ class CommentView extends StatelessWidget {
 
 
 class _CommentActionsView extends StatefulWidget {
-  _CommentActionsView({Key key, this.comment}) : super(key: key);
+  _CommentActionsView({Key? key, required this.comment}) : super(key: key);
 
   final Comment comment;
 
@@ -206,11 +206,11 @@ class _CommentActionsViewState extends State<_CommentActionsView> with StateLoca
       builder: (dialogContext) => AlertDialog(
         title: Text(l.deleteCommentPrompt),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(l.noButtonLabel),
             onPressed: () => Navigator.pop(dialogContext),
           ),
-          FlatButton(
+          TextButton(
             child: Text(l.yesButtonLabel),
             onPressed: () {
               _delete();
@@ -227,7 +227,7 @@ class _CommentActionsViewState extends State<_CommentActionsView> with StateLoca
       items = context.tryRead<ItemStream<Comment>>();
     int oldPosition = 0;
 
-    if (items != null) {
+    if (items != null && items.isNotEmpty) {
       oldPosition = items.remove(widget.comment);
     }
 
@@ -235,9 +235,7 @@ class _CommentActionsViewState extends State<_CommentActionsView> with StateLoca
       await client.deleteComment(widget.comment);
     } catch (e, s) {
       tryShowErrorSnackBar(this, l.failedToDeleteComment, e, s);
-      if (items != null) {
-        items.insert(oldPosition, widget.comment);
-      }
+      items?.insert(oldPosition, widget.comment);
     }
   }
 
@@ -255,11 +253,11 @@ class _CommentActionsViewState extends State<_CommentActionsView> with StateLoca
           )
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(ml.cancelButtonLabel),
             onPressed: () => Navigator.pop(dialogContext),
           ),
-          FlatButton(
+          TextButton(
             child: Text(l.submitButtonLabel),
             onPressed: () {
               if (_reportField.text.isNotEmpty) {
@@ -274,7 +272,7 @@ class _CommentActionsViewState extends State<_CommentActionsView> with StateLoca
   }
 
   _createReport(String report) async {
-    final scaffold = Scaffold.of(context),
+    final scaffold = ScaffoldMessenger.of(context),
       client = context.read<Client>(),
       l = this.l;
     setState(() => widget.comment.reported = true);

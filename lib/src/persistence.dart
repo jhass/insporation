@@ -14,8 +14,8 @@ class PersistentState {
 
   bool _restored = false;
   bool _wasAuthorizing = false;
-  StreamOptions _lastStreamOptions;
-  String _postDraft;
+  StreamOptions? _lastStreamOptions;
+  String? _postDraft;
   Map<String, String> _commentDrafts = LruMap(maximumSize: _draftsToKeep);
   Map<String, String> _messageDrafts = LruMap(maximumSize: _draftsToKeep);
 
@@ -25,23 +25,26 @@ class PersistentState {
     persist();
   }
 
-  StreamOptions get lastStreamOptions => _lastStreamOptions;
-  set lastStreamOptions(StreamOptions value) {
+  StreamOptions? get lastStreamOptions => _lastStreamOptions;
+  set lastStreamOptions(StreamOptions? value) {
     _lastStreamOptions = value;
     persist();
   }
 
-  String get postDraft => _postDraft;
-  set postDraft(String value) {
+  String? get postDraft => _postDraft;
+  set postDraft(String? value) {
     _postDraft = value;
     persist();
   }
 
-  String getCommentDraft(Post post) => _commentDrafts[post.guid];
+  String? getCommentDraft(Post post) => _commentDrafts[post.guid];
 
   void setCommentDraft(Post post, String draft) {
-    _commentDrafts[post.guid] = draft;
-    persist();
+    final guid = post.guid;
+    if (guid != null) {
+      _commentDrafts[guid] = draft;
+      persist();
+    }
   }
 
   void clearCommentDraft(Post post) {
@@ -50,7 +53,7 @@ class PersistentState {
     }
   }
 
-  String getMessageDraft(Conversation conversation) => _messageDrafts[conversation.guid];
+  String? getMessageDraft(Conversation conversation) => _messageDrafts[conversation.guid];
 
   void setMessageDraft(Conversation conversation, String draft) {
     _messageDrafts[conversation.guid] = draft;
@@ -71,7 +74,7 @@ class PersistentState {
     final prefs = await SharedPreferences.getInstance();
 
     if (prefs.containsKey(_key)) {
-      final values = jsonDecode(prefs.getString(_key));
+      final values = jsonDecode(prefs.getString(_key)!);
       _wasAuthorizing = values["was_authorizing"] ?? false;
       _lastStreamOptions = values["last_stream_options"] != null ? StreamOptions.from(values["last_stream_options"]) : null;
       _postDraft = values["post_draft"];
@@ -105,19 +108,16 @@ class PersistentState {
 class DraftObserver with WidgetsBindingObserver {
   final Function(String) onPersist;
   final TextEditingController controller;
-  final BuildContext context;
+  final BuildContext? context;
 
-  DraftObserver({@required this.controller, @required this.onPersist, this.context}) {
-    assert(controller != null, "Must pass a text controller to listen for changes to");
-    assert(onPersist != null, "Must pass a function to notify of text changes to persist as draft");
-
+  DraftObserver({required this.controller, required this.onPersist, this.context}) {
     controller.addListener(_onTextChanges);
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
   }
 
   void dispose() {
     controller.removeListener(_onTextChanges);
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
   }
 
   @override
@@ -126,7 +126,7 @@ class DraftObserver with WidgetsBindingObserver {
       _onTextChanges();
       if (context != null) {
         // TODO: Workaround for https://github.com/flutter/flutter/issues/47628
-        FocusScope.of(context).unfocus();
+        FocusScope.of(context!).unfocus();
       }
     }
   }

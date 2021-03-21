@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:catcher/catcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'src/app_auth.dart';
 import 'src/colors.dart' as colors;
@@ -58,19 +58,19 @@ final Map<String, ReportHandler> _explicitErrorHandler =
 void main() => Catcher(
   rootWidget: MultiProvider(
     providers: [
-        Provider(create: (_) => PersistentState()..restore(), dispose: (_, state) => state.persist(), lazy: false),
+        Provider(create: (_) => PersistentState()..restore(), dispose: (_, PersistentState state) => state.persist(), lazy: false),
         Provider(create: (_) => Client()),
         ChangeNotifierProxyProvider<Client, UnreadNotificationsCount>(
         create: (context) => UnreadNotificationsCount(),
-        update: (context, client, count) => count..update(client)
+        update: (context, client, count) => count!..update(client)
       ),
       ChangeNotifierProxyProvider<Client, UnreadConversationsCount>(
         create: (context) => UnreadConversationsCount(),
-        update: (context, client, count) => count..update(client)
+        update: (context, client, count) => count!..update(client)
       ),
       ProxyProvider2<UnreadNotificationsCount, UnreadConversationsCount, BadgeUpdater>(
         create: (context) => BadgeUpdater(),
-        update: (context, notificationsCount, conversationsCount, updater) => updater
+        update: (context, notificationsCount, conversationsCount, updater) => updater!
           ..listenToNotifications(notificationsCount)
           ..listenToConversations(conversationsCount),
         lazy: false
@@ -103,14 +103,14 @@ class Insporation extends StatefulWidget {
 
 class _InsporationState extends State<Insporation> {
   final _shareEventsChannel = EventChannel("insporation/share_receiver");
-  StreamSubscription shareEventsSubscription;
-  StreamSubscription sessionEventsSubscription;
+  StreamSubscription? shareEventsSubscription;
+  StreamSubscription? sessionEventsSubscription;
 
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       // We need to give the MaterialApp widget some time to initialize the navigator and push the initial route,
       // as we want for any share event to only push a route after that.
       shareEventsSubscription = _shareEventsChannel.receiveBroadcastStream().listen(_onShareIntent);
@@ -123,8 +123,8 @@ class _InsporationState extends State<Insporation> {
   @override
   void dispose() {
     super.dispose();
-    shareEventsSubscription.cancel();
-    sessionEventsSubscription.cancel();
+    shareEventsSubscription?.cancel();
+    sessionEventsSubscription?.cancel();
   }
 
   @override
@@ -134,45 +134,40 @@ class _InsporationState extends State<Insporation> {
       title: 'insporation*',
       theme: ThemeData.from(colorScheme: colors.scheme),
       darkTheme: ThemeData.from(colorScheme: colors.darkScheme),
-      localizationsDelegates: [
-        InsporationLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate
-      ],
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: supportedLocales,
       home: SignInPage(),
       routes: {
         '/switch_user': (context) => SignInPage(resumeLastSession: false),
         '/stream': (context) {
-          final StreamOptions options = ModalRoute.of(context).settings.arguments;
+          final options = ModalRoute.of(context)?.settings.arguments as StreamOptions?;
           final lastOptions = context.watch<PersistentState>().lastStreamOptions;
           return StreamPage(options: options ?? lastOptions ?? const StreamOptions());
         },
         '/stream/tag': (context) {
-          final String tag = ModalRoute.of(context).settings.arguments;
+          final tag = ModalRoute.of(context)?.settings.arguments as String?;
           assert(tag != null, "Can't push tag stream without tag argument");
-          return StreamPage(options: StreamOptions(type: StreamType.tag, tag: tag));
+          return StreamPage(options: StreamOptions(type: StreamType.tag, tag: tag!));
         },
-        '/publisher': (context) => PublisherPage(options: ModalRoute.of(context).settings.arguments ?? PublisherOptions()),
+        '/publisher': (context) => PublisherPage(options: ModalRoute.of(context)?.settings.arguments as PublisherOptions? ?? PublisherOptions()),
         '/conversations': (context) => ConversationsPage(),
-        '/conversations/new': (context) => NewConversationPage(options: ModalRoute.of(context).settings.arguments ?? NewConversationOptions()),
+        '/conversations/new': (context) => NewConversationPage(options: ModalRoute.of(context)?.settings.arguments as NewConversationOptions? ?? NewConversationOptions()),
         '/search': (context) => SearchPage(),
         '/notifications': (context) => NotificationsPage(),
         '/contacts': (context) => ContactsPage(),
         '/edit_profile': (context) => EditProfilePage(),
         '/post': (context) {
-          final argument = ModalRoute.of(context).settings.arguments;
+          final argument = ModalRoute.of(context)?.settings.arguments;
           if (argument is Post) {
             return PostViewPage.forPost(post: argument);
           } else if (argument is String) {
             return PostViewPage.forId(postId: argument);
           } else {
-            throw "Unsupported argument type";
+            throw "Unsupported argument type or null";
           }
         },
         '/profile': (context) {
-          final argument = ModalRoute.of(context).settings.arguments;
+          final argument = ModalRoute.of(context)?.settings.arguments;
           if (argument is Person) {
             return ProfilePage.forPerson(person: argument);
           } else if (argument is String) {
@@ -182,7 +177,7 @@ class _InsporationState extends State<Insporation> {
               return ProfilePage.forId(personId: argument);
             }
           } else {
-            throw "Unsupported argument type";
+            throw "Unsupported argument type or null";
           }
         }
       },
@@ -212,11 +207,11 @@ class _InsporationState extends State<Insporation> {
         final subject = shareEvent["subject"]?.isNotEmpty == true ? shareEvent["subject"] : null,
           text = shareEvent["text"] as String,
           prefill = subject == null ? text : text.startsWith("http") && !text.contains(RegExp(r"\s")) ? "[$subject]($text)" : "### $subject\n\n$text";
-        _navigator.currentState.pushNamed("/publisher", arguments: PublisherOptions(prefill: prefill));
+        _navigator.currentState?.pushNamed("/publisher", arguments: PublisherOptions(prefill: prefill));
         break;
       case "images":
         final text = shareEvent["text"]?.isNotEmpty == true ? shareEvent["text"] : "";
-        _navigator.currentState.pushNamed("/publisher", arguments: PublisherOptions(
+        _navigator.currentState?.pushNamed("/publisher", arguments: PublisherOptions(
           prefill: text,
           images: shareEvent["images"].cast<String>()
         ));
@@ -228,13 +223,13 @@ class _InsporationState extends State<Insporation> {
     if (event.error != null) {
       // We got an authorization error from somewhere, show sign in page with it
       debugPrint("Received authorization event for error: ${event.error}, launching sign page with it");
-      _navigator.currentState.pushAndRemoveUntil(PageRouteBuilder(pageBuilder: (context, _, __) =>
-        SignInPage(error: event.error)), (_) => false);
+      _navigator.currentState?.pushAndRemoveUntil(PageRouteBuilder(pageBuilder: (context, _, __) =>
+        SignInPage(error: event.error!)), (_) => false);
     } else {
       // We got a new session from somewhere and it's different from the one we already got in the client,
       // assume this is a successful authorization and proceed to stream page
-      debugPrint("Received authorization event for session for ${event.session.userId}, launching main stream");
-      _navigator.currentState.pushNamedAndRemoveUntil("/stream", (_) => false);
+      debugPrint("Received authorization event for session for ${event.session?.userId}, launching main stream");
+      _navigator.currentState?.pushNamedAndRemoveUntil("/stream", (_) => false);
     }
   }
 }

@@ -14,13 +14,13 @@ final timeagoLocaleMessages = <String, timeago.LookupMessages>{
 
 class Timeago extends StatefulWidget {
   static loadLocale(Locale locale) {
-    timeago.setLocaleMessages(locale.toLanguageTag(), timeagoLocaleMessages[locale.toLanguageTag()]);
+    timeago.setLocaleMessages(locale.toLanguageTag(), timeagoLocaleMessages[locale.toLanguageTag()]!);
   }
 
   Timeago(this.dateTime, {this.textStyle});
 
   final DateTime dateTime;
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
 
   @override
   _TimeagoState createState() {
@@ -29,16 +29,14 @@ class Timeago extends StatefulWidget {
 }
 
 class _TimeagoState extends State<Timeago> {
-  String _currentText;
-  Timer _timer;
+  late String _currentText;
+  Timer? _timer;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (_timer != null) {
-      _timer.cancel();
-    }
+    _timer?.cancel();
 
     final locale = Localizations.localeOf(context).toLanguageTag();
     setState(() {
@@ -51,7 +49,7 @@ class _TimeagoState extends State<Timeago> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 

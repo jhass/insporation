@@ -1,34 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'client.dart';
 import 'localizations.dart';
 
 class AspectSelectionList extends StatefulWidget {
-  AspectSelectionList({Key key, @required this.selectedAspects}) : super(key: key);
+  AspectSelectionList({Key? key, required this.selectedAspects}) : super(key: key);
 
   final List<Aspect> selectedAspects;
 
   @override
   State<StatefulWidget> createState() => _AspectSelectionListState();
 
-  static Widget buildDialog({@required BuildContext context, @required List<Aspect> currentSelection, String title}) {
+  static Widget buildDialog({required BuildContext context, required List<Aspect>? currentSelection, String? title}) {
     final newAspects = List.of(currentSelection ?? <Aspect>[]),
       ml = MaterialLocalizations.of(context),
-      l = InsporationLocalizations.of(context);
+      l = AppLocalizations.of(context)!;
     return AlertDialog(
       content: AspectSelectionList(selectedAspects: newAspects),
       title: Text(title ?? l.aspectsPrompt),
       actions: <Widget>[
-        FlatButton(onPressed: () => Navigator.pop(context), child: Text(ml.cancelButtonLabel)),
-        FlatButton(onPressed: () => Navigator.pop(context, newAspects), child: Text(l.saveButtonLabel))
+        TextButton(onPressed: () => Navigator.pop(context), child: Text(ml.cancelButtonLabel)),
+        TextButton(onPressed: () => Navigator.pop(context, newAspects), child: Text(l.saveButtonLabel))
       ],
     );
   }
 }
 
 class _AspectSelectionListState extends State<AspectSelectionList> with StateLocalizationHelpers {
-  List<Aspect> _userAspects;
+  List<Aspect>? _userAspects;
 
   @override
   void initState() {
@@ -39,7 +40,9 @@ class _AspectSelectionListState extends State<AspectSelectionList> with StateLoc
 
   @override
   Widget build(BuildContext context) {
-    if (_userAspects == null) {
+    final userAspects = _userAspects;
+
+    if (userAspects == null) {
       return Container(
         width: 100,
         height: 100,
@@ -48,38 +51,40 @@ class _AspectSelectionListState extends State<AspectSelectionList> with StateLoc
       );
     }
 
-    final allSelected = widget.selectedAspects.length == _userAspects.length;
+    final allSelected = widget.selectedAspects.length == userAspects.length;
 
     return Container(
       width: double.maxFinite,
       child: ListView.builder(
         padding: EdgeInsets.all(0),
-        itemCount: _userAspects.length + 1,
+        itemCount: userAspects.length + 1,
         itemBuilder: (context, position) => Container(
           decoration: BoxDecoration(
             border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor))
           ),
           child: position == 0 ?
-            FlatButton(
+            TextButton(
               child: Text(allSelected ? l.deselectAllButtonLabel : l.selectAllButtonLabel),
               onPressed: () => setState(() {
                 widget.selectedAspects.clear();
                 if (!allSelected) {
-                  widget.selectedAspects.addAll(_userAspects);
+                  widget.selectedAspects.addAll(userAspects);
                 }
               })
             )
             : CheckboxListTile(
-              title: Text(_userAspects[position - 1].name),
-              value: widget.selectedAspects.contains(_userAspects[position - 1]),
-              onChanged: (selected) {
-                setState(() {
-                if (selected) {
-                    widget.selectedAspects.add(_userAspects[position - 1]);
-                } else {
-                   widget.selectedAspects.remove(_userAspects[position - 1]);
-                }
-              });
+                title: Text(userAspects[position - 1].name),
+                value: widget.selectedAspects.contains(userAspects[position - 1]),
+                onChanged: (selected) {
+                  setState(() {
+                  if (selected == null) {
+                    return;
+                  } else if (selected) {
+                    widget.selectedAspects.add(userAspects[position - 1]);
+                  } else {
+                     widget.selectedAspects.remove(userAspects[position - 1]);
+                  }
+                });
             },
           ),
         )

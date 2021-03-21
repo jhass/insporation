@@ -5,22 +5,7 @@ on:
     types: nightly
 
 jobs:
-  update-translations:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: subosito/flutter-action@v1
-      with:
-        flutter-version: '1.22'
-    - name: Update locales
-      run: |
-        script/update_locales
-        git config --local user.email "me+nightly-ci@jhass.eu"
-        git config --local user.name  "Github Actions Nightly Job"
-        git commit -m "regenerated locales for nightly build $GITHUB_RUN_NUMBER" || true
-        git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" main
   build-android:
-    needs: update-translations
     runs-on: ubuntu-latest
     container:
       image: circleci/android:api-29-node
@@ -33,7 +18,7 @@ jobs:
         ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v1
       with:
-        flutter-version: '1.22'
+        flutter-version: '2.0'
     - name: Setup keystore
       run: |
        echo "$KEYSTORE" | base64 -d > "$KEYSTORE_PATH"
@@ -41,7 +26,7 @@ jobs:
         KEYSTORE: ${{ secrets.KEYSTORE }}
     - name: Build
       run: |
-        flutter build apk --release --build-number=$GITHUB_RUN_NUMBER
+        flutter build apk --release --build-number=$GITHUB_RUN_NUMBER --no-sound-null-safety
         mkdir -p dist
         cp build/app/outputs/apk/release/app-release.apk dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo $GITHUB_RUN_NUMBER).apk
         git rev-parse main > dist/BUILD_SHA
@@ -135,7 +120,6 @@ jobs:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEYSTORE_KEY_ALIAS: key
   publish-ios:
-    needs: update-translations
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
@@ -143,10 +127,10 @@ jobs:
         ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v1
       with:
-        flutter-version: '1.22'
+        flutter-version: '2.0'
     - name: Build
       run: |
-        flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
+        flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER --no-sound-null-safety
         cd ios
         bundle config set deployment 'true'
         bundle

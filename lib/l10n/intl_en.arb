@@ -1463,26 +1463,26 @@
       }
     }
   },
-  "CatcherLocalization_dialogReportModeTitle": "insporation* crashed :(",
-  "@CatcherLocalization_dialogReportModeTitle": {
+  "catcherLocalizationDialogReportModeTitle": "insporation* crashed :(",
+  "@catcherLocalizationDialogReportModeTitle": {
     "description": "Title for crash report dialog",
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeDescription": "An unexpected error occurred, an error report is ready to be send to the developers.",
-  "@CatcherLocalization_dialogReportModeDescription": {
+  "catcherLocalizationDialogReportModeDescription": "An unexpected error occurred, an error report is ready to be send to the developers.",
+  "@catcherLocalizationDialogReportModeDescription": {
     "description": "Description for crash report page",
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeAccept": "Send report",
-  "@CatcherLocalization_dialogReportModeAccept": {
+  "catcherLocalizationDialogReportModeAccept": "Send report",
+  "@catcherLocalizationDialogReportModeAccept": {
     "description": "Button label for accepting to send a crash report",
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeCancel": "Dismiss",
-  "@CatcherLocalization_dialogReportModeCancel": {
+  "catcherLocalizationDialogReportModeCancel": "Dismiss",
+  "@catcherLocalizationDialogReportModeCancel": {
     "description": "Button label for dismissing a crash report",
     "type": "text",
     "placeholders": {}

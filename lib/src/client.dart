@@ -13,16 +13,16 @@ class Client {
 
   final _client = http.Client();
   final _appAuth = AppAuth();
-  Future<Profile> _currentUser;
-  Future<List<Aspect>> _currentUserAspects;
+  Future<Profile>? _currentUser;
+  Future<List<Aspect>>? _currentUserAspects;
   bool _currentSessionActive = false;
-  StreamController<bool> _activeSessionEvents;
+  StreamController<bool>? _activeSessionEvents;
 
   Stream<AuthorizationEvent> get newAuthorizations => _appAuth.newAuthorizations;
 
   Future<void> switchToUser(String userId) async {
-    _currentUserAspects = null;
     _currentUser = null;
+    _currentUserAspects = null;
     _currentSessionActive = false;
     await _appAuth.switchToUser(userId);
   }
@@ -43,11 +43,8 @@ class Client {
       return Future.value();
     }
 
-    if (_activeSessionEvents == null) {
-      _activeSessionEvents = StreamController.broadcast();
-    }
-
-    return _activeSessionEvents.stream.firstWhere((active) => active);
+    final events = _activeSessionEvents = _activeSessionEvents ?? StreamController.broadcast(); // ignore: close_sinks
+    return events.stream.firstWhere((active) => active);
   }
 
   void publishSessionActive() {
@@ -62,7 +59,7 @@ class Client {
 
   bool get hasSession => _appAuth.hasSession;
 
-  String get currentUserId => _appAuth.currentUserId;
+  String? get currentUserId => _appAuth.currentUserId;
 
   Future<List<Session>> get allSessions => _appAuth.allSessions;
 
@@ -72,15 +69,13 @@ class Client {
       return Profile.from(jsonDecode(response.body), currentUser: currentUserId);
     }
 
-    if (_currentUser == null) {
-      _currentUser = _fetch();
-    }
+    var currentUser = _currentUser = _currentUser ?? _fetch();
 
-    return _currentUser.then((user) {
+    return currentUser.then((user) {
       if (user.person.diasporaId != currentUserId) {
-        _currentUser = _fetch();
+        currentUser = _currentUser = _fetch();
         _currentUserAspects = null;
-        return _currentUser;
+        return currentUser;
       } else {
         return user;
       }
@@ -93,43 +88,40 @@ class Client {
       return _makePage(Aspect.fromList(jsonDecode(response.body).cast<Map<String, dynamic>>()), response);
     }).then((page) => page.content);
 
-    if (_currentUserAspects == null) {
-      _currentUserAspects = _fetch();
-    }
-
-    return _currentUserAspects;
+    final aspects = _currentUserAspects = _currentUserAspects ?? _fetch();
+    return aspects;
   }
 
-  Future<Page<Post>> fetchMainStream({String page}) =>
+  Future<Page<Post>> fetchMainStream({String? page}) =>
     _fetchPosts(_call("GET", "streams/main", page: page));
 
-  Future<Page<Post>> fetchActivityStream({String page}) =>
+  Future<Page<Post>> fetchActivityStream({String? page}) =>
     _fetchPosts(_call("GET", "streams/activity", page: page));
 
-  Future<Page<Post>> fetchAspectsStream(List<Aspect> aspects, {String page}) =>
+  Future<Page<Post>> fetchAspectsStream(List<Aspect>? aspects, {String? page}) =>
     _fetchPosts(_call("GET", "streams/aspects",
       query: aspects != null ? {"aspect_ids": jsonEncode(aspects.map((aspect) => aspect.id).toList())} : {},
       page: page));
 
-  Future<Page<Post>> fetchMentionsStream({String page}) =>
+  Future<Page<Post>> fetchMentionsStream({String? page}) =>
     _fetchPosts(_call("GET", "streams/mentions", page: page));
 
-  Future<Page<Post>> fetchFollowedTagsStream({String page}) =>
+  Future<Page<Post>> fetchFollowedTagsStream({String? page}) =>
     _fetchPosts(_call("GET", "streams/tags", page: page));
 
-  Future<Page<Post>> fetchLikedStream({String page}) =>
+  Future<Page<Post>> fetchLikedStream({String? page}) =>
     _fetchPosts(_call("GET", "streams/liked", page: page));
 
-  Future<Page<Post>> fetchCommentedStream({String page}) =>
+  Future<Page<Post>> fetchCommentedStream({String? page}) =>
     _fetchPosts(_call("GET", "streams/commented", page: page));
 
-  Future<Page<Post>> fetchTagStream(String tag, {String page}) =>
+  Future<Page<Post>> fetchTagStream(String tag, {String? page}) =>
     _fetchPosts(_call("GET", "search/posts", query: {'tag': tag}, page: page));
 
-  Future<Page<Post>> fetchUserStream(Person person, {String page}) =>
+  Future<Page<Post>> fetchUserStream(Person person, {String? page}) =>
     _fetchPosts(_call("GET", "users/${person.guid}/posts", page: page));
 
-  Future<Page<Comment>> fetchComments(Post post, {String page}) async {
+  Future<Page<Comment>> fetchComments(Post post, {String? page}) async {
     final response = await _call("GET", "posts/${post.guid}/comments", page: page),
       comments = await compute(_parseCommentsJson, {"body": response.body,
         "currentUser": currentUserId, "postGuid": post.guid, "postAuthor": post.author.diasporaId});
@@ -138,7 +130,7 @@ class Client {
 
   Future<Post> createPost(PublishablePost post) async {
     final response = await _call("POST", "/posts", body: post);
-    return Post.from(jsonDecode(response.body), currentUser: currentUserId);
+    return Post.from(jsonDecode(response.body), currentUser: currentUserId!);
   }
 
   Future<void> likePost(Post post) async {
@@ -167,7 +159,7 @@ class Client {
 
   Future<Comment> commentPost(Post post, String comment) async {
     final response = await _call("POST", "posts/${post.guid}/comments", body: {"body": comment});
-    return Comment.from(jsonDecode(response.body), currentUser: currentUserId, postGuid: post.guid, postAuthor: post.author.diasporaId);
+    return Comment.from(jsonDecode(response.body), currentUser: currentUserId!, postGuid: post.guid!, postAuthor: post.author.diasporaId);
   }
 
   Future<void> deleteComment(Comment comment) async {
@@ -194,10 +186,10 @@ class Client {
     }
   }
 
-  Future<Post> resharePost(Post post) async {
+  Future<Post?> resharePost(Post post) async {
     try {
       final response = await _call("POST", "posts/${post.guid}/reshares");
-      return Post.from(jsonDecode(response.body));
+      return Post.from(jsonDecode(response.body), currentUser: currentUserId!);
     } on ClientException catch (e) {
       if (e.code != 409) {
         throw e;
@@ -281,7 +273,7 @@ class Client {
     }
   }
 
-  Future<Page<Notification>> fetchNotifications({bool onlyUnread = false, String page, int perPage}) async {
+  Future<Page<Notification>> fetchNotifications({bool onlyUnread = false, String? page, int? perPage}) async {
     final response = await _call("GET", "notifications", query: {"only_unread": onlyUnread.toString()}, page: page, perPage: perPage);
     return _makePage(await compute(_parseNotificationsJson, response.body), response);
   }
@@ -292,16 +284,16 @@ class Client {
 
   Future<Post> fetchPost(String guid) async {
     final response = await _call("GET", "posts/$guid");
-    return Post.from(jsonDecode(response.body));
+    return Post.from(jsonDecode(response.body), currentUser: currentUserId!);
   }
 
-  Future<Page<Like>> fetchLikes(Post post, {String page}) async {
+  Future<Page<Like>> fetchLikes(Post post, {String? page}) async {
     final response = await _call("GET", "posts/${post.guid}/likes", page: page),
       likes = await compute(_parseLikesJson, response.body);
     return _makePage(likes, response);
   }
 
-  Future<Page<ReshareReference>> fetchReshares(Post post, {String page}) async {
+  Future<Page<ReshareReference>> fetchReshares(Post post, {String? page}) async {
     final response = await _call("GET", "posts/${post.guid}/reshares", page: page),
       reshares = await compute(_parseResharesJson, response.body);
     return _makePage(reshares, response);
@@ -390,12 +382,12 @@ class Client {
     }
   }
 
-  Future<Page<Person>> fetchAspectContacts(Aspect aspect, {String page}) async {
+  Future<Page<Person>> fetchAspectContacts(Aspect aspect, {String? page}) async {
     final response = await _call("GET", "aspects/${aspect.id}/contacts", page: page);
     return _makePage(await compute(_parsePeopleJson, response.body), response);
   }
 
-  Future<Page<Conversation>> fetchConversations({bool onlyUnread = false, String page, int perPage}) async {
+  Future<Page<Conversation>> fetchConversations({bool onlyUnread = false, String? page, int? perPage}) async {
     final response  = await _call("GET", "conversations", query: {"only_unread": onlyUnread.toString()}, page: page, perPage: perPage);
     return _makePage(await compute(_parseConversationsJson, response.body), response);
   }
@@ -409,7 +401,7 @@ class Client {
     return Conversation.from(jsonDecode(response.body));
   }
 
-  Future<Page<ConversationMessage>> fetchConversationMessages(Conversation conversation, {String page}) async {
+  Future<Page<ConversationMessage>> fetchConversationMessages(Conversation conversation, {String? page}) async {
     final response = await _call("GET", "conversations/${conversation.guid}/messages", page: page);
     return _makePage(await compute(_parseConversationMessagesJson, response.body), response);
   }
@@ -431,7 +423,7 @@ class Client {
     }
   }
 
-  Future<Page<Person>> searchPeopleByName(String query, {List<String> filters, String page}) async {
+  Future<Page<Person>> searchPeopleByName(String query, {List<String>? filters, String? page}) async {
     final params = <String, dynamic>{"name_or_handle": query};
     if (filters != null) {
       params["filter[]"] = filters;
@@ -440,12 +432,12 @@ class Client {
     return _makePage(await compute(_parsePeopleJson, response.body), response);
   }
 
-  Future<Page<Person>> searchPeopleByTag(String query, {String page}) async {
+  Future<Page<Person>> searchPeopleByTag(String query, {String? page}) async {
     final response = await _call("GET", "search/users", query: {"tag": query}, page: page);
     return _makePage(await compute(_parsePeopleJson, response.body), response);
   }
 
-  Future<Page<String>> searchTags(String query, {String page}) async {
+  Future<Page<String>> searchTags(String query, {String? page}) async {
     final response = await _call("GET", "search/tags", query: {"query": query}, page: page);
     return _makePage(jsonDecode(response.body).cast<String>(), response);
   }
@@ -498,7 +490,12 @@ class Client {
 
   Future<http.MultipartFile> _pictureBody(File picture) async {
     final stream = picture.openRead();
-    return http.MultipartFile("image", stream, await picture.length(), filename: picture.uri.pathSegments.last ?? "blob.jpg");
+    var filename = picture.uri.pathSegments.last;
+    if (filename.isEmpty) {
+      filename = "blob.jpg";
+    }
+
+    return http.MultipartFile("image", stream, await picture.length(), filename: filename);
   }
 
   Future<Page<Post>> _fetchPosts(Future<http.Response> request) async {
@@ -507,7 +504,7 @@ class Client {
     return _makePage(posts, response);
   }
 
-  Future<Page<T>> _fetchAllPages<T>(Future<Page<T>> Function(String page) fetcher) async {
+  Future<Page<T>> _fetchAllPages<T>(Future<Page<T>> Function(String? page) fetcher) async {
     final initialPage = await fetcher(null);
     var currentPage = initialPage;
     while (currentPage.nextPage != null) {
@@ -518,7 +515,7 @@ class Client {
     return initialPage;
   }
 
-  Future<http.Response> _call(String method, String endpoint, {Map<String, dynamic> query = const {}, body, String page, int perPage}) async {
+  Future<http.Response> _call(String method, String endpoint, {Map<String, dynamic> query = const {}, body, String? page, int? perPage}) async {
     final token = await _appAuth.accessToken,
       uri = _computeUri(endpoint, query: query, page: page, perPage: perPage),
       request = http.Request(method, uri);
@@ -544,20 +541,19 @@ class Client {
       return response;
     } else if (response.statusCode == 401) {
       await _appAuth.destroyCurrentSession("Got forbidden while accessing a resource, bad scopes or revoked authorization");
-      return null; // previous always raises
     } else {
       throw ClientException.fromResponse(response);
     }
   }
 
-  Uri _computeUri(String endpoint, {Map<String, dynamic> query, String page, int perPage}) {
+  Uri _computeUri(String endpoint, {Map<String, dynamic>? query, String? page, int? perPage}) {
     Uri uri;
 
     if (page != null) {
       uri = Uri.parse(page);
     } else {
-      final newSegments = _appAuth.currentBaseUri.pathSegments + endpoint.split(r'/');
-      uri = _appAuth.currentBaseUri.replace(pathSegments: const ['api', 'v1'] + newSegments, queryParameters: query);
+      final newSegments = _appAuth.currentBaseUri!.pathSegments + endpoint.split(r'/');
+      uri = _appAuth.currentBaseUri!.replace(pathSegments: const ['api', 'v1'] + newSegments, queryParameters: query);
     }
 
     if (perPage != null) {
@@ -570,11 +566,12 @@ class Client {
   }
 
   Page<T> _makePage<T>(List<T> content, http.Response response) {
-    if (response.headers["link"] == null) {
+    final header = response.headers["link"];
+    if (header == null) {
       return Page(content: content);
     }
 
-    final links = Map.fromIterable(_linkHeaderPattern.allMatches(response.headers["link"]),
+    final links = Map.fromIterable(_linkHeaderPattern.allMatches(header),
       key: (match) => match[2], value: (match) => match[1]);
 
     return Page(
@@ -586,18 +583,18 @@ class Client {
     );
   }
 
-  static List<Post> _parsePostsJson(Map<String, String> arguments) {
-    final json = arguments["body"];
-    final currentUser = arguments["currentUser"];
+  static List<Post> _parsePostsJson(Map<String, String?> arguments) {
+    final json = arguments["body"]!;
+    final currentUser = arguments["currentUser"]!;
     final List<Map<String, dynamic>> posts = jsonDecode(json).cast<Map<String, dynamic>>();
     return Post.fromList(posts, currentUser: currentUser);
   }
 
-  static List<Comment> _parseCommentsJson(Map<String, String> arguments) {
-    final json = arguments["body"];
-    final currentUser = arguments["currentUser"];
-    final postGuid = arguments["postGuid"];
-    final postAuthor = arguments["postAuthor"];
+  static List<Comment> _parseCommentsJson(Map<String, String?> arguments) {
+    final json = arguments["body"]!;
+    final currentUser = arguments["currentUser"]!;
+    final postGuid = arguments["postGuid"]!;
+    final postAuthor = arguments["postAuthor"]!;
     final List<Map<String, dynamic>> comments = jsonDecode(json).cast<Map<String, dynamic>>();
     return Comment.fromList(comments, currentUser: currentUser, postGuid: postGuid, postAuthor: postAuthor);
   }
@@ -635,12 +632,12 @@ class Client {
 
 class Page<T> {
   final List<T> content;
-  final String firstPage;
-  final String previousPage;
-  final String nextPage;
-  final String lastPage;
+  final String? firstPage;
+  final String? previousPage;
+  final String? nextPage;
+  final String? lastPage;
 
-  Page({this.content, this.firstPage,  this.previousPage, this.nextPage, this.lastPage});
+  Page({required this.content, this.firstPage,  this.previousPage, this.nextPage, this.lastPage});
 
   factory Page.empty() => Page(content: []);
 
@@ -655,23 +652,24 @@ class Page<T> {
 
 class ClientException implements Exception {
   final int code;
-  final String message;
-  final String requestPath;
-  final String requestMethod;
+  final String? message;
+  final String? requestPath;
+  final String? requestMethod;
 
-  ClientException({@required this.code, @required this.message,
-    @required this.requestPath, @required this.requestMethod});
+  ClientException({required this.code, required this.message,
+    required this.requestPath, required this.requestMethod});
 
   factory ClientException.fromResponse(http.Response response) {
     var message = response.reasonPhrase;
-    if (response.contentLength > 0 && response.headers[HttpHeaders.contentTypeHeader].startsWith("application/json")) {
+    final contentLength = response.contentLength, contentType = response.headers[HttpHeaders.contentTypeHeader];
+    if (contentLength != null && contentLength > 0 && contentType != null && contentType.startsWith("application/json")) {
       message = jsonDecode(response.body)["message"];
     }
     return ClientException(
       code: response.statusCode,
       message: message,
-      requestPath: response.request.url.path,
-      requestMethod: response.request.method.toLowerCase()
+      requestPath: response.request?.url.path,
+      requestMethod: response.request?.method.toLowerCase()
     );
   }
 
@@ -683,10 +681,10 @@ class ClientException implements Exception {
 class Person {
   final String guid;
   final String diasporaId;
-  final String name;
-  final String avatar;
+  final String? name;
+  final String? avatar;
 
-  Person({@required this.guid, @required this.diasporaId, @required this.name, @required this.avatar});
+  Person({required this.guid, required this.diasporaId, required this.name, required this.avatar});
 
   factory Person.from(Map<String, dynamic> object) {
     return Person(
@@ -713,11 +711,11 @@ class Profile {
   static const birthdayYearThreshold = 1004;
 
   final Person person;
-  PhotoSizes avatar;
-  final String bio;
-  final String gender;
-  final String location;
-  final DateTime birthday;
+  PhotoSizes? avatar;
+  final String? bio;
+  final String? gender;
+  final String? location;
+  final DateTime? birthday;
   final bool public;
   final bool searchable;
   final bool nsfw;
@@ -728,20 +726,20 @@ class Profile {
   final List<Aspect> aspects;
   final bool ownProfile;
 
-  Profile({@required this.person, @required this.avatar, @required this.bio, @required this.gender,
-    @required this.location, @required this.birthday, @required this.public, @required this.searchable,
-    @required this.nsfw, @required this.sharing, @required this.receiving, @required this.blocked,
-    @required this.tags, @required this.aspects, @required this.ownProfile});
+  Profile({required this.person, required this.avatar, required this.bio, required this.gender,
+    required this.location, required this.birthday, required this.public, required this.searchable,
+    required this.nsfw, required this.sharing, required this.receiving, required this.blocked,
+    required this.tags, required this.aspects, required this.ownProfile});
 
   factory Profile.from(Map<String, dynamic> object, {currentUser}) {
-    final PhotoSizes avatar = PhotoSizes.from(object["avatar"] ?? {});
+    final PhotoSizes? avatar = PhotoSizes.from(object["avatar"]);
     final relationship = object["relationship"];
     return Profile(
       person: Person(
         guid: object["guid"],
         diasporaId: object["diaspora_id"],
         name: object["name"],
-        avatar: avatar.medium
+        avatar: avatar?.medium
       ),
       avatar: avatar,
       bio: object["bio"],
@@ -762,9 +760,9 @@ class Profile {
 
   bool get canMessage => !blocked && sharing && receiving;
 
-  String get formattedBirthday => formatBirthday(birthday);
+  String? get formattedBirthday => formatBirthday(birthday);
 
-  static String formatBirthday(DateTime birthday) {
+  static String? formatBirthday(DateTime? birthday) {
     if (birthday == null) {
       return null;
     }
@@ -782,7 +780,7 @@ class Aspect {
   String name;
   final bool isMock;
 
-  Aspect({@required this.id, @required this.name}) : isMock = false;
+  Aspect({required this.id, required this.name}) : isMock = false;
 
   Aspect.mock(this.name) : id = -1, isMock = true;
 
@@ -811,46 +809,47 @@ enum PostType { status, reshare }
 class Post {
   static const _typeMap = {"StatusMessage": PostType.status, "Reshare": PostType.reshare};
 
-  final String guid;
+  final String? guid;
   final PostType type;
   final String body;
   final Person author;
   final bool public;
   final bool nsfw;
-  final Post root;
+  final Post? root;
   final List<Photo> photos;
-  final Poll poll;
+  final Poll? poll;
   final Map<String, Person> mentionedPeople;
   final PostInteractions interactions;
-  final OEmbed oEmbed;
-  final OpenGraphObject openGraphObject;
-  final Location location;
+  final OEmbed? oEmbed;
+  final OpenGraphObject? openGraphObject;
+  final Location? location;
   final DateTime createdAt;
   final bool ownPost;
   final bool mock;
 
-  Post({@required this.guid, @required this.type, @required this.body, @required this.author,
-    @required this.public, @required this.nsfw, @required this.root, @required this.photos,
-    @required this.poll, @required this.mentionedPeople, @required this.interactions, @required this.oEmbed,
-    @required this.openGraphObject, @required this.location, @required this.createdAt, @required this.ownPost, this.mock});
+  Post({required this.guid, required this.type, required this.body, required this.author,
+    required this.public, required this.nsfw, required this.root, required this.photos,
+    required this.poll, required this.mentionedPeople, required this.interactions, required this.oEmbed,
+    required this.openGraphObject, required this.location, required this.createdAt, required this.ownPost,
+    required this.mock});
 
-  factory Post.from(Map<String, dynamic> object, {String currentUser}) {
+  factory Post.from(Map<String, dynamic> object, {required String currentUser}) {
     final author = Person.from(object["author"]),
-      root = object["root"] != null ? Post.from(object["root"]) : null;
+      root = object["root"] != null ? Post.from(object["root"], currentUser: currentUser) : null;
     return Post(
       guid: object["guid"],
-      type: _typeMap[object["post_type"]],
+      type: _typeMap[object["post_type"]]!,
       body: object["body"],
       author: author,
       public: object["public"],
       nsfw: object["nsfw"],
       root: root,
-      photos: object["photos"] != null ? Photo.fromList(object["photos"].cast<Map<String, dynamic>>()) : null,
+      photos: object["photos"] != null ? Photo.fromList(object["photos"].cast<Map<String, dynamic>>()) : <Photo>[],
       poll: object["poll"] != null ? Poll.from(object["poll"]) : null,
       mentionedPeople: object["mentioned_people"] != null ? Map.fromIterable(
         Person.fromList(object["mentioned_people"].cast<Map<String, dynamic>>()),
         key: (person) => person.diasporaId
-      ) : null,
+      ) : {},
       interactions: PostInteractions.from(object["interaction_counters"], object["own_interaction_state"]),
       openGraphObject: object["open_graph_object"] != null ? OpenGraphObject.from(object["open_graph_object"]) : null,
       location: object["location"] != null ? Location.from(object["location"]) : null,
@@ -861,7 +860,7 @@ class Post {
     );
   }
 
-  static List<Post> fromList(List<Map<String, dynamic>> objects, {String currentUser}) =>
+  static List<Post> fromList(List<Map<String, dynamic>> objects, {required String currentUser}) =>
     objects.map((object) => Post.from(object, currentUser: currentUser)).toList();
 
   bool get reshareOfDeleted => type == PostType.reshare && root == null;
@@ -875,7 +874,7 @@ class Post {
   bool get isReshare => type == PostType.reshare;
 
   Post mockReshare(Person author) {
-    final post = root != null ? root : this;
+    final post = root ?? this;
 
     return Post(
       guid: null,
@@ -928,9 +927,9 @@ abstract class OEmbed {
   final String author;
   final String url;
 
-  OEmbed({@required this.provider, @required this.author, @required this.url});
+  OEmbed({required this.provider, required this.author, required this.url});
 
-  factory OEmbed.from(Map<String, dynamic> object) {
+  static OEmbed? from(Map<String, dynamic> object) {
     final provider = object["provider_name"];
     if (provider == "YouTube") {
       return YoutubeOEmbed.from(object);
@@ -946,27 +945,32 @@ abstract class ThumbnailOEmbed extends OEmbed {
   final String thumbnail;
   final String title;
 
-  ThumbnailOEmbed({@required String provider, @required String author,
-    @required String url, @required this.thumbnail, @required this.title}) : super(provider: provider, author: author, url: url);
+  ThumbnailOEmbed({required String provider, required String author,
+    required String url, required this.thumbnail, required this.title}) : super(provider: provider, author: author, url: url);
 }
 
 abstract class HtmlTextOEmbed extends OEmbed {
   final String html;
 
-  HtmlTextOEmbed({@required String provider, @required String author,
-    @required String url, @required this.html}) : super(provider: provider, author: author, url: url);
+  HtmlTextOEmbed({required String provider, required String author,
+    required String url, required this.html}) : super(provider: provider, author: author, url: url);
 }
 
 class YoutubeOEmbed extends ThumbnailOEmbed {
   static RegExp _embedUrlPattern = RegExp(r'https?://www.youtube.com/embed/([^?/]+)');
   static String _urlTemplate = "https://www.youtube.com/watch?v=ID";
 
-  YoutubeOEmbed({@required String provider, @required String author, @required String title,
-    @required String thumbnail, @required String url}) : super(provider: provider, author: author,
+  YoutubeOEmbed({required String provider, required String author, required String title,
+    required String thumbnail, required String url}) : super(provider: provider, author: author,
     title: title, thumbnail: thumbnail, url: url);
 
-  factory YoutubeOEmbed.from(Map<String, dynamic> object) {
+  static YoutubeOEmbed? from(Map<String, dynamic> object) {
     final id = _embedUrlPattern.allMatches(object["html"]).first.group(1);
+
+    if (id == null) {
+      return null;
+    }
+
     return YoutubeOEmbed(
       provider: object["provider_name"],
       author: object["author_name"],
@@ -980,8 +984,8 @@ class YoutubeOEmbed extends ThumbnailOEmbed {
 class TwitterOEmbed extends HtmlTextOEmbed {
   static RegExp _scriptTagPattern = RegExp(r'<script [^>]+></script>');
 
-  TwitterOEmbed({@required String provider, @required String author, @required String html,
-    @required String url}) : super(provider: provider, author: author,
+  TwitterOEmbed({required String provider, required String author, required String html,
+    required String url}) : super(provider: provider, author: author,
     html: html, url: url);
 
   factory TwitterOEmbed.from(Map<String, dynamic> object) {
@@ -998,12 +1002,12 @@ class TwitterOEmbed extends HtmlTextOEmbed {
 }
 
 class OpenGraphObject {
-  final String url;
-  final String title;
-  final String image;
-  final String description;
+  final String? url;
+  final String? title;
+  final String? image;
+  final String? description;
 
-  OpenGraphObject({@required this.url, @required this.title, @required this.image, this.description});
+  OpenGraphObject({required this.url, required this.title, required this.image, this.description});
 
   factory OpenGraphObject.from(Map<String, dynamic> object) =>
     OpenGraphObject(
@@ -1020,14 +1024,14 @@ class Photo {
   final int height;
   final PhotoSizes sizes;
 
-  Photo({this.guid, this.width, this.height, this.sizes});
+  Photo({required this.guid, required this.width, required this.height, required this.sizes});
 
   factory Photo.from(Map<String, dynamic> object) =>
     Photo(
       guid: object["guid"],
       width: object["dimensions"]["width"],
       height: object["dimensions"]["height"],
-      sizes: PhotoSizes.from(object["sizes"])
+      sizes: PhotoSizes.from(object["sizes"])!
     );
 
   static List<Photo> fromList(List<Map<String, dynamic>> objects) =>
@@ -1039,7 +1043,7 @@ class Location {
   final double lat;
   final double lng;
 
-  Location({@required this.address, @required this.lat, @required this.lng});
+  Location({required this.address, required this.lat, required this.lng});
 
   factory Location.from(Map<String, dynamic> object) => Location(
     address: object["address"],
@@ -1066,15 +1070,20 @@ class PhotoSizes {
   final String medium;
   final String small;
 
-  PhotoSizes({this.raw, this.large, this.medium, this.small});
+  PhotoSizes({required this.raw, required this.large, required this.medium, required this.small});
 
-  factory PhotoSizes.from(Map<String, dynamic> object) =>
-    PhotoSizes(
+  static PhotoSizes? from(Map<String, dynamic>? object) {
+    if (object == null || object.isEmpty) {
+      return null;
+    }
+
+    return PhotoSizes(
       raw: object["raw"],
       large: object["large"],
       medium: object["medium"],
       small: object["small"]
     );
+  }
 }
 
 class Poll {
@@ -1083,8 +1092,8 @@ class Poll {
   int participationCount;
   List<PollAnswer> answers;
 
-  Poll({@required this.question, @required this.alreadyParticipated, @required this.participationCount,
-    @required this.answers});
+  Poll({required this.question, required this.alreadyParticipated, required this.participationCount,
+    required this.answers});
 
   factory Poll.from(Map<String, dynamic> object) =>
     Poll(
@@ -1101,7 +1110,7 @@ class PollAnswer {
   bool own;
   int voteCount;
 
-  PollAnswer({@required this.id, @required this.answer, @required this.own, @required this.voteCount});
+  PollAnswer({required this.id, required this.answer, required this.own, required this.voteCount});
 
   factory PollAnswer.from(Map<String, dynamic> object) =>
     PollAnswer(
@@ -1125,11 +1134,11 @@ class Comment {
   final String postGuid;
   final bool canDelete;
 
-  Comment({@required this.guid, @required this.body, @required this.author, @required this.mentionedPeople,
-    @required this.reported, @required this.createdAt,  @required this.postGuid, @required this.canDelete});
+  Comment({required this.guid, required this.body, required this.author, required this.mentionedPeople,
+    required this.reported, required this.createdAt,  required this.postGuid, required this.canDelete});
 
-  factory Comment.from(Map<String, dynamic> object, {@required String currentUser,
-    @required String postGuid, @required String postAuthor}) {
+  factory Comment.from(Map<String, dynamic> object, {required String currentUser,
+    required String postGuid, required String postAuthor}) {
     var author = Person.from(object["author"]);
     return Comment(
       guid: object["guid"],
@@ -1138,7 +1147,7 @@ class Comment {
       mentionedPeople: object["mentioned_people"] != null ? Map.fromIterable(
         Person.fromList(object["mentioned_people"].cast<Map<String, dynamic>>()),
         key: (person) => person.diasporaId
-      ) : null,
+      ) : {},
       reported: object["reported"],
       createdAt: DateTime.parse(object["created_at"]),
       postGuid: postGuid,
@@ -1146,8 +1155,8 @@ class Comment {
     );
   }
 
-  static List<Comment> fromList(List<Map<String, dynamic>> objects, {@required String currentUser,
-    @required String postGuid, @required String postAuthor}) =>
+  static List<Comment> fromList(List<Map<String, dynamic>> objects, {required String currentUser,
+    required String postGuid, required String postAuthor}) =>
     objects.map((object) => Comment.from(object, currentUser: currentUser, postGuid: postGuid, postAuthor: postAuthor)).toList();
 }
 
@@ -1155,7 +1164,7 @@ class Like {
   final String guid;
   final Person author;
 
-  Like({@required this.guid, @required this.author});
+  Like({required this.guid, required this.author});
 
   factory Like.from(Map<String, dynamic> object) => Like(
       guid: object["guid"],
@@ -1170,7 +1179,7 @@ class ReshareReference {
   final String guid;
   final Person author;
 
-  ReshareReference({@required this.guid, @required this.author});
+  ReshareReference({required this.guid, required this.author});
 
   factory ReshareReference.from(Map<String, dynamic> object) => ReshareReference(
       guid: object["guid"],
@@ -1207,19 +1216,19 @@ class Notification {
   final String guid;
   final NotificationType type;
   bool read;
-  final String targetGuid;
-  final Person targetAuthor;
+  final String? targetGuid;
+  final Person? targetAuthor;
   final List<Person> eventCreators;
   final DateTime createdAt;
 
-  Notification({@required this.guid, @required this.type, @required this.read, @required this.targetGuid,
-    @required this.targetAuthor, @required this.eventCreators, @required this.createdAt});
+  Notification({required this.guid, required this.type, required this.read, required this.targetGuid,
+    required this.targetAuthor, required this.eventCreators, required this.createdAt});
 
   factory Notification.from(Map<String, dynamic> object) {
-    Map<String, dynamic> target = object["target"];
+    Map<String, dynamic>? target = object["target"];
     return Notification(
       guid: object["guid"],
-      type: _typeMap[object["type"]],
+      type: _typeMap[object["type"]]!,
       read: object["read"],
       targetGuid: target != null ? target["guid"] : null,
       targetAuthor: target != null ? Person.from(target["author"]) : null,
@@ -1239,8 +1248,8 @@ class Conversation {
   final List<Person> participants;
   final DateTime createdAt;
 
-  Conversation({@required this.guid, @required this.subject, @required this.read,
-    @required this.participants, @required this.createdAt});
+  Conversation({required this.guid, required this.subject, required this.read,
+    required this.participants, required this.createdAt});
 
   factory Conversation.from(Map<String, dynamic> object) => Conversation(
     guid: object["guid"],
@@ -1260,7 +1269,7 @@ class ConversationMessage {
   final Person author;
   final DateTime createdAt;
 
-  ConversationMessage({@required this.guid, @required this.body, @required this.author, @required this.createdAt});
+  ConversationMessage({required this.guid, required this.body, required this.author, required this.createdAt});
 
   factory ConversationMessage.from(Map<String, dynamic> object) => ConversationMessage(
     guid: object["guid"],
@@ -1274,25 +1283,27 @@ class ConversationMessage {
 }
 
 class PublishablePost {
-  final String body;
-  final List<String> photos;
-  final String pollQuestion;
-  final List<String> pollAnswers;
-  final Location location;
+  final String? body;
+  final List<String>? photos;
+  final String? pollQuestion;
+  final List<String>? pollAnswers;
+  final Location? location;
   final bool public;
-  final List<Aspect> aspects;
+  final List<Aspect>? aspects;
 
-  PublishablePost.public({this.body, this.photos, this.pollQuestion, this.pollAnswers, this.location})
+  PublishablePost.public({this.body, this.photos, this.pollQuestion, this.pollAnswers,
+    required this.location})
     : public = true, aspects = null { _validate(); }
-  PublishablePost.private(this.aspects, {this.body, this.photos, this.pollQuestion, this.pollAnswers, this.location})
+  PublishablePost.private(this.aspects, {this.body, this.photos, this.pollQuestion, this.pollAnswers,
+    required this.location})
     : public = false { _validate(); }
 
   _validate() {
-    assert(body != null || (photos != null && photos.isNotEmpty), "Post must have body or photos!");
-    assert(public || (aspects != null && aspects.isNotEmpty), "Post must be public or have target aspects!");
+    assert(body != null || photos?.isNotEmpty == true, "Post must have body or photos!");
+    assert(public || aspects?.isNotEmpty == true, "Post must be public or have target aspects!");
 
     if (pollQuestion != null) {
-      assert(pollAnswers != null && pollAnswers.length >= 2, "Post must have at least two poll answers with a poll question set!");
+      assert((pollAnswers?.length ?? 0) >= 2, "Post must have at least two poll answers with a poll question set!");
     } else {
       assert(pollAnswers == null, "Post must have a poll question when poll answers are set!");
     }
@@ -1301,11 +1312,11 @@ class PublishablePost {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> post = {};
 
-    if (body != null && body.trim().isNotEmpty) {
+    if (body?.trim().isNotEmpty == true) {
       post["body"] = body;
     }
 
-    if (photos != null && photos.isNotEmpty) {
+    if (photos?.isNotEmpty == true) {
       post["photos"] = photos;
     }
 
@@ -1321,7 +1332,7 @@ class PublishablePost {
       post["public"] = true;
     } else {
       post["public"] = false;
-      post["aspects"] =  aspects.map((aspect) => aspect.id).toList();
+      post["aspects"] =  aspects!.map((aspect) => aspect.id).toList();
     }
 
     return post;
@@ -1333,7 +1344,7 @@ class NewConversation {
   final String subject;
   final String body;
 
-  NewConversation({@required this.recipients, @required this.subject, @required this.body});
+  NewConversation({required this.recipients, required this.subject, required this.body});
 
   Map<String, dynamic> toJson() => {
     "recipients": recipients.map((person) => person.guid).toList(),
@@ -1344,7 +1355,7 @@ class NewConversation {
 
 class ProfileUpdate {
   final String bio;
-  final DateTime birthday;
+  final DateTime? birthday;
   final String gender;
   final String location;
   final String name;
@@ -1353,8 +1364,8 @@ class ProfileUpdate {
   final bool public;
   final List<String> tags;
 
-  ProfileUpdate({@required this.bio, @required this.birthday, @required this.gender, @required this.location,
-    @required this.name, @required this.nsfw, @required this.searchable, @required this.public, @required this.tags});
+  ProfileUpdate({required this.bio, required this.birthday, required this.gender, required this.location,
+    required this.name, required this.nsfw, required this.searchable, required this.public, required this.tags});
 
   Map<String, dynamic> toJson() => {
     "bio": bio,

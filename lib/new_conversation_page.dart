@@ -19,7 +19,7 @@ class NewConversationOptions {
 }
 
 class NewConversationPage extends StatelessWidget with LocalizationHelpers {
-  NewConversationPage({Key key, this.options = const NewConversationOptions()}) : super(key: key);
+  NewConversationPage({Key? key, this.options = const NewConversationOptions()}) : super(key: key);
 
   final NewConversationOptions options;
 
@@ -31,7 +31,7 @@ class NewConversationPage extends StatelessWidget with LocalizationHelpers {
 }
 
 class _NewConversationPageBody extends StatefulWidget {
-  _NewConversationPageBody({Key key, this.options = const NewConversationOptions()}) : super(key: key);
+  _NewConversationPageBody({Key? key, this.options = const NewConversationOptions()}) : super(key: key);
 
   final NewConversationOptions options;
 
@@ -62,7 +62,7 @@ class _NewConversationPageBodyState extends State<_NewConversationPageBody> with
     });
 
     if (_recipients.isNotEmpty) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_subjectFocus);
     });
     }
@@ -124,7 +124,7 @@ class _NewConversationPageBodyState extends State<_NewConversationPageBody> with
   }
 
   _selectRecipient() async {
-    final Person response = await showDialog(context: context, builder: (context) =>
+    final Person? response = await showDialog(context: context, builder: (context) =>
       PeopleSearchDialog(people: SearchablePeople.mutualContacts()));
 
     if (response == null) {
@@ -132,7 +132,7 @@ class _NewConversationPageBodyState extends State<_NewConversationPageBody> with
     }
 
     if (_recipients.contains(response)) {
-        Scaffold.of(context).showSnackBar(errorSnackBar(context, l.failedToAddConversationParticipantDuplicate(response.nameOrId)));
+        ScaffoldMessenger.of(context).showSnackBar(errorSnackBar(context, l.failedToAddConversationParticipantDuplicate(response.nameOrId)));
         return;
       }
 

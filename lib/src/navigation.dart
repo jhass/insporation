@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Notification, Page;
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'client.dart';
 import 'localizations.dart';
@@ -26,7 +27,7 @@ class CurrentNavigationItemReselectedEvents extends ChangeNotifier {
 }
 
 class NavigationBar extends StatelessWidget with LocalizationHelpers {
-  NavigationBar({Key key, @required this.currentPage}) : super(key: key);
+  NavigationBar({Key? key, required this.currentPage}) : super(key: key);
 
   final PageType currentPage;
 
@@ -53,9 +54,13 @@ class NavigationBar extends StatelessWidget with LocalizationHelpers {
         if (index < mainItems.length) {
           Navigator.of(context).pushReplacementNamed(mainItems[index].route);
         } else {
-          final RenderBox bar = context.findRenderObject();
-          final RenderBox overlay = Overlay.of(context).context.findRenderObject();
-          final RelativeRect position = RelativeRect.fromRect(
+          final bar = context.findRenderObject() as RenderBox?;
+          final overlay = Overlay.of(context)?.context.findRenderObject() as RenderBox?;
+          if (bar == null || overlay == null) {
+            return;
+          }
+
+          final position = RelativeRect.fromRect(
             Rect.fromPoints(
               bar.localToGlobal(bar.size.topRight(Offset.zero) - Offset(0, bar.size.height + moreItems.length * 36), ancestor: overlay),
               bar.localToGlobal(bar.size.bottomRight(Offset.zero), ancestor: overlay),
@@ -85,10 +90,10 @@ class NavigationBar extends StatelessWidget with LocalizationHelpers {
     var icon;
     switch (item.page) {
       case PageType.notifications:
-        icon = UnreadItemsIndicatorIcon<UnreadNotificationsCount>(item.icon);
+        icon = UnreadItemsIndicatorIcon<UnreadNotificationsCount>(item.icon!);
         break;
       case PageType.conversations:
-        icon = UnreadItemsIndicatorIcon<UnreadConversationsCount>(item.icon);
+        icon = UnreadItemsIndicatorIcon<UnreadConversationsCount>(item.icon!);
         break;
       default:
         icon = Icon(item.icon);
@@ -100,14 +105,14 @@ class NavigationBar extends StatelessWidget with LocalizationHelpers {
     );
   }
 
-  List<_BarItem> _mainItems(InsporationLocalizations l) => <_BarItem>[
+  List<_BarItem> _mainItems(AppLocalizations l) => <_BarItem>[
     _BarItem(PageType.stream, Icons.view_stream, l.navigationItemTitleStream, "/stream"),
     _BarItem(PageType.conversations, Icons.mail, l.navigationItemTitleConversations, "/conversations"),
     _BarItem(PageType.search, Icons.search, l.navigationItemTitleSearch, "/search"),
     _BarItem(PageType.notifications, Icons.notifications, l.navigationItemTitleNotifications, "/notifications")
   ];
 
-  List<_BarItem> _moreItems(InsporationLocalizations l) => <_BarItem>[
+  List<_BarItem> _moreItems(AppLocalizations l) => <_BarItem>[
     _BarItem(PageType.contacts, null, l.navigationItemTitleContacts, "/contacts"),
     _BarItem(PageType.edit_profile, null, l.navigationItemTitleEditProfile, "/edit_profile"),
     _BarItem(PageType.sign_in, null, l.navigationItemTitleSwitchUser, "/switch_user", resetNavigation: true)
@@ -116,7 +121,7 @@ class NavigationBar extends StatelessWidget with LocalizationHelpers {
 
 class _BarItem {
   final PageType page;
-  final IconData icon;
+  final IconData? icon;
   final String title;
   final String route;
   final bool resetNavigation;

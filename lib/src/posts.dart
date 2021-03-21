@@ -25,8 +25,8 @@ enum StreamType { main, activity, aspects, mentions, followedTags, liked, commen
 
 class StreamOptions {
   final StreamType type;
-  final List<Aspect> aspects;
-  final String tag;
+  final List<Aspect>? aspects;
+  final String? tag;
 
   const StreamOptions({this.type = StreamType.main, this.aspects, this.tag});
   const StreamOptions.aspects(this.aspects) : type = StreamType.aspects, tag = null;
@@ -62,7 +62,7 @@ class PostStream extends ItemStream<Post> {
     remove(post);
   }
 
-  replaceMock({@required Post mock, @required Post replacement}) {
+  replaceMock({required Post mock, required Post replacement}) {
     assert(length > 0, "No stream created!");
     assert(contains(mock), "Mock not in stream!");
 
@@ -70,7 +70,7 @@ class PostStream extends ItemStream<Post> {
   }
 
   @override
-  Future<Page<Post>> loadPage({Client client, String page}) {
+  Future<Page<Post>> loadPage({required Client client, String? page}) {
       switch (options.type) {
         case StreamType.main:
           return client.fetchMainStream(page: page);
@@ -87,10 +87,8 @@ class PostStream extends ItemStream<Post> {
         case StreamType.commented:
           return client.fetchCommentedStream(page: page);
         case StreamType.tag:
-          return client.fetchTagStream(options.tag, page: page);
+          return client.fetchTagStream(options.tag!, page: page);
       }
-
-      throw "Unimplemented stream type: ${options.type}";
   }
 }
 
@@ -119,7 +117,7 @@ mixin PostStreamState<W extends StatefulWidget> on ItemStreamState<Post, W> {
 }
 
 class PostStreamItem extends StatelessWidget {
-  PostStreamItem({Key key, @required this.post})  : super(key: key);
+  PostStreamItem({Key? key, required this.post})  : super(key: key);
 
   final Post post;
 
@@ -134,7 +132,7 @@ class PostStreamItem extends StatelessWidget {
 }
 
 class PostView extends StatelessWidget with LocalizationHelpers {
-  PostView({Key key, @required this.post, this.enableCommentsSheet = true,
+  PostView({Key? key, required this.post, this.enableCommentsSheet = true,
     this.linkToSPV = false, this.limitHeight = true})  : super(key: key);
 
   final Post post;
@@ -156,7 +154,7 @@ class PostView extends StatelessWidget with LocalizationHelpers {
                 Wrap(
                   direction: Axis.horizontal,
                   children: <Widget>[
-                    PersonHeader(person: post.root != null ? post.root.author : post.author),
+                    PersonHeader(person: post.root != null ? post.root!.author : post.author),
                     Visibility(
                         visible: post.root != null,
                         child: Row(
@@ -185,7 +183,7 @@ class PostView extends StatelessWidget with LocalizationHelpers {
                         child: Icon(
                             post.public ? Icons.public : Icons.lock,
                             size: 14,
-                            color: Theme.of(context).iconTheme.color.withOpacity(0.5)
+                            color: Theme.of(context).iconTheme.color?.withOpacity(0.5)
                         ),
                       ),
                       GestureDetector(
@@ -210,8 +208,8 @@ class PostView extends StatelessWidget with LocalizationHelpers {
     Widget content = Wrap(
       children: [
         Visibility(
-          visible: post.photos != null && post.photos.length > 0,
-          child: _PhotoSlider(photos: post.photos ?? const <Photo>[])
+          visible: post.photos.length > 0,
+          child: _PhotoSlider(photos: post.photos)
         ),
         !post.reshareOfDeleted ? Message(
           body: post.body,
@@ -254,7 +252,7 @@ class PostView extends StatelessWidget with LocalizationHelpers {
 }
 
 class _PostInteractionsView extends StatefulWidget {
-  _PostInteractionsView({Key key, this.post, this.enableCommentsSheet = true}) : super(key: key);
+  _PostInteractionsView({Key? key, required this.post, this.enableCommentsSheet = true}) : super(key: key);
 
   final Post post;
   final bool enableCommentsSheet;
@@ -277,10 +275,10 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       child: Row(
         children: <Widget>[
-          FlatButton.icon(
+          TextButton.icon(
             icon: Icon(Icons.comment, size: 16),
             label: Text(widget.post.interactions.comments.toString()),
-            textColor: colors.postInteractionIcon(theme),
+            style: TextButton.styleFrom(primary: colors.postInteractionIcon(theme)),
             onPressed: !widget.enableCommentsSheet || !widget.post.canComment ? null : () =>
               Navigator.push(context, PageRouteBuilder(
                 pageBuilder: (context, _, __) =>  FractionallySizedBox(
@@ -305,24 +303,24 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
               )
             )
           ),
-          FlatButton.icon(
+          TextButton.icon(
             icon: Icon(
                 Icons.repeat,
                 size: 16,
                 color: widget.post.interactions.reshared ? colors.reshared : null
             ),
             label: Text(widget.post.interactions.reshares.toString()),
-            textColor: colors.postInteractionIcon(theme),
+            style: TextButton.styleFrom(textStyle: TextStyle(color: colors.postInteractionIcon(theme))),
             onPressed: !widget.post.canReshare ? null : _promptReshare,
           ),
-          FlatButton.icon(
+          TextButton.icon(
             icon: Icon(
                 Icons.favorite,
                 size: 16,
                 color: widget.post.interactions.liked ? colors.liked : null
             ),
             label: Text(widget.post.interactions.likes.toString()),
-            textColor: colors.postInteractionIcon(theme),
+            style: TextButton.styleFrom(textStyle: TextStyle(color: colors.postInteractionIcon(theme))),
             onPressed: _updatingLike || !widget.post.canLike ? null : _toggleLike
           ),
         ]
@@ -331,7 +329,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
   }
 
   _toggleLike() async {
-    final scaffold = Scaffold.of(context),
+    final scaffold = ScaffoldMessenger.of(context),
       client = context.read<Client>(),
       current = widget.post.interactions.liked,
       currentCount = widget.post.interactions.likes;
@@ -367,11 +365,11 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
       builder: (dialogContext) => AlertDialog(
         title: Text(l.resharePrompt),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(ml.cancelButtonLabel),
             onPressed: () => Navigator.pop(dialogContext),
           ),
-          FlatButton(
+          TextButton(
             child: Text(l.confirmReshare),
             onPressed: () {
               _createReshare();
@@ -384,7 +382,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
   }
 
   _createReshare() async {
-    final scaffold = Scaffold.of(context),
+    final scaffold = ScaffoldMessenger.of(context),
       client = context.read<Client>(),
       itemStream = context.tryRead<ItemStream<Post>>(),
       postStream = itemStream is PostStream ? itemStream : null;
@@ -421,7 +419,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
 }
 
 class PostActionsView extends StatefulWidget {
-  PostActionsView({Key key, @required this.post, this.orientation = Axis.vertical}) : super(key: key);
+  PostActionsView({Key? key, required this.post, this.orientation = Axis.vertical}) : super(key: key);
 
   final Post post;
   final Axis orientation;
@@ -475,7 +473,7 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
   }
 
   _toggleSubscription() async {
-    final scaffold = Scaffold.of(context),
+    final scaffold = ScaffoldMessenger.of(context),
       client = context.read<Client>(),
       current = widget.post.interactions.subscribed;
     setState(() {
@@ -513,11 +511,11 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
       builder: (dialogContext) => AlertDialog(
         title: Text(l.deletePostPrompt),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(l.noButtonLabel),
             onPressed: () => Navigator.pop(dialogContext),
           ),
-          FlatButton(
+          TextButton(
             child: Text(l.yesButtonLabel),
             onPressed: () {
               _removePost();
@@ -530,7 +528,7 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
   }
 
   _removePost() async {
-    final scaffold = Scaffold.of(context),
+    final scaffold = ScaffoldMessenger.of(context),
       client = context.read<Client>(),
       postStream = context.tryRead<ItemStream<Post>>();
 
@@ -545,14 +543,14 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
         await client.hidePost(widget.post);
       }
 
-      if (postStream == null && mounted) {
+      if (mounted) {
         // we're inside SPV, pop
         Navigator.pop(context);
       }
     } catch (e, s) {
       showErrorSnackBar(scaffold, widget.post.ownPost ? l.failedToDeletePost : l.failedToHidePost, e, s);
 
-      postStream?.insert(position, widget.post);
+      postStream?.insert(position ?? 0, widget.post);
     }
   }
 
@@ -570,11 +568,11 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
           )
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(ml.cancelButtonLabel),
             onPressed: () => Navigator.pop(dialogContext),
           ),
-          FlatButton(
+          TextButton(
             child: Text(l.submitButtonLabel),
             onPressed: () {
               if (_reportField.text.isNotEmpty) {
@@ -589,7 +587,7 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
   }
 
   _createReport(String report) async {
-    final scaffold = Scaffold.of(context),
+    final scaffold = ScaffoldMessenger.of(context),
       client = context.read<Client>();
     setState(() => widget.post.interactions.reported = true);
     Slidable.of(context)?.close();
@@ -616,7 +614,7 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
 
   _sharePost() {
     final client = context.read<Client>(),
-      hostname = client.currentUserId.split('@').last,
+      hostname = client.currentUserId!.split('@').last,
       guid = widget.post.guid;
     Share.share("https://$hostname/posts/$guid");
   }
@@ -624,7 +622,7 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
 }
 
 class _PhotoSlider extends StatefulWidget {
-  _PhotoSlider({Key key, @required this.photos}) : super(key: key);
+  _PhotoSlider({Key? key, required this.photos}) : super(key: key);
 
   final List<Photo> photos;
 
@@ -686,10 +684,10 @@ class _PhotoSliderState extends State<_PhotoSlider> {
 }
 
 class _PollView extends StatefulWidget {
-  _PollView({Key key, @required this.post}) : poll = post.poll, super(key: key);
+  _PollView({Key? key, required this.post}) : poll = post.poll, super(key: key);
 
   final Post post;
-  final Poll poll;
+  final Poll? poll;
 
   @override
   State<StatefulWidget> createState() => _PollViewState();
@@ -697,11 +695,13 @@ class _PollView extends StatefulWidget {
 
 class _PollViewState extends State<_PollView> with StateLocalizationHelpers {
   bool _showAnswers = false;
-  int _currentAnswer;
+  int? _currentAnswer;
 
   @override
   Widget build(BuildContext context) {
-    if (widget.poll == null) {
+    final poll = widget.poll;
+
+    if (poll == null) {
       return SizedBox.shrink();
     }
 
@@ -711,12 +711,12 @@ class _PollViewState extends State<_PollView> with StateLocalizationHelpers {
         Divider(),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(widget.poll.question, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+          child: Text(poll.question, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: widget.poll.answers.map((answer) =>
-            widget.poll.alreadyParticipated ?
+          children: poll.answers.map((answer) =>
+            poll.alreadyParticipated ?
               ListTile(
                 title: _answerTitle(answer),
                 subtitle: _answerSubtitle(answer),
@@ -727,7 +727,7 @@ class _PollViewState extends State<_PollView> with StateLocalizationHelpers {
                 subtitle: _showAnswers ? _answerSubtitle(answer) : null,
                 value: answer.id,
                 groupValue: _currentAnswer,
-                onChanged: (value) => setState(() => _currentAnswer = value)
+                onChanged: (int? value) => setState(() => _currentAnswer = value)
               )
           ).toList(),
         ),
@@ -736,19 +736,19 @@ class _PollViewState extends State<_PollView> with StateLocalizationHelpers {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(l.voteCount(widget.poll.participationCount), style: TextStyle(fontSize: 12)),
+              child: Text(l.voteCount(poll.participationCount), style: TextStyle(fontSize: 12)),
             ),
             Spacer(),
             Visibility(
-              visible: !widget.poll.alreadyParticipated && widget.poll.participationCount > 0 && !_showAnswers,
-              child: FlatButton(
+              visible: !poll.alreadyParticipated && poll.participationCount > 0 && !_showAnswers,
+              child: TextButton(
                 child: Text(l.pollResultsButtonLabel, style: TextStyle(color: colors.link)),
                 onPressed: () => setState(() => _showAnswers = true)
               )
             ),
             Visibility(
-              visible: !widget.poll.alreadyParticipated,
-              child: RaisedButton(
+              visible: !poll.alreadyParticipated,
+              child: TextButton(
                 child: Text(l.voteButtonLabel),
                 onPressed: _currentAnswer == null ? null : _submit,
               ),
@@ -759,7 +759,7 @@ class _PollViewState extends State<_PollView> with StateLocalizationHelpers {
     );
   }
 
-  bool get showAnswers => widget.poll.alreadyParticipated || _showAnswers;
+  bool get showAnswers => widget.poll?.alreadyParticipated == true || _showAnswers;
 
   Widget _answerTitle(PollAnswer answer) => Row(
     mainAxisSize: MainAxisSize.max,
@@ -774,27 +774,28 @@ class _PollViewState extends State<_PollView> with StateLocalizationHelpers {
     ]
   );
 
-  Widget _answerSubtitle(PollAnswer answer) =>
+  Widget? _answerSubtitle(PollAnswer answer) =>
     answer.voteCount == 0 ? null : LinearProgressIndicator(
       value: _answerPercentage(answer),
       backgroundColor: Colors.transparent
     );
 
   double _answerPercentage(PollAnswer answer) {
-    if (widget.poll.participationCount == 0) {
+    if (widget.poll?.participationCount == 0) {
       return 0;
     }
 
-    return answer.voteCount / widget.poll.participationCount;
+    return answer.voteCount / widget.poll!.participationCount;
   }
 
   _submit() async {
-    final answer = widget.poll.answers.singleWhere((answer) => answer.id == _currentAnswer);
+    final poll = widget.poll!;
+    final answer = poll.answers.singleWhere((answer) => answer.id == _currentAnswer);
 
     setState(() {
       _showAnswers = true;
-      widget.poll.alreadyParticipated = true;
-      widget.poll.participationCount++;
+      poll.alreadyParticipated = true;
+      poll.participationCount++;
       answer.voteCount++;
       answer.own = true;
     });
@@ -806,8 +807,8 @@ class _PollViewState extends State<_PollView> with StateLocalizationHelpers {
       tryShowErrorSnackBar(this, l.failedToVote, e, s);
 
       setState(() {
-        widget.poll.alreadyParticipated = false;
-        widget.poll.participationCount--;
+        poll.alreadyParticipated = false;
+        poll.participationCount--;
         answer.voteCount--;
         answer.own = false;
       });
@@ -819,9 +820,9 @@ class _PollViewState extends State<_PollView> with StateLocalizationHelpers {
 }
 
 class _OEmbedView extends StatelessWidget with LocalizationHelpers {
-  _OEmbedView({Key key, this.oEmbed}) : super(key: key);
+  _OEmbedView({Key? key, this.oEmbed}) : super(key: key);
 
-  final OEmbed oEmbed;
+  final OEmbed? oEmbed;
 
   @override
   Widget build(BuildContext context) {
@@ -835,7 +836,7 @@ class _OEmbedView extends StatelessWidget with LocalizationHelpers {
   }
 
   Widget _buildThumbnail(BuildContext context) {
-    final ThumbnailOEmbed oEmbed = this.oEmbed;
+    final oEmbed = this.oEmbed as ThumbnailOEmbed;
     return Center(
       child: GestureDetector(
         onTap: () => launch(oEmbed.url),
@@ -892,7 +893,7 @@ class _OEmbedView extends StatelessWidget with LocalizationHelpers {
   }
 
   Widget _buildHtmlText(BuildContext context) {
-    final HtmlTextOEmbed oEmbed = this.oEmbed;
+    final oEmbed = this.oEmbed as HtmlTextOEmbed;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -910,7 +911,9 @@ class _OEmbedView extends StatelessWidget with LocalizationHelpers {
           margin: EdgeInsets.only(left: 16),
           decoration: BoxDecoration(border: Border(left: BorderSide(color: Theme.of(context).dividerColor))),
           child: Html(
-            onLinkTap: launch,
+            onLinkTap: (url, _, __, ___) {
+              if (url != null) launch(url);
+            },
             data: oEmbed.html,
             style: {"blockquote": Style(margin: EdgeInsets.only(left: 8))},
           )
@@ -921,12 +924,13 @@ class _OEmbedView extends StatelessWidget with LocalizationHelpers {
 }
 
 class _OpenGraphView extends StatelessWidget {
-  _OpenGraphView({Key key, this.object}) : super(key: key);
+  _OpenGraphView({Key? key, this.object}) : super(key: key);
 
-  final OpenGraphObject object;
+  final OpenGraphObject? object;
 
   @override
   Widget build(BuildContext context) {
+    final object = this.object;
     if (object == null || (object.title == null && object.image == null && object.description == null)) {
       return SizedBox.shrink();
     }
@@ -947,7 +951,7 @@ class _OpenGraphView extends StatelessWidget {
                     height: 56,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5),
-                      child: CachedNetworkImage(imageUrl: object.image, fit: BoxFit.cover)
+                      child: CachedNetworkImage(imageUrl: object.image!, fit: BoxFit.cover)
                     )
                   ) : SizedBox.shrink(),
                 Expanded(
@@ -960,7 +964,7 @@ class _OpenGraphView extends StatelessWidget {
                           Padding(
                             padding: EdgeInsets.only(bottom: object.description != null ? 4 : 0),
                             child: Text(
-                              object.title,
+                              object.title!,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(fontWeight: FontWeight.w500)
@@ -968,7 +972,7 @@ class _OpenGraphView extends StatelessWidget {
                           ) : SizedBox.shrink(),
                         object.description != null ?
                           Text(
-                            object.description,
+                            object.description!,
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                           ) : SizedBox.shrink()
@@ -984,26 +988,28 @@ class _OpenGraphView extends StatelessWidget {
     );
   }
 
-  Widget _handleTap({Widget child}) {
-    if (object.url == null) {
+  Widget _handleTap({required Widget child}) {
+    if (object?.url == null) {
       return child;
     }
 
     return InkWell(
       child: child,
-      onTap: () => launch(object.url)
+      onTap: () => launch(object!.url!)
     );
   }
 }
 
 
 class _LocationView extends StatelessWidget {
-  _LocationView({Key key, this.location}) : super(key: key);
+  _LocationView({Key? key, this.location}) : super(key: key);
 
-  final Location location;
+  final Location? location;
 
   @override
   Widget build(BuildContext context) {
+    final location = this.location;
+
     if  (location == null) {
       return SizedBox.shrink();
     }

@@ -11,9 +11,9 @@ enum SearchType { people, peopleByTag, tags }
 enum ContactsSearchType { all, receiving, sharing, mutual }
 
 class SearchablePeople {
-  final List<Person> list;
-  final ContactsSearchType contactsSearchType;
-  final List<Aspect> inAspects;
+  final List<Person>? list;
+  final ContactsSearchType? contactsSearchType;
+  final List<Aspect>? inAspects;
 
   const SearchablePeople.all() : list = null, contactsSearchType = null, inAspects = null;
   SearchablePeople.list(this.list) : contactsSearchType = null, inAspects = null;
@@ -24,7 +24,7 @@ class SearchablePeople {
   SearchablePeople.inAspects(this.inAspects) : contactsSearchType = ContactsSearchType.all, list = null;
   const SearchablePeople.none() : list = const [], contactsSearchType = null, inAspects = null;
 
-  List<String> get filters {
+  List<String>? get filters {
     assert(list == null, "Can't do a filtered search through a given list of people");
     final filters = <String>[];
 
@@ -43,7 +43,7 @@ class SearchablePeople {
     }
 
     if (inAspects != null) {
-      filters.add("aspect:${inAspects.map((aspect) => aspect.id).join(",")}");
+      filters.add("aspect:${inAspects!.map((aspect) => aspect.id).join(",")}");
     }
 
     return filters.isNotEmpty ? filters : null;
@@ -51,8 +51,8 @@ class SearchablePeople {
 }
 
 class SearchResult {
-  final Person person;
-  final String tag;
+  final Person? person;
+  final String? tag;
 
   SearchResult(this.person, this.tag);
 
@@ -63,21 +63,17 @@ class SearchResult {
 class SearchResultStream extends ItemStream<SearchResult> {
   SearchResultStream({
     SearchType type = SearchType.people,
-    String query,
+    String? query,
     this.people = const SearchablePeople.all(),
     this.includeQueryAsTag = false
   }): _type = type, _query = query {
-    if (type == SearchType.people) {
-      assert(people != null, "Must give people to search through!");
-    }
-
     if (people.list != null) {
       assert(type == SearchType.people, "Can search through list of people only by name or ID!");
     }
   }
 
   var _type = SearchType.people;
-  String _query;
+  String? _query;
   final SearchablePeople people;
   final bool includeQueryAsTag;
 
@@ -88,16 +84,17 @@ class SearchResultStream extends ItemStream<SearchResult> {
     reset();
   }
 
-  String get query => _query;
+  String? get query => _query;
 
-  set query(String query) {
+  set query(String? query) {
     _query = query?.trim();
     reset();
   }
 
   @override
-  Future<Page<SearchResult>> loadPage({Client client, String page}) async {
-    if (_query == null || _query.isEmpty)  {
+  Future<Page<SearchResult>> loadPage({required Client client, String? page}) async {
+    final query = _query;
+    if (query == null || query.isEmpty)  {
       return Page.empty();
     }
 
@@ -106,12 +103,12 @@ class SearchResultStream extends ItemStream<SearchResult> {
     }
 
     bool _matchPerson(Person person) =>
-      person.nameOrId.contains(_query) || person.diasporaId.contains(RegExp(RegExp.escape(_query), caseSensitive: false));
+      person.nameOrId.contains(query) || person.diasporaId.contains(RegExp(RegExp.escape(query), caseSensitive: false));
 
     switch (_type) {
       case SearchType.people:
         if (people.list != null) {
-          return Page(content: people.list.where(_matchPerson).map((person) => SearchResult.forPerson(person)).toList());
+          return Page(content: people.list!.where(_matchPerson).map((person) => SearchResult.forPerson(person)).toList());
         }
 
         final result = await client.searchPeopleByName(query, filters: people.filters, page: page);
@@ -120,19 +117,17 @@ class SearchResultStream extends ItemStream<SearchResult> {
         final result = await client.searchPeopleByTag(query, page: page);
         return result.map((person) => SearchResult.forPerson(person));
       case SearchType.tags:
-        final query = _query.startsWith('#') ? _query.substring(1) : _query,
-          result = await client.searchTags(query, page: page);
+        final tag = query.startsWith('#') ? query.substring(1) : query,
+          result = await client.searchTags(tag, page: page);
 
         if (page == null && // first page
             includeQueryAsTag &&
-            result.content.firstWhere((tag) => tag.toLowerCase() == _query.toLowerCase(), orElse: () => null) == null) {
+            result.content.indexWhere((candidate) => candidate.toLowerCase() == query.toLowerCase()) < 0) {
           result.content.insert(0, query);
         }
 
         return result.map((tag) => SearchResult.forTag(tag));
     }
-
-    return null; // case is exhaustive, never happens
   }
 }
 
@@ -148,7 +143,7 @@ abstract class _SearchDialogState<T extends StatefulWidget> extends ItemStreamSt
 
   String get hint => l.searchDialogHint;
 
-  String get initialValue => null;
+  String? get initialValue => null;
 
   @override
   void initState() {
@@ -184,7 +179,7 @@ abstract class _SearchDialogState<T extends StatefulWidget> extends ItemStreamSt
     if (item.person != null) {
       return ListTile(
         leading: Avatar(person: item.person, size: 36),
-        title: Text(item.person.nameOrId),
+        title: Text(item.person!.nameOrId),
         onTap: () => Navigator.pop(context, item.person)
       );
     } else {
@@ -194,9 +189,9 @@ abstract class _SearchDialogState<T extends StatefulWidget> extends ItemStreamSt
 }
 
 class TagSearchDialog extends StatefulWidget {
-  TagSearchDialog({Key key, this.initialValue}) : super(key: key);
+  TagSearchDialog({Key? key, this.initialValue}) : super(key: key);
 
-  final String initialValue;
+  final String? initialValue;
 
   @override
   State<StatefulWidget> createState() => _TagSearchDialogState();
@@ -207,7 +202,7 @@ class _TagSearchDialogState extends _SearchDialogState<TagSearchDialog> {
   String get hint => l.tagSearchDialogHint;
 
   @override
-  String get initialValue => widget.initialValue;
+  String? get initialValue => widget.initialValue;
 
   @override
   ItemStream<SearchResult> createStream() => SearchResultStream(
@@ -218,9 +213,9 @@ class _TagSearchDialogState extends _SearchDialogState<TagSearchDialog> {
 }
 
 class PeopleSearchDialog extends StatefulWidget {
-  PeopleSearchDialog({Key key, this.initialValue, this.people = const SearchablePeople.all()}) : super(key: key);
+  PeopleSearchDialog({Key? key, this.initialValue, this.people = const SearchablePeople.all()}) : super(key: key);
 
-  final String initialValue;
+  final String? initialValue;
   final SearchablePeople people;
 
   @override
@@ -232,7 +227,7 @@ class _PeopleSearchDialogState extends _SearchDialogState<PeopleSearchDialog> {
   String get hint => l.peopleSearchDialogHint;
 
   @override
-  String get initialValue => widget.initialValue;
+  String? get initialValue => widget.initialValue;
 
   @override
   ItemStream<SearchResult> createStream() {

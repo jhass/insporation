@@ -14,34 +14,35 @@ import 'src/widgets.dart';
 import 'src/colors.dart' as colors;
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({Key key, this.person, this.personId, this.diasporaId}) {
+  ProfilePage({Key? key, this.person, this.personId, this.diasporaId}) {
     if (person != null && personId != null) {
-      assert(person.guid == personId, "Conflicting person and person ID given!");
+      assert(person!.guid == personId, "Conflicting person and person ID given!");
     }
+
     assert(person != null || personId != null || diasporaId != null,
       "No person, person ID or diaspora ID given!");
   }
 
-  factory ProfilePage.forPerson({Key key, @required Person person}) =>
+  factory ProfilePage.forPerson({Key? key, required Person person}) =>
     ProfilePage(key: key, person: person, personId: person.guid);
 
-  factory ProfilePage.forId({Key key, @required String personId}) =>
+  factory ProfilePage.forId({Key? key, required String personId}) =>
     ProfilePage(key: key, personId: personId);
 
-  factory ProfilePage.forDiasporaId({Key key, @required String diasporaId}) =>
+  factory ProfilePage.forDiasporaId({Key? key, required String diasporaId}) =>
     ProfilePage(key: key, diasporaId: diasporaId);
 
-  final String personId;
-  final String diasporaId;
-  final Person person;
+  final String? personId;
+  final String? diasporaId;
+  final Person? person;
 
   @override
   State<StatefulWidget> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  Profile _profile;
-  String _lastError;
+  Profile? _profile;
+  String? _lastError;
 
   @override
   void initState() {
@@ -57,18 +58,18 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(title: _titleView),
       body: _loading ? Center(child: CircularProgressIndicator()) :
         _lastError != null ? ErrorMessage(_lastError, onRetry: _fetch) :
-           _UserPostStreamView(profile: _profile)
+           _UserPostStreamView(profile: _profile!)
     );
   }
 
   bool get _loading => _profile == null && _lastError == null;
 
-  Widget get _titleView {
+  Widget? get _titleView {
     final title = _title;
     return title != null ? Text(title) : null;
   }
 
-  String get _title {
+  String? get _title {
     final person = _profile?.person ?? widget.person;
     return person?.nameOrId;
   }
@@ -80,8 +81,8 @@ class _ProfilePageState extends State<ProfilePage> {
       var personId = widget.personId;
 
       if (personId == null) {
-        final result = await client.searchPeopleByName(widget.diasporaId);
-        personId = result?.content?.first?.guid;
+        final result = await client.searchPeopleByName(widget.diasporaId!);
+        personId = result.content.isNotEmpty ? result.content.first.guid : null;
 
         if (personId == null) {
           throw "Couldn't find ${widget.diasporaId}";
@@ -108,12 +109,12 @@ class _UserPostStream extends ItemStream<Post> {
   final Person person;
 
   @override
-  Future<Page<Post>> loadPage({Client client, String page}) =>
+  Future<Page<Post>> loadPage({required Client client, String? page}) =>
     client.fetchUserStream(person, page: page);
 }
 
 class _UserPostStreamView extends StatefulWidget {
-  _UserPostStreamView({Key key, this.profile}) : super(key: key);
+  _UserPostStreamView({Key? key, required this.profile}) : super(key: key);
 
   final Profile profile;
 
@@ -188,14 +189,14 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
     final content = <Widget>[], headRow = <Widget>[];
 
     if (profile.avatar?.medium != null) {
-      headRow.add(Avatar(url: profile.avatar.medium, size: 64));
+      headRow.add(Avatar(url: profile.avatar!.medium, size: 64));
     }
 
     if (profile.ownProfile) {
       headRow.add(Expanded(
         child: Container(
           alignment: Alignment.centerRight,
-          child: OutlineButton(
+          child: OutlinedButton(
             child: Text(l.editProfile),
             onPressed: () => Navigator.pushNamed(context, "/edit_profile"),
           )
@@ -272,16 +273,16 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
 
     if (profile.bio != null) {
       content.add(Divider());
-      content.add(Message(body: profile.bio));
+      content.add(Message(body: profile.bio!));
     }
 
-    final infos = <Widget>[
+    final infos = <Widget?>[
       // display diaspora ID only if not in appbar already
       _buildInfo(Icons.person, profile.person.name != null ? profile.person.diasporaId : null),
       _buildInfo(Icons.perm_identity, profile.gender),
       _buildInfo(Icons.location_on, profile.location),
       _buildInfo(Icons.cake, profile.formattedBirthday)
-    ].where((info) => info != null).toList();
+    ].whereType<Widget>().toList();
 
     if (infos.isNotEmpty) {
       content.add(Divider());
@@ -291,7 +292,7 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
     return content;
   }
 
-  Widget _buildInfo(IconData icon, String value) =>
+  Widget? _buildInfo(IconData icon, String? value) =>
     value == null || value.isEmpty ? null : Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -328,7 +329,7 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
 }
 
 class _AspectMembershipView extends StatefulWidget {
-  _AspectMembershipView({Key key, @required this.profile}) : super(key: key);
+  _AspectMembershipView({Key? key, required this.profile}) : super(key: key);
 
   final Profile profile;
 
@@ -346,7 +347,7 @@ class _AspectMembershipViewState extends State<_AspectMembershipView> with State
     final borderColor = colors.outlineButtonBorder(Theme.of(context));
     return Tooltip(
       message: _shareStatus,
-      child: OutlineButton(
+      child: OutlinedButton(
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -401,7 +402,7 @@ class _AspectMembershipViewState extends State<_AspectMembershipView> with State
       profile = context.read<_ProfileNotifier>(),
       oldAspects = List.of(profile.value.aspects);
 
-    List<Aspect> newAspects = await showDialog(
+    List<Aspect>? newAspects = await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AspectSelectionList.buildDialog(
@@ -433,7 +434,7 @@ class _AspectMembershipViewState extends State<_AspectMembershipView> with State
       if (mounted) {
         final background = startedSharing ? colors.positiveAction : stoppedSharing ? colors.negativeAction : null,
           text = background != null ? (ThemeData.estimateBrightnessForColor(background) == Brightness.light ? Colors.black : Colors.white) : null;
-        Scaffold.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: background,
           content: Text(
             startedSharing ? l.startedSharing(profile.value.person.nameOrId) :

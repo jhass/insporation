@@ -15,7 +15,7 @@ import 'utils.dart';
 import 'widgets.dart';
 
 class PersonHeader extends StatelessWidget {
-  const PersonHeader({Key key, @required this.person}) : super(key: key);
+  const PersonHeader({Key? key, required this.person}) : super(key: key);
 
   final Person person;
 
@@ -47,11 +47,11 @@ class PersonHeader extends StatelessWidget {
 }
 
 class Message extends StatelessWidget with LocalizationHelpers {
-  Message({Key key, @required this.body, this.mentionedPeople, this.debugInfo}) : super(key: key);
+  Message({Key? key, required this.body, this.mentionedPeople, this.debugInfo}) : super(key: key);
 
   final String body;
-  final Map<String, Person> mentionedPeople;
-  final String debugInfo;
+  final Map<String, Person>? mentionedPeople;
+  final String? debugInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +71,17 @@ class Message extends StatelessWidget with LocalizationHelpers {
             md.StrikethroughSyntax(),
             md.AutolinkExtensionSyntax(),
             mde.TagLinkSyntax(),
-            mde.MentionLinkSyntax((diasporaId, inlineName) =>
-              mentionedPeople != null ? mentionedPeople[diasporaId] : null),
+            mde.MentionLinkSyntax((diasporaId, inlineName) {
+              final people = mentionedPeople;
+              return people != null ? people[diasporaId] : null;
+            }),
             mde.DiasporaAutolinkSyntax()
           ],
         ),
-        onLinkTap: (url) {
-          if (url.startsWith('eu.jhass.insporation://tags/')) {
+        onLinkTap: (url, _, __, ___) {
+          if (url == null) {
+            return;
+          } else if (url.startsWith('eu.jhass.insporation://tags/')) {
             final tag = Uri.decodeFull(url.split(r'/').last);
             Navigator.pushNamed(context, '/stream/tag', arguments: tag);
           } else if (url.startsWith('eu.jhass.insporation://people/')) {
@@ -100,7 +104,7 @@ class Message extends StatelessWidget with LocalizationHelpers {
         }
       );
     } catch (e) {
-      final theme = Theme.of(context);
+      final theme = Theme.of(context), debugInfo = this.debugInfo;
       return Container(
         color: theme.colorScheme.error,
         alignment: Alignment.center,
@@ -118,7 +122,7 @@ class Message extends StatelessWidget with LocalizationHelpers {
               color: theme.colorScheme.onError,
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: debugInfo));
-                Scaffold.of(context).showSnackBar(SnackBar(content: Text(l(context).detailsOnErrorCopied)));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l(context).detailsOnErrorCopied)));
               }
             ),
             SelectableText(debugInfo, style: TextStyle(
@@ -132,15 +136,20 @@ class Message extends StatelessWidget with LocalizationHelpers {
     }
   }
 
-  _renderImage(BuildContext context, Map<String, String> attributes, dom.Element node) {
+  Widget? _renderImage(BuildContext context, Map<String, String> attributes, dom.Element? node) {
+    final src = attributes['src'];
+    if (src == null) {
+      return null;
+    }
+
     return GestureDetector(
       onTap: () {
-        // Workaround onImageTap not being suppressable for anchor linked images
-        if (node.parent?.localName != 'a') {
-          Photobox.show(context, attributes['src']);
+        // Don't trigger photobox for linked images
+        if (node?.parent?.localName != 'a') {
+          Photobox.show(context, src);
         }
       },
-      child: CachedNetworkImage(imageUrl: attributes['src'], placeholder: (_, __) => Center(child: CircularProgressIndicator())),
+      child: CachedNetworkImage(imageUrl: src, placeholder: (_, __) => Center(child: CircularProgressIndicator())),
     );
   }
 }
@@ -159,7 +168,7 @@ class Photobox extends StatelessWidget {
     )
   );
 
-  Photobox(this.imageUrl, {Key key}) : super(key: key);
+  Photobox(this.imageUrl, {Key? key}) : super(key: key);
 
   final String imageUrl;
 
@@ -181,7 +190,7 @@ class Photobox extends StatelessWidget {
 }
 
 class NsfwShield extends StatefulWidget {
-  NsfwShield({Key key, @required this.author, @required this.nsfwPost}) : super(key: key);
+  NsfwShield({Key? key, required this.author, required this.nsfwPost}) : super(key: key);
 
   final Person author;
   final bool nsfwPost;
@@ -195,14 +204,14 @@ class ShowNsfwPosts extends ValueNotifier<bool> {
 }
 
 class _NsfwShieldState extends State<NsfwShield> with StateLocalizationHelpers {
-  bool _hide;
+  bool _shieldVisible = true;
 
   @override
   Widget build(BuildContext context) {
-    final showNsfw = context.tryWatch<ShowNsfwPosts>();
+    final showNsfw = context.tryWatch<ShowNsfwPosts?>();
 
     return Visibility(
-        visible: widget.nsfwPost == true && _hide != false && (showNsfw != null && showNsfw.value == false),
+        visible: widget.nsfwPost == true && _shieldVisible && (showNsfw != null && showNsfw.value == false),
         child: Container(
           alignment: Alignment.center,
           color: Colors.black.withOpacity(0.95),
@@ -222,24 +231,24 @@ class _NsfwShieldState extends State<NsfwShield> with StateLocalizationHelpers {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Flexible(
-                        child: FlatButton(
+                        child: TextButton(
                           child: Text(
                             l.showAllNsfwPostsButtonLabel,
                             textAlign: TextAlign.center,
                             style: TextStyle(color: colors.link)
                           ),
-                          onPressed: () => showNsfw.value = true
+                          onPressed: () => showNsfw?.value = true
                         ),
                       ),
                       SizedBox(height: 32, child: VerticalDivider(color: Colors.white)),
                       Flexible(
-                        child: FlatButton(
+                        child: TextButton(
                           child: Text(
                             l.showThisNsfwPostButtonLabel,
                             textAlign: TextAlign.center,
                             style: TextStyle(color: colors.link)
                           ),
-                          onPressed: () => setState(() => _hide = false),
+                          onPressed: () => setState(() => _shieldVisible = false),
                         )
                       )
                     ],

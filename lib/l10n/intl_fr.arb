@@ -1402,26 +1402,26 @@
       }
     }
   },
-  "CatcherLocalization_dialogReportModeCancel": "Ignorer",
-  "@CatcherLocalization_dialogReportModeCancel": {
+  "catcherLocalizationDialogReportModeCancel": "Ignorer",
+  "@catcherLocalizationDialogReportModeCancel": {
     "description": "Button label for dismissing a crash report",
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeAccept": "Envoyer le rapport",
-  "@CatcherLocalization_dialogReportModeAccept": {
+  "catcherLocalizationDialogReportModeAccept": "Envoyer le rapport",
+  "@catcherLocalizationDialogReportModeAccept": {
     "description": "Button label for accepting to send a crash report",
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeDescription": "Une erreur inattendue s'est produite ; un rapport d'erreur est prêt à être envoyé aux développeurs.",
-  "@CatcherLocalization_dialogReportModeDescription": {
+  "catcherLocalizationDialogReportModeDescription": "Une erreur inattendue s'est produite ; un rapport d'erreur est prêt à être envoyé aux développeurs.",
+  "@catcherLocalizationDialogReportModeDescription": {
     "description": "Description for crash report page",
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeTitle": "insporation* a planté :(",
-  "@CatcherLocalization_dialogReportModeTitle": {
+  "catcherLocalizationDialogReportModeTitle": "insporation* a planté :(",
+  "@catcherLocalizationDialogReportModeTitle": {
     "description": "Title for crash report dialog",
     "type": "text",
     "placeholders": {}

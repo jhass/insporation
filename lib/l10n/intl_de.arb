@@ -1421,26 +1421,26 @@
       }
     }
   },
-  "CatcherLocalization_dialogReportModeCancel": "Verwerfen",
-  "@CatcherLocalization_dialogReportModeCancel": {
+  "catcherLocalizationDialogReportModeCancel": "Verwerfen",
+  "@catcherLocalizationDialogReportModeCancel": {
     "description": "Button label for dismissing a crash report",
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeAccept": "Bericht senden",
-  "@CatcherLocalization_dialogReportModeAccept": {
+  "catcherLocalizationDialogReportModeAccept": "Bericht senden",
+  "@catcherLocalizationDialogReportModeAccept": {
     "description": "Button label for accepting to send a crash report",
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeDescription": "Ein unerwarteter Fehler ist aufgetreten. Ein Fehlerbericht kann an die Entwickler gesendet werden.",
-  "@CatcherLocalization_dialogReportModeDescription": {
+  "catcherLocalizationDialogReportModeDescription": "Ein unerwarteter Fehler ist aufgetreten. Ein Fehlerbericht kann an die Entwickler gesendet werden.",
+  "@catcherLocalizationDialogReportModeDescription": {
     "description": "Description for crash report page",
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeTitle": "insporation* ist abgestürzt :(",
-  "@CatcherLocalization_dialogReportModeTitle": {
+  "catcherLocalizationDialogReportModeTitle": "insporation* ist abgestürzt :(",
+  "@catcherLocalizationDialogReportModeTitle": {
     "description": "Title for crash report dialog",
     "type": "text",
     "placeholders": {}

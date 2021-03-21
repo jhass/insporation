@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
 import 'package:flutter/services.dart';
 import 'package:quiver/core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,8 +19,8 @@ class AppAuth {
   final _channel = MethodChannel("insporation/appauth");
   final _events = EventChannel("insporation/appauth_authorization_events");
   final _store = _SessionStore();
-  Stream<AuthorizationEvent> _newAuthorizations;
-  Session _currentSession;
+  Stream<AuthorizationEvent>? _newAuthorizations;
+  Session? _currentSession;
 
   AppAuth() {
     _channel.setMethodCallHandler(_dispatch);
@@ -37,8 +36,8 @@ class AppAuth {
     }
 
     debugPrint("Switched to user $userId");
-    _currentSession = await _store.fetchSession(userId);
-    await _store.rememberAsCurrentSession(_currentSession);
+    final currentSession = _currentSession = await _store.fetchSession(userId);
+    await _store.rememberAsCurrentSession(currentSession);
     debugPrint("Stored $userId's session as current one");
   }
 
@@ -60,68 +59,65 @@ class AppAuth {
 
   bool get hasSession => _currentSession?.state != null;
 
-  String get currentUserId => _currentSession?.userId;
+  String? get currentUserId => _currentSession?.userId;
 
-  Uri get currentBaseUri => currentUserId != null ? Uri(scheme: "https", host: _store.hostForUser(currentUserId)) : null;
+  Uri? get currentBaseUri => currentUserId != null ? Uri(scheme: "https", host: _store.hostForUser(currentUserId!)) : null;
 
   Future<void> destroySession(String userId) async {
     final session = await _store.fetchSession(userId);
-    if (session != null) {
-      session.state = null;
-      await _store.storeSession(session);
-    }
+    session.state = null;
+    await _store.storeSession(session);
   }
 
-  Future<void> destroyCurrentSession(String message) async {
+  Future<Never> destroyCurrentSession(String message) async {
     if (_currentSession?.state != null) {
-      _currentSession.state = null;
-      await _store.storeSession(_currentSession);
-      throw InvalidSessionError(message);
+      _currentSession!.state = null;
+      await _store.storeSession(_currentSession!);
     }
+
+    throw InvalidSessionError(message);
   }
 
   Stream<AuthorizationEvent> get newAuthorizations {
-    if (_newAuthorizations == null) {
-      _newAuthorizations = _events.receiveBroadcastStream()
+    final newAuthorizations = _newAuthorizations = _newAuthorizations ?? _events.receiveBroadcastStream()
         .map((event) => AuthorizationEvent.fromMap(event.cast<String, dynamic>()))
         .where((event) => event.error != null || event.session != _currentSession)
         .asBroadcastStream();
-    }
 
-    return _newAuthorizations;
+    return newAuthorizations;
   }
 
   Future<String> get accessToken async {
     assert(_currentSession != null, "Don't try to fetch an access token without setting a user first!");
 
-    if (_normalizeScopes(_currentSession.scopes) != _normalizeScopes(_scopes)) {
+    if (_normalizeScopes(_currentSession?.scopes) != _normalizeScopes(_scopes)) {
       // If scopes changed, invalidate state so we trigger a new authorization
-      _currentSession.state = null;
+      _currentSession!.state = null;
       debugPrint("Destroyed current authorization, scopes changed");
     }
 
     try {
       debugPrint("Fetching access token for $currentUserId");
 
-      final tokens = await _channel.invokeMapMethod("getAccessToken", {"session": _currentSession.toMap()});
-      assert(tokens["accessToken"] != null, "Platform implementation failed to return an access token");
+      final tokens = await _channel.invokeMapMethod("getAccessToken", {"session": _currentSession!.toMap()});
+      assert(tokens?["accessToken"] != null, "Platform implementation failed to return an access token");
 
       // Update current session in case it was refreshed or authorized, so we hand off the right state to the next token request
-      _currentSession = await _store.fetchSession(_currentSession.userId);
+      _currentSession = await _store.fetchSession(_currentSession!.userId);
       assert(hasSession, "We should have some session state after we got an access token");
 
       // Update last used timestamp so sorting on the sign in page can work
-      _currentSession.markAsActiveNow();
-      await _store.storeSession(_currentSession);
+      _currentSession?.markAsActiveNow();
+      await _store.storeSession(_currentSession!);
 
-      return tokens["accessToken"];
+      return tokens!["accessToken"];
     } on PlatformException catch (e) {
 
       if (e.code.startsWith("timeout_")) {
         throw TimeoutException(e.message);
       }
 
-      if (e.message?.toLowerCase()?.contains("network") == true) { // probably bad network
+      if (e.message?.toLowerCase().contains("network") == true) { // probably bad network
         throw AuthorizationFailedException("bad_network", e.message, e.details);
       }
 
@@ -132,7 +128,6 @@ class AppAuth {
 
       // our session is probably not worth anything anymore, destroy it
       await destroyCurrentSession("Failed to fetch access token: ${e.message}");
-      return null; // Previous always raises
     }
   }
 
@@ -172,7 +167,7 @@ class AppAuth {
     });
   }
 
-  static String _normalizeScopes(String scopes) {
+  static String? _normalizeScopes(String? scopes) {
     if (scopes == null) {
       return null;
     }
@@ -194,7 +189,7 @@ class _SessionStore {
       key = "$_registrationPrefix$host",
       prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(key)) {
-      return Registration.fromMap(jsonDecode(prefs.getString(key)));
+      return Registration.fromMap(jsonDecode(prefs.getString(key)!));
     } else {
       return Registration(host: host);
     }
@@ -211,7 +206,7 @@ class _SessionStore {
     return prefs
         .getKeys()
         .where((key) => key.startsWith(_sessionPrefix))
-        .map((key) => Session.fromMap(jsonDecode(prefs.getString(key))))
+        .map((key) => Session.fromMap(jsonDecode(prefs.getString(key)!)))
         .toList();
   }
 
@@ -219,7 +214,7 @@ class _SessionStore {
     final key = "$_sessionPrefix$userId",
       prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(key)) {
-      return Session.fromMap(jsonDecode(prefs.getString(key)));
+      return Session.fromMap(jsonDecode(prefs.getString(key)!));
     } else {
       return Session(userId: userId, scopes: AppAuth._scopes);
     }
@@ -231,10 +226,10 @@ class _SessionStore {
     await prefs.setString(key, jsonEncode(session.toMap()));
   }
 
-  Future<Session> fetchCurrentSession() async {
+  Future<Session?> fetchCurrentSession() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(_currentSessionKey)) {
-      return Session.fromMap(jsonDecode(prefs.getString(prefs.getString(_currentSessionKey))));
+      return Session.fromMap(jsonDecode(prefs.getString(prefs.getString(_currentSessionKey)!)!));
     } else {
       return null;
     }
@@ -257,9 +252,9 @@ class _SessionStore {
 
 class Registration {
   final String host;
-  final String state;
+  final String? state;
 
-  Registration({@required this.host, this.state});
+  Registration({required this.host, this.state});
 
   factory Registration.fromMap(Map<String, dynamic> data) => Registration(
     host: data["host"],
@@ -275,10 +270,10 @@ class Registration {
 class Session {
   final String userId;
   final String scopes;
-  String state;
+  String? state;
   int lastActiveAt;
 
-  Session({@required this.userId, @required this.scopes, this.state, this.lastActiveAt = 0});
+  Session({required this.userId, required this.scopes, this.state, this.lastActiveAt = 0});
 
   factory Session.fromMap(Map<String, dynamic> data) => Session(
     userId: data["userId"],
@@ -305,8 +300,8 @@ class Session {
 }
 
 class AuthorizationEvent {
-  final Session session;
-  final String error;
+  final Session? session;
+  final String? error;
 
   AuthorizationEvent(this.session, this.error);
 
@@ -328,6 +323,6 @@ class InvalidSessionError implements Exception {
 class AuthorizationFailedException implements Exception {
   AuthorizationFailedException(this.code, this.message, this.trace);
   final String code;
-  final String message;
+  final String? message;
   final String trace;
 }

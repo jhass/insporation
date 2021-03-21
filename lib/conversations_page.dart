@@ -21,7 +21,7 @@ class ConversationsPage extends StatefulWidget {
 
 class _ConversationsStream extends ItemStream<Conversation> {
   @override
-  Future<Page<Conversation>> loadPage({Client client, String page}) =>
+  Future<Page<Conversation>> loadPage({required Client client, String? page}) =>
     client.fetchConversations(page: page);
 }
 
@@ -33,7 +33,7 @@ class _ConversationsPageState extends ItemStreamState<Conversation, Conversation
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () async {
-          final conversation = await Navigator.pushNamed(context, "/conversations/new");
+          final conversation = await Navigator.pushNamed(context, "/conversations/new") as Conversation?;
 
           if (conversation == null) {
             return; // user didn't submit a conversation
@@ -174,7 +174,7 @@ class _ConversationsPageState extends ItemStreamState<Conversation, Conversation
 }
 
 class _ConversationMessagesPage extends StatefulWidget {
-  const _ConversationMessagesPage({Key key, this.conversation}) : super(key: key);
+  const _ConversationMessagesPage({Key? key, required this.conversation}) : super(key: key);
 
   final Conversation conversation;
 
@@ -188,20 +188,20 @@ class _ConversationMessagesStream extends ItemStream<ConversationMessage> {
   final Conversation conversation;
 
   @override
-  Future<Page<ConversationMessage>> loadPage({Client client, String page}) =>
+  Future<Page<ConversationMessage>> loadPage({required Client client, String? page}) =>
     client.fetchConversationMessages(conversation, page: page);
 
 }
 
 class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _ConversationMessagesPage> {
   final _newMessage = TextEditingController();
-  DraftObserver _draftObserver;
+  late DraftObserver _draftObserver;
 
   @override
   void initState() {
     super.initState();
     final state = context.read<PersistentState>();
-    _newMessage.text = state.getMessageDraft(widget.conversation);
+    _newMessage.text = state.getMessageDraft(widget.conversation) ?? "";
     _draftObserver = DraftObserver(context: context, controller: _newMessage, onPersist: (text) =>
       state.setMessageDraft(widget.conversation, text));
   }
@@ -264,7 +264,7 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
   );
 
   @override
-  Widget buildFooter(BuildContext context, String lastError, String lastErrorDetails) => lastError != null ?
+  Widget? buildFooter(BuildContext context, String? lastError, String? lastErrorDetails) => lastError != null ?
     super.buildFooter(context, lastError, lastErrorDetails) : ConstrainedBox(
     constraints: BoxConstraints(maxHeight: 400),
     child: Padding(
@@ -280,7 +280,7 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
 
   @override
   void dispose() {
-    _draftObserver?.dispose();
+    _draftObserver.dispose();
     _newMessage.dispose();
     super.dispose();
   }

@@ -1,44 +1,59 @@
 name: insporation
 description: A native diaspora* client
 version: 1.0.0+1
+publish_to: none
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  provider: ^4.3.2
-  shared_preferences: ^0.5.6+1
-  http: ^0.12.0+4
-  timeago: ^2.0.24
-  transparent_image: ^1.0.0
-  markdown: ^3.0.0
-  flutter_html: ^1.1.1
-  url_launcher: ^5.4.1
-  carousel_slider: ^3.0.0
-  cached_network_image: ^2.0.0
-  gesture_zoom_box: ^0.0.2
-  flutter_slidable: ^0.5.4
-  intl: ^0.16.0
-  intl_translation: ^0.17.9
-  image_picker: ^0.6.3+1
-  image_crop: ^0.3.2
-  flutter_app_badger: ^1.1.2
+  cached_network_image: ^3.0.0-nullsafety
+  carousel_slider: ^4.0.0-nullsafety.0
+  catcher: ^0.6.3
+  expandable_widget:
+    git:
+      url: https://github.com/jhass/expandable_widget.git
+      ref: nullsafety
+  flutter_app_badger: ^1.2.0
+  flutter_html: ^2.0.0-nullsafety.0
+  flutter_slidable: ^0.6.0-nullsafety.0
   geojson: ^0.10.0
-  quiver: ^2.0.5
-  expandable_widget: ^1.0.5
-  share: ^0.6.5+4
-  catcher: ^0.4.1
+  gesture_zoom_box:
+    git:
+      url: https://github.com/jhass/gesture_zoom_box.git
+      ref: nullsafety
+      path: package_src
+  http: ^0.13.0
+  image_crop:
+    git:
+      url: https://github.com/vmeretin/image_crop.git
+      ref: null-safety
+  image_picker: ^0.7.0
+  intl: ^0.17.0
+  markdown: ^4.0.0
+  provider: ^5.0.0
+  quiver: ^3.0.0
+  share: ^2.0.0
+  shared_preferences: ^2.0.5
+  timeago: ^3.0.2
+  transparent_image: ^2.0.0
+  url_launcher: ^6.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+dependency_overrides:
+  latlong:
+    git: https://github.com/SametSahin10/dart-latlong.git
+
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
     - assets/icons/

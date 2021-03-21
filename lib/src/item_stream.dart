@@ -11,15 +11,19 @@ import 'widgets.dart';
 abstract class ItemStream<T> extends ChangeNotifier {
 
   bool loading = false;
-  Page<T> _lastPage;
-  List<T> _items;
-  CancelableFuture<Page<T>> _currentLoad;
+  Page<T>? _lastPage;
+  List<T>? _items;
+  CancelableFuture<Page<T>>? _currentLoad;
 
   int get length => _items?.length ?? 0;
 
-  bool get hasMore => _lastPage == null || _lastPage.nextPage != null;
+  bool get isEmpty => _items?.isEmpty == true;
 
-  T operator [](int index) => _items[index];
+  bool get isNotEmpty => _items?.isNotEmpty == true;
+
+  bool get hasMore => _lastPage == null || _lastPage!.nextPage != null;
+
+  T operator [](int index) => _items == null ? throw IndexError(index, this) : _items![index];
 
   Iterable<R> map<R>(R Function(T) mapper) => _items?.map(mapper) ?? [];
 
@@ -27,7 +31,7 @@ abstract class ItemStream<T> extends ChangeNotifier {
     if (_items == null) {
       _items = [item];
     } else {
-      _items.add(item);
+      _items!.add(item);
     }
 
     notifyListeners();
@@ -37,7 +41,7 @@ abstract class ItemStream<T> extends ChangeNotifier {
     if (_items == null && position == 0) {
       _items = [item];
     } else if (_items != null) {
-      _items.insert(position, item);
+      _items!.insert(position, item);
     } else {
       throw ArgumentError("position outside range");
     }
@@ -51,19 +55,19 @@ abstract class ItemStream<T> extends ChangeNotifier {
       return 0;
     }
 
-    final index = _items.indexOf(item);
+    final index = _items!.indexOf(item);
 
     assert(index >= 0, "Item to remove not found in stream");
     if (index < 0) {
       return 0;
     }
 
-    _items.removeAt(index);
+    _items!.removeAt(index);
     notifyListeners();
     return index;
   }
 
-  void replace({T toRemove, T replacement}) {
+  void replace({required T toRemove, required T replacement}) {
     assert(_items != null, "Stream not created yet");
     if (_items == null) {
       _items = [replacement];
@@ -71,18 +75,18 @@ abstract class ItemStream<T> extends ChangeNotifier {
       return;
     }
 
-    final index = _items.indexOf(toRemove);
+    final index = _items!.indexOf(toRemove);
     assert(index >= 0, "Item to remove not in stream!");
     if (index >= 0) {
-      _items[index] = replacement;
+      _items![index] = replacement;
     } else {
-      _items.insert(0, replacement);
+      _items!.insert(0, replacement);
     }
     notifyListeners();
   }
 
   bool contains(T item) {
-    return _items != null && _items.contains(item);
+    return _items != null && _items!.contains(item);
   }
 
   Future<void> loadAll(Client client, {bool reset = false}) async {
@@ -97,7 +101,7 @@ abstract class ItemStream<T> extends ChangeNotifier {
       return Future.value();
     } else if (reset) {
       this.reset();
-    } else if (_lastPage != null && _lastPage.nextPage == null) {
+    } else if (_lastPage != null && _lastPage!.nextPage == null) {
       return Future.value();
     }
 
@@ -114,10 +118,8 @@ abstract class ItemStream<T> extends ChangeNotifier {
   }
 
   _cancelCurrentLoad() {
-    if (_currentLoad != null) {
-      _currentLoad.cancel();
-      _currentLoad = null;
-    }
+    _currentLoad?.cancel();
+    _currentLoad = null;
   }
 
   Future<void> _load(Client client, {page}) async {
@@ -126,15 +128,15 @@ abstract class ItemStream<T> extends ChangeNotifier {
 
     try {
       _cancelCurrentLoad();
-      _currentLoad = CancelableFuture(loadPage(client: client, page: page));
-      Page<T> newPage = await _currentLoad.get();
+      final load = _currentLoad = CancelableFuture(loadPage(client: client, page: page));
+      Page<T> newPage = await load.get();
       _currentLoad = null;
 
       _lastPage = newPage;
       if (_items == null || page == null) {
         _items = newPage.content;
       } else {
-        _items.addAll(newPage.content);
+        _items!.addAll(newPage.content);
       }
       loading = false;
       notifyListeners();
@@ -145,7 +147,7 @@ abstract class ItemStream<T> extends ChangeNotifier {
         // So prefetch the next page to turn hasMore into false, displaying the footer
         // TODO: check if we can make the backend return nothing for nextPage in all
         // cases where there's less items in the response than the limit
-        return _load(client, page: _lastPage.nextPage);
+        return _load(client, page: _lastPage!.nextPage);
       }
     } on FutureCanceledError {
       //  ignore
@@ -155,12 +157,12 @@ abstract class ItemStream<T> extends ChangeNotifier {
   }
 
   @protected
-  Future<Page<T>> loadPage({Client client, String page});
+  Future<Page<T>> loadPage({required Client client, String? page});
 }
 
 abstract class TransformingItemStream<S, T> extends ItemStream<T> {
   @override
-  Future<Page<T>> loadPage({Client client, String page}) async {
+  Future<Page<T>> loadPage({required Client client, String? page}) async {
     final source = await loadSourcePage(client: client, page: page);
     return Page(
       content: source.content.map((o) => transform(o)).toList(),
@@ -172,7 +174,7 @@ abstract class TransformingItemStream<S, T> extends ItemStream<T> {
   }
 
   @protected
-  Future<Page<S>> loadSourcePage({Client client, String page});
+  Future<Page<S>> loadSourcePage({required Client client, String? page});
 
   @protected
   T transform(S object);
@@ -182,14 +184,14 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
   ItemStreamState({this.enableUpButton = true, this.listPadding});
 
   final enableUpButton;
-  final EdgeInsetsGeometry listPadding;
+  final EdgeInsetsGeometry? listPadding;
   final _refreshIndicator = GlobalKey<RefreshIndicatorState>();
-  ItemStream<T> _items;
-  String _lastError;
-  String _lastErrorDetails;
+  late ItemStream<T> _items;
+  String? _lastError;
+  String? _lastErrorDetails;
   ScrollController _listScrollController = ScrollController();
   var _upButtonVisibility = false;
-  CurrentNavigationItemReselectedEvents _reselectionEvents;
+  CurrentNavigationItemReselectedEvents? _reselectionEvents;
 
   @protected
   ItemStream<T> get items => _items;
@@ -199,15 +201,15 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
 
   ItemStream<T> createStream();
 
-  Widget buildHeader(BuildContext context) => null;
+  Widget? buildHeader(BuildContext context) => null;
 
   Widget buildItem(BuildContext context, T item);
 
-  Widget buildFooter(BuildContext context, String lastError, String lastErrorDetails) => Center(
+  Widget? buildFooter(BuildContext context, String? lastError, String? lastErrorDetails) => Center(
     child: ErrorMessage(
       lastError,
       trace: lastErrorDetails,
-      onRetry: () => _items.length == 0 ? _refreshIndicator.currentState.show() : _loadItems()
+      onRetry: () => _items.length == 0 ? _refreshIndicator.currentState?.show() : _loadItems()
     )
   );
 
@@ -218,8 +220,8 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
     super.initState();
     _items = createStream();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) =>
-        _refreshIndicator.currentState.show());
+    WidgetsBinding.instance?.addPostFrameCallback((_) =>
+        _refreshIndicator.currentState?.show());
 
     scrollController.addListener(() {
       final newVisibility = scrollController.offset >= 800;
@@ -239,7 +241,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
 
     _reselectionEvents?.removeListener(_scrollToTop);
     _reselectionEvents = context.read<CurrentNavigationItemReselectedEvents>();
-    _reselectionEvents.addListener(_scrollToTop);
+    _reselectionEvents?.addListener(_scrollToTop);
   }
 
   @override
@@ -324,7 +326,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
   _loadItems({bool reset = false}) async {
     try {
       final client = context.read<Client>();
-      Future<void> progress;
+      late Future<void> progress;
       setState(() {
         _lastError = null;
         _lastErrorDetails = null;
@@ -342,7 +344,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
       if (mounted) {
         Navigator.pushNamedAndRemoveUntil(context, "/switch_user", (_) => true);
       }
-    } catch (e, s) {
+    } on Exception catch (e, s) {
       debugPrintStack(label: e.toString(), stackTrace:  s);
       if (mounted) {
         setState(() {
@@ -359,10 +361,10 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
 }
 
 class _StreamFallback extends StatelessWidget with LocalizationHelpers {
-  _StreamFallback({Key key, this.header, this.footer, this.loading = false, this.error = false}) : super(key: key);
+  _StreamFallback({Key? key, required this.header, this.footer, this.loading = false, this.error = false}) : super(key: key);
 
   final Widget header;
-  final Widget footer;
+  final Widget? footer;
   final bool loading;
   final bool error;
 
@@ -392,7 +394,7 @@ class _StreamFallback extends StatelessWidget with LocalizationHelpers {
                     child: Text(l(context).noItems),
                   ),
                 ),
-                Flexible(child: footer)
+                Flexible(child: footer ?? SizedBox.shrink())
               ],
             ),
           ),

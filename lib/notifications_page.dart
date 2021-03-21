@@ -11,7 +11,7 @@ import 'src/colors.dart' as colors;
 
 class NotificationStream extends ItemStream<Notification> {
   @override
-  Future<Page<Notification>> loadPage({Client client, String page}) =>
+  Future<Page<Notification>> loadPage({required Client client, String? page}) =>
     client.fetchNotifications(page: page);
 }
 
@@ -37,7 +37,7 @@ class _NotificationsPageState extends ItemStreamState<Notification, Notification
 }
 
 class _NotificationListItem extends StatefulWidget {
-  _NotificationListItem(this.notification, {Key key}) : super(key: key);
+  _NotificationListItem(this.notification, {Key? key}) : super(key: key);
 
   final Notification notification;
 
@@ -81,7 +81,7 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
   }
 
   String get _title {
-    final actorCount = widget.notification.eventCreators?.length;
+    final actorCount = widget.notification.eventCreators.length;
 
     switch (widget.notification.type) {
       case NotificationType.alsoCommented:
@@ -103,8 +103,6 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
       case NotificationType.startedSharing:
         return l.notificationStartedSharing(actorCount, _actors);
     }
-
-    return "$_actors did something noteworthy!"; // case above is exhaustive, never happens
   }
 
   String get _actors {

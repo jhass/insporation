@@ -1444,26 +1444,26 @@
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeCancel": "Odbaci",
-  "@CatcherLocalization_dialogReportModeCancel": {
+  "catcherLocalizationDialogReportModeCancel": "Odbaci",
+  "@catcherLocalizationDialogReportModeCancel": {
     "description": "Button label for dismissing a crash report",
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeAccept": "Pošalji izvještaj",
-  "@CatcherLocalization_dialogReportModeAccept": {
+  "catcherLocalizationDialogReportModeAccept": "Pošalji izvještaj",
+  "@catcherLocalizationDialogReportModeAccept": {
     "description": "Button label for accepting to send a crash report",
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeDescription": "Dogodila se neočekivana greška. Izvještaj o grešci je spreman za slanje programerima.",
-  "@CatcherLocalization_dialogReportModeDescription": {
+  "catcherLocalizationDialogReportModeDescription": "Dogodila se neočekivana greška. Izvještaj o grešci je spreman za slanje programerima.",
+  "@catcherLocalizationDialogReportModeDescription": {
     "description": "Description for crash report page",
     "type": "text",
     "placeholders": {}
   },
-  "CatcherLocalization_dialogReportModeTitle": "insporation* je prekinuo rad :(",
-  "@CatcherLocalization_dialogReportModeTitle": {
+  "catcherLocalizationDialogReportModeTitle": "insporation* je prekinuo rad :(",
+  "@catcherLocalizationDialogReportModeTitle": {
     "description": "Title for crash report dialog",
     "type": "text",
     "placeholders": {}

@@ -13,11 +13,11 @@ import 'src/utils.dart';
 import 'src/widgets.dart';
 
 class SignInPage extends StatefulWidget {
-  SignInPage({Key key, this.resumeLastSession = true, this.error}) : super(key: key);
+  SignInPage({Key? key, this.resumeLastSession = true, this.error}) : super(key: key);
 
   final title = 'insporation*';
   final bool resumeLastSession;
-  final String error;
+  final String? error;
 
   @override
   State<StatefulWidget> createState() {
@@ -30,9 +30,9 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
   final _diasporaIdController = TextEditingController();
   final _initialFocus = FocusNode();
   var _loading = true;
-  String _lastError;
-  String _lastErrorTrace;
-  Future<List<Session>> _sessions;
+  String? _lastError;
+  String? _lastErrorTrace;
+  late Future<List<Session>> _sessions;
 
   @override
   void initState() {
@@ -91,11 +91,11 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
                         (oldValue, newValue) => newValue.copyWith(text: newValue.text.toLowerCase()))
                   ],
                   onEditingComplete: _submit,
-                  validator: (String value) {
-                    return !RegExp(r"^[\w._-]+@[\w+._-]+$").hasMatch(value) ? l.invalidDiasporaId : null;
+                  validator: (String? value) {
+                    return value != null && !RegExp(r"^[\w._-]+@[\w+._-]+$").hasMatch(value) ? l.invalidDiasporaId : null;
                   },
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text(l.signInAction),
                   onPressed: _submit,
                 ),
@@ -106,18 +106,18 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
                           contentPadding: EdgeInsets.zero,
                           visualDensity: VisualDensity(
                               horizontal: VisualDensity.minimumDensity, vertical: VisualDensity.minimumDensity),
-                          onTap: () => _switchToUser(state.data[position].userId),
+                          onTap: () => _switchToUser(state.data![position].userId),
                           leading: Icon(Icons.person),
                           trailing: IconButton(
                               icon: Icon(Icons.delete),
                               onPressed: () {
-                                _destroySession(state.data[position].userId);
+                                _destroySession(state.data![position].userId);
                               }),
-                          title: Text(state.data[position].userId)),
+                          title: Text(state.data![position].userId)),
                       separatorBuilder: (context, position) => Divider(),
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: state.hasData ? state.data.length : 0),
+                      itemCount: state.hasData ? state.data!.length : 0),
                 )
               ]),
             ),
@@ -146,7 +146,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
   _showInitialError() async {
     final client = context.read<Client>();
     await client.restoreSession();
-    _diasporaIdController.text = client.currentUserId;
+    _diasporaIdController.text = client.currentUserId ?? "";
     setState(() {
       _lastError = widget.error;
       _loading = false;
@@ -187,7 +187,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
     }
 
     await client.restoreSession();
-    _diasporaIdController.text = client.currentUserId;
+    _diasporaIdController.text = client.currentUserId ?? "";
 
     _withErrorHandling(() async {
       if (client.currentUserId != null) {
@@ -210,7 +210,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
   }
 
   _maybeFocusInput() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
       final sessions = await _sessions;
       if (sessions.isEmpty) {
         FocusScope.of(context).requestFocus(_initialFocus);
@@ -219,7 +219,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
   }
 
   _submit() async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       // Workaround failing assertion when hiding TextField with focus
       FocusScopeNode currentFocus = FocusScope.of(context);
       if (!currentFocus.hasPrimaryFocus) {
@@ -260,11 +260,11 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
     await showDialog(
         context: context,
         builder: (dialogContext) => AlertDialog(title: Text(l.deleteSessionPrompt(userId)), actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(ml.cancelButtonLabel),
                 onPressed: () => Navigator.pop(dialogContext),
               ),
-              FlatButton(
+              TextButton(
                 child: Text(ml.okButtonLabel),
                 onPressed: () async {
                   await context.read<Client>().destroySession(userId);
@@ -289,7 +289,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
     Navigator.pushReplacementNamed(context, '/stream');
   }
 
-  _withErrorHandling(Future Function() action, {@required String userId}) async {
+  _withErrorHandling(Future Function() action, {required String? userId}) async {
     try {
       await action();
     } on TimeoutException {
@@ -301,11 +301,11 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
       setState(() {
         _lastError = e.code == "bad_network" ?
           l.errorNetworkErrorOnAuthorization :
-          l.errorAuthorizationFailed(userId);
+          l.errorAuthorizationFailed(userId ?? "null");
         _lastErrorTrace = e.trace;
         _loading = false;
       });
-    } catch (e, s) {
+    } on Exception catch (e, s) {
       setState(() {
         _lastError = l.errorUnexpectedErrorOnAuthorization;
         _lastErrorTrace = formatErrorTrace(e, s);

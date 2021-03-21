@@ -8,30 +8,30 @@ import 'src/widgets.dart';
 import 'src/item_stream.dart';
 
 class PostViewPage extends StatefulWidget {
-  PostViewPage({Key key, this.post, @required this.postId}) {
-    if (post != null && postId != null && post.guid != postId) {
+  PostViewPage({Key? key, this.post, required this.postId}) {
+    if (post != null && postId != null && post!.guid != postId) {
       throw "Conflicting post and post id given!";
     } else if (post == null && postId == null) {
       throw "No post or post id given!";
     }
   }
 
-  factory PostViewPage.forPost({Key key, @required Post post}) =>
+  factory PostViewPage.forPost({Key? key, required Post post}) =>
     PostViewPage(key: key, post: post, postId: post.guid);
 
-  factory PostViewPage.forId({Key key, @required String postId}) =>
+  factory PostViewPage.forId({Key? key, required String postId}) =>
     PostViewPage(key: key, postId: postId);
 
-  final String postId;
-  final Post post;
+  final String? postId;
+  final Post? post;
 
   @override
   State<StatefulWidget> createState() => _PostViewPageState();
 }
 
 class _PostViewPageState extends State<PostViewPage> {
-  Post _post;
-  String _lastError;
+  Post? _post;
+  String ?_lastError;
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _PostViewPageState extends State<PostViewPage> {
       appBar: AppBar(),
       body: _loading ? Center(child: CircularProgressIndicator()) :
         _lastError != null ? Center(child: ErrorMessage(_lastError, onRetry: _fetch)) :
-           _PostWithInteractionsView(post: _post)
+           _PostWithInteractionsView(post: _post!)
     );
   }
 
@@ -60,27 +60,27 @@ class _PostViewPageState extends State<PostViewPage> {
     final client = context.read<Client>();
 
     try {
-      final post = await client.fetchPost(widget.postId);
+      final post = await client.fetchPost(widget.postId!);
       if (mounted) {
         setState(() => _post = post);
       }
     } catch(e, s) {
-      debugPrintStack(label: e.message, stackTrace: s);
+      debugPrintStack(label: e.toString(), stackTrace: s);
 
       if (mounted) {
-        setState(() => _lastError = e.message);
+        setState(() => _lastError = e.toString());
       }
     }
   }
 }
 
 class _LikesStream extends TransformingItemStream<Like, Person> {
-  _LikesStream({@required this.post});
+  _LikesStream({required this.post});
 
   final Post post;
 
   @override
-  Future<Page<Like>> loadSourcePage({Client client, String page}) =>
+  Future<Page<Like>> loadSourcePage({required Client client, String? page}) =>
     client.fetchLikes(post, page: page);
 
   @override
@@ -88,12 +88,12 @@ class _LikesStream extends TransformingItemStream<Like, Person> {
 }
 
 class _ResharesStream extends TransformingItemStream<ReshareReference, Person> {
-  _ResharesStream({@required this.post});
+  _ResharesStream({required this.post});
 
   final Post post;
 
   @override
-  Future<Page<ReshareReference>> loadSourcePage({Client client, String page}) =>
+  Future<Page<ReshareReference>> loadSourcePage({required Client client, String? page}) =>
     client.fetchReshares(post, page: page);
 
   @override
@@ -101,15 +101,15 @@ class _ResharesStream extends TransformingItemStream<ReshareReference, Person> {
 }
 
 class _PostWithInteractionsView extends CommentListView {
-  _PostWithInteractionsView({Post post}) : super(post: post);
+  _PostWithInteractionsView({required Post post}) : super(post: post);
 
   @override
   State<StatefulWidget> createState() => _PostWithInteractionsViewState();
 }
 
 class _PostWithInteractionsViewState extends CommentListViewState {
-  _LikesStream _likes;
-  _ResharesStream _reshares;
+  _LikesStream? _likes;
+  _ResharesStream? _reshares;
 
   @override
   void didChangeDependencies() {
@@ -117,14 +117,14 @@ class _PostWithInteractionsViewState extends CommentListViewState {
 
     final client = context.read<Client>();
 
-    if (_likes == null || _likes.post != widget.post) {
-      _likes = _LikesStream(post: widget.post);
-      _likes.loadAll(client);
+    if (_likes == null || _likes!.post != widget.post) {
+      final likes = _likes = _LikesStream(post: widget.post);
+      likes.loadAll(client);
     }
 
-    if (_reshares == null || _reshares.post != widget.post) {
-      _reshares = _ResharesStream(post: widget.post);
-      _reshares.loadAll(client);
+    if (_reshares == null || _reshares!.post != widget.post) {
+      final reshares = _reshares = _ResharesStream(post: widget.post);
+      reshares.loadAll(client);
     }
   }
 
@@ -137,8 +137,8 @@ class _PostWithInteractionsViewState extends CommentListViewState {
         children: <Widget>[
           Align(alignment: Alignment.topRight, child: PostActionsView(post: widget.post, orientation: Axis.horizontal)),
           PostView(post: widget.post, enableCommentsSheet: false, limitHeight: false),
-          _ListPeopleView(people: _likes, header: l.likesHeader),
-          _ListPeopleView(people: _reshares, header: l.resharesHeader),
+          _ListPeopleView(people: _likes!, header: l.likesHeader),
+          _ListPeopleView(people: _reshares!, header: l.resharesHeader),
         ],
       ),
       super.buildHeader(context)
@@ -147,7 +147,7 @@ class _PostWithInteractionsViewState extends CommentListViewState {
 }
 
 class _ListPeopleView extends StatelessWidget {
-  _ListPeopleView({Key key, @required this.people, @required this.header}) : super(key: key);
+  _ListPeopleView({Key? key, required this.people, required this.header}) : super(key: key);
 
   final ItemStream<Person> people;
   final String header;

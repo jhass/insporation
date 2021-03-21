@@ -53,4 +53,4 @@ Color unreadItemBottomBorder(ThemeData theme) => theme.colorScheme.secondaryVari
 Color unselectedNavigationItem(ThemeData theme) => theme.colorScheme.onSurface.withOpacity(0.6);
 Color inputBorder(ThemeData theme) => theme.colorScheme.onSurface.withOpacity(0.38);
 Color outlineButtonBorder(ThemeData theme) => theme.colorScheme.onSurface.withOpacity(0.12);
-Color postInteractionIcon(ThemeData theme) => theme.iconTheme.color.withOpacity(0.6);
+Color? postInteractionIcon(ThemeData theme) => theme.iconTheme.color?.withOpacity(0.6);

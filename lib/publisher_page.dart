@@ -29,14 +29,14 @@ class PublisherOptions {
 class PublishTarget {
   final bool public;
   final bool allAspects;
-  final List<Aspect> aspects;
+  final List<Aspect>? aspects;
 
   const PublishTarget.public() : public = true, allAspects = false, aspects = null;
   const PublishTarget.allAspects() : public = false, allAspects = true, aspects = null;
   PublishTarget.aspects(this.aspects) : public = false, allAspects = false;
 }
 class PublisherPage extends StatelessWidget with LocalizationHelpers {
-  PublisherPage({Key key, this.options = const PublisherOptions()}) : super(key: key);
+  PublisherPage({Key? key, this.options = const PublisherOptions()}) : super(key: key);
 
   final PublisherOptions options;
 
@@ -51,7 +51,7 @@ class PublisherPage extends StatelessWidget with LocalizationHelpers {
 }
 
 class _PublisherPageBody extends StatefulWidget {
-  _PublisherPageBody({Key key, this.options = const PublisherOptions()}) : super(key: key);
+  _PublisherPageBody({Key? key, this.options = const PublisherOptions()}) : super(key: key);
 
   final PublisherOptions options;
 
@@ -65,13 +65,13 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   final _controller = TextEditingController();
   final _imagePicker = ImagePicker();
   final List<_AttachedPhoto> _attachedPhotos = [];
-  _Poll _poll;
-  Location _location;
+  _Poll? _poll;
+  Location? _location;
   bool _valid = false;
   bool _submitting = false;
-  String _lastError;
-  PublishTarget _currentTarget;
-  DraftObserver _draftObserver;
+  String? _lastError;
+  late PublishTarget _currentTarget;
+  late DraftObserver _draftObserver;
   bool _handledInitialPhotos = false;
 
   @override
@@ -80,14 +80,14 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
 
     final state = context.read<PersistentState>();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_initialFocus);
     });
 
     _currentTarget = widget.options.target;
 
     _controller.addListener(_onTextChanged);
-    _controller.text = presence(widget.options.prefill) ?? state.postDraft;
+    _controller.text = presence(widget.options.prefill) ?? state.postDraft ?? "";
     _draftObserver = DraftObserver(context: context, controller: _controller, onPersist: (text) => state.postDraft = text);
   }
 
@@ -154,7 +154,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
         ),
         ButtonBar(
           children: <Widget>[
-            RaisedButton.icon(
+            ElevatedButton.icon(
               icon: Icon(Icons.arrow_drop_down),
               label: Text(_currentTargetTitle),
               onPressed: !_submitting ? _selectTarget : null
@@ -162,7 +162,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
             Visibility(
               visible: !_submitting,
               replacement: CircularProgressIndicator(),
-              child: RaisedButton(
+              child: ElevatedButton(
                 child: Text(l.publishPost),
                 onPressed: _valid && !_submitting ? _submit : null
               ),
@@ -176,7 +176,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
 
   @override
   void dispose() {
-    _draftObserver?.dispose();
+    _draftObserver.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -203,10 +203,10 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
       return l.publishTargetPublic;
     } else if (_currentTarget.allAspects) {
       return l.publishTargetAllAspects;
-    } else if (_currentTarget.aspects.length == 1) {
-      return _currentTarget.aspects.first.name;
+    } else if (_currentTarget.aspects!.length == 1) {
+      return _currentTarget.aspects!.first.name;
     } else {
-      return l.publishTargetAspects(_currentTarget.aspects.length);
+      return l.publishTargetAspects(_currentTarget.aspects!.length);
     }
   }
 
@@ -262,7 +262,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   }
 
   _editPoll() async {
-    final _Poll poll = await showDialog(context: context, builder: (context) => _PollEditor(poll: _poll));
+    final _Poll? poll = await showDialog(context: context, builder: (context) => _PollEditor(poll: _poll));
 
     if (poll == null) {
       return; // user canceled
@@ -287,7 +287,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   }
 
   _selectTarget() async {
-    final PublishTarget response = await showDialog(context: context, builder: (context) =>
+    final PublishTarget? response = await showDialog(context: context, builder: (context) =>
       _PublishTargetSelectionDialog(current: _currentTarget));
 
     if (response == null) {
@@ -300,7 +300,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   _submit() async {
     final client = context.read<Client>(),
       state = context.read<PersistentState>(),
-      photos = _attachedPhotos.map((photo) => photo.guid).toList();
+      photos = _attachedPhotos.map((photo) => photo.guid!).toList();
 
     setState(() => _submitting = true);
 
@@ -335,9 +335,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
 }
 
 class _PublishTargetSelectionDialog extends StatefulWidget {
-  _PublishTargetSelectionDialog({Key key, @required this.current}) : super(key: key) {
-    assert(current != null, "Must pass the current target");
-  }
+  _PublishTargetSelectionDialog({Key? key, required this.current}) : super(key: key);
 
   final PublishTarget current;
 
@@ -346,9 +344,9 @@ class _PublishTargetSelectionDialog extends StatefulWidget {
 }
 
 class _PublishTargetSelectionDialogState extends State<_PublishTargetSelectionDialog> with StateLocalizationHelpers {
-  List<Aspect> _aspects;
-  List<Aspect> _currentSelection;
-  String _lastError;
+  List<Aspect>? _aspects;
+  late List<Aspect> _currentSelection;
+  String? _lastError;
 
   @override
   void initState() {
@@ -364,11 +362,11 @@ class _PublishTargetSelectionDialogState extends State<_PublishTargetSelectionDi
     return AlertDialog(
       title: Text(l.publishTargetPrompt),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: Text(ml.cancelButtonLabel),
           onPressed: () => Navigator.pop(context),
         ),
-        FlatButton(
+        TextButton(
           child: Text(l.selectButtonLabel),
           onPressed: _aspects != null && _currentSelection.isNotEmpty ? () =>
             Navigator.pop(context, PublishTarget.aspects(_currentSelection)) : null,
@@ -398,12 +396,12 @@ class _PublishTargetSelectionDialogState extends State<_PublishTargetSelectionDi
       ),
     ));
 
-    options.addAll(_aspects.map((aspect) =>
+    options.addAll(_aspects!.map((aspect) =>
       CheckboxListTile(
         title: Text(aspect.name),
         value: _currentSelection.contains(aspect),
         onChanged: (checked) =>
-          setState(() => checked ? _currentSelection.add(aspect) : _currentSelection.remove(aspect))
+          setState(() => checked == true ? _currentSelection.add(aspect) : _currentSelection.remove(aspect))
       )
     ));
 
@@ -421,16 +419,16 @@ class _AttachedPhoto {
   final File picture;
   final Future<Photo> upload;
   bool uploaded = false;
-  String guid;
+  String? guid;
 
   _AttachedPhoto(this.picture, this.upload);
 }
 
 class _AttachedPhotoView extends StatefulWidget {
-  _AttachedPhotoView({Key key, @required this.photo, @required this.onDelete}) : super(key: key);
+  _AttachedPhotoView({Key? key, required this.photo, required this.onDelete}) : super(key: key);
 
   final _AttachedPhoto photo;
-  final Function onDelete;
+  final VoidCallback onDelete;
 
   @override
   _AttachedPhotoViewState createState() => _AttachedPhotoViewState();
@@ -487,16 +485,16 @@ class _AttachedPhotoViewState extends State<_AttachedPhotoView> {
 }
 
 class _Poll {
-  String question;
+  String? question;
   List<String> answers = [];
 
   bool get isEmpty => question == null;
 }
 
 class _PollEditor extends StatefulWidget {
-  _PollEditor({Key key, this.poll}) : super(key: key);
+  _PollEditor({Key? key, this.poll}) : super(key: key);
 
-  final _Poll poll;
+  final _Poll? poll;
 
   @override
   _PollEditorState createState() => _PollEditorState();
@@ -506,7 +504,7 @@ class _PollEditorState extends State<_PollEditor> with StateLocalizationHelpers 
   final _question = TextEditingController();
   final _answers = <TextEditingController>[];
   final _discardedAnswers = <TextEditingController>[];
-  _Poll _poll;
+  late _Poll _poll;
   bool _valid = false;
 
   @override
@@ -525,13 +523,13 @@ class _PollEditorState extends State<_PollEditor> with StateLocalizationHelpers 
   @override
   Widget build(BuildContext context) {
     final actions = <Widget>[
-      FlatButton(child: Text(ml.cancelButtonLabel), onPressed: () => Navigator.pop(context)),
-      FlatButton(child: Text(l.saveButtonLabel), onPressed: _valid ? () => Navigator.pop(context, _poll) : null)
+      TextButton(child: Text(ml.cancelButtonLabel), onPressed: () => Navigator.pop(context)),
+      TextButton(child: Text(l.saveButtonLabel), onPressed: _valid ? () => Navigator.pop(context, _poll) : null)
     ];
 
     if (widget.poll != null) {
       actions.insert(0, Spacer());
-      actions.insert(0, FlatButton(
+      actions.insert(0, TextButton(
         child: Text(l.removeButtonLabel),
         onPressed: () => Navigator.pop(context, _Poll())
       ));
@@ -608,9 +606,9 @@ class _PollEditorState extends State<_PollEditor> with StateLocalizationHelpers 
 
 
 class _LocationEditor extends StatefulWidget {
-  _LocationEditor({Key key, this.location}) : super(key: key);
+  _LocationEditor({Key? key, this.location}) : super(key: key);
 
-  final Location location;
+  final Location? location;
 
   @override
   _LocationEditorState createState() => _LocationEditorState();
@@ -622,14 +620,14 @@ class _LocationEditorState extends State<_LocationEditor> with StateLocalization
   final _controller = TextEditingController();
   final _results = <Location>[];
   bool _loading = false;
-  CancelableFuture<GeoJsonFeatureCollection> _currentSearch;
+  CancelableFuture<GeoJsonFeatureCollection>? _currentSearch;
 
   @override
   void initState() {
     super.initState();
 
     if (widget.location != null) {
-      _controller.text = widget.location.address;
+      _controller.text = widget.location!.address;
     }
   }
 
@@ -666,12 +664,12 @@ class _LocationEditorState extends State<_LocationEditor> with StateLocalization
     )));
 
     final actions = <Widget>[
-      FlatButton(child: Text(ml.closeButtonLabel), onPressed: () => Navigator.pop(context, widget.location)),
+      TextButton(child: Text(ml.closeButtonLabel), onPressed: () => Navigator.pop(context, widget.location)),
     ];
 
     if (widget.location != null) {
       actions.insert(0, Spacer());
-      actions.insert(0, FlatButton(
+      actions.insert(0, TextButton(
         child: Text(l.removeButtonLabel),
         onPressed: () => Navigator.pop(context),
       ));
@@ -683,9 +681,7 @@ class _LocationEditorState extends State<_LocationEditor> with StateLocalization
   }
 
   _search(String query) async {
-    if (_currentSearch != null)  {
-      _currentSearch.cancel();
-    }
+    _currentSearch?.cancel();
 
     query = query.trim();
     if (query.isEmpty) {
@@ -699,8 +695,8 @@ class _LocationEditorState extends State<_LocationEditor> with StateLocalization
     try {
       setState(() => _loading = true);
 
-      _currentSearch = _fetchFeatures(query);
-      final features = await _currentSearch.get();
+      final search = _currentSearch = _fetchFeatures(query),
+        features = await search.get();
 
       setState(() {
         _results
