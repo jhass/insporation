@@ -112,10 +112,9 @@ class Avatar extends StatelessWidget {
       height: size,
       child: url != null ? ClipRRect(
         borderRadius: BorderRadius.circular(5),
-        child: CachedNetworkImage(
-          placeholder: (context, url) => Icon(Icons.person),
-          imageUrl: url!,
-          fadeInDuration: Duration(milliseconds: 250),
+        child: RemoteImage(
+          url!,
+          fallback: Icon(Icons.person),
           fit: BoxFit.cover,
         )
       ) : Icon(Icons.person),
@@ -144,11 +143,12 @@ class AvatarStack extends StatelessWidget {
               borderRadius: BorderRadius.circular(5),
               child: Container(
                 color: Theme.of(context).colorScheme.surface,
-                child: CachedNetworkImage(
+                child: RemoteImage(
+                  people[displayCount - index -1].avatar!,
                   width: 46,
                   height: 46,
-                  fit: BoxFit.cover,
-                  imageUrl: people[displayCount - index -1].avatar!
+                  fallback: SizedBox.shrink(),
+                  fit: BoxFit.cover
                 ),
               )
             )
@@ -304,4 +304,15 @@ class TextIcon extends StatelessWidget {
       )
     );
   }
+}
+
+class RemoteImage extends CachedNetworkImage {
+  RemoteImage(String url, {double? width, double? height, BoxFit? fit, Widget? fallback}) : super(
+    imageUrl: url,
+    width: width,
+    height: height,
+    fit: fit,
+    fadeInDuration: Duration(milliseconds: 250),
+    placeholder: (_, __) => fallback ?? Center(child: CircularProgressIndicator()),
+    errorWidget: (context, __, ___) => fallback ?? Center(child: Icon(Icons.image_not_supported, color: Theme.of(context).errorColor.withOpacity(0.7))));
 }

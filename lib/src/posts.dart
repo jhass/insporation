@@ -1,6 +1,5 @@
 import 'dart:io' show Platform;
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:expandable_widget/expandable.dart';
 import 'package:flutter/foundation.dart';
@@ -20,6 +19,7 @@ import 'messages.dart';
 import 'timeago.dart';
 import 'utils.dart';
 import 'colors.dart' as colors;
+import 'widgets.dart';
 
 enum StreamType { main, activity, aspects, mentions, followedTags, liked, commented, tag }
 
@@ -641,10 +641,8 @@ class _PhotoSliderState extends State<_PhotoSlider> {
           itemCount: widget.photos.length,
           itemBuilder: (context, index, _) => GestureDetector(
             onTap: () => Photobox.show(context, widget.photos[index].sizes.large),
-            child: CachedNetworkImage(
-              placeholder: (context, url) => Center(child: CircularProgressIndicator()),
-              imageUrl: widget.photos[index].sizes.large,
-              fadeInDuration: Duration(milliseconds: 250),
+            child: RemoteImage(
+              widget.photos[index].sizes.large
             )
           ),
           options: CarouselOptions(
@@ -842,8 +840,8 @@ class _OEmbedView extends StatelessWidget with LocalizationHelpers {
         onTap: () => launch(oEmbed.url),
         child: Stack(
           children: <Widget>[
-            CachedNetworkImage(
-              imageUrl: oEmbed.thumbnail,
+            RemoteImage(
+              oEmbed.thumbnail,
               height: 300
             ),
             Positioned.fill(
@@ -951,7 +949,7 @@ class _OpenGraphView extends StatelessWidget {
                     height: 56,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5),
-                      child: CachedNetworkImage(imageUrl: object.image!, fit: BoxFit.cover)
+                      child: RemoteImage(object.image!, fit: BoxFit.cover)
                     )
                   ) : SizedBox.shrink(),
                 Expanded(

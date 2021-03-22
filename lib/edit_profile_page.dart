@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
@@ -94,12 +93,11 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
               )
             ) : widget.profile.avatar != null ? ClipRRect(
               borderRadius: BorderRadius.circular(5),
-              child: CachedNetworkImage(
+              child: RemoteImage(
+                widget.profile.avatar!.large,
                 width: _size,
                 height: _size,
-                fit: BoxFit.fitWidth,
-                imageUrl: widget.profile.avatar!.large,
-                placeholder: (context, url) => placeholder)
+                fit: BoxFit.fitWidth)
               ) : placeholder
           )
         ),

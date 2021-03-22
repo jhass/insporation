@@ -149,7 +149,7 @@ class Message extends StatelessWidget with LocalizationHelpers {
           Photobox.show(context, src);
         }
       },
-      child: CachedNetworkImage(imageUrl: src, placeholder: (_, __) => Center(child: CircularProgressIndicator())),
+      child: RemoteImage(src)
     );
   }
 }
@@ -180,10 +180,7 @@ class Photobox extends StatelessWidget {
       onPressed: () => Navigator.of(context).pop(),
       child: Padding(
         padding: EdgeInsets.all(16),
-        child: CachedNetworkImage(
-          imageUrl: imageUrl,
-          placeholder: (context, url) => Center(child: CircularProgressIndicator())
-        )
+        child: RemoteImage(imageUrl)
       )
     );
   }
