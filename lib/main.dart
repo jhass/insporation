@@ -152,7 +152,6 @@ class _InsporationState extends State<Insporation> {
           assert(tag != null, "Can't push tag stream without tag argument");
           return StreamPage(options: StreamOptions(type: StreamType.tag, tag: tag!));
         },
-        '/publisher': (context) => PublisherPage(options: ModalRoute.of(context)?.settings.arguments as PublisherOptions? ?? PublisherOptions()),
         '/conversations': (context) => ConversationsPage(),
         '/conversations/new': (context) => NewConversationPage(options: ModalRoute.of(context)?.settings.arguments as NewConversationOptions? ?? NewConversationOptions()),
         '/search': (context) => SearchPage(),
@@ -182,6 +181,15 @@ class _InsporationState extends State<Insporation> {
           } else {
             throw "Unsupported argument type or null";
           }
+        }
+      },
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/publisher':
+            return MaterialPageRoute<Post?>(
+              builder: (context) => PublisherPage(options: settings.arguments as PublisherOptions? ?? PublisherOptions()),
+              settings: settings
+            );
         }
       },
     );

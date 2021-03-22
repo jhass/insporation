@@ -12,7 +12,7 @@ extension TryProvide on BuildContext {
 
   T? tryProvide<T>({bool listen = false}) {
     try {
-      return Provider.of(this, listen: listen);
+      return Provider.of<T>(this, listen: listen);
     } on ProviderNotFoundException {
       return null;
     }
