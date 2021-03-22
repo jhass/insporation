@@ -32,6 +32,8 @@ const scheme = ColorScheme(
   brightness: Brightness.light
 );
 
+final theme = ThemeData.from(colorScheme: scheme);
+
 const darkScheme = ColorScheme(
   primary: primary,
   primaryVariant: primaryVariant,
@@ -46,6 +48,19 @@ const darkScheme = ColorScheme(
   onBackground: Colors.white,
   onError: Colors.black,
   brightness: Brightness.dark
+);
+
+final darkTheme = ThemeData.from(colorScheme: darkScheme).copyWith(
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      primary: darkScheme.onSurface.withOpacity(0.87)
+    )
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      primary: secondary
+    )
+  )
 );
 
 Color unreadItemBackground(ThemeData theme) => theme.colorScheme.secondary.withOpacity(0.3);

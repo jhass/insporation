@@ -135,8 +135,8 @@ class _InsporationState extends State<Insporation> {
     return MaterialApp(
       navigatorKey: _navigator,
       title: 'insporation*',
-      theme: ThemeData.from(colorScheme: colors.scheme),
-      darkTheme: ThemeData.from(colorScheme: colors.darkScheme),
+      theme: colors.theme,
+      darkTheme: colors.darkTheme,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: supportedLocales,
       home: SignInPage(),

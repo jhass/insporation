@@ -310,7 +310,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
                 color: widget.post.interactions.reshared ? colors.reshared : null
             ),
             label: Text(widget.post.interactions.reshares.toString()),
-            style: TextButton.styleFrom(textStyle: TextStyle(color: colors.postInteractionIcon(theme))),
+            style: TextButton.styleFrom(primary: colors.postInteractionIcon(theme)),
             onPressed: !widget.post.canReshare ? null : _promptReshare,
           ),
           TextButton.icon(
@@ -320,7 +320,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
                 color: widget.post.interactions.liked ? colors.liked : null
             ),
             label: Text(widget.post.interactions.likes.toString()),
-            style: TextButton.styleFrom(textStyle: TextStyle(color: colors.postInteractionIcon(theme))),
+            style: TextButton.styleFrom(primary: colors.postInteractionIcon(theme)),
             onPressed: _updatingLike || !widget.post.canLike ? null : _toggleLike
           ),
         ]
