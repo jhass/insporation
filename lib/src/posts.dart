@@ -916,6 +916,12 @@ class _OEmbedView extends StatelessWidget with LocalizationHelpers {
               if (url != null) launch(url);
             },
             data: oEmbed.html,
+            customRender: {
+              'img': (_, __, attributes, node) {
+                final src = attributes['src'];
+                return src != null ? RemoteImage(src) : null;
+              }
+            },
             style: {"blockquote": Style(margin: EdgeInsets.only(left: 8))},
           )
         )
