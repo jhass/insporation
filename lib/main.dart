@@ -94,7 +94,8 @@ void main() => Catcher(
     [EmailManualHandler(['insporation-bugs@jhass.eu'], emailTitle: "insporation* crash report")],
     explicitExceptionReportModesMap: _explicitErrorReportMode,
     explicitExceptionHandlersMap: _explicitErrorHandler,
-    localizationOptions: catcherLocalizationOptions
+    localizationOptions: catcherLocalizationOptions,
+    handleSilentError: false
   ),
   navigatorKey: _navigator
 );
