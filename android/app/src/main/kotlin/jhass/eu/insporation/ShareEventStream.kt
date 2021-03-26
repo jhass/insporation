@@ -40,7 +40,7 @@ class ShareEventStream {
         } else if (event.type?.startsWith("image/") == true) {
            return mapOf(
             "type" to "images",
-            "images" to listOf(fetchImage(context, event.getParcelableExtra(Intent.EXTRA_STREAM)))
+            "images" to listOf(fetchImage(context, event.getParcelableExtra(Intent.EXTRA_STREAM)!!))
           )
         }
       }
@@ -48,7 +48,7 @@ class ShareEventStream {
         if (event.type?.startsWith("image/") == true) {
           return mapOf(
             "type" to "images",
-            "images" to event.getParcelableArrayListExtra<Uri>(Intent.EXTRA_STREAM).map { uri -> fetchImage(context, uri) }
+            "images" to event.getParcelableArrayListExtra<Uri>(Intent.EXTRA_STREAM)!!.map { uri -> fetchImage(context, uri) }
           )
         }
       }
@@ -58,9 +58,9 @@ class ShareEventStream {
   }
 
   private suspend fun fetchImage(context: Context, uri: Uri): String {
-    if (uri.scheme == "content") {
+    if (uri.scheme == "content" && uri.lastPathSegment != null) {
       // There's no sane way to resolve a content URI from flutter side, so we copy the file into our local cache first so we can pass flutter a file URI
-      val cachePath = File(context.cacheDir, uri.lastPathSegment)
+      val cachePath = File(context.cacheDir, uri.lastPathSegment!!)
       withContext(Dispatchers.IO) {
         context.contentResolver.openInputStream(uri)?.use { source ->
           cachePath.outputStream().use { cache ->

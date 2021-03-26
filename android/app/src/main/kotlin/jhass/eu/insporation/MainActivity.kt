@@ -2,6 +2,7 @@ package jhass.eu.insporation
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -22,8 +23,8 @@ class MainActivity: FlutterActivity() {
     shareEventStream.push(intent)
   }
 
-  override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-    super.onRestoreInstanceState(savedInstanceState)
+  override fun onRestoreInstanceState(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+    super.onRestoreInstanceState(savedInstanceState, persistentState)
 
     authorizingData = savedInstanceState?.getString(STATE_AUTHORIZING_DATA)
   }
@@ -56,9 +57,9 @@ class MainActivity: FlutterActivity() {
     }
   }
 
-  override fun onSaveInstanceState(outState: Bundle?) {
-    super.onSaveInstanceState(outState)
+  override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+    super.onSaveInstanceState(outState, outPersistentState)
 
-    outState?.putString(STATE_AUTHORIZING_DATA, authorizingData)
+    outState.putString(STATE_AUTHORIZING_DATA, authorizingData)
   }
 }

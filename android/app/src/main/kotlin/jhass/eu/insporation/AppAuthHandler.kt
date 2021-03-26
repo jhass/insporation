@@ -12,7 +12,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import net.openid.appauth.*
 import org.json.JSONObject
-import java.sql.Time
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -334,7 +333,7 @@ private class Session(val userId: String, val scopes: String, var state: AuthSta
   constructor(data: Map<String, Any?>) : this(data["userId"] as String, data["scopes"] as String, data["state"]?.let { AuthState.jsonDeserialize(it as String) })
   constructor(data: String) : this(JSONObject(data))
   constructor(data: JSONObject): this(data.getString("userId"), data.getString("scopes"),
-      data.optString("state")?.let { if (it == "null") null else it }?.let { AuthState.jsonDeserialize(it) })
+      data.optString("state").let { if (it == "null" || it == "") null else it }?.let { AuthState.jsonDeserialize(it) })
 
   fun toMap(): Map<String, Any?> = mapOf("userId" to userId, "scopes" to scopes, "state" to state?.jsonSerializeString())
 
