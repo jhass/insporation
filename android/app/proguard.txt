@@ -1,0 +1,3 @@
+# Workaround crash by backporting the fix from https://github.com/flutter/plugins/pull/3746
+# TODO: revert this once the fix is released upstream
+-keep class androidx.lifecycle.DefaultLifecycleObserver
