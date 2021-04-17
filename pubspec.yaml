@@ -11,13 +11,13 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  cached_network_image: ^3.0.0-nullsafety
+  cached_network_image: ^3.0.0
   carousel_slider: ^4.0.0-nullsafety.0
   catcher: ^0.6.3
   expandable_widget: ^2.0.0-nullsafety
   flutter_app_badger: ^1.2.0
   flutter_html: ^2.0.0-nullsafety.0
-  flutter_slidable: ^0.6.0-nullsafety.0
+  flutter_slidable: ^0.6.0
   geojson: ^0.10.0
   gesture_zoom_box:
     git:
