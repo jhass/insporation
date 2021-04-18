@@ -95,6 +95,8 @@ class Message extends StatelessWidget with LocalizationHelpers {
             if (guid.length >= 16) {
               Navigator.pushNamed(context, '/post', arguments: guid);
             }
+          } else if (url.startsWith("//")) { // scheme independent link hack, assume https
+            launch("https:$url");
           } else {
             launch(url);
           }
