@@ -1427,5 +1427,63 @@
     "description": "Success message after error details were copied to clipboard",
     "type": "text",
     "placeholders": {}
+  },
+  "failedToMarkConversationAsUnread": "",
+  "@failedToMarkConversationAsUnread": {
+    "description": "Error message after marking a conversation  as unread failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "catcherLocalizationDialogReportModeDescription": "",
+  "@catcherLocalizationDialogReportModeDescription": {
+    "description": "Description for crash report page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "catcherLocalizationDialogReportModeAccept": "",
+  "@catcherLocalizationDialogReportModeAccept": {
+    "description": "Button label for accepting to send a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAuthorizationFailed": "",
+  "@errorAuthorizationFailed": {
+    "description": "Error message after authorization failed",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
+  },
+  "failedToRenderMessage": "",
+  "@failedToRenderMessage": {
+    "description": "Failure message after rendering some content failed.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorNetworkErrorOnAuthorization": "",
+  "@errorNetworkErrorOnAuthorization": {
+    "description": "Error message after a network error occurred during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "catcherLocalizationDialogReportModeTitle": "",
+  "@catcherLocalizationDialogReportModeTitle": {
+    "description": "Title for crash report dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "catcherLocalizationDialogReportModeCancel": "",
+  "@catcherLocalizationDialogReportModeCancel": {
+    "description": "Button label for dismissing a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkConversationAsRead": "",
+  "@failedToMarkConversationAsRead": {
+    "description": "Error message after marking a conversation as read failed",
+    "type": "text",
+    "placeholders": {}
   }
 }
