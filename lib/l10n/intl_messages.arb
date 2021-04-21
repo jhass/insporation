@@ -1,0 +1,1491 @@
+{
+  "@@locale": "en_DEV",
+  "@@last_modified": "2021-02-14T15:21:51.551124",
+  "saveButtonLabel": "Save",
+  "@saveButtonLabel": {
+    "description": "Label for a dialog save button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "submitButtonLabel": "Submit",
+  "@submitButtonLabel": {
+    "description": "Label for a dialog submit button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createButtonLabel": "Create",
+  "@createButtonLabel": {
+    "description": "Label for a dialog create button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertButtonLabel": "Insert",
+  "@insertButtonLabel": {
+    "description": "Label for a dialog insert button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yesButtonLabel": "Yes",
+  "@yesButtonLabel": {
+    "description": "Label for a dialog yes button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noButtonLabel": "No",
+  "@noButtonLabel": {
+    "description": "Label for a dialog no button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "retryLabel": "Retry",
+  "@retryLabel": {
+    "description": "Label for a retry button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmDeleteButtonLabel": "Confirm delete",
+  "@confirmDeleteButtonLabel": {
+    "description": "Label for a dialog confirm delete button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "removeButtonLabel": "Remove",
+  "@removeButtonLabel": {
+    "description": "Label for a dialog remove button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectButtonLabel": "Select",
+  "@selectButtonLabel": {
+    "description": "Label for a dialog select button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectAllButtonLabel": "Select all",
+  "@selectAllButtonLabel": {
+    "description": "Label for a select all button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deselectAllButtonLabel": "Deselect all",
+  "@deselectAllButtonLabel": {
+    "description": "Label for a deselect all button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorLabel": "Help",
+  "@detailsOnErrorLabel": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorDescription": "The following internal error occurred. Please include this when asking for help.",
+  "@detailsOnErrorDescription": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorCopied": "Error details copied to clipboard.",
+  "@detailsOnErrorCopied": {
+    "description": "Success message after error details were copied to clipboard",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToLoadContent": "An error occured while trying to load the content.",
+  "@failedToLoadContent": {
+    "description": "Generic failure message after loading some content failed due to an unknown reason.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToRenderMessage": "Could not render this content. Please report this with the error details below, if present.",
+  "@failedToRenderMessage": {
+    "description": "Failure message after rendering some content failed.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInAction": "Sign in",
+  "@signInAction": {
+    "description": "Sign in button label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInLabel": "diaspora* ID",
+  "@signInLabel": {
+    "description": "Label for sign in field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInHint": "username@diaspora.pod",
+  "@signInHint": {
+    "description": "Hint text for sign in field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalidDiasporaId": "Enter a full diaspora* ID",
+  "@invalidDiasporaId": {
+    "description": "Error message after an invalid diaspora* ID was entered",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorSignInTimeout": "Timeout while trying to authorize, are you sure your pod supports the API?",
+  "@errorSignInTimeout": {
+    "description": "Error message after authorization timed out",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAuthorizationFailed": "Could not authorize to {userId}, is it spelled correctly, is your network working and is your pod running the latest development snapshot?",
+  "@errorAuthorizationFailed": {
+    "description": "Error message after authorization failed",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
+  },
+  "errorNetworkErrorOnAuthorization": "A network error occurred, please ensure that you spelled your pod correctly and that you have a good reception, then try again.",
+  "@errorNetworkErrorOnAuthorization": {
+    "description": "Error message after a network error occurred during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorUnexpectedErrorOnAuthorization": "An unexpected error happened while trying to sign in.",
+  "@errorUnexpectedErrorOnAuthorization": {
+    "description": "Error message after an unexpected error happened during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteSessionPrompt": "Remove session for {userId} from insporation*?",
+  "@deleteSessionPrompt": {
+    "description": "Title for delete session prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
+  },
+  "navigationItemTitleStream": "Stream",
+  "@navigationItemTitleStream": {
+    "description": "Title for the Stream navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleConversations": "Conversations",
+  "@navigationItemTitleConversations": {
+    "description": "Title for the Conversations navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleSearch": "Search",
+  "@navigationItemTitleSearch": {
+    "description": "Title for the search navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleNotifications": "Notifications",
+  "@navigationItemTitleNotifications": {
+    "description": "Title for the notifications navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleContacts": "Contacts",
+  "@navigationItemTitleContacts": {
+    "description": "Title for the contacts navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleEditProfile": "Edit profile",
+  "@navigationItemTitleEditProfile": {
+    "description": "Title for the edit profile navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleSwitchUser": "Switch user",
+  "@navigationItemTitleSwitchUser": {
+    "description": "Title for the switch user navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameMain": "Stream",
+  "@streamNameMain": {
+    "description": "Name of the main stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameActivity": "Activity",
+  "@streamNameActivity": {
+    "description": "Name of the activity stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameAspects": "Aspects",
+  "@streamNameAspects": {
+    "description": "Name of the aspects stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameFollowedTags": "Followed tags",
+  "@streamNameFollowedTags": {
+    "description": "Name of the followed tags stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameMentions": "Mentions",
+  "@streamNameMentions": {
+    "description": "Name of the mentions stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameLiked": "Liked",
+  "@streamNameLiked": {
+    "description": "Name of the liked stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameCommented": "Commented",
+  "@streamNameCommented": {
+    "description": "Name of the commented stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameTag": "Tag",
+  "@streamNameTag": {
+    "description": "Name of a tag stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noItems": "Darn, nothing to display!",
+  "@noItems": {
+    "description": "Fallback message when something didn't return any items",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deletedPostReshareHint": "Reshare of a deleted post",
+  "@deletedPostReshareHint": {
+    "description": "Fallback message when showing a reshare of a deleted post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createComment": "Comment",
+  "@createComment": {
+    "description": "Label for create comment button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "commentsHeader": "Comments",
+  "@commentsHeader": {
+    "description": "Header for comment stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToCommentOnPost": "Failed to create comment",
+  "@failedToCommentOnPost": {
+    "description": "Error message after commenting on a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteCommentPrompt": "Delete comment?",
+  "@deleteCommentPrompt": {
+    "description": "Title for delete comment prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToDeleteComment": "Failed to delete comment",
+  "@failedToDeleteComment": {
+    "description": "Error message after deleting a comment failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportComment": "Report",
+  "@reportComment": {
+    "description": "Tooltip for report comment icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportCommentPrompt": "Report comment",
+  "@reportCommentPrompt": {
+    "description": "Title for report comment prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportCommentHint": "Please describe the issue",
+  "@reportCommentHint": {
+    "description": "Hint text for comment report field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sentCommentReport": "Report sent.",
+  "@sentCommentReport": {
+    "description": "Success message after a comment report was sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReportComment": "Failed to create the report",
+  "@failedToReportComment": {
+    "description": "Error message after a comment report couldn't be sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "likesHeader": "Likes",
+  "@likesHeader": {
+    "description": "Header for likes list",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToLikePost": "Failed to like the post",
+  "@failedToLikePost": {
+    "description": "Error message after liking a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUnlikePost": "Failed to unlike the post",
+  "@failedToUnlikePost": {
+    "description": "Error message after unliking a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resharesHeader": "Reshares",
+  "@resharesHeader": {
+    "description": "Header for reshares list",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resharePrompt": "Reshare post?",
+  "@resharePrompt": {
+    "description": "Title for reshare post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmReshare": "Reshare",
+  "@confirmReshare": {
+    "description": "Label for confirm button in the reshare prompt",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToResharePost": "Failed to reshare post",
+  "@failedToResharePost": {
+    "description": "Error message after resharing a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "startPostSubscription": "Enable notifications",
+  "@startPostSubscription": {
+    "description": "Tooltip for start post subscription icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancelPostSubscription": "Stop notifications",
+  "@cancelPostSubscription": {
+    "description": "Tooltip for cancel post subscription icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToSubscribeToPost": "Failed to subscribe to the post",
+  "@failedToSubscribeToPost": {
+    "description": "Error message after failing to subscribe to a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUnsubscribeFromPost": "Failed to unsubscribe from the post",
+  "@failedToUnsubscribeFromPost": {
+    "description": "Error message after failing to unsubscribe from a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deletePostPrompt": "Delete post?",
+  "@deletePostPrompt": {
+    "description": "Title for delete post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToDeletePost": "Failed to delete the post",
+  "@failedToDeletePost": {
+    "description": "Error message after failing to delete a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "hidePost": "Hide",
+  "@hidePost": {
+    "description": "Tooltip for hide post icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToHidePost": "Failed to hide the post",
+  "@failedToHidePost": {
+    "description": "Error message after failing to hide a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPost": "Report",
+  "@reportPost": {
+    "description": "Tooltip for report post icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPostPrompt": "Report post",
+  "@reportPostPrompt": {
+    "description": "Title for report post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPostHint": "Please describe the issue",
+  "@reportPostHint": {
+    "description": "Hint text for post report field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sentPostReport": "Report sent.",
+  "@sentPostReport": {
+    "description": "Success message after a post report was sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReportPost": "Failed to create report",
+  "@failedToReportPost": {
+    "description": "Error message after a post report couldn't be sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "showOriginalPost": "Show the originally reshared post",
+  "@showOriginalPost": {
+    "description": "Tooltip message for the show original post button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "voteCount": "{count,plural, =0{No votes so far}=1{1 vote so far}other{{count} votes so far}}",
+  "@voteCount": {
+    "description": "Label for how many votes are registered on a poll",
+    "type": "text",
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "pollResultsButtonLabel": "View results",
+  "@pollResultsButtonLabel": {
+    "description": "Label for view poll results button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "voteButtonLabel": "Vote",
+  "@voteButtonLabel": {
+    "description": "Label for poll vote submission",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToVote": "Failed to vote on post",
+  "@failedToVote": {
+    "description": "Error message after voting on a poll failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "oEmbedHeader": "{author} on {provider}:",
+  "@oEmbedHeader": {
+    "description": "Header above HTML style oEmbeds",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      },
+      "provider": {
+        "example": "Twitter"
+      }
+    }
+  },
+  "oEmbedAuthor": "by {author}",
+  "@oEmbedAuthor": {
+    "description": "Subtitle on oEmbed thumbnails",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      }
+    }
+  },
+  "nsfwShieldTitle": "NSFW post by {author}",
+  "@nsfwShieldTitle": {
+    "description": "Title on the NSFW shield",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      }
+    }
+  },
+  "showAllNsfwPostsButtonLabel": "Show all NSFW posts",
+  "@showAllNsfwPostsButtonLabel": {
+    "description": "Label on show all NSFW posts button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "showThisNsfwPostButtonLabel": "Show this post",
+  "@showThisNsfwPostButtonLabel": {
+    "description": "Label on show this NSFW post button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectsPrompt": "Select aspects",
+  "@aspectsPrompt": {
+    "description": "Title for the aspect selection dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatItalic": "Italic",
+  "@formatItalic": {
+    "description": "Tooltip for format italic button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatBold": "Bold",
+  "@formatBold": {
+    "description": "Tooltip for format bold button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatStrikethrough": "Strikethrough",
+  "@formatStrikethrough": {
+    "description": "Tooltip for format strikethrough button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertHeading": "Heading",
+  "@insertHeading": {
+    "description": "Tooltip for insert heading button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertBulletedList": "Bulleted list",
+  "@insertBulletedList": {
+    "description": "Tooltip for insert bulleted list button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertNumberedList": "Numbered list",
+  "@insertNumberedList": {
+    "description": "Tooltip for insert numbered list button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertQuote": "Quote",
+  "@insertQuote": {
+    "description": "Tooltip for insert quote button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertCode": "Code",
+  "@insertCode": {
+    "description": "Tooltip for insert code button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertCodeBlock": "Code block",
+  "@insertCodeBlock": {
+    "description": "Tooltip for insert code block button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLink": "Link",
+  "@insertLink": {
+    "description": "Tooltip for insert link button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertImageURL": "Image URL",
+  "@insertImageURL": {
+    "description": "Tooltip for insert image URL button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertHashtag": "Hashtag",
+  "@insertHashtag": {
+    "description": "Tooltip for insert hashtag button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertMention": "Mention",
+  "@insertMention": {
+    "description": "Tooltip for insert mention button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLinkPrompt": "Insert a link",
+  "@insertLinkPrompt": {
+    "description": "Title for insert link prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertImageURLPrompt": "Embed an image",
+  "@insertImageURLPrompt": {
+    "description": "Title for insert image URL prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLinkURLHint": "URL",
+  "@insertLinkURLHint": {
+    "description": "Hint text for URL field in insert link dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLinkDescriptionHint": "Description (optional)",
+  "@insertLinkDescriptionHint": {
+    "description": "Hint text for description field in insert link dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchDialogHint": "Search",
+  "@searchDialogHint": {
+    "description": "Hint text for the search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tagSearchDialogHint": "Search for a tag",
+  "@tagSearchDialogHint": {
+    "description": "Hint text for the tag search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "peopleSearchDialogHint": "Search for person",
+  "@peopleSearchDialogHint": {
+    "description": "Hint text for the people search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectsListTitle": "Aspects",
+  "@aspectsListTitle": {
+    "description": "Title for the aspects list page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createAspectPrompt": "Create an aspect",
+  "@createAspectPrompt": {
+    "description": "Title for the create aspect prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToCreateAspect": "Failed to create aspect",
+  "@failedToCreateAspect": {
+    "description": "Error message after failing to create an aspect",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editAspectPrompt": "Edit aspect",
+  "@editAspectPrompt": {
+    "description": "Title for the edit aspect prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToRenameAspect": "Failed to rename aspect {oldName} to {newName}",
+  "@failedToRenameAspect": {
+    "description": "Error message after renaming an aspect failed",
+    "type": "text",
+    "placeholders": {
+      "oldName": {
+        "example": "Friends"
+      },
+      "newName": {
+        "example": "Enemies"
+      }
+    }
+  },
+  "deleteAspectPrompt": "Delete aspect {name}?",
+  "@deleteAspectPrompt": {
+    "description": "Title for the delete aspect prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Colleagues"
+      }
+    }
+  },
+  "failedToDeleteAspect": "Failed to remove aspect {name}",
+  "@failedToDeleteAspect": {
+    "description": "Error message after deleting an aspect failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Leaders"
+      }
+    }
+  },
+  "aspectNameHint": "Enter a name",
+  "@aspectNameHint": {
+    "description": "Hint text for an aspect name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "replyToConversation": "Reply",
+  "@replyToConversation": {
+    "description": "Label for reply to conversation button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReplyToConversation": "Failed to reply to conversation",
+  "@failedToReplyToConversation": {
+    "description": "Error message after replying to a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToHideConversation": "Failed to hide conversation",
+  "@failedToHideConversation": {
+    "description": "Error message after hiding a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileTitle": "Edit profile",
+  "@editProfileTitle": {
+    "description": "Title for edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "uploadProfilePictureHeader": "Update profile picture",
+  "@uploadProfilePictureHeader": {
+    "description": "Header for upload profile picture section on the edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "takeNewPicture": "Take new picture",
+  "@takeNewPicture": {
+    "description": "Label for take a new picture button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "uploadNewPicture": "Upload new picture",
+  "@uploadNewPicture": {
+    "description": "Label for upload a new picture button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUploadProfilePicture": "Failed to upload profile picture",
+  "@failedToUploadProfilePicture": {
+    "description": "Error message after uploading a profile picture failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileHeader": "Edit profile",
+  "@editProfileHeader": {
+    "description": "Header for edit profile section on edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileNameLabel": "Name",
+  "@editProfileNameLabel": {
+    "description": "Label for edit profile name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileLocationLabel": "Location",
+  "@editProfileLocationLabel": {
+    "description": "Label for edit profile location field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileGenderLabel": "Gender",
+  "@editProfileGenderLabel": {
+    "description": "Label for edit profile gender field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileBirthdayLabel": "Birthday",
+  "@editProfileBirthdayLabel": {
+    "description": "Label for edit profile birthday field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfilePublicLabel": "Make profile info public?",
+  "@editProfilePublicLabel": {
+    "description": "Label for edit profile public field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileSearchableLabel": "Allow to be searched for?",
+  "@editProfileSearchableLabel": {
+    "description": "Label for edit profile searchable field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileNsfwLabel": "Mark profile as #nsfw?",
+  "@editProfileNsfwLabel": {
+    "description": "Label for edit profile NSFW field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileTagsLabel": "Tags",
+  "@editProfileTagsLabel": {
+    "description": "Label for edit profile tags field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileSubmit": "Update profile",
+  "@editProfileSubmit": {
+    "description": "Label for edit profile submit button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "duplicateProfileTag": "Tag already added",
+  "@duplicateProfileTag": {
+    "description": "Error message after trying to add a duplicate profile tag",
+    "type": "text",
+    "placeholders": {}
+  },
+  "updatedProfile": "Profile updated.",
+  "@updatedProfile": {
+    "description": "Success message after the profile was updated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUpdateProfile": "Failed to update profile",
+  "@failedToUpdateProfile": {
+    "description": "Error message after updating the profile failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationTitle": "Start a new conversation",
+  "@newConversationTitle": {
+    "description": "Title for new conversation page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationRecipientsLabel": "Recipients",
+  "@newConversationRecipientsLabel": {
+    "description": "Label for new conversation recipients field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationSubjectLabel": "Subject",
+  "@newConversationSubjectLabel": {
+    "description": "Label for new conversation subject field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationMessageLabel": "Message",
+  "@newConversationMessageLabel": {
+    "description": "Label for new conversation message field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sendNewConversation": "Send",
+  "@sendNewConversation": {
+    "description": "Label for new conversation send button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToAddConversationParticipantNotSharingWith": "You're not sharing with {name}, cannot add them as a recipient!",
+  "@failedToAddConversationParticipantNotSharingWith": {
+    "description": "Error message after adding a conversation participant failed due to the user not sharing with them",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Stranger"
+      }
+    }
+  },
+  "failedToAddConversationParticipantNotSharing": "{name} is not sharing with you, cannot add them as a recipient!",
+  "@failedToAddConversationParticipantNotSharing": {
+    "description": "Error message after adding a conversation participant failed due to them not sharing with the user",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Charlotte Idol"
+      }
+    }
+  },
+  "failedToAddConversationParticipantDuplicate": "{name} already is a recipient, cannot add them twice.",
+  "@failedToAddConversationParticipantDuplicate": {
+    "description": "Error message after adding a conversation participant failed due to them already being part of the participants",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice McBoss"
+      }
+    }
+  },
+  "failedToAddConversationParticipant": "Failed to add recipient",
+  "@failedToAddConversationParticipant": {
+    "description": "Error message after adding a conversation participant failed for a general reason",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToCreateConversation": "Failed to create conversation",
+  "@failedToCreateConversation": {
+    "description": "Error message after sending a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkConversationAsRead": "Failed to mark conversation as read",
+  "@failedToMarkConversationAsRead": {
+    "description": "Error message after marking a conversation as read failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkConversationAsUnread": "Failed to mark conversation as unread",
+  "@failedToMarkConversationAsUnread": {
+    "description": "Error message after marking a conversation  as unread failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetPost": "post",
+  "@notificationTargetPost": {
+    "description": "Target part of a notification message for a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetDeletedPost": "deleted post",
+  "@notificationTargetDeletedPost": {
+    "description": "Target part of a notification message for a deleted post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationActorsForTwoPeople": "{first} and {second}",
+  "@notificationActorsForTwoPeople": {
+    "description": "Actors part of a notification message with exactly two actors",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      }
+    }
+  },
+  "notificationActorsForThreePeople": "{first}, {second} and {third}",
+  "@notificationActorsForThreePeople": {
+    "description": "Actors part of a notification message with exactly three actors",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      },
+      "third": {
+        "example": "Charlotte"
+      }
+    }
+  },
+  "notificationActorsForMoreThanThreePeople": "{othersCount,plural, =0{{first}, {second} and no others}=1{{first}, {second} and one more}other{{first}, {second} and {othersCount} others}}",
+  "@notificationActorsForMoreThanThreePeople": {
+    "description": "Actors part of a notification message with more than three actors. The first two are given, the count is the count of how many more (at least two) there are. So the zero and one cases never come into use",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      },
+      "othersCount": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "notificationAlsoCommented": "{actorCount,plural, =0{Nobody also commented on a {target}.}=1{{actors} also commented on {target}.}other{{actors} also commented on {target}.}}",
+  "@notificationAlsoCommented": {
+    "description": "Notification message for when some people also commented on a post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationCommented": "{actorCount,plural, =0{Nobody commented on your {target}.}=1{{actors} commented your {target}.}other{{actors} commented your {target}.}}",
+  "@notificationCommented": {
+    "description": "Notification message for when some people commented on the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationBirthday": "{actorCount,plural, =0{Nobody has their birthday today.}=1{{actors} has their birthday today.}other{{actors} have their birthday your today.}}",
+  "@notificationBirthday": {
+    "description": "Notification message for when a contact of the user has their birthday. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "notificationLiked": "{actorCount,plural, =0{Nobody liked your {target}.}=1{{actors} liked your {target}.}other{{actors} liked your {target}.}}",
+  "@notificationLiked": {
+    "description": "Notification message for when some people liked the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationMentionedInPost": "{actorCount,plural, =0{Nobody mentioned you in a {target}.}=1{{actors} mentioned you in a {target}.}other{{actors} mentioned you in a {target}.}}",
+  "@notificationMentionedInPost": {
+    "description": "Notification message for when somebody mentioned the user in a post. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationMentionedInComment": "{actorCount,plural, =0{Nobody mentioned you in a comment.}=1{{actors} mentioned you in a comment.}other{{actors} mentioned you in a comment.}}",
+  "@notificationMentionedInComment": {
+    "description": "Notification message for when somebody mentioned the user in a comment. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "notificationMentionedInCommentOnDeletedPost": "{actorCount,plural, =0{Nobody mentioned you in a comment on a deleted post.}=1{{actors} mentioned you in a comment on a deleted post.}other{{actors} mentioned you in a comment on a deleted post.}}",
+  "@notificationMentionedInCommentOnDeletedPost": {
+    "description": "Notification message for when somebody mentioned the user in in comment on a deleted post. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "notificationReshared": "{actorCount,plural, =0{Nobody reshared your {target}.}=1{{actors} reshared your {target}.}other{{actors} reshared your {target}.}}",
+  "@notificationReshared": {
+    "description": "Notification message for when some people reshared the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationStartedSharing": "{actorCount,plural, =0{Nobody started sharing with you.}=1{{actors} started sharing with you.}other{{actors} started sharing with you.}}",
+  "@notificationStartedSharing": {
+    "description": "Notification message for when some people started sharing  with the user. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "failedToMarkNotificationAsRead": "Failed to mark notification as read",
+  "@failedToMarkNotificationAsRead": {
+    "description": "Error message after marking a notification as read failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkNotificationAsUnread": "Failed to mark notification as unread",
+  "@failedToMarkNotificationAsUnread": {
+    "description": "Error message after marking a notification  as unread failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profileInfoHeader": "Info",
+  "@profileInfoHeader": {
+    "description": "Header for info section on the profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profilePostsHeader": "Posts",
+  "@profilePostsHeader": {
+    "description": "Header for posts section on the profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfile": "Edit profile",
+  "@editProfile": {
+    "description": "Label for the edit profile button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mentionUser": "Mention user",
+  "@mentionUser": {
+    "description": "Tooltip for the mention user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "messageUser": "Message",
+  "@messageUser": {
+    "description": "Tooltip for the message user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "blockUser": "Block",
+  "@blockUser": {
+    "description": "Tooltip for the block user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "unblockUser": "Unblock",
+  "@unblockUser": {
+    "description": "Tooltip for the unblock user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToBlockUser": "Failed to block {name}",
+  "@failedToBlockUser": {
+    "description": "Error message after blocking a user failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice, alice@pod.example.org"
+      }
+    }
+  },
+  "failedToUnblockUser": "Failed to unblock {name}",
+  "@failedToUnblockUser": {
+    "description": "Error message after unblocking a user failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice, alice@pod.example.org"
+      }
+    }
+  },
+  "addContact": "Add contact",
+  "@addContact": {
+    "description": "Label for add contact button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "manageContact": "{count,plural, =0{In no aspects}=1{In one aspect}other{In {count} aspects}}",
+  "@manageContact": {
+    "description": "Label for manage contact button. The zero case and one is never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "contactStatusBlocked": "You blocked them",
+  "@contactStatusBlocked": {
+    "description": "Contact status message for a blocked user",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusMutual": "You are sharing with each other",
+  "@contactStatusMutual": {
+    "description": "Contact status message for a contact that is sharing with the user and that the user is sharing with",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusReceiving": "They are sharing with you.",
+  "@contactStatusReceiving": {
+    "description": "Contact status message for a contact that is sharing with the user, but the user is not sharing with the contact",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusSharing": "You are sharing with them.",
+  "@contactStatusSharing": {
+    "description": "Contact status message for a contact that the user is sharing with, but the contact is not sharing with the user",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusNotSharing": "You are not sharing with each other.",
+  "@contactStatusNotSharing": {
+    "description": "Contact status message for somebody that is not sharing with the user nor the user is sharing with",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactAspectsPrompt": "Select aspects for {name}",
+  "@contactAspectsPrompt": {
+    "description": "Title for the contact aspects prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "startedSharing": "Started sharing with {name}.",
+  "@startedSharing": {
+    "description": "Success message after the user started sharing with somebody",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "stoppedSharing": "Stopped sharing with {name}.",
+  "@stoppedSharing": {
+    "description": "Success message after the user stopped sharing with somebody",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "contactAspectsUpdated": "Aspects updated.",
+  "@contactAspectsUpdated": {
+    "description": "Success message after the user updated a contact's aspects",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUpdateContactAspects": "Failed to update aspects",
+  "@failedToUpdateContactAspects": {
+    "description": "Error message after updating a contact's aspects failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publisherTitle": "Write a new post",
+  "@publisherTitle": {
+    "description": "Title for the publisher page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "takePhoto": "Take a photo",
+  "@takePhoto": {
+    "description": "Tooltip for the take a photo button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "uploadPhoto": "Upload a photo",
+  "@uploadPhoto": {
+    "description": "Tooltip for the upload a photo button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addPoll": "Add a poll",
+  "@addPoll": {
+    "description": "Tooltip for the add poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addLocation": "Add your location",
+  "@addLocation": {
+    "description": "Tooltip for the add location button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishPost": "Publish post",
+  "@publishPost": {
+    "description": "Label for the publish post button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetPublic": "Public",
+  "@publishTargetPublic": {
+    "description": "Publish target label for a public post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetAllAspects": "All aspects",
+  "@publishTargetAllAspects": {
+    "description": "Publish target label for a post to all aspects",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetAspects": "{count,plural, =0{No aspects}=1{One aspect}other{{count} aspects}}",
+  "@publishTargetAspects": {
+    "description": "Publish target label for a post to a list of aspects. The zero and one cases are never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "publishTargetPrompt": "Select post visibility",
+  "@publishTargetPrompt": {
+    "description": "Title for the publish target selection prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUploadPhoto": "Failed to upload photo",
+  "@failedToUploadPhoto": {
+    "description": "Error message after uploading a photo failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pollQuestionHint": "Enter a question",
+  "@pollQuestionHint": {
+    "description": "Hint text for the poll question field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pollAnswerHint": "Enter an answer",
+  "@pollAnswerHint": {
+    "description": "Hint text for a poll answer field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createPoll": "Create poll",
+  "@createPoll": {
+    "description": "Label for the create poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editPoll": "Edit poll",
+  "@editPoll": {
+    "description": "Label for the edit poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterAddressHint": "Enter an address",
+  "@enterAddressHint": {
+    "description": "Hint text for an address field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToSearchForAddresses": "Failed to search for addresses",
+  "@failedToSearchForAddresses": {
+    "description": "Error message after searching for the entered address failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTypePeople": "People",
+  "@searchTypePeople": {
+    "description": "Label for search type selector for the people search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTypePeopleByTag": "People by tag",
+  "@searchTypePeopleByTag": {
+    "description": "Label for search type selector for the people by tag search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTypeTags": "Tags",
+  "@searchTypeTags": {
+    "description": "Label for search type selector for the tags search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchPeopleHint": "Start typing a name or diaspora* ID",
+  "@searchPeopleHint": {
+    "description": "Hint text for the people search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchPeopleByTagHint": "Enter a tag",
+  "@searchPeopleByTagHint": {
+    "description": "Hint text for the the people by tag search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTagsHint": "Start typing tag",
+  "@searchTagsHint": {
+    "description": "Hint text for the tags search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectStreamSelectorAllAspects": "All aspects",
+  "@aspectStreamSelectorAllAspects": {
+    "description": "Aspect stream selector label for all aspects",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectStreamSelectorAspects": "{count,plural, =0{No aspects}=1{One aspect}other{{count} aspects}}",
+  "@aspectStreamSelectorAspects": {
+    "description": "Aspect stream selector label for a list of aspects. The zero and one cases are never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "manageFollowedTags": "Manage followed tags",
+  "@manageFollowedTags": {
+    "description": "Label for the manage followed tags button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "followedTagsPageTitle": "Followed tags",
+  "@followedTagsPageTitle": {
+    "description": "Title for the followed tags page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToFollowTag": "Failed to follow #{tag}",
+  "@failedToFollowTag": {
+    "description": "Error message after following a tag failed",
+    "type": "text",
+    "placeholders": {
+      "tag": {
+        "example": "newhere"
+      }
+    }
+  },
+  "failedToUnfollowTag": "Failed to unfollow #{tag}",
+  "@failedToUnfollowTag": {
+    "description": "Error message after unfollowing a tag failed",
+    "type": "text",
+    "placeholders": {
+      "tag": {
+        "example": "nsfw"
+      }
+    }
+  },
+  "catcherLocalizationDialogReportModeTitle": "insporation* crashed :(",
+  "@catcherLocalizationDialogReportModeTitle": {
+    "description": "Title for crash report dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "catcherLocalizationDialogReportModeDescription": "An unexpected error occurred, an error report is ready to be send to the developers.",
+  "@catcherLocalizationDialogReportModeDescription": {
+    "description": "Description for crash report page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "catcherLocalizationDialogReportModeAccept": "Send report",
+  "@catcherLocalizationDialogReportModeAccept": {
+    "description": "Button label for accepting to send a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "catcherLocalizationDialogReportModeCancel": "Dismiss",
+  "@catcherLocalizationDialogReportModeCancel": {
+    "description": "Button label for dismissing a crash report",
+    "type": "text",
+    "placeholders": {}
+  }
+}
