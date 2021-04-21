@@ -1473,17 +1473,5 @@
     "description": "Label for a retry button",
     "type": "text",
     "placeholders": {}
-  },
-  "failedToMarkConversationAsUnread": "",
-  "@failedToMarkConversationAsUnread": {
-    "description": "Error message after marking a conversation  as unread failed",
-    "type": "text",
-    "placeholders": {}
-  },
-  "failedToMarkConversationAsRead": "",
-  "@failedToMarkConversationAsRead": {
-    "description": "Error message after marking a conversation as read failed",
-    "type": "text",
-    "placeholders": {}
   }
 }

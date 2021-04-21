@@ -1474,17 +1474,5 @@
     "description": "Label for the show details button in error messages",
     "type": "text",
     "placeholders": {}
-  },
-  "failedToMarkConversationAsRead": "",
-  "@failedToMarkConversationAsRead": {
-    "description": "Error message after marking a conversation as read failed",
-    "type": "text",
-    "placeholders": {}
-  },
-  "failedToMarkConversationAsUnread": "",
-  "@failedToMarkConversationAsUnread": {
-    "description": "Error message after marking a conversation  as unread failed",
-    "type": "text",
-    "placeholders": {}
   }
 }
