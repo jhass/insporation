@@ -1,1 +1,134 @@
-{}
+{
+  "errorSignInTimeout": "Caducou a solicitude de autorización, tes a certeza de que a túa instancia soporta a API?",
+  "@errorSignInTimeout": {
+    "description": "Error message after authorization timed out",
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalidDiasporaId": "Escribe o ID completo en diaspora*",
+  "@invalidDiasporaId": {
+    "description": "Error message after an invalid diaspora* ID was entered",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInHint": "usuaria@diaspora.pod",
+  "@signInHint": {
+    "description": "Hint text for sign in field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInLabel": "ID diaspora*",
+  "@signInLabel": {
+    "description": "Label for sign in field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInAction": "Conectar",
+  "@signInAction": {
+    "description": "Sign in button label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToRenderMessage": "Non se puido mostrar este contido. Informa deste fallo incluíndo a descrición inferior, se existe.",
+  "@failedToRenderMessage": {
+    "description": "Failure message after rendering some content failed.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToLoadContent": "Algo fallou ao intentar cargar o contido.",
+  "@failedToLoadContent": {
+    "description": "Generic failure message after loading some content failed due to an unknown reason.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorCopied": "Detalles do erro copiados ao portapapeis.",
+  "@detailsOnErrorCopied": {
+    "description": "Success message after error details were copied to clipboard",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorDescription": "Aconteceu este fallo interno. Inclúe esto cando solicites axuda.",
+  "@detailsOnErrorDescription": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorLabel": "Axuda",
+  "@detailsOnErrorLabel": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deselectAllButtonLabel": "Retirar selección a todo",
+  "@deselectAllButtonLabel": {
+    "description": "Label for a deselect all button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectAllButtonLabel": "Seleccionar todo",
+  "@selectAllButtonLabel": {
+    "description": "Label for a select all button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectButtonLabel": "Seleccionar",
+  "@selectButtonLabel": {
+    "description": "Label for a dialog select button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "removeButtonLabel": "Eliminar",
+  "@removeButtonLabel": {
+    "description": "Label for a dialog remove button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmDeleteButtonLabel": "Confirma a eliminación",
+  "@confirmDeleteButtonLabel": {
+    "description": "Label for a dialog confirm delete button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "retryLabel": "Reintentar",
+  "@retryLabel": {
+    "description": "Label for a retry button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noButtonLabel": "Non",
+  "@noButtonLabel": {
+    "description": "Label for a dialog no button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yesButtonLabel": "Si",
+  "@yesButtonLabel": {
+    "description": "Label for a dialog yes button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertButtonLabel": "Insertar",
+  "@insertButtonLabel": {
+    "description": "Label for a dialog insert button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createButtonLabel": "Crear",
+  "@createButtonLabel": {
+    "description": "Label for a dialog create button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "submitButtonLabel": "Enviar",
+  "@submitButtonLabel": {
+    "description": "Label for a dialog submit button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "saveButtonLabel": "Gardar",
+  "@saveButtonLabel": {
+    "description": "Label for a dialog save button",
+    "type": "text",
+    "placeholders": {}
+  }
+}
