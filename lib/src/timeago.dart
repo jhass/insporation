@@ -8,6 +8,7 @@ final timeagoLocaleMessages = <String, timeago.LookupMessages>{
   Locale('de').toLanguageTag(): timeago.DeMessages(),
   Locale('en').toLanguageTag(): timeago.EnMessages(),
   Locale('fr').toLanguageTag(): timeago.FrMessages(),
+  Locale('gl').toLanguageTag(): timeago.EnMessages(), //TODO gl missing upstream
   Locale('hr').toLanguageTag(): timeago.EnMessages(), //TODO hr missing upstream
   Locale('it').toLanguageTag(): timeago.ItMessages(),
 };

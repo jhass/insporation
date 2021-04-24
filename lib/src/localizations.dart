@@ -15,6 +15,7 @@ const supportedLocales = [
   const Locale('de'),
   const Locale('en'),
   const Locale('fr'),
+  const Locale('gl'),
   const Locale('hr'),
   const Locale('it')
 ];
@@ -24,6 +25,7 @@ final catcherLocalizationOptions = [
   CatcherLocalization('de', defaults: LocalizationOptions.buildDefaultGermanOptions()),
   CatcherLocalization('en'),
   CatcherLocalization('fr', defaults: LocalizationOptions.buildDefaultFrenchOptions()),
+  CatcherLocalization('gl'),
   CatcherLocalization('hr'),
   CatcherLocalization('it', defaults: LocalizationOptions.buildDefaultItalianOptions())
 ];
