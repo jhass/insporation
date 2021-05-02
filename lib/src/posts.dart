@@ -212,12 +212,10 @@ class PostView extends StatelessWidget with LocalizationHelpers {
           visible: post.photos.length > 0,
           child: _PhotoSlider(photos: post.photos)
         ),
-        !post.reshareOfDeleted ? Flexible(
-          child: Message(
-            body: post.body,
-            mentionedPeople: post.mentionedPeople,
-            debugInfo: "Post ${post.guid}"
-          )
+        !post.reshareOfDeleted ? Message(
+          body: post.body,
+          mentionedPeople: post.mentionedPeople,
+          debugInfo: "Post ${post.guid}"
         ) : Container(
           padding: EdgeInsets.all(16),
           color: Colors.black87,
@@ -246,7 +244,7 @@ class PostView extends StatelessWidget with LocalizationHelpers {
     if (limitHeight) {
       return ExpandableWidget.maxHeight(
         maxHeight: 600,
-        child: content,
+        child: Wrap(clipBehavior: Clip.hardEdge, children: [content]),
       );
     } else {
       return content;
