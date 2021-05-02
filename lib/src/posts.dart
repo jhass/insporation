@@ -917,8 +917,8 @@ class _OEmbedView extends StatelessWidget with LocalizationHelpers {
             },
             data: oEmbed.html,
             customRender: {
-              'img': (_, __, attributes, node) {
-                final src = attributes['src'];
+              'img': (context, _) {
+                final src = context.tree.attributes['src'];
                 return src != null ? RemoteImage(src) : null;
               }
             },
@@ -950,7 +950,6 @@ class _OpenGraphView extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(8),
             child: Row(
-              //crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 object.image != null ?
                   SizedBox(

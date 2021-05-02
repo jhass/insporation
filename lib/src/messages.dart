@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -102,7 +101,7 @@ class Message extends StatelessWidget with LocalizationHelpers {
           }
         },
         customRender: {
-          'img': (_, __, attributes, node) =>_renderImage(context, attributes, node)
+          'img': (renderContext, _) =>_renderImage(context, renderContext.tree.element)
         }
       );
     } catch (e) {
@@ -138,8 +137,8 @@ class Message extends StatelessWidget with LocalizationHelpers {
     }
   }
 
-  Widget? _renderImage(BuildContext context, Map<String, String> attributes, dom.Element? node) {
-    final src = attributes['src'];
+  Widget? _renderImage(BuildContext context, dom.Element? element) {
+    final src = element?.attributes['src'];
     if (src == null) {
       return null;
     }
@@ -147,7 +146,7 @@ class Message extends StatelessWidget with LocalizationHelpers {
     return GestureDetector(
       onTap: () {
         // Don't trigger photobox for linked images
-        if (node?.parent?.localName != 'a') {
+        if (element?.parent?.localName != 'a') {
           Photobox.show(context, src);
         }
       },
