@@ -4,6 +4,13 @@ import 'package:catcher/model/localization_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_ar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_de.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_fr.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_gl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_hr.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations_it.dart';
 
 import 'posts.dart';
 
@@ -21,13 +28,13 @@ const supportedLocales = [
 ];
 
 final catcherLocalizationOptions = [
-  CatcherLocalization('ar'),
-  CatcherLocalization('de', defaults: LocalizationOptions.buildDefaultGermanOptions()),
-  CatcherLocalization('en'),
-  CatcherLocalization('fr', defaults: LocalizationOptions.buildDefaultFrenchOptions()),
-  CatcherLocalization('gl'),
-  CatcherLocalization('hr'),
-  CatcherLocalization('it', defaults: LocalizationOptions.buildDefaultItalianOptions())
+  AppLocalizationsAr().catcherOptions(),
+  AppLocalizationsDe().catcherOptions(defaults: LocalizationOptions.buildDefaultGermanOptions()),
+  AppLocalizationsEn().catcherOptions(),
+  AppLocalizationsFr().catcherOptions(defaults: LocalizationOptions.buildDefaultFrenchOptions()),
+  AppLocalizationsGl().catcherOptions(),
+  AppLocalizationsHr().catcherOptions(),
+  AppLocalizationsIt().catcherOptions(defaults: LocalizationOptions.buildDefaultItalianOptions())
 ];
 
 mixin LocalizationHelpers {
@@ -65,46 +72,15 @@ extension StreamName on AppLocalizations {
   }
 }
 
-class CatcherLocalization implements LocalizationOptions {
-  final String languageCode;
-  final LocalizationOptions defaults;
-  late final AppLocalizations _localizations;
-
-  CatcherLocalization(this.languageCode, {LocalizationOptions? defaults}) :
-    this.defaults = defaults ?? LocalizationOptions.buildDefaultEnglishOptions() {
-      AppLocalizations.delegate.load(Locale(languageCode)).then((localizations) => this._localizations = localizations);
-    }
-
-  @override
-  String get dialogReportModeTitle => _localizations.catcherLocalizationDialogReportModeTitle;
-
-  @override
-  String get dialogReportModeDescription => _localizations.catcherLocalizationDialogReportModeDescription;
-
-  @override
-  String get dialogReportModeAccept => _localizations.catcherLocalizationDialogReportModeAccept;
-
-  @override
-  String get dialogReportModeCancel => _localizations.catcherLocalizationDialogReportModeCancel;
-
-  @override
-  String get notificationReportModeTitle => defaults.notificationReportModeTitle;
-
-  @override
-  String get notificationReportModeContent => defaults.notificationReportModeContent;
-
-  @override
-  String get pageReportModeTitle => defaults.pageReportModeTitle;
-
-  @override
-  String get pageReportModeDescription => defaults.pageReportModeDescription;
-
-  @override
-  String get pageReportModeAccept => defaults.pageReportModeAccept;
-
-  @override
-  String get pageReportModeCancel => defaults.pageReportModeCancel;
-
-  @override
-  String get toastHandlerDescription => defaults.toastHandlerDescription;
+extension CatcherLocalization on AppLocalizations {
+  LocalizationOptions catcherOptions({LocalizationOptions? defaults}) {
+    defaults = defaults ??  LocalizationOptions.buildDefaultEnglishOptions();
+    return defaults.copyWith(
+      languageCode: localeName,
+      dialogReportModeTitle: catcherLocalizationDialogReportModeTitle,
+      dialogReportModeDescription: catcherLocalizationDialogReportModeDescription,
+      dialogReportModeAccept: catcherLocalizationDialogReportModeAccept,
+      dialogReportModeCancel: catcherLocalizationDialogReportModeCancel
+    );
+  }
 }

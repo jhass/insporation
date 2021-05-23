@@ -13,7 +13,7 @@ dependencies:
     sdk: flutter
   cached_network_image: ^3.0.0
   carousel_slider: ^4.0.0-nullsafety.0
-  catcher: ^0.6.3
+  catcher: ^0.6.6
   expandable_widget: ^2.0.0-nullsafety
   flutter_app_badger: ^1.2.0
   flutter_html:

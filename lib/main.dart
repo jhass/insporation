@@ -46,17 +46,18 @@ const _skipableErrors = <String>[
   'CERTIFICATE_VERIFY_FAILED',
   'HandshakeException'
 ];
-final _navigator = GlobalKey<NavigatorState>(),
-  _skipReportMode = SilentReportMode(),
-  _skipErrorHandler = ConsoleHandler(
-  enableApplicationParameters: false,
-  enableDeviceParameters: false,
-  enableStackTrace: false
-);
-final Map<String, ReportMode> _explicitErrorReportMode =
-  Map.fromIterable(_skipableErrors, value: (_) => _skipReportMode);
-final Map<String, ReportHandler> _explicitErrorHandler =
-  Map.fromIterable(_skipableErrors, value: (_) => _skipErrorHandler);
+
+bool _shouldReportError(Report report) {
+  if (report.error == null) {
+    return true;
+  }
+
+  final skip = _skipableErrors.any((message) => report.error.toString().toLowerCase().contains(message.toLowerCase()));
+
+  return !skip;
+}
+
+final _navigator = GlobalKey<NavigatorState>();
 
 void main() => Catcher(
   rootWidget: MultiProvider(
@@ -85,16 +86,14 @@ void main() => Catcher(
   debugConfig: CatcherOptions(
     SilentReportMode(),
     [ConsoleHandler()],
-    explicitExceptionReportModesMap: _explicitErrorReportMode,
-    explicitExceptionHandlersMap: _explicitErrorHandler,
-    localizationOptions: catcherLocalizationOptions
+    localizationOptions: catcherLocalizationOptions,
+    filterFunction: _shouldReportError
   ),
   releaseConfig: CatcherOptions(
     DialogReportMode(),
     [EmailManualHandler(['insporation-bugs@jhass.eu'], emailTitle: "insporation* crash report")],
-    explicitExceptionReportModesMap: _explicitErrorReportMode,
-    explicitExceptionHandlersMap: _explicitErrorHandler,
     localizationOptions: catcherLocalizationOptions,
+    filterFunction: _shouldReportError,
     handleSilentError: false
   ),
   navigatorKey: _navigator
