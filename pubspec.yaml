@@ -25,10 +25,7 @@ dependencies:
       ref: nullsafety
       path: package_src
   http: ^0.13.0
-  image_crop:
-    git:
-      url: https://github.com/vmeretin/image_crop.git
-      ref: null-safety
+  image_crop: ^0.4.0
   image_picker: ^0.7.0
   intl: ^0.17.0
   markdown: ^4.0.0

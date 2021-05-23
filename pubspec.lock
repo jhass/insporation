@@ -355,12 +355,10 @@ packages:
   image_crop:
     dependency: "direct main"
     description:
-      path: "."
-      ref: null-safety
-      resolved-ref: "1e74c7f05584c154449a3bfa2fe9fee38d78a31d"
-      url: "https://github.com/vmeretin/image_crop.git"
-    source: git
-    version: "0.3.4"
+      name: image_crop
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   image_picker:
     dependency: "direct main"
     description:
