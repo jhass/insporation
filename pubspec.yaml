@@ -45,6 +45,8 @@ dev_dependencies:
 dependency_overrides:
   latlong:
     git: https://github.com/SametSahin10/dart-latlong.git
+  chewie:
+    git: https://github.com/brianegan/chewie.git
 
 flutter:
   uses-material-design: true
