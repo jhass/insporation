@@ -20,7 +20,7 @@ jobs:
       with:
         flutter-version: '2.2'
     - name: Build
-      run: flutter build apk --debug --no-sound-null-safety
+      run: flutter build apk --debug
   build-ios:
     runs-on: macos-latest
     steps:
@@ -29,4 +29,4 @@ jobs:
       with:
         flutter-version: '2.2'
     - name: Build
-      run: flutter build ios --debug --no-codesign --no-sound-null-safety
+      run: flutter build ios --debug --no-codesign
