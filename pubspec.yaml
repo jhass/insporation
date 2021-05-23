@@ -16,7 +16,8 @@ dependencies:
   catcher: ^0.6.3
   expandable_widget: ^2.0.0-nullsafety
   flutter_app_badger: ^1.2.0
-  flutter_html: ^2.0.0-nullsafety.0
+  flutter_html:
+    git: https://github.com/Sub6Resources/flutter_html.git
   flutter_slidable: ^0.6.0
   geojson: ^0.10.0
   gesture_zoom_box:

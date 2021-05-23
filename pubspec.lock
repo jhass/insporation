@@ -226,9 +226,11 @@ packages:
   flutter_html:
     dependency: "direct main"
     description:
-      name: flutter_html
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "1133dc926b5cb3e8ad2d9f47480e7e1d3c1a2ec1"
+      url: "https://github.com/Sub6Resources/flutter_html.git"
+    source: git
     version: "2.0.0-nullsafety.1"
   flutter_layout_grid:
     dependency: transitive
