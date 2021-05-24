@@ -15,4 +15,4 @@ jobs:
         [ "$(git show-ref -s --head HEAD)" != "$(git show-ref -s nightly)" ] &&
           script/trigger-nightly || echo "no changes"
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_AUTOMATION_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_AUTOMATION_TOKEN }}
