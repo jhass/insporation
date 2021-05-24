@@ -7,6 +7,7 @@ on:
 jobs:
   build-android:
     runs-on: ubuntu-latest
+    environment: release-build
     container:
       image: circleci/android:api-29-node
       options: -u root
@@ -40,6 +41,7 @@ jobs:
   publish-android:
     needs: build-android
     runs-on: ubuntu-latest
+    environment: release-build
     container:
       image: cgeo/fdroid-base
       options: -u root
@@ -121,6 +123,7 @@ jobs:
         KEYSTORE_KEY_ALIAS: key
   publish-ios:
     runs-on: macos-latest
+    environment: release-build
     steps:
     - uses: actions/checkout@v2
       with:
