@@ -584,7 +584,10 @@ class _SimpleComposerState extends State<SimpleComposer> with StateLocalizationH
       if (success && mounted) {
         _effectiveController!.text = "";
       }
-      setState(() => _submitting = false);
+
+      if (mounted) {
+        setState(() => _submitting = false);
+      }
     }
   }
 }
