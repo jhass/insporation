@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -123,13 +124,22 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
 
   _pick(ImageSource source) async {
     // TODO recover from dying the background
-    final image = await _imagePicker.pickImage(source: source, maxWidth: 700);
 
-    if (image == null) {
-      return; // user canceled
+    try {
+      final image = await _imagePicker.pickImage(source: source, maxWidth: 700);
+
+      if (image == null) {
+        return; // user canceled
+      }
+
+      setState(() => _newImage = File(image.path));
+    } on PlatformException catch (e) {
+      if (e.code == "multiple_request") {
+        return; // The user is in another request, ignore
+      }
+
+      throw e;
     }
-
-    setState(() => _newImage = File(image.path));
   }
 
   _upload() async {

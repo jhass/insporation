@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geojson/geojson.dart';
 import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
@@ -221,13 +222,21 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   }
 
   _uploadPhoto(ImageSource source) async {
-    final picture = await _imagePicker.pickImage(source: source, maxWidth: _maxPhotoWidth);
+    try {
+      final picture = await _imagePicker.pickImage(source: source, maxWidth: _maxPhotoWidth);
 
-    if (picture == null) {
-      return; // user canceled
+      if (picture == null) {
+        return; // user canceled
+      }
+
+      _uploadPhotoFile(File(picture.path));
+    } on PlatformException catch (e) {
+      if (e.code == "multiple_request") {
+        return; // The user is in another request, ignore
+      }
+
+      throw e;
     }
-
-    _uploadPhotoFile(File(picture.path));
   }
 
   _uploadPhotoUri(String uri) async {
