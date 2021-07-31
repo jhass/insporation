@@ -12,14 +12,13 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cached_network_image: ^3.0.0
-  carousel_slider: ^4.0.0-nullsafety.0
+  carousel_slider: ^4.0.0
   catcher: ^0.6.6
   expandable_widget: ^2.0.0-nullsafety
   flutter_app_badger: ^1.2.0
-  flutter_html:
-    git: https://github.com/Sub6Resources/flutter_html.git
+  flutter_html: ^2.1.0
   flutter_slidable: ^0.6.0
-  geojson: ^0.10.0
+  geojson: ^1.0.0
   gesture_zoom_box:
     git:
       url: https://github.com/jhass/gesture_zoom_box.git
@@ -27,7 +26,7 @@ dependencies:
       path: package_src
   http: ^0.13.0
   image_crop: ^0.4.0
-  image_picker: ^0.7.0
+  image_picker: ^0.8.2
   intl: ^0.17.0
   markdown: ^4.0.0
   provider: ^5.0.0
@@ -41,12 +40,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-dependency_overrides:
-  latlong:
-    git: https://github.com/SametSahin10/dart-latlong.git
-  chewie:
-    git: https://github.com/brianegan/chewie.git
 
 flutter:
   uses-material-design: true

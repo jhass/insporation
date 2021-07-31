@@ -221,7 +221,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   }
 
   _uploadPhoto(ImageSource source) async {
-    final picture = await _imagePicker.getImage(source: source, maxWidth: _maxPhotoWidth);
+    final picture = await _imagePicker.pickImage(source: source, maxWidth: _maxPhotoWidth);
 
     if (picture == null) {
       return; // user canceled
@@ -706,8 +706,8 @@ class _LocationEditorState extends State<_LocationEditor> with StateLocalization
             .cast<GeoJsonFeature<GeoJsonPoint>>()
             .map((feature) => Location(
               address: _formatAddress(feature.properties),
-              lat: feature.geometry.geoPoint.latitude,
-              lng: feature.geometry.geoPoint.longitude))
+              lat: feature.geometry!.geoPoint.latitude,
+              lng: feature.geometry!.geoPoint.longitude))
             .fold<Set<Location>>(LinkedHashSet(), (locations, location) => locations..add(location))
             .take(15)
           );
@@ -730,13 +730,13 @@ class _LocationEditorState extends State<_LocationEditor> with StateLocalization
     }
   });
 
-  _formatAddress(Map<String, dynamic> properties) {
+  _formatAddress(Map<String, dynamic>? properties) {
     return LinkedHashSet.of([
-      properties["name"],
-      properties["street"],
-      properties["city"],
-      properties["state"],
-      properties["country"]]
+      properties?["name"],
+      properties?["street"],
+      properties?["city"],
+      properties?["state"],
+      properties?["country"]]
       ..removeWhere((element) => element == null)).join(", ");
   }
 }

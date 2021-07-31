@@ -123,7 +123,7 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
 
   _pick(ImageSource source) async {
     // TODO recover from dying the background
-    final image = await _imagePicker.getImage(source: source, maxWidth: 700);
+    final image = await _imagePicker.pickImage(source: source, maxWidth: 700);
 
     if (image == null) {
       return; // user canceled
