@@ -269,13 +269,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "deselectAllButtonLabel": "الغ تحديد الكل",
+  "deselectAllButtonLabel": "الغ اختيار الكل",
   "@deselectAllButtonLabel": {
     "description": "Label for a deselect all button",
     "type": "text",
     "placeholders": {}
   },
-  "selectAllButtonLabel": "حدد الكل",
+  "selectAllButtonLabel": "اختر الكل",
   "@selectAllButtonLabel": {
     "description": "Label for a select all button",
     "type": "text",
