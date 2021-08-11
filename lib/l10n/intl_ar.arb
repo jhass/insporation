@@ -492,7 +492,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "navigationItemTitleStream": "ساحة المشاركات",
+  "navigationItemTitleStream": "دفق المشاركات",
   "@navigationItemTitleStream": {
     "description": "Title for the Stream navigation item",
     "type": "text",
@@ -1392,7 +1392,7 @@
       }
     }
   },
-  "errorUnexpectedErrorOnAuthorization": "حدث خطأ غير متوقع أثناء محاولة .",
+  "errorUnexpectedErrorOnAuthorization": "حدث خطأ غير متوقع أثناء الولوج.",
   "@errorUnexpectedErrorOnAuthorization": {
     "description": "Error message after an unexpected error happened during authorization",
     "type": "text",
