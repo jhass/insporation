@@ -203,7 +203,9 @@ class _AspectsSelectorState extends State<_AspectsSelector> with StateLocalizati
       newAspects = null;
     }
 
-    Navigator.pushReplacementNamed(context, "/stream", arguments: StreamOptions.aspects(newAspects));
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, "/stream", arguments: StreamOptions.aspects(newAspects));
+    }
   }
 }
 
