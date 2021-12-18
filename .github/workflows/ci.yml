@@ -12,9 +12,11 @@ jobs:
   build-android:
     runs-on: ubuntu-latest
     container:
-      image: circleci/android:api-31-node
+      image: circleci/android:api-30-node
       options: -u root
     steps:
+    - name: "Install SDK 31"
+      run: sdkmanager "build-tools;31.0.0"
     - uses: actions/checkout@v2
     - uses: subosito/flutter-action@v1
       with:

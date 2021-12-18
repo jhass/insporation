@@ -9,11 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     environment: release-build
     container:
-      image: circleci/android:api-31-node
+      image: circleci/android:api-30-node
       options: -u root
     env:
       KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
     steps:
+    - name: "Install SDK 31"
+      run: sdkmanager "build-tools;31.0.0"
     - uses: actions/checkout@v2
       with:
         ref: main # Ensure translations update is included
