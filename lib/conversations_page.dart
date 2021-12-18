@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide Page;
+import 'package:flutter/material.dart' hide Page, NavigationBar;
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
@@ -56,35 +56,38 @@ class _ConversationsPageState extends ItemStreamState<Conversation, Conversation
     return InkWell(
       child: Slidable(
         key: ValueKey(conversation.guid),
-        actionPane: SlidableStrechActionPane(),
-        dismissal: SlidableDismissal(
-          child: SlidableDrawerDismissal(),
-          closeOnCanceled: true,
-          onWillDismiss: (type) {
-            if (type == SlideActionType.primary) {
+        startActionPane: ActionPane(
+          motion: StretchMotion(),
+          extentRatio: 0.2,
+          dismissible: DismissiblePane(
+            closeOnCancel: true,
+            confirmDismiss: () async {
               _toggleRead(conversation);
               return false;
-            }
-
-            return true;
-          },
-          onDismissed: (type) => type == SlideActionType.primary ? _toggleRead(conversation) : _hide(conversation),
+            },
+            onDismissed: () => _toggleRead(conversation),
+          ),
+          children: <Widget>[
+            SlidableAction(
+              icon: Icons.done,
+              foregroundColor: theme.iconTheme.color,
+              backgroundColor: conversation.read ? theme.colorScheme.secondary : Colors.transparent,
+              onPressed: (_) => _toggleRead(conversation),
+            )
+          ],
         ),
-        actions: <Widget>[
-          IconSlideAction(
-            icon: Icons.done,
-            foregroundColor: theme.iconTheme.color,
-            color: conversation.read ? theme.colorScheme.secondary : Colors.transparent,
-            onTap: () => _toggleRead(conversation),
-          )
-        ],
-        secondaryActions: [
-          IconSlideAction(
-            icon: Icons.delete,
-            color: Colors.red,
-            onTap: () => _hide(conversation),
-          )
-        ],
+        endActionPane: ActionPane(
+          motion: StretchMotion(),
+          extentRatio: 0.2,
+          dismissible: DismissiblePane(onDismissed: () => _hide(conversation)),
+          children: <Widget>[
+            SlidableAction(
+              icon: Icons.delete,
+              backgroundColor: Colors.red,
+              onPressed: (_) => _hide(conversation),
+            )
+          ],
+        ),
         child: Container(
           decoration: BoxDecoration(
             color: conversation.read ? Colors.transparent : colors.unreadItemBackground(theme),

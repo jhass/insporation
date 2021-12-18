@@ -5,7 +5,6 @@ import 'package:expandable_widget/expandable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/style.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -125,8 +124,11 @@ class PostStreamItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Slidable(
       child: PostView(post: post, linkToSPV: true),
-      actionPane: SlidableDrawerActionPane(),
-      actions: <Widget>[PostActionsView(post: post)],
+      startActionPane: ActionPane(
+        motion: ScrollMotion(),
+        extentRatio: 0.2,
+        children: <Widget>[PostActionsView(post: post)]
+      )
     );
   }
 }
@@ -262,7 +264,7 @@ class _PostInteractionsView extends StatefulWidget {
   State<StatefulWidget> createState() => _PostInteractionsViewState();
 }
 
-class _PostInteractionsViewState extends State<_PostInteractionsView> with StateLocalizationHelpers {
+class _PostInteractionsViewState extends State<_PostInteractionsView> with StateLocalizationHelpers, TickerProviderStateMixin {
   bool _updatingLike = false;
 
   @override
@@ -287,6 +289,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
                   heightFactor: 0.65,
                   child: BottomSheet(
                     onClosing: () {},
+                    animationController: BottomSheet.createAnimationController(this),
                     builder: (context) => Scaffold(
                       body: CommentListView(post: widget.post)
                     )

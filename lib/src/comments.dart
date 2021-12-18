@@ -126,10 +126,13 @@ class CommentView extends StatelessWidget {
   Widget build(BuildContext context) {
     if (comment.canDelete || !comment.reported) {
       return Slidable(
-        actionPane: SlidableDrawerActionPane(),
-        actions: [
-          _CommentActionsView(comment: comment)
-        ],
+        startActionPane: ActionPane(
+          motion: ScrollMotion(),
+          extentRatio: 0.2,
+          children: [
+            _CommentActionsView(comment: comment)
+          ]
+        ),
         child: buildComment(),
       );
     } else {

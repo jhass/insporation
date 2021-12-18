@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide NavigationBar;
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
