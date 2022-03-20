@@ -24,47 +24,45 @@ class _SearchPageState extends ItemStreamState<SearchResult, SearchPage> with St
 
     return Scaffold(
       bottomNavigationBar: NavigationBar(currentPage: PageType.search),
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 16),
-              child: CupertinoSegmentedControl(
-                selectedColor: theme.brightness == Brightness.light ? theme.colorScheme.primary : theme.colorScheme.onSurface,
-                unselectedColor: theme.colorScheme.surface,
-                children: {
-                  SearchType.people: Text(l.searchTypePeople),
-                  SearchType.peopleByTag: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-                    child: Text(l.searchTypePeopleByTag)
-                  ),
-                  SearchType.tags: Text(l.searchTypeTags)
-                },
-                groupValue: items.type,
-                onValueChanged: (SearchType type) => setState(() {
-                  items.type = type;
-                  items.load(context.read<Client>());
-                }),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: TextField(
-                controller: _search,
-                decoration: InputDecoration(
-                  hintText: _hintText(items.type),
-                  border: OutlineInputBorder(),
-                  filled: true
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 16),
+            child: CupertinoSegmentedControl(
+              selectedColor: theme.brightness == Brightness.light ? theme.colorScheme.primary : theme.colorScheme.onSurface,
+              unselectedColor: theme.colorScheme.surface,
+              children: {
+                SearchType.people: Text(l.searchTypePeople),
+                SearchType.peopleByTag: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: Text(l.searchTypePeopleByTag)
                 ),
-                onChanged: (query) {
-                  items.query = query;
-                  items.load(context.read<Client>());
-                },
-              ),
+                SearchType.tags: Text(l.searchTypeTags)
+              },
+              groupValue: items.type,
+              onValueChanged: (SearchType type) => setState(() {
+                items.type = type;
+                items.load(context.read<Client>());
+              }),
             ),
-            Expanded(child: buildStream(context)),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: TextField(
+              controller: _search,
+              decoration: InputDecoration(
+                hintText: _hintText(items.type),
+                border: OutlineInputBorder(),
+                filled: true
+              ),
+              onChanged: (query) {
+                items.query = query;
+                items.load(context.read<Client>());
+              },
+            ),
+          ),
+          Expanded(child: buildStream(context)),
+        ],
       )
     );
   }

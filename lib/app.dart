@@ -86,6 +86,7 @@ class _InsporationState extends State<Insporation> {
       darkTheme: colors.darkTheme,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: supportedLocales,
+      builder: (context, child) => SafeArea(child: child!),
       home: SignInPage(),
       routes: {
         '/switch_user': (context) => SignInPage(resumeLastSession: false),

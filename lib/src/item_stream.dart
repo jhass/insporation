@@ -378,25 +378,23 @@ class _StreamFallback extends StatelessWidget with LocalizationHelpers {
           constraints: BoxConstraints(
             minHeight: viewportConstraints.maxHeight
           ),
-          child: SafeArea(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                header,
-                Visibility(
-                  visible: !loading && !error,
-                  replacement: footer == null ? SizedBox( // We need to take up some space so the refresh indicator renders
-                    width: viewportConstraints.maxWidth,
-                    height: viewportConstraints.maxHeight
-                  ) : SizedBox.shrink(),
-                  child: Center(
-                    child: Text(l(context).noItems),
-                  ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              header,
+              Visibility(
+                visible: !loading && !error,
+                replacement: footer == null ? SizedBox( // We need to take up some space so the refresh indicator renders
+                  width: viewportConstraints.maxWidth,
+                  height: viewportConstraints.maxHeight
+                ) : SizedBox.shrink(),
+                child: Center(
+                  child: Text(l(context).noItems),
                 ),
-                Flexible(child: footer ?? SizedBox.shrink())
-              ],
-            ),
+              ),
+              Flexible(child: footer ?? SizedBox.shrink())
+            ],
           ),
         )
       )
