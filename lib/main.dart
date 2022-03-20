@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:catcher/catcher.dart';
 import 'package:provider/provider.dart';
 

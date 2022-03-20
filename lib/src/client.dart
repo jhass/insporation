@@ -1019,7 +1019,7 @@ class OpenGraphObject {
 }
 
 class Photo {
-  final String guid;
+  final String? guid;
   final int width;
   final int height;
   final PhotoSizes sizes;
