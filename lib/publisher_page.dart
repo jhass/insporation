@@ -61,7 +61,7 @@ class _PublisherPageBody extends StatefulWidget {
 }
 
 class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocalizationHelpers {
-  static const _maxPhotoWidth = 700.0;
+  static const _maxPhotoWidth = 900.0;
   final _initialFocus = FocusNode();
   final _controller = TextEditingController();
   final _imagePicker = ImagePicker();

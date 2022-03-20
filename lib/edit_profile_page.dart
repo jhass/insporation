@@ -126,7 +126,7 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
     // TODO recover from dying the background
 
     try {
-      final image = await _imagePicker.pickImage(source: source, maxWidth: 700);
+      final image = await _imagePicker.pickImage(source: source, maxWidth: 900);
 
       if (image == null) {
         return; // user canceled
