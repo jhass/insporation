@@ -14,14 +14,14 @@ jobs:
     env:
       KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
     steps:
-    - name: "Install SDK 31"
-      run: sdkmanager "build-tools;31.0.0"
+    - name: "Install SDK 32"
+      run: sdkmanager "build-tools;32.0.0"
     - uses: actions/checkout@v2
       with:
         ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v1
       with:
-        flutter-version: '2.8'
+        flutter-version: '2.10'
     - name: Setup keystore
       run: |
        echo "$KEYSTORE" | base64 -d > "$KEYSTORE_PATH"
@@ -132,7 +132,7 @@ jobs:
         ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v1
       with:
-        flutter-version: '2.8'
+        flutter-version: '2.10'
     - name: Build
       run: |
         flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER

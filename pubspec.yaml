@@ -21,8 +21,7 @@ dependencies:
   geojson: ^1.0.0
   gesture_zoom_box:
     git:
-      url: https://github.com/jhass/gesture_zoom_box.git
-      ref: nullsafety
+      url: https://github.com/shichaohui/gesture_zoom_box.git
       path: package_src
   http: ^0.13.0
   image_crop: ^0.4.0
