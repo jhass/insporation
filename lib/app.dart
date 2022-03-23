@@ -134,7 +134,7 @@ class _InsporationState extends State<Insporation> {
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/publisher':
-            return MaterialPageRoute<Post?>(
+            return MaterialPageRoute<Post>(
               builder: (context) => PublisherPage(options: settings.arguments as PublisherOptions? ?? PublisherOptions()),
               settings: settings
             );
