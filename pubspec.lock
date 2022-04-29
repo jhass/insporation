@@ -332,12 +332,10 @@ packages:
   gesture_zoom_box:
     dependency: "direct main"
     description:
-      path: package_src
-      ref: HEAD
-      resolved-ref: "62be982507a329261b4c41f0cb163caf49a97f2b"
-      url: "https://github.com/shichaohui/gesture_zoom_box.git"
-    source: git
-    version: "0.0.3"
+      name: gesture_zoom_box
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   html:
     dependency: transitive
     description:

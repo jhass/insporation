@@ -19,10 +19,7 @@ dependencies:
   flutter_html: ^2.2.1
   flutter_slidable: ^1.1.0
   geojson: ^1.0.0
-  gesture_zoom_box:
-    git:
-      url: https://github.com/shichaohui/gesture_zoom_box.git
-      path: package_src
+  gesture_zoom_box: ^0.0.4
   http: ^0.13.0
   image_crop: ^0.4.0
   image_picker: ^0.8.2
