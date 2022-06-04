@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:mime/mime.dart';
 
 import 'app_auth.dart';
 
@@ -493,6 +494,12 @@ class Client {
     var filename = picture.uri.pathSegments.last;
     if (filename.isEmpty) {
       filename = "blob.jpg";
+    } else if (!filename.contains(".")) {
+      final magicBytes = await picture.openRead(0, defaultMagicNumbersMaxLength).expand((bytes) => bytes).toList(),
+        mimeType = lookupMimeType(picture.path, headerBytes: magicBytes),
+        extension = mimeType != null ? extensionFromMime(mimeType) : "jpg";
+
+      filename = "$filename.${extension == "jpe" ? "jpg" : extension}";
     }
 
     return http.MultipartFile("image", stream, await picture.length(), filename: filename);

@@ -1,12 +1,11 @@
 import 'dart:collection';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geojson/geojson.dart';
-import 'package:image_crop/image_crop.dart';
+import 'package:image_native_resizer/image_native_resizer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -229,7 +228,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
         return; // user canceled
       }
 
-      _uploadPhotoFile(File(picture.path));
+      _uploadPhotoFile(picture.path);
     } on PlatformException catch (e) {
       if (e.code == "multiple_request") {
         return; // The user is in another request, ignore
@@ -240,19 +239,13 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   }
 
   _uploadPhotoUri(String uri) async {
-    final source = File.fromUri(Uri.parse(uri)),
-      info = await ImageCrop.getImageOptions(file: source),
-      width = min(_maxPhotoWidth, info.width),
-      height = info.height * (width / info.width),
-      picture = info.width <= _maxPhotoWidth ? source : await ImageCrop.sampleImage(
-        file: source, preferredWidth: width.floor(), preferredHeight: height.floor());
-
-    _uploadPhotoFile(picture);
+    _uploadPhotoFile((await ImageNativeResizer.resize(imagePath: Uri.parse(uri).path, maxWidth: _maxPhotoWidth))!);
   }
 
-  _uploadPhotoFile(File picture) async {
-    final client = context.read<Client>();
-    final upload = client.uploadPictureForPublishing(picture),
+  _uploadPhotoFile(String picturePath) async {
+    final client = context.read<Client>(),
+      picture = File(picturePath),
+      upload = client.uploadPictureForPublishing(picture),
       attachedPhoto = _AttachedPhoto(picture, upload);
 
     setState(() => _attachedPhotos.add(attachedPhoto));

@@ -364,6 +364,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.0"
+  image_native_resizer:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: a9579c3a6c5a81f8d8f3b1c103d761f2f42c7cb9
+      url: "https://github.com/djamoapp/image_native_resizer.git"
+    source: git
+    version: "0.1.2"
   image_picker:
     dependency: "direct main"
     description:
@@ -470,7 +479,7 @@ packages:
     source: hosted
     version: "1.7.0"
   mime:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: mime
       url: "https://pub.dartlang.org"
