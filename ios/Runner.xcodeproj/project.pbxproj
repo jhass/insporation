@@ -28,7 +28,6 @@
 		65EDF8382547FF5B008DF3BA /* StateHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EDF8222547F90C008DF3BA /* StateHandler.swift */; };
 		65EDF83A2548008B008DF3BA /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65ABC371253AF959009FF783 /* Session.swift */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
-		82ABB1B22D346F0403E3D79B /* Pods_insporationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB862BAD751E83225CF5A00 /* Pods_insporationTests.framework */; };
 		94C1FCBFEC4EC79C5FAD2A12 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01CFA7503ECEC278DA739A5D /* Pods_Runner.framework */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
@@ -81,7 +80,6 @@
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
-		4CB862BAD751E83225CF5A00 /* Pods_insporationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_insporationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		65276AEC257838F10062EB79 /* SharedHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedHandler.swift; sourceTree = "<group>"; };
 		65276AFB257850300062EB79 /* SharedMediaFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SharedMediaFile.swift; path = "insporation-share/SharedMediaFile.swift"; sourceTree = SOURCE_ROOT; };
 		653F1BFC255075BB008C9925 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
@@ -114,7 +112,6 @@
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7A357B243C81C5610581CB51 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
-		8250D90DB0D66BDDF534170C /* Pods-insporationTests.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-insporationTests.profile.xcconfig"; path = "Target Support Files/Pods-insporationTests/Pods-insporationTests.profile.xcconfig"; sourceTree = "<group>"; };
 		859991A979331D9CE1A76436 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
@@ -126,8 +123,6 @@
 		C109B24C255224A90017B6C6 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C18775CE2550449500BCCBC8 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		F30D26DA2634B43700A50C8A /* gl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = gl; path = gl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		FF707D7F7989A7D228FD43F7 /* Pods-insporationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-insporationTests.release.xcconfig"; path = "Target Support Files/Pods-insporationTests/Pods-insporationTests.release.xcconfig"; sourceTree = "<group>"; };
-		FFD7CC0CF65FA4F7A0D424F1 /* Pods-insporationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-insporationTests.debug.xcconfig"; path = "Target Support Files/Pods-insporationTests/Pods-insporationTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,7 +137,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				82ABB1B22D346F0403E3D79B /* Pods_insporationTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,9 +157,6 @@
 				7A357B243C81C5610581CB51 /* Pods-Runner.debug.xcconfig */,
 				7125BB3084B6DBD29C965DC2 /* Pods-Runner.release.xcconfig */,
 				859991A979331D9CE1A76436 /* Pods-Runner.profile.xcconfig */,
-				FFD7CC0CF65FA4F7A0D424F1 /* Pods-insporationTests.debug.xcconfig */,
-				FF707D7F7989A7D228FD43F7 /* Pods-insporationTests.release.xcconfig */,
-				8250D90DB0D66BDDF534170C /* Pods-insporationTests.profile.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -270,7 +261,6 @@
 			isa = PBXGroup;
 			children = (
 				01CFA7503ECEC278DA739A5D /* Pods_Runner.framework */,
-				4CB862BAD751E83225CF5A00 /* Pods_insporationTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -299,7 +289,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 65EDF82F2547FC0E008DF3BA /* Build configuration list for PBXNativeTarget "insporationTests" */;
 			buildPhases = (
-				58A1BF919A8910407C57EC6E /* [CP] Check Pods Manifest.lock */,
 				65EDF8242547FC0E008DF3BA /* Sources */,
 				65EDF8252547FC0E008DF3BA /* Frameworks */,
 				65EDF8262547FC0E008DF3BA /* Resources */,
@@ -345,7 +334,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1220;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1300;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					65CEA7402572303000B53DD7 = {
@@ -431,28 +420,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
-		};
-		58A1BF919A8910407C57EC6E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-insporationTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
 		};
 		6F3000EB45302284A75D0867 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -692,7 +659,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Profile;
@@ -795,7 +762,6 @@
 		};
 		65EDF8302547FC0E008DF3BA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FFD7CC0CF65FA4F7A0D424F1 /* Pods-insporationTests.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -827,7 +793,6 @@
 		};
 		65EDF8312547FC0E008DF3BA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FF707D7F7989A7D228FD43F7 /* Pods-insporationTests.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -856,7 +821,6 @@
 		};
 		65EDF8322547FC0E008DF3BA /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8250D90DB0D66BDDF534170C /* Pods-insporationTests.profile.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1026,7 +990,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1062,7 +1026,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore eu.jhass.insporation";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
