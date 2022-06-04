@@ -7,7 +7,6 @@ import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 
 import 'client.dart';
@@ -605,7 +604,7 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
         ));
       }
     } catch(e, s) {
-      tryShowErrorSnackBar(this, l.failedToReportPost, e, s);
+      tryShowErrorSnackBar(context, l.failedToReportPost, e, s);
 
       widget.post.interactions.reported = false;
       if (mounted) {
@@ -806,7 +805,7 @@ class _PollViewState extends State<_PollView> with StateLocalizationHelpers {
     try {
       await client.vote(widget.post, answer);
     } catch(e, s) {
-      tryShowErrorSnackBar(this, l.failedToVote, e, s);
+      tryShowErrorSnackBar(context, l.failedToVote, e, s);
 
       setState(() {
         poll.alreadyParticipated = false;
@@ -841,7 +840,7 @@ class _OEmbedView extends StatelessWidget with LocalizationHelpers {
     final oEmbed = this.oEmbed as ThumbnailOEmbed;
     return Center(
       child: GestureDetector(
-        onTap: () => launch(oEmbed.url),
+        onTap: () => openExternalUrl(context, oEmbed.url),
         child: Stack(
           children: <Widget>[
             RemoteImage(
@@ -902,7 +901,7 @@ class _OEmbedView extends StatelessWidget with LocalizationHelpers {
         Padding(
           padding: EdgeInsets.all(8),
           child: GestureDetector(
-            onTap: () => launch(oEmbed.url),
+            onTap: () => openExternalUrl(context, oEmbed.url),
             child: Text(
               l(context).oEmbedHeader(oEmbed.author, oEmbed.provider),
               style: TextStyle(color: colors.link, decoration: TextDecoration.underline),
@@ -914,7 +913,7 @@ class _OEmbedView extends StatelessWidget with LocalizationHelpers {
           decoration: BoxDecoration(border: Border(left: BorderSide(color: Theme.of(context).dividerColor))),
           child: Html(
             onLinkTap: (url, _, __, ___) {
-              if (url != null) launch(url);
+              if (url != null) openExternalUrl(context, url);
             },
             data: oEmbed.html,
             customRender: {
@@ -947,7 +946,7 @@ class _OpenGraphView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Divider(),
-        _handleTap(
+        _handleTap(context,
           child: Padding(
             padding: EdgeInsets.all(8),
             child: Row(
@@ -995,14 +994,14 @@ class _OpenGraphView extends StatelessWidget {
     );
   }
 
-  Widget _handleTap({required Widget child}) {
+  Widget _handleTap(BuildContext context, {required Widget child}) {
     if (object?.url == null) {
       return child;
     }
 
     return InkWell(
       child: child,
-      onTap: () => launch(object!.url!)
+      onTap: () => openExternalUrl(context, object!.url!)
     );
   }
 }
@@ -1038,7 +1037,7 @@ class _LocationView extends StatelessWidget {
             ),
             onTap: () {
               if (Theme.of(context).platform == TargetPlatform.android) {
-                launch("geo:0,0?q=${location.lat},${location.lng}(${Uri.encodeFull(location.address)})");
+                openExternalUrl(context, "geo:0,0?q=${location.lat},${location.lng}(${Uri.encodeFull(location.address)})");
               } else {
                 // TODO handle other platforms
               }

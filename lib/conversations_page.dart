@@ -143,7 +143,7 @@ class _ConversationsPageState extends ItemStreamState<Conversation, Conversation
     try {
       await client.setConversationRead(conversation, isRead: newStatus);
     } catch (e, s)  {
-      tryShowErrorSnackBar(this, newStatus ? l.failedToMarkConversationAsRead : l.failedToMarkConversationAsUnread, e, s);
+      tryShowErrorSnackBar(context, newStatus ? l.failedToMarkConversationAsRead : l.failedToMarkConversationAsUnread, e, s);
 
       if (mounted) {
         setState(() => conversation.read = !newStatus);
@@ -169,7 +169,7 @@ class _ConversationsPageState extends ItemStreamState<Conversation, Conversation
         unreadCount.decrement();
       }
     } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToHideConversation, e, s);
+      tryShowErrorSnackBar(context, l.failedToHideConversation, e, s);
 
       items.insert(position, conversation);
     }
@@ -297,7 +297,7 @@ class _ConversationMessagesState extends ItemStreamState<ConversationMessage, _C
       state.clearMessageDraft(widget.conversation);
       return true;
     } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToReplyToConversation, e, s);
+      tryShowErrorSnackBar(context, l.failedToReplyToConversation, e, s);
     }
     return false;
   }

@@ -70,7 +70,7 @@ class _AddAspectButtonState extends State<_AddAspectButton> with StateLocalizati
       final aspect = await client.createAspect(name);
       items.replace(toRemove: mock, replacement: aspect);
     } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToCreateAspect, e, s);
+      tryShowErrorSnackBar(context, l.failedToCreateAspect, e, s);
       items.remove(mock);
     }
   }
@@ -135,7 +135,7 @@ class _AspectItemState extends State<_AspectItem> with StateLocalizationHelpers 
       final newAspect = await client.renameAspect(widget.aspect, newName);
       items.replace(toRemove: widget.aspect, replacement: newAspect);
     } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToRenameAspect(oldName, newName), e, s);
+      tryShowErrorSnackBar(context, l.failedToRenameAspect(oldName, newName), e, s);
       setState(() => widget.aspect.name = oldName);
     }
   }
@@ -160,7 +160,7 @@ class _AspectItemState extends State<_AspectItem> with StateLocalizationHelpers 
     try {
       await client.deleteAspect(widget.aspect);
     } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToDeleteAspect(widget.aspect.name), e, s);
+      tryShowErrorSnackBar(context, l.failedToDeleteAspect(widget.aspect.name), e, s);
       items.insert(position, widget.aspect);
     }
   }

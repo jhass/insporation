@@ -62,7 +62,7 @@ class _NewConversationPageBodyState extends State<_NewConversationPageBody> with
     });
 
     if (_recipients.isNotEmpty) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_subjectFocus);
     });
     }
@@ -151,7 +151,7 @@ class _NewConversationPageBodyState extends State<_NewConversationPageBody> with
       Navigator.pop(context, conversation);
       return true;
     } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToCreateConversation, e, s);
+      tryShowErrorSnackBar(context, l.failedToCreateConversation, e, s);
     }
     return false;
   }

@@ -1463,6 +1463,18 @@
       }
     }
   },
+  "failedToOpenInvalidUrl": "URL looks invalid, cannot open",
+  "@failedToOpenInvalidUrl": {
+    "description": "Error message after trying to open an invalid URL",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToOpenUrl": "Failed to open URL. Do you have a browser installed?",
+  "@failedToInvalidUrl": {
+    "description": "Error message after trying to open an URL failed",
+    "type": "text",
+    "placeholders": {}
+  },
   "catcherLocalizationDialogReportModeTitle": "insporation* crashed :(",
   "@catcherLocalizationDialogReportModeTitle": {
     "description": "Title for crash report dialog",

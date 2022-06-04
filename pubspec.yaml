@@ -23,8 +23,11 @@ dependencies:
   http: ^0.13.0
   image_crop: ^0.4.0
   image_picker: ^0.8.2
+  image_native_resizer:
+    git: https://github.com/djamoapp/image_native_resizer.git
   intl: ^0.17.0
-  markdown: ^4.0.0
+  markdown: ^5.0.0
+  mime: ^1.0.2
   provider: ^6.0.1
   quiver: ^3.0.0
   share: ^2.0.0

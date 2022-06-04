@@ -4,7 +4,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:gesture_zoom_box/gesture_zoom_box.dart';
 import 'package:markdown/markdown.dart' as md;
-import 'package:url_launcher/url_launcher.dart';
 
 import 'client.dart';
 import 'localizations.dart';
@@ -95,9 +94,9 @@ class Message extends StatelessWidget with LocalizationHelpers {
               Navigator.pushNamed(context, '/post', arguments: guid);
             }
           } else if (url.startsWith("//")) { // scheme independent link hack, assume https
-            launch("https:$url");
+            openExternalUrl(context, "https:$url");
           } else {
-            launch(url);
+            openExternalUrl(context, url);
           }
         },
         customRender: {

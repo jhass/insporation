@@ -111,7 +111,7 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
       widget.post.interactions.subscribed = true;
       return true;
     } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToCommentOnPost, e, s);
+      tryShowErrorSnackBar(context, l.failedToCommentOnPost, e, s);
       return false;
     }
   }
@@ -237,7 +237,7 @@ class _CommentActionsViewState extends State<_CommentActionsView> with StateLoca
     try {
       await client.deleteComment(widget.comment);
     } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToDeleteComment, e, s);
+      tryShowErrorSnackBar(context, l.failedToDeleteComment, e, s);
       items?.insert(oldPosition, widget.comment);
     }
   }
@@ -290,7 +290,7 @@ class _CommentActionsViewState extends State<_CommentActionsView> with StateLoca
         ));
       }
     } catch(e, s) {
-      tryShowErrorSnackBar(this, l.failedToReportComment, e, s);
+      tryShowErrorSnackBar(context, l.failedToReportComment, e, s);
 
       widget.comment.reported = false;
       if (mounted) {

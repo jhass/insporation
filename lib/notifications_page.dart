@@ -154,7 +154,7 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
     try {
       await client.setNotificationRead(widget.notification, isRead: newStatus);
     } catch (e, s)  {
-      tryShowErrorSnackBar(this, newStatus ? l.failedToMarkNotificationAsRead : l.failedToMarkNotificationAsUnread, e, s);
+      tryShowErrorSnackBar(context, newStatus ? l.failedToMarkNotificationAsRead : l.failedToMarkNotificationAsUnread, e, s);
 
       if (mounted) {
         setState(() => widget.notification.read = !newStatus);

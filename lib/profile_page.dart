@@ -320,7 +320,7 @@ class _UserPostStreamViewState extends ItemStreamState<Post, _UserPostStreamView
         await client.unblockUser(person);
       }
     } catch (e, s) {
-      tryShowErrorSnackBar(this, newState ? l.failedToBlockUser(person.nameOrId) : l.failedToUnblockUser(person.nameOrId), e, s);
+      tryShowErrorSnackBar(context, newState ? l.failedToBlockUser(person.nameOrId) : l.failedToUnblockUser(person.nameOrId), e, s);
 
       profile.blocked = !newState;
       _profile.updated();
@@ -445,7 +445,7 @@ class _AspectMembershipViewState extends State<_AspectMembershipView> with State
         ));
       }
     } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToUpdateContactAspects, e, s);
+      tryShowErrorSnackBar(context, l.failedToUpdateContactAspects, e, s);
 
       profile.value.sharing = oldAspects.isNotEmpty;
       profile.value.aspects.clear();

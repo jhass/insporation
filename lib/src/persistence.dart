@@ -112,12 +112,12 @@ class DraftObserver with WidgetsBindingObserver {
 
   DraftObserver({required this.controller, required this.onPersist, this.context}) {
     controller.addListener(_onTextChanges);
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   void dispose() {
     controller.removeListener(_onTextChanges);
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override
