@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'widgets.dart';
 
@@ -35,11 +38,12 @@ bool containSameElements(Iterable? a, Iterable? b) {
 
 String? presence(String? value) => value == null || value.isEmpty || value.trim().isEmpty ?  null : value;
 
-void tryShowErrorSnackBar(State widget, String message, exception, stack) {
-  if (widget.mounted) {
-    showErrorSnackBar(ScaffoldMessenger.of(widget.context), message, exception, stack);
+void tryShowErrorSnackBar(BuildContext context, String? message, exception, stack) {
+  final state = ScaffoldMessenger.maybeOf(context);
+  if (message != null && state != null) {
+    showErrorSnackBar(state, message, exception, stack);
   } else {
-    _debugPrintError(message, exception, stack);
+    _debugPrintError(message ?? "Error", exception, stack);
   }
 }
 
@@ -65,6 +69,16 @@ String formatErrorTrace(Exception exception, StackTrace stackTrace) {
   stackTrace = FlutterError.demangleStackTrace(stackTrace);
   Iterable<String> lines = stackTrace.toString().trimRight().split('\n');
   return "$exception\n${FlutterError.defaultStackFilter(lines).join('\n')}";
+}
+
+void openExternalUrl(BuildContext context, String url) {
+  try {
+    launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+  } on FormatException catch (exception, stack) {
+    tryShowErrorSnackBar(context, AppLocalizations.of(context)?.failedToOpenInvalidUrl, exception, stack);
+  } on PlatformException catch (exception, stack) {
+    tryShowErrorSnackBar(context, AppLocalizations.of(context)?.failedToOpenUrl, exception, stack);
+  }
 }
 
 class CancelableFuture<T> {

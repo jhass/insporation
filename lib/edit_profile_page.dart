@@ -158,7 +158,7 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
         _newImage = null;
       });
     } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToUploadProfilePicture, e, s);
+      tryShowErrorSnackBar(context, l.failedToUploadProfilePicture, e, s);
 
       setState(() {
         _uploading = false;
@@ -526,7 +526,7 @@ class _EditProfileState extends State<_EditProfile> with StateLocalizationHelper
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.updatedProfile)));
     } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToUpdateProfile, e, s);
+      tryShowErrorSnackBar(context, l.failedToUpdateProfile, e, s);
     } finally {
       setState(() => _submitting = false);
     }

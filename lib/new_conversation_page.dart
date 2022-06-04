@@ -151,7 +151,7 @@ class _NewConversationPageBodyState extends State<_NewConversationPageBody> with
       Navigator.pop(context, conversation);
       return true;
     } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToCreateConversation, e, s);
+      tryShowErrorSnackBar(context, l.failedToCreateConversation, e, s);
     }
     return false;
   }

@@ -262,7 +262,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
       attachedPhoto.guid = photo.guid;
       attachedPhoto.uploaded = true;
     } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToUploadPhoto, e, s);
+      tryShowErrorSnackBar(context, l.failedToUploadPhoto, e, s);
 
       setState(() => _attachedPhotos.remove(attachedPhoto));
     } finally {
@@ -725,7 +725,7 @@ class _LocationEditorState extends State<_LocationEditor> with StateLocalization
     } on FutureCanceledError {
       // ignore
     } catch (e, s) {
-      tryShowErrorSnackBar(this, l.failedToSearchForAddresses, e, s);
+      tryShowErrorSnackBar(context, l.failedToSearchForAddresses, e, s);
     }
   }
 
