@@ -18,9 +18,7 @@ final liked = Colors.red[900];
 
 const scheme = ColorScheme(
   primary: primary,
-  primaryVariant: primaryVariant,
   secondary: secondary,
-  secondaryVariant: secondaryVariant,
   surface: Colors.white,
   background: Colors.white,
   error: Colors.red,
@@ -36,9 +34,7 @@ final theme = ThemeData.from(colorScheme: scheme);
 
 const darkScheme = ColorScheme(
   primary: primary,
-  primaryVariant: primaryVariant,
   secondary: secondary,
-  secondaryVariant: secondaryVariant,
   surface: const Color(0xff121212),
   background: const Color(0xff121212),
   error: const Color(0xffcf6679),
@@ -64,7 +60,7 @@ final darkTheme = ThemeData.from(colorScheme: darkScheme).copyWith(
 );
 
 Color unreadItemBackground(ThemeData theme) => theme.colorScheme.secondary.withOpacity(0.3);
-Color unreadItemBottomBorder(ThemeData theme) => theme.colorScheme.secondaryVariant.withOpacity(0.2);
+Color unreadItemBottomBorder(ThemeData theme) => theme.colorScheme.secondaryContainer.withOpacity(0.2);
 Color unselectedNavigationItem(ThemeData theme) => theme.colorScheme.onSurface.withOpacity(0.6);
 Color inputBorder(ThemeData theme) => theme.colorScheme.onSurface.withOpacity(0.38);
 Color outlineButtonBorder(ThemeData theme) => theme.colorScheme.onSurface.withOpacity(0.12);

@@ -220,7 +220,7 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
     super.initState();
     _items = createStream();
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) =>
+    WidgetsBinding.instance.addPostFrameCallback((_) =>
         _refreshIndicator.currentState?.show());
 
     scrollController.addListener(() {

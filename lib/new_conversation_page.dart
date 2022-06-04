@@ -62,7 +62,7 @@ class _NewConversationPageBodyState extends State<_NewConversationPageBody> with
     });
 
     if (_recipients.isNotEmpty) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_subjectFocus);
     });
     }

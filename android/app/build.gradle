@@ -32,9 +32,6 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    lintOptions {
-        disable 'InvalidPackage'
-    }
 
     defaultConfig {
         applicationId "jhass.eu.insporation"
@@ -67,6 +64,9 @@ android {
             applicationIdSuffix ".debug"
             debuggable true
         }
+    }
+    lint {
+        disable 'InvalidPackage'
     }
 }
 

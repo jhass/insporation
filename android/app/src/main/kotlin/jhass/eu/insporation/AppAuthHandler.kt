@@ -275,7 +275,7 @@ private class CallHandler(private val context: Context,
           continuation.resumeWithException(CallError("bad_client", "Client does not provide a way to fetch a registration"))
         }
 
-        override fun error(errorCode: String?, errorMessage: String?, errorDetails: Any?) {
+        override fun error(errorCode: String, errorMessage: String?, errorDetails: Any?) {
           continuation.resumeWithException(CallError("failed_fetch", "Could not fetch registration from client: $errorCode - $errorMessage"))
         }
 

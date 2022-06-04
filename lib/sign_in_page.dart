@@ -210,7 +210,7 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
   }
 
   _maybeFocusInput() {
-    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       final sessions = await _sessions;
       if (sessions.isEmpty) {
         FocusScope.of(context).requestFocus(_initialFocus);

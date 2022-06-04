@@ -81,7 +81,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
 
     final state = context.read<PersistentState>();
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(_initialFocus);
     });
 

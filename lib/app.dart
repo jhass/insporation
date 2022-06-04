@@ -60,7 +60,7 @@ class _InsporationState extends State<Insporation> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       // We need to give the MaterialApp widget some time to initialize the navigator and push the initial route,
       // as we want for any share event to only push a route after that.
       shareEventsSubscription = _shareEventsChannel.receiveBroadcastStream().listen(_onShareIntent);
@@ -139,6 +139,7 @@ class _InsporationState extends State<Insporation> {
               settings: settings
             );
         }
+        return null;
       },
     );
   }
