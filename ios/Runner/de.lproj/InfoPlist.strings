@@ -6,5 +6,5 @@
   
 */
 
-NSPhotoLibraryUsageDescription = "Teilen von Fotos";
-NSCameraUsageDescription = "Fotos aufnehmen und teilen";
+NSPhotoLibraryUsageDescription = "So können sie ausgewählte Fotos an Beiträge anzuhängen";
+NSCameraUsageDescription = "So können Sie Bilder mit Ihrer Kamera aufnehmen und sie an Beiträge anhängen";
