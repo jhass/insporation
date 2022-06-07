@@ -6,5 +6,5 @@
   
 */
 
-NSPhotoLibraryUsageDescription = "Partager des photos";
-NSCameraUsageDescription = "Prenez des photos et partagez";
+NSPhotoLibraryUsageDescription = "Pour joindre des photos sélectionnées à des messages";
+NSCameraUsageDescription = "Cela vous permet de prendre des photos avec votre appareil et de les joindre à des messages.";

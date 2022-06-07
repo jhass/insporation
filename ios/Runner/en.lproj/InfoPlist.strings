@@ -6,6 +6,6 @@
   
 */
 
-NSPhotoLibraryUsageDescription = "Share Photos";
-NSCameraUsageDescription = "Take photos and share";
+NSPhotoLibraryUsageDescription = "This allows you to attach selected photos to posts";
+NSCameraUsageDescription = "This allows you to take pictures with your camera and attach them to posts";
 
