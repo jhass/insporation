@@ -1485,5 +1485,13 @@
         "example": "user@example.org"
       }
     }
-  }
+  },
+  "failedToOpenInvalidUrl": "O URL semella válido, pero non se pode abrir",
+  "@failedToOpenInvalidUrl": {
+    "description": "Error message after trying to open an invalid URL",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToOpenUrl": "Fallou a apertura do URL. Tes un navegador instalado?",
+  "@failedToOpenUrl": {}
 }
