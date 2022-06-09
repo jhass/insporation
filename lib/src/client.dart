@@ -849,7 +849,7 @@ class Post {
       body: object["body"],
       author: author,
       public: object["public"],
-      nsfw: object["nsfw"],
+      nsfw: object["nsfw"] ?? false,
       root: root,
       photos: object["photos"] != null ? Photo.fromList(object["photos"].cast<Map<String, dynamic>>()) : <Photo>[],
       poll: object["poll"] != null ? Poll.from(object["poll"]) : null,
