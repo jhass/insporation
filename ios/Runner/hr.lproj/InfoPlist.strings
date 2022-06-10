@@ -1,5 +1,5 @@
 
 
 
-NSCameraUsageDescription = "Snimaj slike i dijeli ih";
-NSPhotoLibraryUsageDescription = "Dijeli slike";
+"NSCameraUsageDescription" = "Ovo omogućuje snimanje slika pomoću kamere i prilaganje tih fotografija objavama";
+"NSPhotoLibraryUsageDescription" = "Ovo omogućuje prilaganje odabranih fotografija objavama";
