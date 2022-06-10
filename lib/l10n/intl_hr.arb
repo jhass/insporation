@@ -503,7 +503,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToLikePost": "Neuspjelo označivanje sa „Sviđa mi se”",
+  "failedToLikePost": "Neuspjelo označivanje objave sa „Sviđa mi se”",
   "@failedToLikePost": {
     "description": "Error message after liking a post failed",
     "type": "text",
@@ -1023,7 +1023,7 @@
       }
     }
   },
-  "resharePrompt": "Prosljediti objavu?",
+  "resharePrompt": "Proslijediti objavu?",
   "@resharePrompt": {
     "description": "Title for reshare post prompt dialog",
     "type": "text",
@@ -1111,7 +1111,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "publishPost": "Objavi",
+  "publishPost": "Objavi objavu",
   "@publishPost": {
     "description": "Label for the publish post button",
     "type": "text",
@@ -1321,7 +1321,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToUnlikePost": "Neuspjelo uklanjanje oznake sviđanja",
+  "failedToUnlikePost": "Neuspjelo uklanjanje oznake sviđanja od objave",
   "@failedToUnlikePost": {
     "description": "Error message after unliking a post failed",
     "type": "text",
@@ -1388,7 +1388,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "errorAuthorizationFailed": "Nije moguće autorizirati {userId}. Provjeri unos, provjeri tvoju mrežu i provjeri je li tvoj „pod” pokreće najnoviju snimku razvoja?",
+  "errorAuthorizationFailed": "Nije bilo moguće autorizirati {userId}. Provjeri unos, provjeri svoju mrežu i provjeri je li tvoj „pod” pokreće najnoviju snimku razvoja?",
   "@errorAuthorizationFailed": {
     "description": "Error message after authorization failed",
     "type": "text",
@@ -1432,13 +1432,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "retryLabel": "Ponovi",
+  "retryLabel": "Pokušaj ponovo",
   "@retryLabel": {
     "description": "Label for a retry button",
     "type": "text",
     "placeholders": {}
   },
-  "failedToRenderMessage": "Nije moguće prikazati ovaj sadržaj. Prijavi ovaj problem s dolje navedenim detaljima greške, ako postoje.",
+  "failedToRenderMessage": "Nije bilo moguće prikazati ovaj sadržaj. Prijavi ovaj problem s dolje navedenim detaljima greške, ako postoje.",
   "@failedToRenderMessage": {
     "description": "Failure message after rendering some content failed.",
     "type": "text",
@@ -1485,5 +1485,13 @@
     "description": "Error message after marking a conversation as read failed",
     "type": "text",
     "placeholders": {}
-  }
+  },
+  "failedToOpenInvalidUrl": "Čini se da je URL neispravan, ne može se otvoriti",
+  "@failedToOpenInvalidUrl": {
+    "description": "Error message after trying to open an invalid URL",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToOpenUrl": "Neuspjelo otvaranje URL-a. Imaš li instalirani preglednik?",
+  "@failedToOpenUrl": {}
 }
