@@ -1,1 +1,86 @@
-{}
+{
+  "submitButtonLabel": "Підтвердити",
+  "@submitButtonLabel": {
+    "description": "Label for a dialog submit button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectAllButtonLabel": "Обрати всі",
+  "@selectAllButtonLabel": {
+    "description": "Label for a select all button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deselectAllButtonLabel": "Зняти вибір з усіх",
+  "@deselectAllButtonLabel": {
+    "description": "Label for a deselect all button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorLabel": "Допомога",
+  "@detailsOnErrorLabel": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorDescription": "Трапилася внутрішня помилка. Будь ласка додайте наступну інформацію при звертанні за допомогою.",
+  "@detailsOnErrorDescription": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createButtonLabel": "Створити",
+  "@createButtonLabel": {
+    "description": "Label for a dialog create button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "saveButtonLabel": "Зберегти",
+  "@saveButtonLabel": {
+    "description": "Label for a dialog save button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertButtonLabel": "Вставити",
+  "@insertButtonLabel": {
+    "description": "Label for a dialog insert button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yesButtonLabel": "Так",
+  "@yesButtonLabel": {
+    "description": "Label for a dialog yes button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noButtonLabel": "Ні",
+  "@noButtonLabel": {
+    "description": "Label for a dialog no button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "retryLabel": "Повторити спробу",
+  "@retryLabel": {
+    "description": "Label for a retry button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmDeleteButtonLabel": "Підтвердити видалення",
+  "@confirmDeleteButtonLabel": {
+    "description": "Label for a dialog confirm delete button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "removeButtonLabel": "Видалити",
+  "@removeButtonLabel": {
+    "description": "Label for a dialog remove button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectButtonLabel": "Обрати",
+  "@selectButtonLabel": {
+    "description": "Label for a dialog select button",
+    "type": "text",
+    "placeholders": {}
+  }
+}
