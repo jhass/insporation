@@ -1474,5 +1474,25 @@
     "description": "Label for the show details button in error messages",
     "type": "text",
     "placeholders": {}
-  }
+  },
+  "failedToMarkConversationAsUnread": "Unterhaltung konnte nicht als ungelesen markiert werden",
+  "@failedToMarkConversationAsUnread": {
+    "description": "Error message after marking a conversation  as unread failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkConversationAsRead": "Unterhaltung konnte nicht als gelesen markiert werden",
+  "@failedToMarkConversationAsRead": {
+    "description": "Error message after marking a conversation as read failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToOpenInvalidUrl": "URL sieht ungültig aus, kann nicht geöffnet werden",
+  "@failedToOpenInvalidUrl": {
+    "description": "Error message after trying to open an invalid URL",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToOpenUrl": "URL konnte nicht geöffnet werden. Hast du einen Browser installiert?",
+  "@failedToOpenUrl": {}
 }
