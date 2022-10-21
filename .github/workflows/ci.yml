@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: subosito/flutter-action@v1
       with:
-        flutter-version: '3.0'
+        flutter-version: '3.3'
     - name: Build
       run: flutter build apk --debug
   build-ios:
@@ -29,6 +29,6 @@ jobs:
     - uses: actions/checkout@v2
     - uses: subosito/flutter-action@v1
       with:
-        flutter-version: '3.0'
+        flutter-version: '3.3'
     - name: Build
       run: flutter build ios --debug --no-codesign
