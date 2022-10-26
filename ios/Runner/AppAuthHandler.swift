@@ -340,9 +340,7 @@ extension AppAuthHandler {
         var data: Data? = nil
         
         if let authState = state {
-            // Attention! The archivedData method is marked as deprecated in iOS 12.0, but recommended method
-            // will not recover the OIDAuthState correctly
-            data = NSKeyedArchiver.archivedData(withRootObject: authState)
+            data = try? NSKeyedArchiver.archivedData(withRootObject: authState, requiringSecureCoding: true)
         }
         
         let userIdAuthKey = kAppAuthAuthStateKey + userId
@@ -361,7 +359,7 @@ extension AppAuthHandler {
         
         // Attention! The archivedData method is marked as deprecated, but recommended method
         // will not recover the OIDAuthState correctly
-        if let authState = NSKeyedUnarchiver.unarchiveObject(with: data) as? OIDAuthState {
+        if let authState = try? NSKeyedUnarchiver.unarchivedObject(ofClass: OIDAuthState.self, from: data) {
             self.setAuthState(authState)
             return authState
         }
