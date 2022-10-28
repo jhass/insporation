@@ -21,7 +21,7 @@
 		65B7A7AE253CCF34006941BE /* RegistrationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B7A7AD253CCF08006941BE /* RegistrationStore.swift */; };
 		65CEA7442572303000B53DD7 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CEA7432572303000B53DD7 /* ShareViewController.swift */; };
 		65CEA7472572303000B53DD7 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65CEA7452572303000B53DD7 /* MainInterface.storyboard */; };
-		65CEA74B2572303000B53DD7 /* Insporation-Share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 65CEA7412572303000B53DD7 /* Insporation-Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		65CEA74B2572303000B53DD7 /* Insporation-Share.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 65CEA7412572303000B53DD7 /* Insporation-Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		65D21BF0253ADF4C009B9EA3 /* AppAuthHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D21BEF253ADF4C009B9EA3 /* AppAuthHandler.swift */; };
 		65EDF8232547F90C008DF3BA /* StateHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EDF8222547F90C008DF3BA /* StateHandler.swift */; };
 		65EDF82B2547FC0E008DF3BA /* insporationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EDF82A2547FC0E008DF3BA /* insporationTests.swift */; };
@@ -52,15 +52,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		65C230C5256F0DCC00AE1B20 /* Embed App Extensions */ = {
+		65C230C5256F0DCC00AE1B20 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				65CEA74B2572303000B53DD7 /* Insporation-Share.appex in Embed App Extensions */,
+				65CEA74B2572303000B53DD7 /* Insporation-Share.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		9705A1C41CF9048500538489 /* Embed Frameworks */ = {
@@ -313,7 +313,7 @@
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				C85ABC9E2209E8ECD5129C3C /* [CP] Embed Pods Frameworks */,
-				65C230C5256F0DCC00AE1B20 /* Embed App Extensions */,
+				65C230C5256F0DCC00AE1B20 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -332,7 +332,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1220;
-				LastUpgradeCheck = 1300;
+				LastUpgradeCheck = 1400;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					65CEA7402572303000B53DD7 = {
@@ -668,7 +668,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "Insporation-Share/Insporation-Share.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = MYEC2JCSBB;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = MYEC2JCSBB;
@@ -686,7 +686,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.Insporation-Share";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development insporation-share";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AdHoc eu.jhass.insporation.Insporation-Share";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development eu.jhass.insporation.Insporation-Share";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -963,7 +963,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = MYEC2JCSBB;
@@ -986,7 +986,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = eu.jhass.insporation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development eu.jhass.insporation";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AdHoc eu.jhass.insporation";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development eu.jhass.insporation";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1003,9 +1003,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/RunnerRelease.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = MYEC2JCSBB;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = MYEC2JCSBB;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1024,6 +1026,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = eu.jhass.insporation;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore eu.jhass.insporation";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development eu.jhass.insporation";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

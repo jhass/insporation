@@ -64,12 +64,14 @@ platform :ios do
   lane :certificate do
     api_key = app_store_connect_api_key(
       key_id: "5WH6QW742Y",
-      issuer_id: "69a6de86-40c8-47e3-e053-5b8c7c11a4d1",
+      issuer_id: ENV["APPLE_ISSUER_ID"],
       key_filepath: "./AuthKey_5WH6QW742Y.p8",
       duration: 1200,
       in_house: false
     )
     register_devices(devices_file: "./devices.txt")
     match(type: "adhoc", force_for_new_devices: true)
+    match(type: "development", force_for_new_devices: true)
+    match(type: "appstore")
   end
 end
