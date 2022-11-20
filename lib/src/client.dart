@@ -1123,7 +1123,7 @@ class PollAnswer {
     PollAnswer(
       id: object["id"],
       answer: object["answer"],
-      own: object["own_answer"],
+      own: object["own_answer"] == true,
       voteCount: object["vote_count"]
     );
 
