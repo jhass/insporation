@@ -1027,8 +1027,8 @@ class OpenGraphObject {
 
 class Photo {
   final String? guid;
-  final int width;
-  final int height;
+  final int? width;
+  final int? height;
   final PhotoSizes sizes;
 
   Photo({required this.guid, required this.width, required this.height, required this.sizes});
