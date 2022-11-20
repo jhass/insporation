@@ -278,7 +278,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   }
 
   _editLocation() async {
-    final Location location = await showDialog(context: context, builder: (context) =>
+    final Location? location = await showDialog(context: context, builder: (context) =>
       _LocationEditor(location: _location));
 
     if (location == _location) {
@@ -617,7 +617,7 @@ class _LocationEditor extends StatefulWidget {
 }
 
 class _LocationEditorState extends State<_LocationEditor> with StateLocalizationHelpers {
-  static final _apiBase = Uri.parse("https://photon.komoot.de/api/");
+  static final _apiBase = Uri.parse("https://photon.komoot.io/api/");
 
   final _controller = TextEditingController();
   final _results = <Location>[];
