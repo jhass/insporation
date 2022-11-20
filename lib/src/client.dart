@@ -931,7 +931,7 @@ class PostInteractions {
 
 abstract class OEmbed {
   final String provider;
-  final String author;
+  final String? author;
   final String url;
 
   OEmbed({required this.provider, required this.author, required this.url});

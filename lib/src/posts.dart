@@ -874,8 +874,8 @@ class _OEmbedView extends StatelessWidget with LocalizationHelpers {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)
                             ),
-                            Text(
-                              l(context).oEmbedAuthor(oEmbed.author),
+                             if (oEmbed.author != null) Text(
+                              l(context).oEmbedAuthor(oEmbed.author!),
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(color: Colors.white)
                             )
@@ -903,7 +903,7 @@ class _OEmbedView extends StatelessWidget with LocalizationHelpers {
           child: GestureDetector(
             onTap: () => openExternalUrl(context, oEmbed.url),
             child: Text(
-              l(context).oEmbedHeader(oEmbed.author, oEmbed.provider),
+              oEmbed.author != null ? l(context).oEmbedHeader(oEmbed.author!, oEmbed.provider) : oEmbed.provider,
               style: TextStyle(color: colors.link, decoration: TextDecoration.underline),
             )
           )
