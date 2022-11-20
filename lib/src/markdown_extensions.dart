@@ -5,25 +5,12 @@ import 'package:markdown/markdown.dart';
 import 'client.dart';
 import 'posix_bracket_expressions.dart' as pbe;
 
-class SubscriptSyntax extends TagSyntax {
-  SubscriptSyntax() : super(r'~(?!~)');
-
-  @override
-  Node close(InlineParser parser, Delimiter opener, Delimiter closer,
-      {required List<Node> Function() getChildren}) {
-    return Element('sub', getChildren());
-  }
+class SubscriptSyntax extends DelimiterSyntax {
+  SubscriptSyntax() : super(r'~(?!~)', tags: [DelimiterTag('sub', 1)]);
 }
 
-class SuperscriptSyntax extends TagSyntax {
-  SuperscriptSyntax() : super(r'\^', startCharacter: 0x5e);
-
-
-  @override
-  Node close(InlineParser parser, Delimiter opener, Delimiter closer,
-      {required List<Node> Function() getChildren}) {
-    return Element('sup', getChildren());
-  }
+class SuperscriptSyntax extends DelimiterSyntax {
+  SuperscriptSyntax() : super(r'\^', startCharacter: 0x5e, tags: [DelimiterTag('sup', 1)]);
 }
 
 class TagLinkSyntax extends InlineSyntax  {

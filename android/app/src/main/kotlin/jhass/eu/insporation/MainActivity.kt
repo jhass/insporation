@@ -3,7 +3,6 @@ package jhass.eu.insporation
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
-import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugins.GeneratedPluginRegistrant
@@ -29,7 +28,7 @@ class MainActivity: FlutterActivity() {
     authorizingData = savedInstanceState?.getString(STATE_AUTHORIZING_DATA)
   }
 
-  override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
+  override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
     GeneratedPluginRegistrant.registerWith(flutterEngine)
 
     val self = WeakReference(this)

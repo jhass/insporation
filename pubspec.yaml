@@ -13,11 +13,11 @@ dependencies:
     sdk: flutter
   cached_network_image: ^3.0.0
   carousel_slider: ^4.0.0
-  catcher: ^0.6.6
+  catcher: ^0.7.0
   expandable_widget: ^2.0.0-nullsafety
   flutter_app_badger: ^1.2.0
   flutter_html: ^2.2.1
-  flutter_slidable: ^1.1.0
+  flutter_slidable: ^2.0.0
   geojson: ^1.0.0
   gesture_zoom_box: ^0.0.4
   http: ^0.13.0
@@ -26,11 +26,11 @@ dependencies:
   image_native_resizer:
     git: https://github.com/djamoapp/image_native_resizer.git
   intl: ^0.17.0
-  markdown: ^5.0.0
+  markdown: ^6.0.0
   mime: ^1.0.2
   provider: ^6.0.1
   quiver: ^3.0.0
-  share: ^2.0.0
+  share_plus: ^6.3.0
   shared_preferences: ^2.0.5
   timeago: ^3.0.2
   transparent_image: ^2.0.0

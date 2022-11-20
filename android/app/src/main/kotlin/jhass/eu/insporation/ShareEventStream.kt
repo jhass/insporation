@@ -3,6 +3,7 @@ package jhass.eu.insporation
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.core.content.IntentCompat
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.EventChannel
 import kotlinx.coroutines.Dispatchers

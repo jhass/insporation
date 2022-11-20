@@ -215,7 +215,7 @@ private class CallHandler(private val context: Context,
 
     // Exchange authorization code for access and refresh token
     Log.d("AppAuth", "Exchange successful authorization for ${session.userId} for tokens")
-    val result = suspendCoroutineWithTimeout<AuthorizationResult<TokenResponse>>(TIMEOUT) { continuation ->
+    val result = suspendCoroutineWithTimeout(TIMEOUT) { continuation ->
       authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), sessionState.clientAuthentication) { response, exception ->
         continuation.resume(AuthorizationResult(response, exception))
       }
@@ -236,7 +236,7 @@ private class CallHandler(private val context: Context,
 
   private suspend fun register(host: String): Registration {
     Log.d("AppAuth", "Starting service discovery for $host")
-    val serviceConfig = suspendCoroutineWithTimeout<AuthorizationServiceConfiguration>(TIMEOUT) { continuation ->
+    val serviceConfig = suspendCoroutineWithTimeout(TIMEOUT) { continuation ->
       AuthorizationServiceConfiguration.fetchFromIssuer(Uri.Builder().scheme("https").authority(host).build()) { serviceConfig, exception ->
         if (serviceConfig != null) {
           Log.d("AppAuth", "Discovered service config for $host")
@@ -253,7 +253,7 @@ private class CallHandler(private val context: Context,
       .setAdditionalParameters(mapOf(
         "client_name" to "insporation* ${if (BuildConfig.DEBUG) "debug " else " "}on ${android.os.Build.MODEL}"
       )).build()
-    val response = suspendCoroutineWithTimeout<RegistrationResponse>(TIMEOUT) { continuation ->
+    val response = suspendCoroutineWithTimeout(TIMEOUT) { continuation ->
       authorizationService.performRegistrationRequest(registrationRequest) { response, exception ->
         if (response != null) {
           Log.d("AppAuth", "Successfully registered to $host")

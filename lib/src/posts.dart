@@ -7,7 +7,7 @@ import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'client.dart';
 import 'comments.dart';
