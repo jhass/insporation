@@ -20,7 +20,11 @@ The nightlies are also published to a F-Droid repository which you can add by sc
 
 ![](fdroid-repository.png)
 
-or clicking [this link](https://jhass.github.io/insporation/fdroid/repo?fingerprint=EC792A58B39DF9FBB466FB100E30E3842F229FDBC6E28D32C417F6A5B30ECCAE) on your device that has F-Droid installed.
+or clicking [this link](https://jhass.github.io/insporation/fdroid/repo?fingerprint=EC792A58B39DF9FBB466FB100E30E3842F229FDBC6E28D32C417F6A5B30ECCAE) on your device that has a F-Droid client installed.
+
+#### IzzyOnDroid F-Droid repo
+
+The app is also available via the IzzyOnDroid repo [here](https://apt.izzysoft.de/fdroid/index/apk/jhass.eu.insporation). You have to add this repo to your F-Droid client first, you can do so by clicking this [link](https://apt.izzysoft.de/fdroid/repo?fingerprint=3BF0D6ABFEAE2F401707B6D966BE743BF0EEE49C2561B9BA39073711F628937A) on your device that has a F-Droid client installed.
 
 ### iOS
 
