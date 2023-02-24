@@ -26,13 +26,13 @@ dependencies:
   image_native_resizer:
     git: https://github.com/djamoapp/image_native_resizer.git
   intl: ^0.17.0
-  markdown: ^6.0.0
+  markdown: ^7.0.0
   mime: ^1.0.2
   provider: ^6.0.1
   quiver: ^3.0.0
   share_plus: ^6.3.0
   shared_preferences: ^2.0.5
-  timeago: ^3.0.2
+  timeago: ^3.3.0
   transparent_image: ^2.0.0
   url_launcher: ^6.0.2
 
