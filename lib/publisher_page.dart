@@ -239,7 +239,12 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   }
 
   _uploadPhotoUri(String uri) async {
-    _uploadPhotoFile((await ImageNativeResizer.resize(imagePath: Uri.parse(uri).path, maxWidth: _maxPhotoWidth))!);
+    final resizedImage = await ImageNativeResizer.resize(imagePath: Uri.parse(uri).path, maxWidth: _maxPhotoWidth);
+    if (resizedImage != null) {
+      _uploadPhotoFile(resizedImage);
+    } else {
+      tryShowErrorSnackBar(context, l.failedToUploadPhoto, Exception("Resizer returned null"), StackTrace.current);
+    }
   }
 
   _uploadPhotoFile(String picturePath) async {
