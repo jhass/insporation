@@ -1,11 +1,27 @@
 name: Nightly
 
 on:
+  schedule:
+    - cron: '0 4 * * *'
   repository_dispatch:
     types: nightly
+  workflow_dispatch:
 
 jobs:
+  check-new-commits:
+    if: ${{ github.event_name == 'schedule' }}
+    runs-on: ubuntu-latest
+    outputs:
+      build_nightly: ${{ steps.check.outputs.new_commits }}
+    steps:
+    - uses: actions/checkout@v2
+    - id: check
+      run: |
+        git fetch --depth=1 --no-tags origin +refs/tags/nightly:refs/tags/nightly
+        [ "$(git show-ref -s --head HEAD)" != "$(git show-ref -s nightly)" ] && echo ::set-output name=new_commits::true
   build-android:
+    needs: check-new-commits
+    if: ${{ needs.check-new-commits.outputs.build_nightly == 'true' }}
     runs-on: ubuntu-latest
     environment: release-build
     container:
@@ -124,6 +140,8 @@ jobs:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEYSTORE_KEY_ALIAS: key
   publish-ios:
+    needs: check-new-commits
+    if: ${{ needs.check-new-commits.outputs.build_nightly == 'true' }}
     runs-on: macos-latest
     environment: release-build
     steps:
