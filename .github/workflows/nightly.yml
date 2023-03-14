@@ -18,10 +18,11 @@ jobs:
     - id: check
       run: |
         git fetch --depth=1 --no-tags origin +refs/tags/nightly:refs/tags/nightly
-        [ "$(git show-ref -s --head HEAD)" != "$(git show-ref -s nightly)" ] && echo ::set-output name=new_commits::true
+        [ "$(git show-ref -s --head HEAD)" != "$(git show-ref -s nightly)" ] && echo new_commits=true >> $GITHUB_OUTPUT
+        exit 0
   build-android:
     needs: check-new-commits
-    if: ${{ needs.check-new-commits.outputs.build_nightly == 'true' }}
+    if: ${{ needs.check-new-commits.outputs.build_nightly == 'true' || github.event_name != 'schedule' }}
     runs-on: ubuntu-latest
     environment: release-build
     container:
@@ -141,7 +142,7 @@ jobs:
         KEYSTORE_KEY_ALIAS: key
   publish-ios:
     needs: check-new-commits
-    if: ${{ needs.check-new-commits.outputs.build_nightly == 'true' }}
+    if: ${{ needs.check-new-commits.outputs.build_nightly == 'true' || github.event_name != 'schedule' }}
     runs-on: macos-latest
     environment: release-build
     steps:
