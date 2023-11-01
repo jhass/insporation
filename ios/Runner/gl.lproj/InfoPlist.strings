@@ -1,1 +1,4 @@
 
+
+"NSPhotoLibraryUsageDescription" = "Con isto podes anexar as fotos seleccionadas ás publicacións";
+"NSCameraUsageDescription" = "Isto permíteche facer fotos coa cámara e anexalas ás publicacións";
