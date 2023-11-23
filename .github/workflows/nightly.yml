@@ -13,7 +13,7 @@ jobs:
     outputs:
       build_nightly: ${{ steps.check.outputs.build_nightly }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - id: check
       run: |
         git fetch --depth=1 --no-tags origin +refs/tags/nightly:refs/tags/nightly
@@ -32,7 +32,7 @@ jobs:
     steps:
     - name: "Install SDK 33"
       run: sdkmanager "build-tools;33.0.0"
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v2
@@ -40,7 +40,9 @@ jobs:
       with:
         flutter-version: '3.16.x'
     - name: Workaround flutter directory permissions
-      run: git config --global --add safe.directory ${{ steps.flutter-action.outputs.CACHE-PATH }}
+      run: |-
+        git config --global --add safe.directory ${{ steps.flutter-action.outputs.CACHE-PATH }}
+        git config --global --add safe.directory $(pwd)
     - name: Setup keystore
       run: |
        echo "$KEYSTORE" | base64 -d > "$KEYSTORE_PATH"
@@ -93,7 +95,7 @@ jobs:
         release-tag: nightly
         repo-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Checkout F-Droid repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         ref: gh-pages
         path: pages
@@ -148,7 +150,7 @@ jobs:
     runs-on: macos-latest
     environment: release-build
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v2
