@@ -14,6 +14,15 @@ final timeagoLocaleMessages = <String, timeago.LookupMessages>{
 };
 
 class Timeago extends StatefulWidget {
+  static bool initialized = false;
+  static initialize(BuildContext context) {
+    if (!initialized) {
+      final locale = Localizations.localeOf(context);
+      loadLocale(locale);
+      timeago.setDefaultLocale(locale.toLanguageTag());
+    }
+  }
+
   static loadLocale(Locale locale) {
     timeago.setLocaleMessages(locale.toLanguageTag(), timeagoLocaleMessages[locale.toLanguageTag()]!);
   }
@@ -36,6 +45,8 @@ class _TimeagoState extends State<Timeago> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    Timeago.initialize(context);
 
     _timer?.cancel();
 

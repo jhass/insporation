@@ -934,6 +934,18 @@
     "type": "text",
     "placeholders": {}
   },
+  "notificationTargetComment": "comment",
+  "@notificationTargetComment": {
+    "description": "Target part of a notification message for a comment",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetDeletedComment": "deleted comment",
+  "@notificationTargetDeletedComment": {
+    "description": "Target part of a notification message for a deleted comment",
+    "type": "text",
+    "placeholders": {}
+  },
   "notificationActorsForTwoPeople": "{first} and {second}",
   "@notificationActorsForTwoPeople": {
     "description": "Actors part of a notification message with exactly two actors",
@@ -1037,6 +1049,22 @@
       },
       "target": {
         "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationLikedComment": "{actorCount,plural, =0{Nobody liked your {target}.}=1{{actors} liked your {target}.}other{{actors} liked your {target}.}}",
+  "@notificationLikedComment": {
+    "description": "Notification message for when some people liked the users comment. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetComment or notificationTargetDeletedComment"
       }
     }
   },

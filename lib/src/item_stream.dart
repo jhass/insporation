@@ -23,7 +23,8 @@ abstract class ItemStream<T> extends ChangeNotifier {
 
   bool get hasMore => _lastPage == null || _lastPage!.nextPage != null;
 
-  T operator [](int index) => _items == null ? throw IndexError(index, this) : _items![index];
+  T operator [](int index) => _items != null ? _items![index] :
+    throw IndexError.withLength(index, length, indexable: this);
 
   Iterable<R> map<R>(R Function(T) mapper) => _items?.map(mapper) ?? [];
 

@@ -4,7 +4,7 @@ version: 1.1.0+1
 publish_to: none
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -13,29 +13,44 @@ dependencies:
     sdk: flutter
   cached_network_image: ^3.0.0
   carousel_slider: ^4.0.0
-  catcher: ^0.7.0
-  expandable_widget: ^2.0.0-nullsafety
+  catcher_2: ^1.0.5
+  expand_widget: ^3.1.1
   flutter_app_badger: ^1.2.0
-  flutter_html: ^2.2.1
-  flutter_slidable: ^2.0.0
+  flutter_html: ^3.0.0-beta.1
+  flutter_slidable: ^3.0.0
   geojson: ^1.0.0
   gesture_zoom_box: ^0.0.4
-  http: ^0.13.0
-  image_crop: ^0.4.0
-  image_picker: ^0.8.2
-  image_native_resizer:
-    git: https://github.com/djamoapp/image_native_resizer.git
-  intl: ^0.17.0
+  http: ^0.13.6
+  image_crop: ^0.4.0 # TODO: abandonware, migrate away
+  image_picker: ^1.0.4
+  image_native_resizer: ^0.1.2 # TODO: abandonware, migrate away
+  intl: ^0.18.0
   markdown: ^7.0.0
   mime: ^1.0.2
   provider: ^6.0.1
   quiver: ^3.0.0
-  share_plus: ^6.3.0
+  share_plus: ^7.0.1
   shared_preferences: ^2.0.5
   timeago: ^3.3.0
   transparent_image: ^2.0.0
-  url_launcher: ^6.0.2
+  url_launcher: ^6.2.1
 
+dependency_overrides:
+  flutter_app_badger:
+    git: # use latest git until next release
+      url: https://github.com/g123k/flutter_app_badger.git
+      ref: master
+  flutter_mailer:
+    git: # use latest git until next release
+      url: https://github.com/taljacobson/flutter_mailer.git
+      ref: master
+  image_crop:
+    git: # Collected hotfixes, migrate away
+      url: https://github.com/jhass/image_crop.git
+  image_native_resizer:
+    git: # Collected hotfixes, migrate away
+      url: https://github.com/jhass/image_native_resizer.git
+      ref: agp8
 dev_dependencies:
   flutter_test:
     sdk: flutter

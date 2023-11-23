@@ -30,7 +30,7 @@ const scheme = ColorScheme(
   brightness: Brightness.light
 );
 
-final theme = ThemeData.from(colorScheme: scheme);
+final theme = ThemeData.from(colorScheme: scheme, useMaterial3: false);
 
 const darkScheme = ColorScheme(
   primary: primary,
@@ -46,15 +46,15 @@ const darkScheme = ColorScheme(
   brightness: Brightness.dark
 );
 
-final darkTheme = ThemeData.from(colorScheme: darkScheme).copyWith(
+final darkTheme = ThemeData.from(colorScheme: darkScheme, useMaterial3: false).copyWith(
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
-      primary: darkScheme.onSurface.withOpacity(0.87)
+      foregroundColor: darkScheme.onSurface.withOpacity(0.87)
     )
   ),
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
-      primary: secondary
+      foregroundColor: secondary
     )
   )
 );

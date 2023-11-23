@@ -1202,6 +1202,7 @@ enum NotificationType {
   alsoCommented,
   commentOnPost,
   liked,
+  likedComment,
   mentioned,
   mentionedInComment,
   reshared,
@@ -1214,12 +1215,14 @@ class Notification {
     "also_commented": NotificationType.alsoCommented,
     "comment_on_post": NotificationType.commentOnPost,
     "liked": NotificationType.liked,
+    "liked_comment": NotificationType.likedComment,
     "mentioned": NotificationType.mentioned,
     "mentioned_in_comment": NotificationType.mentionedInComment,
     "reshared": NotificationType.reshared,
     "started_sharing": NotificationType.startedSharing,
     "contacts_birthday": NotificationType.contactsBirthday,
   };
+
   final String guid;
   final NotificationType type;
   bool read;

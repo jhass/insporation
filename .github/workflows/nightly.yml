@@ -37,7 +37,7 @@ jobs:
         ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.7'
+        flutter-version: '3.16'
     - name: Setup keystore
       run: |
        echo "$KEYSTORE" | base64 -d > "$KEYSTORE_PATH"
@@ -150,7 +150,7 @@ jobs:
         ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.7'
+        flutter-version: '3.16'
     - name: Build
       run: |
         flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER

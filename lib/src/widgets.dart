@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/material.dart' hide Page;
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:insporation/src/localizations.dart';
 import 'package:provider/provider.dart';
@@ -60,7 +62,7 @@ class ErrorMessage extends StatelessWidget with LocalizationHelpers {
   }
 
   _showTrace(context) async {
-    final bool copied = await showDialog(context: context, builder: (dialogContext) => AlertDialog(
+    final bool? copied = await showDialog(context: context, builder: (dialogContext) => AlertDialog(
       content: SingleChildScrollView(
         child: Column(
           children: [
@@ -74,7 +76,7 @@ class ErrorMessage extends StatelessWidget with LocalizationHelpers {
         TextButton(
           child: Text(ml(dialogContext).copyButtonLabel),
           onPressed: () async {
-            await Clipboard.setData(ClipboardData(text: trace));
+            await Clipboard.setData(ClipboardData(text: trace!));
             Navigator.pop(dialogContext, true);
           },
         ),
@@ -85,7 +87,7 @@ class ErrorMessage extends StatelessWidget with LocalizationHelpers {
       ],
     ));
 
-    if (copied) {
+    if (copied == true) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l(context).detailsOnErrorCopied)));
     }
   }
@@ -280,7 +282,6 @@ abstract class ItemCountNotifier<T> extends ChangeNotifier {
   }
 }
 
-
 class TextIcon extends StatelessWidget {
   TextIcon({Key? key, required this.character}) : super(key: key) {
     assert(character.length == 1);
@@ -314,5 +315,68 @@ class RemoteImage extends CachedNetworkImage {
     fit: fit,
     fadeInDuration: Duration(milliseconds: 250),
     placeholder: (_, __) => fallback ?? Center(child: CircularProgressIndicator()),
-    errorWidget: (context, __, ___) => fallback ?? Center(child: Icon(Icons.image_not_supported, color: Theme.of(context).errorColor.withOpacity(0.7))));
+    errorWidget: (context, __, ___) => fallback ?? Center(child: Icon(Icons.image_not_supported, color: Theme.of(context).colorScheme.error.withOpacity(0.7))));
+}
+
+class MeasureSizeRenderObject extends RenderProxyBox {
+  MeasureSizeRenderObject(this.onChange);
+  void Function(Size size) onChange;
+
+  Size? _prevSize;
+
+  @override
+  void performLayout() {
+    super.performLayout();
+
+    final newSize = child?.size;
+    if (newSize != null && _prevSize != newSize) {
+      _prevSize = newSize;
+      WidgetsBinding.instance.addPostFrameCallback((_) => onChange(newSize));
+    }
+  }
+}
+
+class MeasurableWidget extends SingleChildRenderObjectWidget {
+  final void Function(Size size) onChange;
+
+  const MeasurableWidget({Key? key, required this.onChange, required Widget child}) : super(key: key, child: child);
+
+  @override
+  RenderObject createRenderObject(BuildContext context) => MeasureSizeRenderObject(onChange);
+}
+
+class ExpandChildMaxHeight extends StatefulWidget {
+  final Widget child;
+  final double maxHeight;
+  final double minExpansion;
+
+  ExpandChildMaxHeight({required this.child, this.maxHeight = 400, this.minExpansion = 200});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _ExpandChildMaxHeightState();
+  }
+}
+
+class _ExpandChildMaxHeightState extends State<ExpandChildMaxHeight> {
+  double? childHeight;
+
+  @override
+  Widget build(BuildContext context) {
+    final childHeight = this.childHeight;
+    if (childHeight == null) {
+      return Offstage(
+        child: MeasurableWidget(
+          onChange: (size) {
+            if (this.childHeight == null) setState(() => this.childHeight = size.height);
+          },
+          child: widget.child
+        )
+      );
+    } else if (childHeight > widget.maxHeight && childHeight - widget.maxHeight >= widget.minExpansion) {
+      return ExpandChild(child: widget.child, collapsedVisibilityFactor: widget.maxHeight / childHeight);
+    } else {
+      return widget.child;
+    }
+  }
 }

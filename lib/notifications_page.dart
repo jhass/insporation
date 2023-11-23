@@ -64,7 +64,7 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
         onTap: _canGoToTarget ? _goToTarget : null,
         child: Container(
           decoration:  BoxDecoration(
-            color: widget.notification.read ? theme.backgroundColor : colors.unreadItemBackground(theme),
+            color: widget.notification.read ? theme.colorScheme.background : colors.unreadItemBackground(theme),
             border: Border(
               left: widget.notification.read ? BorderSide.none : BorderSide(color: theme.colorScheme.secondary, width: 2),
               bottom: BorderSide(color: widget.notification.read ? theme.dividerColor : colors.unreadItemBottomBorder(theme))
@@ -85,21 +85,23 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
 
     switch (widget.notification.type) {
       case NotificationType.alsoCommented:
-        return l.notificationAlsoCommented(actorCount, _actors, _target);
+        return l.notificationAlsoCommented(actorCount, _actors, _targetPost);
       case NotificationType.commentOnPost:
-        return l.notificationCommented(actorCount, _actors, _target);
+        return l.notificationCommented(actorCount, _actors, _targetPost);
       case NotificationType.contactsBirthday:
         return l.notificationBirthday(actorCount, _actors);
       case NotificationType.liked:
-        return l.notificationLiked(actorCount, _actors, _target);
+        return l.notificationLiked(actorCount, _actors, _targetPost);
+      case NotificationType.likedComment:
+        return l.notificationLikedComment(actorCount, _actors, _targetComment);
       case NotificationType.mentioned:
-        return l.notificationMentionedInPost(actorCount, _actors, _target);
+        return l.notificationMentionedInPost(actorCount, _actors, _targetPost);
       case NotificationType.mentionedInComment:
         return widget.notification.targetGuid != null ?
           l.notificationMentionedInComment(actorCount, _actors) :
           l.notificationMentionedInCommentOnDeletedPost(actorCount, _actors);
       case NotificationType.reshared:
-        return l.notificationReshared(actorCount, _actors, _target);
+        return l.notificationReshared(actorCount, _actors, _targetPost);
       case NotificationType.startedSharing:
         return l.notificationStartedSharing(actorCount, _actors);
     }
@@ -118,7 +120,9 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
     }
   }
 
-  String get _target => widget.notification.targetGuid == null ? l.notificationTargetDeletedPost : l.notificationTargetPost;
+  String get _targetPost => widget.notification.targetGuid == null ? l.notificationTargetDeletedPost : l.notificationTargetPost;
+
+  String get _targetComment => widget.notification.targetGuid == null ? l.notificationTargetDeletedComment : l.notificationTargetComment;
 
   bool get _canGoToTarget {
     switch (widget.notification.type) {
@@ -183,6 +187,9 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
       case NotificationType.contactsBirthday:
       case NotificationType.startedSharing:
         Navigator.pushNamed(context, "/profile", arguments: widget.notification.eventCreators.first);
+        break;
+      case NotificationType.likedComment:
+        // TODO implement; API needs extending to push out the comment's post guid
         break;
     }
   }

@@ -1,7 +1,6 @@
 import 'dart:io' show Platform;
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:expandable_widget/expandable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_html/flutter_html.dart';
@@ -243,9 +242,8 @@ class PostView extends StatelessWidget with LocalizationHelpers {
     );
 
     if (limitHeight) {
-      return ExpandableWidget.maxHeight(
-        maxHeight: 600,
-        child: Wrap(clipBehavior: Clip.hardEdge, children: [content]),
+      return ExpandChildMaxHeight(
+        child: content
       );
     } else {
       return content;
@@ -280,7 +278,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
           TextButton.icon(
             icon: Icon(Icons.comment, size: 16),
             label: Text(widget.post.interactions.comments.toString()),
-            style: TextButton.styleFrom(primary: colors.postInteractionIcon(theme)),
+            style: TextButton.styleFrom(foregroundColor: colors.postInteractionIcon(theme)),
             onPressed: !widget.enableCommentsSheet || !widget.post.canComment ? null : () =>
               Navigator.push(context, PageRouteBuilder(
                 pageBuilder: (context, _, __) =>  FractionallySizedBox(
@@ -313,7 +311,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
                 color: widget.post.interactions.reshared ? colors.reshared : null
             ),
             label: Text(widget.post.interactions.reshares.toString()),
-            style: TextButton.styleFrom(primary: colors.postInteractionIcon(theme)),
+            style: TextButton.styleFrom(foregroundColor: colors.postInteractionIcon(theme)),
             onPressed: !widget.post.canReshare ? null : _promptReshare,
           ),
           TextButton.icon(
@@ -323,7 +321,7 @@ class _PostInteractionsViewState extends State<_PostInteractionsView> with State
                 color: widget.post.interactions.liked ? colors.liked : null
             ),
             label: Text(widget.post.interactions.likes.toString()),
-            style: TextButton.styleFrom(primary: colors.postInteractionIcon(theme)),
+            style: TextButton.styleFrom(foregroundColor: colors.postInteractionIcon(theme)),
             onPressed: _updatingLike || !widget.post.canLike ? null : _toggleLike
           ),
         ]
@@ -604,7 +602,9 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
         ));
       }
     } catch(e, s) {
-      tryShowErrorSnackBar(context, l.failedToReportPost, e, s);
+      if (mounted) {
+        tryShowErrorSnackBar(context, l.failedToReportPost, e, s);
+      }
 
       widget.post.interactions.reported = false;
       if (mounted) {
@@ -912,17 +912,18 @@ class _OEmbedView extends StatelessWidget with LocalizationHelpers {
           margin: EdgeInsets.only(left: 16),
           decoration: BoxDecoration(border: Border(left: BorderSide(color: Theme.of(context).dividerColor))),
           child: Html(
-            onLinkTap: (url, _, __, ___) {
+            onLinkTap: (url, _, __) {
               if (url != null) openExternalUrl(context, url);
             },
             data: oEmbed.html,
-            customRender: {
-              'img': (context, _) {
-                final src = context.tree.attributes['src'];
-                return src != null ? RemoteImage(src) : null;
-              }
-            },
-            style: {"blockquote": Style(margin: EdgeInsets.only(left: 8))},
+            extensions: [
+              ImageExtension(
+                builder:(context) {
+                final src = context.attributes['src'];
+                return src != null ? RemoteImage(src) : SizedBox();
+              })
+            ],
+            style: {"blockquote": Style(margin: Margins.only(left: 8))},
           )
         )
       ]

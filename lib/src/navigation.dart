@@ -55,7 +55,7 @@ class NavigationBar extends StatelessWidget with LocalizationHelpers {
           Navigator.of(context).pushReplacementNamed(mainItems[index].route);
         } else {
           final bar = context.findRenderObject() as RenderBox?;
-          final overlay = Overlay.of(context)?.context.findRenderObject() as RenderBox?;
+          final overlay = Overlay.of(context).context.findRenderObject() as RenderBox?;
           if (bar == null || overlay == null) {
             return;
           }

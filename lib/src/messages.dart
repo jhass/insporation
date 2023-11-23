@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:html/dom.dart' as dom;
 import 'package:gesture_zoom_box/gesture_zoom_box.dart';
 import 'package:markdown/markdown.dart' as md;
 
@@ -76,7 +75,7 @@ class Message extends StatelessWidget with LocalizationHelpers {
             mde.DiasporaAutolinkSyntax()
           ],
         ),
-        onLinkTap: (url, _, __, ___) {
+        onLinkTap: (url, _, __) {
           if (url == null) {
             return;
           } else if (url.startsWith('eu.jhass.insporation://tags/')) {
@@ -99,9 +98,11 @@ class Message extends StatelessWidget with LocalizationHelpers {
             openExternalUrl(context, url);
           }
         },
-        customRender: {
-          'img': (renderContext, _) =>_renderImage(context, renderContext.tree.element)
-        }
+        extensions: [
+          ImageExtension(
+            builder: (extensionContext) => _renderImage(extensionContext)
+          )
+        ]
       );
     } catch (e) {
       final theme = Theme.of(context), debugInfo = this.debugInfo;
@@ -136,17 +137,17 @@ class Message extends StatelessWidget with LocalizationHelpers {
     }
   }
 
-  Widget? _renderImage(BuildContext context, dom.Element? element) {
-    final src = element?.attributes['src'];
+  Widget _renderImage(ExtensionContext context) {
+    final src = context.attributes['src'];
     if (src == null) {
-      return null;
+      return SizedBox();
     }
 
     return GestureDetector(
       onTap: () {
         // Don't trigger photobox for linked images
-        if (element?.parent?.localName != 'a') {
-          Photobox.show(context, src);
+        if (context.element?.parent?.localName != 'a') {
+          Photobox.show(context.buildContext!, src);
         }
       },
       child: RemoteImage(src)

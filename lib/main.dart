@@ -1,4 +1,5 @@
-import 'package:catcher/catcher.dart';
+import 'package:catcher_2/catcher_2.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import 'app.dart';
@@ -26,6 +27,8 @@ const _skipableErrors = <String>[
   'HandshakeException'
 ];
 
+const devBypassCatcher = true;
+
 bool _shouldReportError(Report report) {
   if (report.error == null) {
     return true;
@@ -36,23 +39,32 @@ bool _shouldReportError(Report report) {
   return !skip;
 }
 
-void main() => Catcher(
-  rootWidget: MultiProvider(
-    providers: globalProviders,
-    child: Insporation(),
-  ),
-  debugConfig: CatcherOptions(
-    SilentReportMode(),
-    [ConsoleHandler()],
-    localizationOptions: catcherLocalizationOptions,
-    filterFunction: _shouldReportError
-  ),
-  releaseConfig: CatcherOptions(
-    DialogReportMode(),
-    [EmailManualHandler(['insporation-bugs@jhass.eu'], emailTitle: "insporation* crash report")],
-    localizationOptions: catcherLocalizationOptions,
-    filterFunction: _shouldReportError,
-    handleSilentError: false
-  ),
-  navigatorKey: navigator
-);
+void main() {
+  final app = MultiProvider(
+      providers: globalProviders,
+      child: Insporation(),
+  );
+
+  if (devBypassCatcher) {
+    runApp(app);
+    return;
+  }
+
+  Catcher2(
+    rootWidget: app,
+    debugConfig: Catcher2Options(
+      SilentReportMode(),
+      [ConsoleHandler()],
+      localizationOptions: catcherLocalizationOptions,
+      filterFunction: _shouldReportError
+    ),
+    releaseConfig: Catcher2Options(
+      DialogReportMode(),
+      [EmailManualHandler(['insporation-bugs@jhass.eu'], emailTitle: "insporation* crash report")],
+      localizationOptions: catcherLocalizationOptions,
+      filterFunction: _shouldReportError,
+      handleSilentError: false
+    ),
+    navigatorKey: navigator
+  );
+}
