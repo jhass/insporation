@@ -21,6 +21,8 @@ jobs:
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.16.x'
+    - run: flutter --version
+    - run: git --version
     - name: Build
       run: flutter build apk --debug
   build-ios:
