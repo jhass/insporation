@@ -36,8 +36,11 @@ jobs:
       with:
         ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v2
+      id: flutter-action
       with:
         flutter-version: '3.16.x'
+    - name: Workaround flutter directory permissions
+      run: git config --global --add safe.directory ${{ steps.flutter-action.outputs.CACHE-PATH }}
     - name: Setup keystore
       run: |
        echo "$KEYSTORE" | base64 -d > "$KEYSTORE_PATH"
