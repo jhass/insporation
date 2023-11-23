@@ -67,7 +67,6 @@ jobs:
     environment: release-build
     container:
       image: registry.gitlab.com/fdroid/docker-executable-fdroidserver
-      options: -u root
     env:
       KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
       LC_ALL: en_US.UTF-8
@@ -102,6 +101,8 @@ jobs:
         KEYSTORE: ${{ secrets.KEYSTORE }}
     - name: Update F-Droid repository
       run: |
+        . /etc/profile.d/bsenv.sh
+
         cd pages
 
         git config --local user.email "me+nightly-ci@jhass.eu"
@@ -120,7 +121,7 @@ jobs:
         find archive -name '*.apk' | sort -V | head -n-2 | xargs -r rm
 
         # Rebuild repos
-        fdroid update
+        ${fdroidserver}/fdroid update
 
         # Cleanup icons
         for icon in {repo,archive}/icons/*.*.png; do
