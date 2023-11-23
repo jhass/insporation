@@ -73,10 +73,6 @@ jobs:
       LC_ALL: en_US.UTF-8
       LANG: en_US.UTF-8
     steps:
-    - name: Update git
-      run: |
-        add-apt-repository -y ppa:git-core/ppa
-        apt install -y git
     - uses: actions/download-artifact@v1
       with:
         name: Android Application bundles
