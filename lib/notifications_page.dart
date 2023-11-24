@@ -179,6 +179,7 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
       case NotificationType.alsoCommented:
       case NotificationType.commentOnPost:
       case NotificationType.liked:
+      case NotificationType.likedComment:
       case NotificationType.mentioned:
       case NotificationType.reshared:
       case NotificationType.mentionedInComment:
@@ -187,9 +188,6 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
       case NotificationType.contactsBirthday:
       case NotificationType.startedSharing:
         Navigator.pushNamed(context, "/profile", arguments: widget.notification.eventCreators.first);
-        break;
-      case NotificationType.likedComment:
-        // TODO implement; API needs extending to push out the comment's post guid
         break;
     }
   }
