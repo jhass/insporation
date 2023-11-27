@@ -1493,5 +1493,33 @@
     "placeholders": {}
   },
   "failedToOpenUrl": "Fallou a apertura do URL. Tes un navegador instalado?",
-  "@failedToOpenUrl": {}
+  "@failedToOpenUrl": {},
+  "notificationTargetComment": "comentario",
+  "@notificationTargetComment": {
+    "description": "Target part of a notification message for a comment",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationLikedComment": "{actorCount,plural, =0{A ninguén le gustou o teu {target}.}=1{{actors} gustoulle o teu {target}.}other{{actors} gustoulles o teu {target}.}}",
+  "@notificationLikedComment": {
+    "description": "Notification message for when some people liked the users comment. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetComment or notificationTargetDeletedComment"
+      }
+    }
+  },
+  "notificationTargetDeletedComment": "comentario borrado",
+  "@notificationTargetDeletedComment": {
+    "description": "Target part of a notification message for a deleted comment",
+    "type": "text",
+    "placeholders": {}
+  }
 }
