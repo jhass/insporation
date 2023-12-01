@@ -1493,5 +1493,33 @@
     "placeholders": {}
   },
   "failedToOpenUrl": "Neuspjelo otvaranje URL-a. Imaš li instalirani preglednik?",
-  "@failedToOpenUrl": {}
+  "@failedToOpenUrl": {},
+  "notificationTargetComment": "komentar",
+  "@notificationTargetComment": {
+    "description": "Target part of a notification message for a comment",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationLikedComment": "{actorCount,plural, =0{Nikome se ne sviđa tvoja objava {target}.}=1{{actors} se sviđa tvoja objava {target}.}other{{actors} se sviđa tvoja objava {target}.}}",
+  "@notificationLikedComment": {
+    "description": "Notification message for when some people liked the users comment. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetComment or notificationTargetDeletedComment"
+      }
+    }
+  },
+  "notificationTargetDeletedComment": "izbrisani komentar",
+  "@notificationTargetDeletedComment": {
+    "description": "Target part of a notification message for a deleted comment",
+    "type": "text",
+    "placeholders": {}
+  }
 }
