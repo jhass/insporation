@@ -1,0 +1,1 @@
+A native [diaspora\*](https://diasporafoundation.org) client powered by Flutter.

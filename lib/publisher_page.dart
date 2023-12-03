@@ -248,14 +248,14 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   }
 
   _uploadPhotoFile(String picturePath) async {
+    final client = context.read<Client>(),
+    picture = File(picturePath),
+    upload = client.uploadPictureForPublishing(picture),
+    attachedPhoto = _AttachedPhoto(picture, upload);
+
+    setState(() => _attachedPhotos.add(attachedPhoto));
+
     try {
-      final client = context.read<Client>(),
-      picture = File(picturePath),
-      upload = client.uploadPictureForPublishing(picture),
-      attachedPhoto = _AttachedPhoto(picture, upload);
-
-      setState(() => _attachedPhotos.add(attachedPhoto));
-
       final photo = await upload;
       attachedPhoto.guid = photo.guid;
       attachedPhoto.uploaded = true;
