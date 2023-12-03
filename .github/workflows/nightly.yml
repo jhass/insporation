@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '0 4 * * *'
   repository_dispatch:
-    types: nightly
+    types: [nightly]
   workflow_dispatch:
 
 jobs:

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -1247,8 +1248,9 @@ class Notification {
     );
   }
 
+  // TODO when and why are we getting null items in this list?!
   static List<Notification> fromList(List<Map<String, dynamic>> objects) =>
-    objects.map((object) => Notification.from(object)).toList();
+    objects.whereNotNull().map((object) => Notification.from(object)).toList();
 }
 
 class Conversation {

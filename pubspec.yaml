@@ -14,6 +14,7 @@ dependencies:
   cached_network_image: ^3.0.0
   carousel_slider: ^4.0.0
   catcher_2: ^1.0.5
+  collection: ^1.18.0
   expand_widget: ^3.1.1
   flutter_app_badger: ^1.2.0
   flutter_html: ^3.0.0-beta.1
