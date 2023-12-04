@@ -137,10 +137,15 @@ jobs:
         git add .
         git commit -m "Update fdroid repository for nightly build $GITHUB_RUN_NUMBER"
         git push -f "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" new-pages:gh-pages
-      shell: bash --noprofile --norc -Beo pipefail +f {0}
+      shell: bash
       env:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEYSTORE_KEY_ALIAS: key
+    - name: Trigger Github Pages deploy
+      uses: benc-uk/workflow-dispatch@v1.2.2
+      with:
+        workflow: pages.yml
+        ref: gh-pages
   publish-ios:
     needs: check-build-needed
     if: ${{ needs.check-build-needed.outputs.build_nightly == 'true' }}
