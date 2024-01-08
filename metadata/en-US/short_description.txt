@@ -1,1 +1,1 @@
-A native [diaspora\*](https://diasporafoundation.org) client powered by Flutter.
+A native diaspora* client powered by Flutter.
