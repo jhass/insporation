@@ -546,7 +546,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "insertHashtag": "Étiquette",
+  "insertHashtag": "Mot-dièse",
   "@insertHashtag": {
     "description": "Tooltip for insert hashtag button",
     "type": "text",
@@ -701,7 +701,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "failedToReportPost": "Échec de la création du signalement",
+  "failedToReportPost": "Échec de la création de signalement",
   "@failedToReportPost": {
     "description": "Error message after a post report couldn't be sent",
     "type": "text",
@@ -1471,6 +1471,54 @@
   "retryLabel": "Réessayer",
   "@retryLabel": {
     "description": "Label for a retry button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkConversationAsUnread": "Erreur lors du marquage de la conversation comme non-lue",
+  "@failedToMarkConversationAsUnread": {
+    "description": "Error message after marking a conversation  as unread failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationLikedComment": "{actorCount,plural, =0{Absence de likes pour {target}.}=1{{actors} a aimé {target}.}other{{actors} a aimé {target}.}}",
+  "@notificationLikedComment": {
+    "description": "Notification message for when some people liked the users comment. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetComment or notificationTargetDeletedComment"
+      }
+    }
+  },
+  "failedToOpenInvalidUrl": "Adresse URL invalide ? Ouverture impossible",
+  "@failedToOpenInvalidUrl": {
+    "description": "Error message after trying to open an invalid URL",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkConversationAsRead": "Erreur lors du marquage de la conversation comme lue",
+  "@failedToMarkConversationAsRead": {
+    "description": "Error message after marking a conversation as read failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetComment": "commenter",
+  "@notificationTargetComment": {
+    "description": "Target part of a notification message for a comment",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToOpenUrl": "Échec d'ouverture de l'URL. Un navigateur est bien installé ?",
+  "@failedToOpenUrl": {},
+  "notificationTargetDeletedComment": "Commentaire supprimé",
+  "@notificationTargetDeletedComment": {
+    "description": "Target part of a notification message for a deleted comment",
     "type": "text",
     "placeholders": {}
   }
