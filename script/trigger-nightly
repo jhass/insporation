@@ -1,12 +1,3 @@
-#!/bin/bash
+#!/bin/sh
+exec gh workflow run nightly.yml
 
-if [ -z "$GITHUB_TOKEN" ]; then
-  echo "Need to set GITHUB_TOKEN environment variable!"
-  exit 1
-fi
-
-curl -H "Accept: application/vnd.github.everest-preview+json" \
-  -H "Authorization: token $GITHUB_TOKEN" \
-  --request POST \
-  --data '{"event_type": "nightly"}' \
-    https://api.github.com/repos/jhass/insporation/dispatches
