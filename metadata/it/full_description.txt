@@ -1,0 +1,3 @@
+Un client nativo <a href='https://diasporafoundation.org'>diaspora*</a> alimentato da Flutter.
+
+È ancora in anteprima. Avrete bisogno di un pod sull'ultimo ramo di sviluppo. I contributi sono benvenuti, si prega di aprire un problema se si lavora su qualcosa di più grande per evitare di duplicare gli sforzi :)
