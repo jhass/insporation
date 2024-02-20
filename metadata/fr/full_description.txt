@@ -1,3 +1,3 @@
-Un client natif <a href='https://diasporafoundation.org'>diaspora*</a> alimenté par Flutter.
+Un client natif <a href='https://diasporafoundation.org'>diaspora*</a> fait avec Flutter.
 
-Il s'agit d'une version préliminaire. Vous aurez besoin d'un pod sur la dernière branche de développement. Les contributions sont les bienvenues, merci d'ouvrir un dossier si vous travaillez sur quelque chose de plus important afin d'éviter la duplication des efforts :)
+Vous aurez besoin d'un pod utilisant la version de développement pour l'utiliser. Les contributions sont les bienvenues, merci d'ouvrir une issue github si vous souhaitez contribuer afin d'éviter la duplication des efforts :)
