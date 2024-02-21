@@ -1,1 +1,1 @@
-Un client diaspora* natif propulsé par Flutter.
+Un client officiel de diaspora* - Sécurité, liberté, vie privée

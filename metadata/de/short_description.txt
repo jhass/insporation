@@ -1,1 +1,1 @@
-Ein diaspora* client basierend auf Flutter.
+Der offizielle diaspora* Client - Sicherheit, Freiheit, Privatsphäre
