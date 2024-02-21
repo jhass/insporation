@@ -1,0 +1,3 @@
+Un client natif <a href='https://diasporafoundation.org'>diaspora*</a> fait avec Flutter.
+
+Vous aurez besoin d'un pod utilisant la version de développement pour l'utiliser. Les contributions sont les bienvenues, merci d'ouvrir une issue github si vous souhaitez contribuer afin d'éviter la duplication des efforts :)

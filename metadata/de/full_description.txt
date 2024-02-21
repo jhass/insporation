@@ -1,0 +1,3 @@
+Ein <a href='https://diasporafoundation.org'>diaspora*</a> client basierend auf Flutter.
+
+Du benötigst ein diaspora Pod im developer-branch oder eine Instanz mit einer Versionsnummer höher als 0.8. Mithilfe am Quellcode wird gerne gesehen. Öffne ein Ticket, um uns mitzuteilen, dass du an etwas grösserem arbeitest.

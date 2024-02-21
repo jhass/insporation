@@ -1,1 +1,1 @@
-A native diaspora* client powered by Flutter.
+The official diaspora* client - security, freedom, privacy
