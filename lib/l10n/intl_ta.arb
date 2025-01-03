@@ -1,1 +1,1525 @@
-{}
+{
+  "saveButtonLabel": "சேமி",
+  "@saveButtonLabel": {
+    "description": "Label for a dialog save button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "submitButtonLabel": "சமர்ப்பிக்கவும்",
+  "@submitButtonLabel": {
+    "description": "Label for a dialog submit button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createButtonLabel": "உருவாக்கு",
+  "@createButtonLabel": {
+    "description": "Label for a dialog create button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectButtonLabel": "தேர்ந்தெடு",
+  "@selectButtonLabel": {
+    "description": "Label for a dialog select button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectAllButtonLabel": "அனைத்தையும் தெரிவுசெய்",
+  "@selectAllButtonLabel": {
+    "description": "Label for a select all button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleContacts": "தொடர்புகள்",
+  "@navigationItemTitleContacts": {
+    "description": "Title for the contacts navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameMain": "ச்ட்ரீம்",
+  "@streamNameMain": {
+    "description": "Name of the main stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameActivity": "செய்கைப்பாடு",
+  "@streamNameActivity": {
+    "description": "Name of the activity stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameAspects": "நற்பொருத்தங்கள்",
+  "@streamNameAspects": {
+    "description": "Name of the aspects stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameFollowedTags": "குறிச்சொற்கள் பின்பற்றப்பட்டன",
+  "@streamNameFollowedTags": {
+    "description": "Name of the followed tags stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToCommentOnPost": "கருத்தை உருவாக்கத் தவறிவிட்டது",
+  "@failedToCommentOnPost": {
+    "description": "Error message after commenting on a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteCommentPrompt": "கருத்தை நீக்கவா?",
+  "@deleteCommentPrompt": {
+    "description": "Title for delete comment prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToDeleteComment": "கருத்தை நீக்குவதில் தோல்வி",
+  "@failedToDeleteComment": {
+    "description": "Error message after deleting a comment failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmReshare": "விகிதம்",
+  "@confirmReshare": {
+    "description": "Label for confirm button in the reshare prompt",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToResharePost": "பதவியை மாற்றியமைக்கத் தவறிவிட்டது",
+  "@failedToResharePost": {
+    "description": "Error message after resharing a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "startPostSubscription": "அறிவிப்புகளை இயக்கவும்",
+  "@startPostSubscription": {
+    "description": "Tooltip for start post subscription icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUnsubscribeFromPost": "இடுகையிலிருந்து குழுவிலகத் தவறிவிட்டது",
+  "@failedToUnsubscribeFromPost": {
+    "description": "Error message after failing to unsubscribe from a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deletePostPrompt": "இடுகையை நீக்கவா?",
+  "@deletePostPrompt": {
+    "description": "Title for delete post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToDeletePost": "இடுகையை நீக்கத் தவறிவிட்டது",
+  "@failedToDeletePost": {
+    "description": "Error message after failing to delete a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "hidePost": "மறை",
+  "@hidePost": {
+    "description": "Tooltip for hide post icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToHidePost": "இடுகையை மறைக்கத் தவறிவிட்டது",
+  "@failedToHidePost": {
+    "description": "Error message after failing to hide a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPost": "அறிக்கை",
+  "@reportPost": {
+    "description": "Tooltip for report post icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sentPostReport": "அறிக்கை அனுப்பப்பட்டது.",
+  "@sentPostReport": {
+    "description": "Success message after a post report was sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReportPost": "அறிக்கையை உருவாக்கத் தவறிவிட்டது",
+  "@failedToReportPost": {
+    "description": "Error message after a post report couldn't be sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "voteButtonLabel": "வாக்களிக்கவும்",
+  "@voteButtonLabel": {
+    "description": "Label for poll vote submission",
+    "type": "text",
+    "placeholders": {}
+  },
+  "nsfwShieldTitle": "{author} எழுதிய NSFW இடுகை",
+  "@nsfwShieldTitle": {
+    "description": "Title on the NSFW shield",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      }
+    }
+  },
+  "formatItalic": "சாய்வு",
+  "@formatItalic": {
+    "description": "Tooltip for format italic button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertMention": "குறிப்பு",
+  "@insertMention": {
+    "description": "Tooltip for insert mention button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLinkPrompt": "இணைப்பைச் செருகவும்",
+  "@insertLinkPrompt": {
+    "description": "Title for insert link prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertImageURLPrompt": "ஒரு படத்தை உட்பொதிக்கவும்",
+  "@insertImageURLPrompt": {
+    "description": "Title for insert image URL prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "peopleSearchDialogHint": "நபரைத் தேடுங்கள்",
+  "@peopleSearchDialogHint": {
+    "description": "Hint text for the people search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectsListTitle": "நற்பொருத்தங்கள்",
+  "@aspectsListTitle": {
+    "description": "Title for the aspects list page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteAspectPrompt": "நற்பொருத்தம் {name}?",
+  "@deleteAspectPrompt": {
+    "description": "Title for the delete aspect prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Colleagues"
+      }
+    }
+  },
+  "failedToDeleteAspect": "அம்சத்தை அகற்றுவதில் தோல்வி {name}",
+  "@failedToDeleteAspect": {
+    "description": "Error message after deleting an aspect failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Leaders"
+      }
+    }
+  },
+  "aspectNameHint": "ஒரு பெயரை உள்ளிடவும்",
+  "@aspectNameHint": {
+    "description": "Hint text for an aspect name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "replyToConversation": "பதில்",
+  "@replyToConversation": {
+    "description": "Label for reply to conversation button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToHideConversation": "உரையாடலை மறைக்கத் தவறிவிட்டது",
+  "@failedToHideConversation": {
+    "description": "Error message after hiding a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "takeNewPicture": "புதிய படத்தை எடுத்துக் கொள்ளுங்கள்",
+  "@takeNewPicture": {
+    "description": "Label for take a new picture button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "uploadNewPicture": "புதிய படத்தைப் பதிவேற்றவும்",
+  "@uploadNewPicture": {
+    "description": "Label for upload a new picture button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUploadProfilePicture": "சுயவிவரப் படத்தை பதிவேற்றுவதில் தோல்வி",
+  "@failedToUploadProfilePicture": {
+    "description": "Error message after uploading a profile picture failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfilePublicLabel": "சுயவிவரத் தகவலை பகிரங்கப்படுத்தவா?",
+  "@editProfilePublicLabel": {
+    "description": "Label for edit profile public field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileSearchableLabel": "தேட அனுமதிக்கவா?",
+  "@editProfileSearchableLabel": {
+    "description": "Label for edit profile searchable field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileNsfwLabel": "சுயவிவரத்தை #NSFW ஆக குறிக்கவும்?",
+  "@editProfileNsfwLabel": {
+    "description": "Label for edit profile NSFW field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileTagsLabel": "குறிச்சொற்கள்",
+  "@editProfileTagsLabel": {
+    "description": "Label for edit profile tags field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToAddConversationParticipantDuplicate": "{name} ஏற்கனவே ஒரு பெறுநர், அவற்றை இரண்டு முறை சேர்க்க முடியாது.",
+  "@failedToAddConversationParticipantDuplicate": {
+    "description": "Error message after adding a conversation participant failed due to them already being part of the participants",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice McBoss"
+      }
+    }
+  },
+  "failedToAddConversationParticipant": "பெறுநரைச் சேர்க்கத் தவறிவிட்டது",
+  "@failedToAddConversationParticipant": {
+    "description": "Error message after adding a conversation participant failed for a general reason",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToCreateConversation": "உரையாடலை உருவாக்கத் தவறிவிட்டது",
+  "@failedToCreateConversation": {
+    "description": "Error message after sending a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkConversationAsRead": "வாசிப்பாக உரையாடலைக் குறிக்கத் தவறிவிட்டது",
+  "@failedToMarkConversationAsRead": {
+    "description": "Error message after marking a conversation as read failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkConversationAsUnread": "உரையாடலைப் படிக்கத் தவறிவிட்டது",
+  "@failedToMarkConversationAsUnread": {
+    "description": "Error message after marking a conversation  as unread failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetPost": "இடுகை",
+  "@notificationTargetPost": {
+    "description": "Target part of a notification message for a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetDeletedPost": "நீக்கப்பட்ட இடுகை",
+  "@notificationTargetDeletedPost": {
+    "description": "Target part of a notification message for a deleted post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetComment": "கருத்து",
+  "@notificationTargetComment": {
+    "description": "Target part of a notification message for a comment",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetDeletedComment": "கருத்து நீக்கப்பட்டது",
+  "@notificationTargetDeletedComment": {
+    "description": "Target part of a notification message for a deleted comment",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationLiked": "{ஆக்சோர்ட், பன்மை, = 0 {உங்கள் {target}.",
+  "@notificationLiked": {
+    "description": "Notification message for when some people liked the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationLikedComment": "{ஆக்சோர்ட், பன்மை, = 0 {உங்கள் {target}.",
+  "@notificationLikedComment": {
+    "description": "Notification message for when some people liked the users comment. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetComment or notificationTargetDeletedComment"
+      }
+    }
+  },
+  "notificationMentionedInPost": "{ஆக்சார்சவுண்ட், பன்மை, = 0 {உங்களை ஒரு {target} இல் யாரும் குறிப்பிடவில்லை.",
+  "@notificationMentionedInPost": {
+    "description": "Notification message for when somebody mentioned the user in a post. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "failedToMarkNotificationAsRead": "அறிவிப்பைப் படிக்கத் தவறிவிட்டது",
+  "@failedToMarkNotificationAsRead": {
+    "description": "Error message after marking a notification as read failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkNotificationAsUnread": "அறிவிப்பை படிக்காததாகக் குறிக்கத் தவறிவிட்டது",
+  "@failedToMarkNotificationAsUnread": {
+    "description": "Error message after marking a notification  as unread failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profileInfoHeader": "தகவல்",
+  "@profileInfoHeader": {
+    "description": "Header for info section on the profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "manageContact": "{எண்ணிக்கை, பன்மை, = 0 {In no aspects} = 1 {In one aspect} மற்ற {{count} அம்சங்களில்}}",
+  "@manageContact": {
+    "description": "Label for manage contact button. The zero case and one is never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "contactStatusBlocked": "நீங்கள் அவர்களைத் தடுத்தீர்கள்",
+  "@contactStatusBlocked": {
+    "description": "Contact status message for a blocked user",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusMutual": "நீங்கள் ஒருவருக்கொருவர் பகிர்ந்து கொள்கிறீர்கள்",
+  "@contactStatusMutual": {
+    "description": "Contact status message for a contact that is sharing with the user and that the user is sharing with",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusNotSharing": "நீங்கள் ஒருவருக்கொருவர் பகிரவில்லை.",
+  "@contactStatusNotSharing": {
+    "description": "Contact status message for somebody that is not sharing with the user nor the user is sharing with",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactAspectsPrompt": "{பெயர் க்கு க்கான அம்சங்களைத் தேர்ந்தெடுக்கவும்",
+  "@contactAspectsPrompt": {
+    "description": "Title for the contact aspects prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "startedSharing": "{பெயர் with உடன் பகிரத் தொடங்கியது.",
+  "@startedSharing": {
+    "description": "Success message after the user started sharing with somebody",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "publisherTitle": "புதிய இடுகையை எழுதுங்கள்",
+  "@publisherTitle": {
+    "description": "Title for the publisher page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "takePhoto": "புகைப்படம் எடுக்கவும்",
+  "@takePhoto": {
+    "description": "Tooltip for the take a photo button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "uploadPhoto": "புகைப்படத்தைப் பதிவேற்றவும்",
+  "@uploadPhoto": {
+    "description": "Tooltip for the upload a photo button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addPoll": "ஒரு வாக்கெடுப்பு சேர்க்கவும்",
+  "@addPoll": {
+    "description": "Tooltip for the add poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetPublic": "பொது",
+  "@publishTargetPublic": {
+    "description": "Publish target label for a public post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetAllAspects": "அனைத்து அம்சங்களும்",
+  "@publishTargetAllAspects": {
+    "description": "Publish target label for a post to all aspects",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetAspects": "{எண்ணிக்கை, பன்மை, = 0 {No aspects} = 1 {One aspect} மற்ற {{count} அம்சங்கள்}}",
+  "@publishTargetAspects": {
+    "description": "Publish target label for a post to a list of aspects. The zero and one cases are never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "publishTargetPrompt": "இடுகை தெரிவுநிலையைத் தேர்ந்தெடுக்கவும்",
+  "@publishTargetPrompt": {
+    "description": "Title for the publish target selection prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createPoll": "வாக்கெடுப்பை உருவாக்கவும்",
+  "@createPoll": {
+    "description": "Label for the create poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editPoll": "வாக்கெடுப்பைத் திருத்து",
+  "@editPoll": {
+    "description": "Label for the edit poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterAddressHint": "ஒரு முகவரியை உள்ளிடவும்",
+  "@enterAddressHint": {
+    "description": "Hint text for an address field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToSearchForAddresses": "முகவரிகளைத் தேடத் தவறிவிட்டது",
+  "@failedToSearchForAddresses": {
+    "description": "Error message after searching for the entered address failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectStreamSelectorAllAspects": "அனைத்து அம்சங்களும்",
+  "@aspectStreamSelectorAllAspects": {
+    "description": "Aspect stream selector label for all aspects",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectStreamSelectorAspects": "{எண்ணிக்கை, பன்மை, = 0 {No aspects} = 1 {One aspect} மற்ற {{count} அம்சங்கள்}}",
+  "@aspectStreamSelectorAspects": {
+    "description": "Aspect stream selector label for a list of aspects. The zero and one cases are never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "manageFollowedTags": "பின்பற்றப்பட்ட குறிச்சொற்களை நிர்வகிக்கவும்",
+  "@manageFollowedTags": {
+    "description": "Label for the manage followed tags button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "followedTagsPageTitle": "குறிச்சொற்கள் பின்பற்றப்பட்டன",
+  "@followedTagsPageTitle": {
+    "description": "Title for the followed tags page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToFollowTag": "#{tag} ஐப் பின்பற்றுவதில் தோல்வி",
+  "@failedToFollowTag": {
+    "description": "Error message after following a tag failed",
+    "type": "text",
+    "placeholders": {
+      "tag": {
+        "example": "newhere"
+      }
+    }
+  },
+  "catcherLocalizationDialogReportModeAccept": "அறிக்கை அனுப்பவும்",
+  "@catcherLocalizationDialogReportModeAccept": {
+    "description": "Button label for accepting to send a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "catcherLocalizationDialogReportModeCancel": "தள்ளுபடி",
+  "@catcherLocalizationDialogReportModeCancel": {
+    "description": "Button label for dismissing a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "catcherLocalizationDialogReportModeTitle": "உத்வேகம்* செயலிழந்தது :(",
+  "@catcherLocalizationDialogReportModeTitle": {
+    "description": "Title for crash report dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "catcherLocalizationDialogReportModeDescription": "எதிர்பாராத பிழை ஏற்பட்டது, டெவலப்பர்களுக்கு அனுப்ப பிழை அறிக்கை தயாராக உள்ளது.",
+  "@catcherLocalizationDialogReportModeDescription": {
+    "description": "Description for crash report page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationActorsForThreePeople": "{first}, {second} மற்றும் {third}",
+  "@notificationActorsForThreePeople": {
+    "description": "Actors part of a notification message with exactly three actors",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      },
+      "third": {
+        "example": "Charlotte"
+      }
+    }
+  },
+  "contactStatusReceiving": "அவர்கள் உங்களுடன் பகிர்ந்து கொள்கிறார்கள்.",
+  "@contactStatusReceiving": {
+    "description": "Contact status message for a contact that is sharing with the user, but the user is not sharing with the contact",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusSharing": "நீங்கள் அவர்களுடன் பகிர்ந்து கொள்கிறீர்கள்.",
+  "@contactStatusSharing": {
+    "description": "Contact status message for a contact that the user is sharing with, but the contact is not sharing with the user",
+    "type": "text",
+    "placeholders": {}
+  },
+  "stoppedSharing": "{பெயர் with உடன் பகிர்வதை நிறுத்தியது.",
+  "@stoppedSharing": {
+    "description": "Success message after the user stopped sharing with somebody",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "contactAspectsUpdated": "நற்பொருத்தங்கள் புதுப்பிக்கப்பட்டன.",
+  "@contactAspectsUpdated": {
+    "description": "Success message after the user updated a contact's aspects",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUpdateContactAspects": "அம்சங்களைப் புதுப்பிக்கத் தவறிவிட்டது",
+  "@failedToUpdateContactAspects": {
+    "description": "Error message after updating a contact's aspects failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addLocation": "உங்கள் இருப்பிடத்தைச் சேர்க்கவும்",
+  "@addLocation": {
+    "description": "Tooltip for the add location button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishPost": "இடுகையை வெளியிடுங்கள்",
+  "@publishPost": {
+    "description": "Label for the publish post button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUploadPhoto": "புகைப்படத்தைப் பதிவேற்றத் தவறிவிட்டது",
+  "@failedToUploadPhoto": {
+    "description": "Error message after uploading a photo failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pollQuestionHint": "ஒரு கேள்வியை உள்ளிடவும்",
+  "@pollQuestionHint": {
+    "description": "Hint text for the poll question field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pollAnswerHint": "ஒரு பதிலை உள்ளிடவும்",
+  "@pollAnswerHint": {
+    "description": "Hint text for a poll answer field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTypePeople": "மக்கள்",
+  "@searchTypePeople": {
+    "description": "Label for search type selector for the people search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTypePeopleByTag": "குறிச்சொல் மூலம் மக்கள்",
+  "@searchTypePeopleByTag": {
+    "description": "Label for search type selector for the people by tag search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTypeTags": "குறிச்சொற்கள்",
+  "@searchTypeTags": {
+    "description": "Label for search type selector for the tags search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchPeopleHint": "ஒரு பெயர் அல்லது புலம்பெயர்* ஐடியைத் தட்டச்சு செய்யத் தொடங்குங்கள்",
+  "@searchPeopleHint": {
+    "description": "Hint text for the people search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchPeopleByTagHint": "ஒரு குறிச்சொல்லை உள்ளிடவும்",
+  "@searchPeopleByTagHint": {
+    "description": "Hint text for the the people by tag search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTagsHint": "குறிச்சொல்லை தட்டச்சு செய்யத் தொடங்குங்கள்",
+  "@searchTagsHint": {
+    "description": "Hint text for the tags search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUnfollowTag": "#{tag} ஐப் பின்தொடர்வதில் தோல்வி",
+  "@failedToUnfollowTag": {
+    "description": "Error message after unfollowing a tag failed",
+    "type": "text",
+    "placeholders": {
+      "tag": {
+        "example": "nsfw"
+      }
+    }
+  },
+  "failedToOpenInvalidUrl": "முகவரி தவறானது, திறக்க முடியாது",
+  "@failedToOpenInvalidUrl": {
+    "description": "Error message after trying to open an invalid URL",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToOpenUrl": "முகவரி ஐ திறக்கத் தவறிவிட்டது. உங்களிடம் உலாவி நிறுவப்பட்டுள்ளதா?",
+  "@failedToOpenUrl": {},
+  "insertButtonLabel": "செருகவும்",
+  "@insertButtonLabel": {
+    "description": "Label for a dialog insert button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "yesButtonLabel": "ஆம்",
+  "@yesButtonLabel": {
+    "description": "Label for a dialog yes button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noButtonLabel": "இல்லை",
+  "@noButtonLabel": {
+    "description": "Label for a dialog no button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "retryLabel": "மீண்டும் முயற்சிக்கவும்",
+  "@retryLabel": {
+    "description": "Label for a retry button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmDeleteButtonLabel": "நீக்கு என்பதை உறுதிப்படுத்தவும்",
+  "@confirmDeleteButtonLabel": {
+    "description": "Label for a dialog confirm delete button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "removeButtonLabel": "அகற்று",
+  "@removeButtonLabel": {
+    "description": "Label for a dialog remove button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deselectAllButtonLabel": "அனைத்தையும் தேர்வு செய்யுங்கள்",
+  "@deselectAllButtonLabel": {
+    "description": "Label for a deselect all button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorLabel": "உதவி",
+  "@detailsOnErrorLabel": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorDescription": "பின்வரும் உள் பிழை ஏற்பட்டது. உதவி கேட்கும்போது இதைச் சேர்க்கவும்.",
+  "@detailsOnErrorDescription": {
+    "description": "Label for the show details button in error messages",
+    "type": "text",
+    "placeholders": {}
+  },
+  "detailsOnErrorCopied": "இடைநிலைப்பலகைக்கு நகலெடுக்கப்பட்ட பிழை விவரங்கள்.",
+  "@detailsOnErrorCopied": {
+    "description": "Success message after error details were copied to clipboard",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToLoadContent": "உள்ளடக்கத்தை ஏற்ற முயற்சிக்கும்போது பிழை ஏற்பட்டது.",
+  "@failedToLoadContent": {
+    "description": "Generic failure message after loading some content failed due to an unknown reason.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToRenderMessage": "இந்த உள்ளடக்கத்தை வழங்க முடியவில்லை. இருந்தால், கீழே உள்ள பிழை விவரங்களுடன் இதைப் புகாரளிக்கவும்.",
+  "@failedToRenderMessage": {
+    "description": "Failure message after rendering some content failed.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInAction": "விடுபதிகை",
+  "@signInAction": {
+    "description": "Sign in button label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInLabel": "புலம்பெயர்* ஐடி",
+  "@signInLabel": {
+    "description": "Label for sign in field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInHint": "username@diaspora.pod",
+  "@signInHint": {
+    "description": "Hint text for sign in field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalidDiasporaId": "ஒரு முழு புலம்பெயர்* ஐடியை உள்ளிடவும்",
+  "@invalidDiasporaId": {
+    "description": "Error message after an invalid diaspora* ID was entered",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorSignInTimeout": "அங்கீகரிக்க முயற்சிக்கும்போது நேரம் முடிந்தது, உங்கள் நெற்று பநிஇ ஐ ஆதரிக்கிறது என்பதில் உறுதியாக இருக்கிறீர்களா?",
+  "@errorSignInTimeout": {
+    "description": "Error message after authorization timed out",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resharePrompt": "ரெசேர் இடுகை?",
+  "@resharePrompt": {
+    "description": "Title for reshare post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancelPostSubscription": "அறிவிப்புகளை நிறுத்து",
+  "@cancelPostSubscription": {
+    "description": "Tooltip for cancel post subscription icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToSubscribeToPost": "இடுகைக்கு குழுசேரத் தவறிவிட்டது",
+  "@failedToSubscribeToPost": {
+    "description": "Error message after failing to subscribe to a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPostPrompt": "அறிக்கை இடுகை",
+  "@reportPostPrompt": {
+    "description": "Title for report post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPostHint": "தயவுசெய்து சிக்கலை விவரிக்கவும்",
+  "@reportPostHint": {
+    "description": "Hint text for post report field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "showOriginalPost": "முதலில் மறுசீரமைக்கப்பட்ட இடுகையைக் காட்டு",
+  "@showOriginalPost": {
+    "description": "Tooltip message for the show original post button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "voteCount": "{எண்ணிக்கை, பன்மை, = 0 {No votes so far} = 1 {1 vote so far} பிற {{count} வாக்குகள்}}",
+  "@voteCount": {
+    "description": "Label for how many votes are registered on a poll",
+    "type": "text",
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "pollResultsButtonLabel": "முடிவுகளைக் காண்க",
+  "@pollResultsButtonLabel": {
+    "description": "Label for view poll results button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToVote": "பதவியில் வாக்களிக்கத் தவறிவிட்டது",
+  "@failedToVote": {
+    "description": "Error message after voting on a poll failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "oEmbedHeader": "{வழங்குநரில் {author}:",
+  "@oEmbedHeader": {
+    "description": "Header above HTML style oEmbeds",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      },
+      "provider": {
+        "example": "Twitter"
+      }
+    }
+  },
+  "oEmbedAuthor": "எழுதியவர் {author}",
+  "@oEmbedAuthor": {
+    "description": "Subtitle on oEmbed thumbnails",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      }
+    }
+  },
+  "showAllNsfwPostsButtonLabel": "அனைத்து NSFW இடுகைகளையும் காட்டு",
+  "@showAllNsfwPostsButtonLabel": {
+    "description": "Label on show all NSFW posts button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "showThisNsfwPostButtonLabel": "இந்த இடுகையைக் காட்டு",
+  "@showThisNsfwPostButtonLabel": {
+    "description": "Label on show this NSFW post button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectsPrompt": "அம்சங்களைத் தேர்ந்தெடுக்கவும்",
+  "@aspectsPrompt": {
+    "description": "Title for the aspect selection dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatBold": "தடிமான",
+  "@formatBold": {
+    "description": "Tooltip for format bold button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatStrikethrough": "ச்ட்ரைகெத்ரோ",
+  "@formatStrikethrough": {
+    "description": "Tooltip for format strikethrough button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertHeading": "தலைப்பு",
+  "@insertHeading": {
+    "description": "Tooltip for insert heading button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertBulletedList": "புல்லட் பட்டியல்",
+  "@insertBulletedList": {
+    "description": "Tooltip for insert bulleted list button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertNumberedList": "எண் பட்டியல்",
+  "@insertNumberedList": {
+    "description": "Tooltip for insert numbered list button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertQuote": "மேற்கோள்",
+  "@insertQuote": {
+    "description": "Tooltip for insert quote button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertCode": "குறியீடு",
+  "@insertCode": {
+    "description": "Tooltip for insert code button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertCodeBlock": "குறியீடு தொகுதி",
+  "@insertCodeBlock": {
+    "description": "Tooltip for insert code block button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLink": "இணைப்பு",
+  "@insertLink": {
+    "description": "Tooltip for insert link button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertImageURL": "பட முகவரி",
+  "@insertImageURL": {
+    "description": "Tooltip for insert image URL button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertHashtag": "ஏச்டேக்",
+  "@insertHashtag": {
+    "description": "Tooltip for insert hashtag button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLinkURLHint": "முகவரி",
+  "@insertLinkURLHint": {
+    "description": "Hint text for URL field in insert link dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLinkDescriptionHint": "விளக்கம் (விரும்பினால்)",
+  "@insertLinkDescriptionHint": {
+    "description": "Hint text for description field in insert link dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchDialogHint": "தேடல்",
+  "@searchDialogHint": {
+    "description": "Hint text for the search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tagSearchDialogHint": "குறிச்சொல்லைத் தேடுங்கள்",
+  "@tagSearchDialogHint": {
+    "description": "Hint text for the tag search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createAspectPrompt": "ஒரு அம்சத்தை உருவாக்கவும்",
+  "@createAspectPrompt": {
+    "description": "Title for the create aspect prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToCreateAspect": "அம்சத்தை உருவாக்கத் தவறிவிட்டது",
+  "@failedToCreateAspect": {
+    "description": "Error message after failing to create an aspect",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editAspectPrompt": "அம்சத்தைத் திருத்து",
+  "@editAspectPrompt": {
+    "description": "Title for the edit aspect prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToRenameAspect": "{oldName} என {newName} என மறுபெயரிடுவதில் தோல்வி",
+  "@failedToRenameAspect": {
+    "description": "Error message after renaming an aspect failed",
+    "type": "text",
+    "placeholders": {
+      "oldName": {
+        "example": "Friends"
+      },
+      "newName": {
+        "example": "Enemies"
+      }
+    }
+  },
+  "failedToReplyToConversation": "உரையாடலுக்கு பதிலளிக்கத் தவறிவிட்டது",
+  "@failedToReplyToConversation": {
+    "description": "Error message after replying to a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileTitle": "சுயவிவரத்தைத் திருத்து",
+  "@editProfileTitle": {
+    "description": "Title for edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "uploadProfilePictureHeader": "சுயவிவரப் படத்தைப் புதுப்பிக்கவும்",
+  "@uploadProfilePictureHeader": {
+    "description": "Header for upload profile picture section on the edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileHeader": "சுயவிவரத்தைத் திருத்து",
+  "@editProfileHeader": {
+    "description": "Header for edit profile section on edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileNameLabel": "பெயர்",
+  "@editProfileNameLabel": {
+    "description": "Label for edit profile name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileLocationLabel": "இடம்",
+  "@editProfileLocationLabel": {
+    "description": "Label for edit profile location field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileGenderLabel": "பாலினம்",
+  "@editProfileGenderLabel": {
+    "description": "Label for edit profile gender field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileBirthdayLabel": "பிறந்த நாள்",
+  "@editProfileBirthdayLabel": {
+    "description": "Label for edit profile birthday field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileSubmit": "சுயவிவரத்தைப் புதுப்பிக்கவும்",
+  "@editProfileSubmit": {
+    "description": "Label for edit profile submit button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "duplicateProfileTag": "குறிச்சொல் ஏற்கனவே சேர்க்கப்பட்டது",
+  "@duplicateProfileTag": {
+    "description": "Error message after trying to add a duplicate profile tag",
+    "type": "text",
+    "placeholders": {}
+  },
+  "updatedProfile": "சுயவிவரம் புதுப்பிக்கப்பட்டது.",
+  "@updatedProfile": {
+    "description": "Success message after the profile was updated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUpdateProfile": "சுயவிவரத்தைப் புதுப்பிக்கத் தவறிவிட்டது",
+  "@failedToUpdateProfile": {
+    "description": "Error message after updating the profile failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationTitle": "புதிய உரையாடலைத் தொடங்கவும்",
+  "@newConversationTitle": {
+    "description": "Title for new conversation page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationRecipientsLabel": "பெறுநர்கள்",
+  "@newConversationRecipientsLabel": {
+    "description": "Label for new conversation recipients field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationSubjectLabel": "பொருள்",
+  "@newConversationSubjectLabel": {
+    "description": "Label for new conversation subject field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationMessageLabel": "செய்தி",
+  "@newConversationMessageLabel": {
+    "description": "Label for new conversation message field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sendNewConversation": "அனுப்பு",
+  "@sendNewConversation": {
+    "description": "Label for new conversation send button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToAddConversationParticipantNotSharingWith": "நீங்கள் {பெயருடன் பகிரவில்லை, அவற்றை பெறுநராக சேர்க்க முடியாது!",
+  "@failedToAddConversationParticipantNotSharingWith": {
+    "description": "Error message after adding a conversation participant failed due to the user not sharing with them",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Stranger"
+      }
+    }
+  },
+  "failedToAddConversationParticipantNotSharing": "{name} உங்களுடன் பகிரவில்லை, அவற்றை பெறுநராக சேர்க்க முடியாது!",
+  "@failedToAddConversationParticipantNotSharing": {
+    "description": "Error message after adding a conversation participant failed due to them not sharing with the user",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Charlotte Idol"
+      }
+    }
+  },
+  "notificationActorsForTwoPeople": "{first} மற்றும் {second}",
+  "@notificationActorsForTwoPeople": {
+    "description": "Actors part of a notification message with exactly two actors",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      }
+    }
+  },
+  "errorAuthorizationFailed": "{USERID க்கு க்கு ஏற்பு வழங்க முடியவில்லை, இது சரியாக உச்சரிக்கப்படுகிறதா, உங்கள் பிணையம் செயல்படுகிறதா, உங்கள் நெற்று அண்மைக் கால மேம்பாட்டு ச்னாப்சாட்டை இயக்குகிறதா?",
+  "@errorAuthorizationFailed": {
+    "description": "Error message after authorization failed",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
+  },
+  "errorNetworkErrorOnAuthorization": "ஒரு பிணைய பிழை ஏற்பட்டது, தயவுசெய்து உங்கள் நெற்று சரியாக உச்சரித்தீர்கள் என்பதையும் உங்களுக்கு நல்ல வரவேற்பு இருப்பதையும் உறுதிப்படுத்தவும், பின்னர் மீண்டும் முயற்சிக்கவும்.",
+  "@errorNetworkErrorOnAuthorization": {
+    "description": "Error message after a network error occurred during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorUnexpectedErrorOnAuthorization": "உள்நுழைய முயற்சிக்கும்போது எதிர்பாராத பிழை ஏற்பட்டது.",
+  "@errorUnexpectedErrorOnAuthorization": {
+    "description": "Error message after an unexpected error happened during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteSessionPrompt": "இன்ச்போரேசன்*இலிருந்து {பயனர்ஐடி க்கு க்கான அமர்வை அகற்று?",
+  "@deleteSessionPrompt": {
+    "description": "Title for delete session prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
+  },
+  "navigationItemTitleStream": "ச்ட்ரீம்",
+  "@navigationItemTitleStream": {
+    "description": "Title for the Stream navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleConversations": "உரையாடல்கள்",
+  "@navigationItemTitleConversations": {
+    "description": "Title for the Conversations navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleSearch": "தேடல்",
+  "@navigationItemTitleSearch": {
+    "description": "Title for the search navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleNotifications": "அறிவிப்புகள்",
+  "@navigationItemTitleNotifications": {
+    "description": "Title for the notifications navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleEditProfile": "சுயவிவரத்தைத் திருத்து",
+  "@navigationItemTitleEditProfile": {
+    "description": "Title for the edit profile navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleSwitchUser": "பயனரை மாற்றவும்",
+  "@navigationItemTitleSwitchUser": {
+    "description": "Title for the switch user navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameMentions": "குறிப்பிடுகிறது",
+  "@streamNameMentions": {
+    "description": "Name of the mentions stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameLiked": "பிடித்திருந்தது",
+  "@streamNameLiked": {
+    "description": "Name of the liked stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameCommented": "கருத்து",
+  "@streamNameCommented": {
+    "description": "Name of the commented stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameTag": "குறிச்சொல்",
+  "@streamNameTag": {
+    "description": "Name of a tag stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noItems": "துணிவு, காண்பிக்க எதுவும் இல்லை!",
+  "@noItems": {
+    "description": "Fallback message when something didn't return any items",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deletedPostReshareHint": "நீக்கப்பட்ட இடுகையின் மறுசீரமைப்பு",
+  "@deletedPostReshareHint": {
+    "description": "Fallback message when showing a reshare of a deleted post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createComment": "கருத்து",
+  "@createComment": {
+    "description": "Label for create comment button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "commentsHeader": "கருத்துகள்",
+  "@commentsHeader": {
+    "description": "Header for comment stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportComment": "அறிக்கை",
+  "@reportComment": {
+    "description": "Tooltip for report comment icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportCommentPrompt": "கருத்து தெரிவிக்கவும்",
+  "@reportCommentPrompt": {
+    "description": "Title for report comment prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportCommentHint": "தயவுசெய்து சிக்கலை விவரிக்கவும்",
+  "@reportCommentHint": {
+    "description": "Hint text for comment report field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sentCommentReport": "அறிக்கை அனுப்பப்பட்டது.",
+  "@sentCommentReport": {
+    "description": "Success message after a comment report was sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReportComment": "அறிக்கையை உருவாக்கத் தவறிவிட்டது",
+  "@failedToReportComment": {
+    "description": "Error message after a comment report couldn't be sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "likesHeader": "பிடிக்கும்",
+  "@likesHeader": {
+    "description": "Header for likes list",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToLikePost": "இடுகையை விரும்புவதில் தோல்வி",
+  "@failedToLikePost": {
+    "description": "Error message after liking a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUnlikePost": "இடுகையைப் போலல்லாமல் தோல்வியுற்றது",
+  "@failedToUnlikePost": {
+    "description": "Error message after unliking a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resharesHeader": "ரீமியச்",
+  "@resharesHeader": {
+    "description": "Header for reshares list",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationActorsForMoreThanThreePeople": "Countents மற்றவர்கள், பன்மை, = 0 {{first}, {second} மற்றும் மற்றவர்கள் இல்லை} = 1 {{first}, {second} மற்றும் இன்னும் ஒரு} மற்ற {{first}, {second} மற்றும் {othersCount} மற்றவர்கள்}}",
+  "@notificationActorsForMoreThanThreePeople": {
+    "description": "Actors part of a notification message with more than three actors. The first two are given, the count is the count of how many more (at least two) there are. So the zero and one cases never come into use",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      },
+      "othersCount": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "notificationAlsoCommented": "{ஆக்சோர்ட், பன்மை, = 0 {யாரும் ஒரு {target} இல் கருத்து தெரிவிக்கவில்லை.",
+  "@notificationAlsoCommented": {
+    "description": "Notification message for when some people also commented on a post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationCommented": "{ஆக்சோர்ட், பன்மை, = 0 {உங்கள் {target} இல் யாரும் கருத்து தெரிவிக்கவில்லை.} = 1 {{நடிகர்கள் your உங்கள் {actors} கருத்து தெரிவித்தனர்.",
+  "@notificationCommented": {
+    "description": "Notification message for when some people commented on the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationBirthday": "{நடிகர் கவுன்ட், பன்மை, = 0 {Nobody has their birthday today.} = 1 {{நடிகர்கள் இன்று பிறந்த நாள்.",
+  "@notificationBirthday": {
+    "description": "Notification message for when a contact of the user has their birthday. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "notificationMentionedInComment": "{நடிகர் கவுன்ட், பன்மை, = 0 {Nobody mentioned you in a comment.} = 1 {{நடிகர்கள் உங்களை ஒரு கருத்தில் குறிப்பிட்டுள்ளனர்.",
+  "@notificationMentionedInComment": {
+    "description": "Notification message for when somebody mentioned the user in a comment. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "notificationMentionedInCommentOnDeletedPost": "{நடிகர், பன்மை, = 0 {Nobody mentioned you in a comment on a deleted post.} = 1 {{actors} நீக்கப்பட்ட இடுகையின் கருத்தில் உங்களை குறிப்பிட்டுள்ளனர். இடுகை.}}",
+  "@notificationMentionedInCommentOnDeletedPost": {
+    "description": "Notification message for when somebody mentioned the user in in comment on a deleted post. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "notificationReshared": "{ஆக்சோர்ட், பன்மை, = 0 {உங்கள் {target} = 1 {{நடிகர்கள் your உங்கள் {actors}.",
+  "@notificationReshared": {
+    "description": "Notification message for when some people reshared the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationStartedSharing": "{நடிகர் கவுன்ட், பன்மை, = 0 {யாரும் உங்களுடன் பகிரத் தொடங்கவில்லை.",
+  "@notificationStartedSharing": {
+    "description": "Notification message for when some people started sharing  with the user. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "profilePostsHeader": "இடுகைகள்",
+  "@profilePostsHeader": {
+    "description": "Header for posts section on the profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfile": "சுயவிவரத்தைத் திருத்து",
+  "@editProfile": {
+    "description": "Label for the edit profile button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mentionUser": "பயனரைக் குறிப்பிடவும்",
+  "@mentionUser": {
+    "description": "Tooltip for the mention user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "messageUser": "செய்தி",
+  "@messageUser": {
+    "description": "Tooltip for the message user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "blockUser": "தொகுதி",
+  "@blockUser": {
+    "description": "Tooltip for the block user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "unblockUser": "தடை",
+  "@unblockUser": {
+    "description": "Tooltip for the unblock user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToBlockUser": "{பெயரைத் தடுக்கத் தவறிவிட்டது",
+  "@failedToBlockUser": {
+    "description": "Error message after blocking a user failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice, alice@pod.example.org"
+      }
+    }
+  },
+  "failedToUnblockUser": "{name} தடைசெய்யத் தவறிவிட்டது",
+  "@failedToUnblockUser": {
+    "description": "Error message after unblocking a user failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice, alice@pod.example.org"
+      }
+    }
+  },
+  "addContact": "தொடர்பைச் சேர்க்கவும்",
+  "@addContact": {
+    "description": "Label for add contact button",
+    "type": "text",
+    "placeholders": {}
+  }
+}
