@@ -1174,7 +1174,7 @@
       }
     }
   },
-  "errorAuthorizationFailed": "{USERID க்கு க்கு ஏற்பு வழங்க முடியவில்லை, இது சரியாக உச்சரிக்கப்படுகிறதா, உங்கள் பிணையம் செயல்படுகிறதா, உங்கள் நெற்று அண்மைக் கால மேம்பாட்டு ச்னாப்சாட்டை இயக்குகிறதா?",
+  "errorAuthorizationFailed": "{userId}க்கு ஏற்பு வழங்க முடியவில்லை, இது சரியாக உச்சரிக்கப்படுகிறதா, உங்கள் பிணையம் செயல்படுகிறதா, உங்கள் நெற்று அண்மைக் கால மேம்பாட்டு ச்னாப்சாட்டை இயக்குகிறதா?",
   "@errorAuthorizationFailed": {
     "description": "Error message after authorization failed",
     "type": "text",
@@ -1196,7 +1196,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "deleteSessionPrompt": "இன்ச்போரேசன்*இலிருந்து {பயனர்ஐடி க்கு க்கான அமர்வை அகற்று?",
+  "deleteSessionPrompt": "இன்ச்போரேசன்*இலிருந்து {userId} க்கான அமர்வை அகற்று?",
   "@deleteSessionPrompt": {
     "description": "Title for delete session prompt dialog",
     "type": "text",
@@ -1254,7 +1254,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "streamNameCommented": "கருத்து",
+  "streamNameCommented": "கருத்திடப்பட்டது",
   "@streamNameCommented": {
     "description": "Name of the commented stream",
     "type": "text",
