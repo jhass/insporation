@@ -82,5 +82,1444 @@
     "description": "Label for a dialog select button",
     "type": "text",
     "placeholders": {}
+  },
+  "detailsOnErrorCopied": "Відомості про помилку скопійовано в буфер обміну.",
+  "@detailsOnErrorCopied": {
+    "description": "Success message after error details were copied to clipboard",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToLoadContent": "Під час спроби завантаження вмісту сталася помилка.",
+  "@failedToLoadContent": {
+    "description": "Generic failure message after loading some content failed due to an unknown reason.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToRenderMessage": "Не вдалося відобразити цей вміст. Будь ласка, повідомте про це, вказавши деталі помилки нижче, якщо вони є.",
+  "@failedToRenderMessage": {
+    "description": "Failure message after rendering some content failed.",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInAction": "Увійти",
+  "@signInAction": {
+    "description": "Sign in button label",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInLabel": "diaspora* ID",
+  "@signInLabel": {
+    "description": "Label for sign in field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signInHint": "username@diaspora.pod",
+  "@signInHint": {
+    "description": "Hint text for sign in field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalidDiasporaId": "Введіть повний ідентифікатор діаспори*",
+  "@invalidDiasporaId": {
+    "description": "Error message after an invalid diaspora* ID was entered",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorSignInTimeout": "Тайм-аут під час спроби авторизації. Ви впевнені, що ваш pod підтримує API?",
+  "@errorSignInTimeout": {
+    "description": "Error message after authorization timed out",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorAuthorizationFailed": "Не вдалося авторизувати {userId}. Чи правильно написано ім'я користувача, чи працює ваша мережа, і чи ваш pod використовує найновіший знімок розробки?",
+  "@errorAuthorizationFailed": {
+    "description": "Error message after authorization failed",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
+  },
+  "errorNetworkErrorOnAuthorization": "Сталася помилка мережі. Переконайтеся, що ви правильно написали назву поду та що у вас хороший сигнал, а потім спробуйте ще раз.",
+  "@errorNetworkErrorOnAuthorization": {
+    "description": "Error message after a network error occurred during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorUnexpectedErrorOnAuthorization": "Під час спроби входу сталася неочікувана помилка.",
+  "@errorUnexpectedErrorOnAuthorization": {
+    "description": "Error message after an unexpected error happened during authorization",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteSessionPrompt": "Вилучити сеанс для {userId} з інструктажу*?",
+  "@deleteSessionPrompt": {
+    "description": "Title for delete session prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "userId": {
+        "example": "user@example.org"
+      }
+    }
+  },
+  "navigationItemTitleStream": "Потік",
+  "@navigationItemTitleStream": {
+    "description": "Title for the Stream navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleConversations": "Розмови",
+  "@navigationItemTitleConversations": {
+    "description": "Title for the Conversations navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleSearch": "Пошук",
+  "@navigationItemTitleSearch": {
+    "description": "Title for the search navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleNotifications": "Сповіщення",
+  "@navigationItemTitleNotifications": {
+    "description": "Title for the notifications navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleContacts": "Контакти",
+  "@navigationItemTitleContacts": {
+    "description": "Title for the contacts navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleEditProfile": "Редагувати профіль",
+  "@navigationItemTitleEditProfile": {
+    "description": "Title for the edit profile navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "navigationItemTitleSwitchUser": "Змінити користувача",
+  "@navigationItemTitleSwitchUser": {
+    "description": "Title for the switch user navigation item",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameMain": "Потік",
+  "@streamNameMain": {
+    "description": "Name of the main stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameActivity": "Активність",
+  "@streamNameActivity": {
+    "description": "Name of the activity stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameAspects": "Аспекти",
+  "@streamNameAspects": {
+    "description": "Name of the aspects stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameFollowedTags": "Теги, на які ви підписалися",
+  "@streamNameFollowedTags": {
+    "description": "Name of the followed tags stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameMentions": "Згадки",
+  "@streamNameMentions": {
+    "description": "Name of the mentions stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameLiked": "Сподобалося",
+  "@streamNameLiked": {
+    "description": "Name of the liked stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameCommented": "Прокоментовано",
+  "@streamNameCommented": {
+    "description": "Name of the commented stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "streamNameTag": "Тег",
+  "@streamNameTag": {
+    "description": "Name of a tag stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "noItems": "Блін, нічого показувати!",
+  "@noItems": {
+    "description": "Fallback message when something didn't return any items",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deletedPostReshareHint": "Повторна публікація видаленого допису",
+  "@deletedPostReshareHint": {
+    "description": "Fallback message when showing a reshare of a deleted post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createComment": "Коментар",
+  "@createComment": {
+    "description": "Label for create comment button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "commentsHeader": "Коментарі",
+  "@commentsHeader": {
+    "description": "Header for comment stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToCommentOnPost": "Не вдалося створити коментар",
+  "@failedToCommentOnPost": {
+    "description": "Error message after commenting on a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteCommentPrompt": "Видалити коментар?",
+  "@deleteCommentPrompt": {
+    "description": "Title for delete comment prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToDeleteComment": "Не вдалося видалити коментар",
+  "@failedToDeleteComment": {
+    "description": "Error message after deleting a comment failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportComment": "Звіт",
+  "@reportComment": {
+    "description": "Tooltip for report comment icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportCommentPrompt": "Повідомити про коментар",
+  "@reportCommentPrompt": {
+    "description": "Title for report comment prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportCommentHint": "Будь ласка, опишіть проблему",
+  "@reportCommentHint": {
+    "description": "Hint text for comment report field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sentCommentReport": "Звіт надіслано.",
+  "@sentCommentReport": {
+    "description": "Success message after a comment report was sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReportComment": "Не вдалося створити до звіту",
+  "@failedToReportComment": {
+    "description": "Error message after a comment report couldn't be sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "likesHeader": "Вподобання",
+  "@likesHeader": {
+    "description": "Header for likes list",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToLikePost": "Не вдалося поставити лайк публікації",
+  "@failedToLikePost": {
+    "description": "Error message after liking a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUnlikePost": "Не вдалося поставити позначку «подобається» на публікації",
+  "@failedToUnlikePost": {
+    "description": "Error message after unliking a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resharesHeader": "Повторні публікації",
+  "@resharesHeader": {
+    "description": "Header for reshares list",
+    "type": "text",
+    "placeholders": {}
+  },
+  "resharePrompt": "Поділитися публікацією повторно?",
+  "@resharePrompt": {
+    "description": "Title for reshare post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmReshare": "Поділитися повторно",
+  "@confirmReshare": {
+    "description": "Label for confirm button in the reshare prompt",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToResharePost": "Не вдалося повторно поділитися публікацією",
+  "@failedToResharePost": {
+    "description": "Error message after resharing a post failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "startPostSubscription": "Увімкнути сповіщення",
+  "@startPostSubscription": {
+    "description": "Tooltip for start post subscription icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancelPostSubscription": "Зупинити сповіщення",
+  "@cancelPostSubscription": {
+    "description": "Tooltip for cancel post subscription icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToSubscribeToPost": "Не вдалося підписатися на публікацію",
+  "@failedToSubscribeToPost": {
+    "description": "Error message after failing to subscribe to a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUnsubscribeFromPost": "Не вдалося скасувати підписку на публікацію",
+  "@failedToUnsubscribeFromPost": {
+    "description": "Error message after failing to unsubscribe from a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deletePostPrompt": "Видалити публікацію?",
+  "@deletePostPrompt": {
+    "description": "Title for delete post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToDeletePost": "Не вдалося видалити публікацію",
+  "@failedToDeletePost": {
+    "description": "Error message after failing to delete a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "hidePost": "Приховати",
+  "@hidePost": {
+    "description": "Tooltip for hide post icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToHidePost": "Не вдалося приховати публікацію",
+  "@failedToHidePost": {
+    "description": "Error message after failing to hide a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPost": "Звіт",
+  "@reportPost": {
+    "description": "Tooltip for report post icon button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPostPrompt": "Повідомити про публікацію",
+  "@reportPostPrompt": {
+    "description": "Title for report post prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "reportPostHint": "Будь ласка, опишіть проблему",
+  "@reportPostHint": {
+    "description": "Hint text for post report field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sentPostReport": "Звіт надіслано.",
+  "@sentPostReport": {
+    "description": "Success message after a post report was sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReportPost": "Не вдалося створити звіт",
+  "@failedToReportPost": {
+    "description": "Error message after a post report couldn't be sent",
+    "type": "text",
+    "placeholders": {}
+  },
+  "showOriginalPost": "Показати оригінальну публікацію, якою було опубліковано повторно",
+  "@showOriginalPost": {
+    "description": "Tooltip message for the show original post button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "voteCount": "{count,plural, =0{Поки що немає голосів}=1{1 голос поки що}other{{count} голосів на даний момент}}",
+  "@voteCount": {
+    "description": "Label for how many votes are registered on a poll",
+    "type": "text",
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "pollResultsButtonLabel": "Переглянути результати",
+  "@pollResultsButtonLabel": {
+    "description": "Label for view poll results button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "voteButtonLabel": "Голосувати",
+  "@voteButtonLabel": {
+    "description": "Label for poll vote submission",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToVote": "Не вдалося проголосувати за публікацію",
+  "@failedToVote": {
+    "description": "Error message after voting on a poll failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "oEmbedHeader": "{author} на {provider}:",
+  "@oEmbedHeader": {
+    "description": "Header above HTML style oEmbeds",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      },
+      "provider": {
+        "example": "Twitter"
+      }
+    }
+  },
+  "oEmbedAuthor": "від {author}",
+  "@oEmbedAuthor": {
+    "description": "Subtitle on oEmbed thumbnails",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      }
+    }
+  },
+  "nsfwShieldTitle": "NSFW-допис від {author}",
+  "@nsfwShieldTitle": {
+    "description": "Title on the NSFW shield",
+    "type": "text",
+    "placeholders": {
+      "author": {
+        "example": "Alice"
+      }
+    }
+  },
+  "showAllNsfwPostsButtonLabel": "Показати всі публікації, що не стосуються роботи на роботі",
+  "@showAllNsfwPostsButtonLabel": {
+    "description": "Label on show all NSFW posts button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "showThisNsfwPostButtonLabel": "Показати цю публікацію",
+  "@showThisNsfwPostButtonLabel": {
+    "description": "Label on show this NSFW post button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectsPrompt": "Виберіть аспекти",
+  "@aspectsPrompt": {
+    "description": "Title for the aspect selection dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatItalic": "Курсив",
+  "@formatItalic": {
+    "description": "Tooltip for format italic button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatBold": "Жирний шрифт",
+  "@formatBold": {
+    "description": "Tooltip for format bold button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "formatStrikethrough": "Закреслення",
+  "@formatStrikethrough": {
+    "description": "Tooltip for format strikethrough button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertHeading": "Заголовок",
+  "@insertHeading": {
+    "description": "Tooltip for insert heading button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertBulletedList": "Маркований список",
+  "@insertBulletedList": {
+    "description": "Tooltip for insert bulleted list button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertNumberedList": "Нумерований список",
+  "@insertNumberedList": {
+    "description": "Tooltip for insert numbered list button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertQuote": "Цитата",
+  "@insertQuote": {
+    "description": "Tooltip for insert quote button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertCode": "Код",
+  "@insertCode": {
+    "description": "Tooltip for insert code button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertCodeBlock": "Блок коду",
+  "@insertCodeBlock": {
+    "description": "Tooltip for insert code block button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLink": "Посилання",
+  "@insertLink": {
+    "description": "Tooltip for insert link button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertImageURL": "URL-адреса зображення",
+  "@insertImageURL": {
+    "description": "Tooltip for insert image URL button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertHashtag": "Хештег",
+  "@insertHashtag": {
+    "description": "Tooltip for insert hashtag button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertMention": "Згадка",
+  "@insertMention": {
+    "description": "Tooltip for insert mention button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLinkPrompt": "Вставити посилання",
+  "@insertLinkPrompt": {
+    "description": "Title for insert link prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertImageURLPrompt": "Вбудувати зображення",
+  "@insertImageURLPrompt": {
+    "description": "Title for insert image URL prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLinkURLHint": "URL",
+  "@insertLinkURLHint": {
+    "description": "Hint text for URL field in insert link dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "insertLinkDescriptionHint": "Опис (необов'язково)",
+  "@insertLinkDescriptionHint": {
+    "description": "Hint text for description field in insert link dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchDialogHint": "Пошук",
+  "@searchDialogHint": {
+    "description": "Hint text for the search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "tagSearchDialogHint": "Пошук тегу",
+  "@tagSearchDialogHint": {
+    "description": "Hint text for the tag search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "peopleSearchDialogHint": "Пошук особи",
+  "@peopleSearchDialogHint": {
+    "description": "Hint text for the people search dialog input field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectsListTitle": "Аспекти",
+  "@aspectsListTitle": {
+    "description": "Title for the aspects list page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createAspectPrompt": "Створити аспект",
+  "@createAspectPrompt": {
+    "description": "Title for the create aspect prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToCreateAspect": "Не вдалося створити аспект",
+  "@failedToCreateAspect": {
+    "description": "Error message after failing to create an aspect",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editAspectPrompt": "Редагувати аспект",
+  "@editAspectPrompt": {
+    "description": "Title for the edit aspect prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToRenameAspect": "Не вдалося перейменувати аспект {oldName} на {newName}",
+  "@failedToRenameAspect": {
+    "description": "Error message after renaming an aspect failed",
+    "type": "text",
+    "placeholders": {
+      "oldName": {
+        "example": "Friends"
+      },
+      "newName": {
+        "example": "Enemies"
+      }
+    }
+  },
+  "deleteAspectPrompt": "Видалити аспект {name}?",
+  "@deleteAspectPrompt": {
+    "description": "Title for the delete aspect prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Colleagues"
+      }
+    }
+  },
+  "failedToDeleteAspect": "Не вдалося видалити аспект {name}",
+  "@failedToDeleteAspect": {
+    "description": "Error message after deleting an aspect failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Leaders"
+      }
+    }
+  },
+  "aspectNameHint": "Введіть ім'я",
+  "@aspectNameHint": {
+    "description": "Hint text for an aspect name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "replyToConversation": "Відповідь",
+  "@replyToConversation": {
+    "description": "Label for reply to conversation button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToReplyToConversation": "Не вдалося відповісти на розмову",
+  "@failedToReplyToConversation": {
+    "description": "Error message after replying to a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToHideConversation": "Не вдалося приховати розмову",
+  "@failedToHideConversation": {
+    "description": "Error message after hiding a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileTitle": "Редагувати профіль",
+  "@editProfileTitle": {
+    "description": "Title for edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "uploadProfilePictureHeader": "Оновити зображення профілю",
+  "@uploadProfilePictureHeader": {
+    "description": "Header for upload profile picture section on the edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "takeNewPicture": "Зробити нове фото",
+  "@takeNewPicture": {
+    "description": "Label for take a new picture button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "uploadNewPicture": "Завантажити нове зображення",
+  "@uploadNewPicture": {
+    "description": "Label for upload a new picture button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUploadProfilePicture": "Не вдалося завантажити зображення профілю",
+  "@failedToUploadProfilePicture": {
+    "description": "Error message after uploading a profile picture failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileHeader": "Редагувати профіль",
+  "@editProfileHeader": {
+    "description": "Header for edit profile section on edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileNameLabel": "Ім'я",
+  "@editProfileNameLabel": {
+    "description": "Label for edit profile name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileLocationLabel": "Розташування",
+  "@editProfileLocationLabel": {
+    "description": "Label for edit profile location field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileGenderLabel": "Стать",
+  "@editProfileGenderLabel": {
+    "description": "Label for edit profile gender field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileBirthdayLabel": "День народження",
+  "@editProfileBirthdayLabel": {
+    "description": "Label for edit profile birthday field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfilePublicLabel": "Зробити інформацію профілю публічною?",
+  "@editProfilePublicLabel": {
+    "description": "Label for edit profile public field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileSearchableLabel": "Дозволити пошук?",
+  "@editProfileSearchableLabel": {
+    "description": "Label for edit profile searchable field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileNsfwLabel": "Позначити профіль як #nsfw?",
+  "@editProfileNsfwLabel": {
+    "description": "Label for edit profile NSFW field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileTagsLabel": "Теги",
+  "@editProfileTagsLabel": {
+    "description": "Label for edit profile tags field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfileSubmit": "Оновити профіль",
+  "@editProfileSubmit": {
+    "description": "Label for edit profile submit button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "duplicateProfileTag": "Тег уже додано",
+  "@duplicateProfileTag": {
+    "description": "Error message after trying to add a duplicate profile tag",
+    "type": "text",
+    "placeholders": {}
+  },
+  "updatedProfile": "Профіль оновлено.",
+  "@updatedProfile": {
+    "description": "Success message after the profile was updated",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUpdateProfile": "Не вдалося оновити профіль",
+  "@failedToUpdateProfile": {
+    "description": "Error message after updating the profile failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationTitle": "Почати нову розмову",
+  "@newConversationTitle": {
+    "description": "Title for new conversation page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationRecipientsLabel": "Одержувачі",
+  "@newConversationRecipientsLabel": {
+    "description": "Label for new conversation recipients field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationSubjectLabel": "Тема",
+  "@newConversationSubjectLabel": {
+    "description": "Label for new conversation subject field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "newConversationMessageLabel": "Повідомлення",
+  "@newConversationMessageLabel": {
+    "description": "Label for new conversation message field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "sendNewConversation": "Надіслати",
+  "@sendNewConversation": {
+    "description": "Label for new conversation send button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToAddConversationParticipantNotSharingWith": "Ви не надаєте доступ користувачу {name}, не можете додати його як одержувача!",
+  "@failedToAddConversationParticipantNotSharingWith": {
+    "description": "Error message after adding a conversation participant failed due to the user not sharing with them",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Stranger"
+      }
+    }
+  },
+  "failedToAddConversationParticipantNotSharing": "{name} не ділиться з вами, не можна додати його як одержувача!",
+  "@failedToAddConversationParticipantNotSharing": {
+    "description": "Error message after adding a conversation participant failed due to them not sharing with the user",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Charlotte Idol"
+      }
+    }
+  },
+  "failedToAddConversationParticipantDuplicate": "{name} вже є одержувачем, не можна додати його двічі.",
+  "@failedToAddConversationParticipantDuplicate": {
+    "description": "Error message after adding a conversation participant failed due to them already being part of the participants",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice McBoss"
+      }
+    }
+  },
+  "failedToAddConversationParticipant": "Не вдалося додати одержувача",
+  "@failedToAddConversationParticipant": {
+    "description": "Error message after adding a conversation participant failed for a general reason",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToCreateConversation": "Не вдалося створити розмову",
+  "@failedToCreateConversation": {
+    "description": "Error message after sending a conversation failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkConversationAsRead": "Не вдалося позначити розмову як прочитану",
+  "@failedToMarkConversationAsRead": {
+    "description": "Error message after marking a conversation as read failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkConversationAsUnread": "Не вдалося позначити розмову як непрочитану",
+  "@failedToMarkConversationAsUnread": {
+    "description": "Error message after marking a conversation  as unread failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetPost": "пост",
+  "@notificationTargetPost": {
+    "description": "Target part of a notification message for a post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetDeletedPost": "видалений пост",
+  "@notificationTargetDeletedPost": {
+    "description": "Target part of a notification message for a deleted post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetComment": "коментар",
+  "@notificationTargetComment": {
+    "description": "Target part of a notification message for a comment",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationTargetDeletedComment": "видалений коментар",
+  "@notificationTargetDeletedComment": {
+    "description": "Target part of a notification message for a deleted comment",
+    "type": "text",
+    "placeholders": {}
+  },
+  "notificationActorsForTwoPeople": "{first} і {second}",
+  "@notificationActorsForTwoPeople": {
+    "description": "Actors part of a notification message with exactly two actors",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      }
+    }
+  },
+  "notificationActorsForThreePeople": "{first}, {second} і {third}",
+  "@notificationActorsForThreePeople": {
+    "description": "Actors part of a notification message with exactly three actors",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      },
+      "third": {
+        "example": "Charlotte"
+      }
+    }
+  },
+  "notificationActorsForMoreThanThreePeople": "{othersCount,plural, =0{{first}, {second} і жодних інших}=1{{first}, {second} і ще один}other{{first}, {second} та ще {othersCount} інших}}",
+  "@notificationActorsForMoreThanThreePeople": {
+    "description": "Actors part of a notification message with more than three actors. The first two are given, the count is the count of how many more (at least two) there are. So the zero and one cases never come into use",
+    "type": "text",
+    "placeholders": {
+      "first": {
+        "example": "Alice"
+      },
+      "second": {
+        "example": "Bob"
+      },
+      "othersCount": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "notificationAlsoCommented": "{actorCount,plural, =0{Ніхто також не коментував {target}.}=1{{actors} також прокоментував {target}.}other{{actors} також прокоментував {target}.}}",
+  "@notificationAlsoCommented": {
+    "description": "Notification message for when some people also commented on a post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationCommented": "{actorCount,plural, =0{Ніхто не коментував твій коментар {target}.}=1{{actors} прокоментував твій {target}.}other{{actors} прокоментував твій {target}.}}",
+  "@notificationCommented": {
+    "description": "Notification message for when some people commented on the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationBirthday": "{actorCount,plural, =0{Сьогодні ні в кого немає дня народження.}=1{{actors} у них сьогодні день народження.}other{{actors} у тебе сьогодні день народження.}}",
+  "@notificationBirthday": {
+    "description": "Notification message for when a contact of the user has their birthday. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "notificationLiked": "{actorCount,plural, =0{Ніхто не любив твоїх {target}.}=1{{actors} сподобався твій {target}.}other{{actors} сподобався твій {target}.}}",
+  "@notificationLiked": {
+    "description": "Notification message for when some people liked the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationLikedComment": "{actorCount,plural, =0{Ніхто не любив твоїх {target}.}=1{{actors} сподобався твій {target}.}other{{actors} сподобався твій {target}.}}",
+  "@notificationLikedComment": {
+    "description": "Notification message for when some people liked the users comment. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetComment or notificationTargetDeletedComment"
+      }
+    }
+  },
+  "notificationMentionedInPost": "{actorCount,plural, =0{Ніхто тебе не згадував у {target}.}=1{{actors} згадав вас у {target}.}other{{actors} згадав тебе в {target}.}}",
+  "@notificationMentionedInPost": {
+    "description": "Notification message for when somebody mentioned the user in a post. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationMentionedInComment": "{actorCount,plural, =0{Ніхто не згадав тебе в коментарі.}=1{{actors} згадав вас у коментарі.}other{{actors} згадав вас у коментарі.}}",
+  "@notificationMentionedInComment": {
+    "description": "Notification message for when somebody mentioned the user in a comment. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "notificationMentionedInCommentOnDeletedPost": "{actorCount,plural, =0{Ніхто не згадав вас у коментарі до видаленого допису.}=1{{actors} згадав вас у коментарі до видаленого допису.}other{{actors} згадав вас у коментарі до видаленого допису.}}",
+  "@notificationMentionedInCommentOnDeletedPost": {
+    "description": "Notification message for when somebody mentioned the user in in comment on a deleted post. Currently only the one case is used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "notificationReshared": "{actorCount,plural, =0{Ніхто не поділився вашим {target}.}=1{{actors} повторно поділився вашим {target}.}other{{actors} повторно поділився вашим {target}.}}",
+  "@notificationReshared": {
+    "description": "Notification message for when some people reshared the users post. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      },
+      "target": {
+        "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+      }
+    }
+  },
+  "notificationStartedSharing": "{actorCount,plural, =0{Ніхто не починав ділитися з тобою.}=1{{actors} почав(ла) ділитися з вами.}other{{actors} почав(ла) ділитися з вами.}}",
+  "@notificationStartedSharing": {
+    "description": "Notification message for when some people started sharing  with the user. The zero case is never used",
+    "type": "text",
+    "placeholders": {
+      "actorCount": {
+        "example": "1, 2, 3, ..."
+      },
+      "actors": {
+        "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+      }
+    }
+  },
+  "failedToMarkNotificationAsRead": "Не вдалося позначити сповіщення як прочитане",
+  "@failedToMarkNotificationAsRead": {
+    "description": "Error message after marking a notification as read failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToMarkNotificationAsUnread": "Не вдалося позначити сповіщення як непрочитане",
+  "@failedToMarkNotificationAsUnread": {
+    "description": "Error message after marking a notification  as unread failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profileInfoHeader": "Інформація",
+  "@profileInfoHeader": {
+    "description": "Header for info section on the profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "profilePostsHeader": "Дописи",
+  "@profilePostsHeader": {
+    "description": "Header for posts section on the profile page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editProfile": "Редагувати профіль",
+  "@editProfile": {
+    "description": "Label for the edit profile button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "mentionUser": "Згадати користувача",
+  "@mentionUser": {
+    "description": "Tooltip for the mention user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "messageUser": "Повідомлення",
+  "@messageUser": {
+    "description": "Tooltip for the message user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "blockUser": "Блок",
+  "@blockUser": {
+    "description": "Tooltip for the block user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "unblockUser": "Розблокувати",
+  "@unblockUser": {
+    "description": "Tooltip for the unblock user button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToBlockUser": "Не вдалося заблокувати {name}",
+  "@failedToBlockUser": {
+    "description": "Error message after blocking a user failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice, alice@pod.example.org"
+      }
+    }
+  },
+  "failedToUnblockUser": "Не вдалося розблокувати {name}",
+  "@failedToUnblockUser": {
+    "description": "Error message after unblocking a user failed",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice, alice@pod.example.org"
+      }
+    }
+  },
+  "addContact": "Додати контакт",
+  "@addContact": {
+    "description": "Label for add contact button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "manageContact": "{count,plural, =0{У жодному аспекті}=1{В одному аспекті}other{У {count} аспектах}}",
+  "@manageContact": {
+    "description": "Label for manage contact button. The zero case and one is never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "contactStatusBlocked": "Ви їх заблокували",
+  "@contactStatusBlocked": {
+    "description": "Contact status message for a blocked user",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusMutual": "Ви ділитеся одне з одним",
+  "@contactStatusMutual": {
+    "description": "Contact status message for a contact that is sharing with the user and that the user is sharing with",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusReceiving": "Вони діляться з вами.",
+  "@contactStatusReceiving": {
+    "description": "Contact status message for a contact that is sharing with the user, but the user is not sharing with the contact",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusSharing": "Ви ділитеся з ними.",
+  "@contactStatusSharing": {
+    "description": "Contact status message for a contact that the user is sharing with, but the contact is not sharing with the user",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactStatusNotSharing": "Ви не ділитеся одне з одним.",
+  "@contactStatusNotSharing": {
+    "description": "Contact status message for somebody that is not sharing with the user nor the user is sharing with",
+    "type": "text",
+    "placeholders": {}
+  },
+  "contactAspectsPrompt": "Виберіть аспекти для {name}",
+  "@contactAspectsPrompt": {
+    "description": "Title for the contact aspects prompt dialog",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "startedSharing": "Розпочато обмін з {name}.",
+  "@startedSharing": {
+    "description": "Success message after the user started sharing with somebody",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "stoppedSharing": "Спільний доступ з припинено {name}.",
+  "@stoppedSharing": {
+    "description": "Success message after the user stopped sharing with somebody",
+    "type": "text",
+    "placeholders": {
+      "name": {
+        "example": "Alice"
+      }
+    }
+  },
+  "contactAspectsUpdated": "Аспекти оновлено.",
+  "@contactAspectsUpdated": {
+    "description": "Success message after the user updated a contact's aspects",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUpdateContactAspects": "Не вдалося оновити аспекти",
+  "@failedToUpdateContactAspects": {
+    "description": "Error message after updating a contact's aspects failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publisherTitle": "Написати новий пост",
+  "@publisherTitle": {
+    "description": "Title for the publisher page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "takePhoto": "Зробіть фотографію",
+  "@takePhoto": {
+    "description": "Tooltip for the take a photo button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "uploadPhoto": "Завантажити фотографію",
+  "@uploadPhoto": {
+    "description": "Tooltip for the upload a photo button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addPoll": "Додати опитування",
+  "@addPoll": {
+    "description": "Tooltip for the add poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addLocation": "Додайте своє місцезнаходження",
+  "@addLocation": {
+    "description": "Tooltip for the add location button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishPost": "Опублікувати публікацію",
+  "@publishPost": {
+    "description": "Label for the publish post button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetPublic": "Громадськість",
+  "@publishTargetPublic": {
+    "description": "Publish target label for a public post",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetAllAspects": "Усі аспекти",
+  "@publishTargetAllAspects": {
+    "description": "Publish target label for a post to all aspects",
+    "type": "text",
+    "placeholders": {}
+  },
+  "publishTargetAspects": "{count,plural, =0{Без аспектів}=1{Один аспект}other{{count} аспекти}}",
+  "@publishTargetAspects": {
+    "description": "Publish target label for a post to a list of aspects. The zero and one cases are never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "publishTargetPrompt": "Виберіть видимість публікації",
+  "@publishTargetPrompt": {
+    "description": "Title for the publish target selection prompt dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUploadPhoto": "Не вдалося завантажити фотографію",
+  "@failedToUploadPhoto": {
+    "description": "Error message after uploading a photo failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pollQuestionHint": "Введіть запитання",
+  "@pollQuestionHint": {
+    "description": "Hint text for the poll question field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "pollAnswerHint": "Введіть відповідь",
+  "@pollAnswerHint": {
+    "description": "Hint text for a poll answer field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "createPoll": "Створити опитування",
+  "@createPoll": {
+    "description": "Label for the create poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "editPoll": "Редагувати опитування",
+  "@editPoll": {
+    "description": "Label for the edit poll button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "enterAddressHint": "Введіть адресу",
+  "@enterAddressHint": {
+    "description": "Hint text for an address field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToSearchForAddresses": "Не вдалося знайти адреси",
+  "@failedToSearchForAddresses": {
+    "description": "Error message after searching for the entered address failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTypePeople": "Люди",
+  "@searchTypePeople": {
+    "description": "Label for search type selector for the people search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTypePeopleByTag": "Люди за тегом",
+  "@searchTypePeopleByTag": {
+    "description": "Label for search type selector for the people by tag search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTypeTags": "Теги",
+  "@searchTypeTags": {
+    "description": "Label for search type selector for the tags search",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchPeopleHint": "Почніть вводити ім'я або ідентифікатор діаспори*",
+  "@searchPeopleHint": {
+    "description": "Hint text for the people search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchPeopleByTagHint": "Введіть тег",
+  "@searchPeopleByTagHint": {
+    "description": "Hint text for the the people by tag search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchTagsHint": "Почніть вводити тег",
+  "@searchTagsHint": {
+    "description": "Hint text for the tags search field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectStreamSelectorAllAspects": "Усі аспекти",
+  "@aspectStreamSelectorAllAspects": {
+    "description": "Aspect stream selector label for all aspects",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aspectStreamSelectorAspects": "{count,plural, =0{Без аспектів}=1{Один аспект}other{{count} аспекти}}",
+  "@aspectStreamSelectorAspects": {
+    "description": "Aspect stream selector label for a list of aspects. The zero and one cases are never used",
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": "2, 3, 4, ..."
+      }
+    }
+  },
+  "manageFollowedTags": "Керувати тегами підписок",
+  "@manageFollowedTags": {
+    "description": "Label for the manage followed tags button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "followedTagsPageTitle": "Теги, на які ви підписалися",
+  "@followedTagsPageTitle": {
+    "description": "Title for the followed tags page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToFollowTag": "Не вдалося підписатися #{tag}",
+  "@failedToFollowTag": {
+    "description": "Error message after following a tag failed",
+    "type": "text",
+    "placeholders": {
+      "tag": {
+        "example": "newhere"
+      }
+    }
+  },
+  "failedToUnfollowTag": "Не вдалося скасувати підписку #{tag}",
+  "@failedToUnfollowTag": {
+    "description": "Error message after unfollowing a tag failed",
+    "type": "text",
+    "placeholders": {
+      "tag": {
+        "example": "nsfw"
+      }
+    }
+  },
+  "failedToOpenInvalidUrl": "URL-адреса виглядає недійсною, не вдається відкрити",
+  "@failedToOpenInvalidUrl": {
+    "description": "Error message after trying to open an invalid URL",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToOpenUrl": "Не вдалося відкрити URL-адресу. У вас встановлено браузер?",
+  "@failedToOpenUrl": {},
+  "catcherLocalizationDialogReportModeTitle": "insporation* зазнало краху :(",
+  "@catcherLocalizationDialogReportModeTitle": {
+    "description": "Title for crash report dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "catcherLocalizationDialogReportModeDescription": "Сталася неочікувана помилка, звіт про помилку готовий до надсилання розробникам.",
+  "@catcherLocalizationDialogReportModeDescription": {
+    "description": "Description for crash report page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "catcherLocalizationDialogReportModeAccept": "Надіслати звіт",
+  "@catcherLocalizationDialogReportModeAccept": {
+    "description": "Button label for accepting to send a crash report",
+    "type": "text",
+    "placeholders": {}
+  },
+  "catcherLocalizationDialogReportModeCancel": "Відхилити",
+  "@catcherLocalizationDialogReportModeCancel": {
+    "description": "Button label for dismissing a crash report",
+    "type": "text",
+    "placeholders": {}
   }
 }
