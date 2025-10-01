@@ -333,7 +333,7 @@
         "type": "text",
         "placeholders": {}
     },
-    "notificationLiked": "{ஆக்சோர்ட், பன்மை, = 0 {உங்கள் {target}.",
+    "notificationLiked": "{actorCount,plural, =0{யாரும் உங்கள் {target}-ஐ விரும்பவில்லை.}=1{{actors} உங்கள் {target}-ஐ விரும்பினர்.}other{{actors} உங்கள் {target}-ஐ விரும்பினர்.}}",
     "@notificationLiked": {
         "description": "Notification message for when some people liked the users post. The zero case is never used",
         "type": "text",
@@ -349,7 +349,7 @@
             }
         }
     },
-    "notificationLikedComment": "{ஆக்சோர்ட், பன்மை, = 0 {உங்கள் {target}.",
+    "notificationLikedComment": "{actorCount,plural, =0{யாரும் உங்கள் {target}-ஐ விரும்பவில்லை.}=1{{actors} உங்கள் {target}-ஐ விரும்பினர்.}other{{actors}உங்கள் {target}-ஐ விரும்பினர்.}}",
     "@notificationLikedComment": {
         "description": "Notification message for when some people liked the users comment. The zero case is never used",
         "type": "text",
@@ -365,7 +365,7 @@
             }
         }
     },
-    "notificationMentionedInPost": "{ஆக்சார்சவுண்ட், பன்மை, = 0 {உங்களை ஒரு {target} இல் யாரும் குறிப்பிடவில்லை.",
+    "notificationMentionedInPost": "{actorCount,plural, =0{யாரும் உங்களை {target}-ல் குறிப்பிடவில்லை.}=1{{actors} உங்களை {target}-ல் குறிப்பிட்டுள்ளனர்.}other{{actors} உங்களை {target}-ல் குறிப்பிட்டுள்ளனர்.}}",
     "@notificationMentionedInPost": {
         "description": "Notification message for when somebody mentioned the user in a post. Currently only the one case is used",
         "type": "text",
@@ -399,7 +399,7 @@
         "type": "text",
         "placeholders": {}
     },
-    "manageContact": "{எண்ணிக்கை, பன்மை, = 0 {In no aspects} = 1 {In one aspect} மற்ற {{count} அம்சங்களில்}}",
+    "manageContact": "{count,plural, =0{எண்ணில் இல்லை}=1{ஒரு அம்சத்தில்}other{{count} அம்சங்களில்}}",
     "@manageContact": {
         "description": "Label for manage contact button. The zero case and one is never used",
         "type": "text",
@@ -427,7 +427,7 @@
         "type": "text",
         "placeholders": {}
     },
-    "contactAspectsPrompt": "{பெயர் க்கு க்கான அம்சங்களைத் தேர்ந்தெடுக்கவும்",
+    "contactAspectsPrompt": "{name} க்கான அம்சங்களைத் தேர்ந்தெடு",
     "@contactAspectsPrompt": {
         "description": "Title for the contact aspects prompt dialog",
         "type": "text",
@@ -437,7 +437,7 @@
             }
         }
     },
-    "startedSharing": "{பெயர் with உடன் பகிரத் தொடங்கியது.",
+    "startedSharing": "{name} உடன் பகிரத் தொடங்கியது.",
     "@startedSharing": {
         "description": "Success message after the user started sharing with somebody",
         "type": "text",
@@ -483,7 +483,7 @@
         "type": "text",
         "placeholders": {}
     },
-    "publishTargetAspects": "{எண்ணிக்கை, பன்மை, = 0 {No aspects} = 1 {One aspect} மற்ற {{count} அம்சங்கள்}}",
+    "publishTargetAspects": "{count,plural, =0{அம்சங்கள் இல்லை}=1{ஒரு அம்சம்}other{{count} அம்சங்கள்}}",
     "@publishTargetAspects": {
         "description": "Publish target label for a post to a list of aspects. The zero and one cases are never used",
         "type": "text",
@@ -529,7 +529,7 @@
         "type": "text",
         "placeholders": {}
     },
-    "aspectStreamSelectorAspects": "{எண்ணிக்கை, பன்மை, = 0 {No aspects} = 1 {One aspect} மற்ற {{count} அம்சங்கள்}}",
+    "aspectStreamSelectorAspects": "{count,plural, =0{அம்சங்கள் இல்லை}=1{ஒரு அம்சம்}other{{count} அம்சங்கள்}}",
     "@aspectStreamSelectorAspects": {
         "description": "Aspect stream selector label for a list of aspects. The zero and one cases are never used",
         "type": "text",
@@ -613,7 +613,7 @@
         "type": "text",
         "placeholders": {}
     },
-    "stoppedSharing": "{பெயர் with உடன் பகிர்வதை நிறுத்தியது.",
+    "stoppedSharing": "{name} உடன் பகிர்வதை நிறுத்தியது.",
     "@stoppedSharing": {
         "description": "Success message after the user stopped sharing with somebody",
         "type": "text",
@@ -1376,7 +1376,7 @@
             }
         }
     },
-    "notificationCommented": "{ஆக்சோர்ட், பன்மை, = 0 {உங்கள் {target} இல் யாரும் கருத்து தெரிவிக்கவில்லை.} = 1 {{நடிகர்கள் your உங்கள் {actors} கருத்து தெரிவித்தனர்.",
+    "notificationCommented": "{actorCount,plural, =0{உங்கள் {target}இல் யாரும் கருத்து தெரிவிக்கவில்லை.}=1{{actors} உங்கள் {target} இல் கருத்து தெரிவித்துள்ளார்.}other{{actors} உங்கள் {target} இல் கருத்து தெரிவித்துள்ளார்.}}",
     "@notificationCommented": {
         "description": "Notification message for when some people commented on the users post. The zero case is never used",
         "type": "text",
@@ -1392,7 +1392,7 @@
             }
         }
     },
-    "notificationBirthday": "{நடிகர் கவுன்ட், பன்மை, = 0 {Nobody has their birthday today.} = 1 {{நடிகர்கள் இன்று பிறந்த நாள்.",
+    "notificationBirthday": "{actorCount,plural, =0{யாருக்கும் இன்று பிறந்தநாள் இல்லை.}=1{{actors} இன்று பிறந்தநாள் கொண்டாடுகிறார்கள்.}other{{actors} இன்று பிறந்தநாள் கொண்டாடுகிறார்கள்.}}",
     "@notificationBirthday": {
         "description": "Notification message for when a contact of the user has their birthday. Currently only the one case is used",
         "type": "text",
@@ -1405,7 +1405,7 @@
             }
         }
     },
-    "notificationMentionedInComment": "{நடிகர் கவுன்ட், பன்மை, = 0 {Nobody mentioned you in a comment.} = 1 {{நடிகர்கள் உங்களை ஒரு கருத்தில் குறிப்பிட்டுள்ளனர்.",
+    "notificationMentionedInComment": "{actorCount,plural, =0{Nobody mentioned you in a comment.}=1{{actors} உங்களை ஒரு கருத்தில் குறிப்பிட்டுள்ளனர்.}other{{actors} உங்களை ஒரு கருத்தில் குறிப்பிட்டுள்ளனர்.}}",
     "@notificationMentionedInComment": {
         "description": "Notification message for when somebody mentioned the user in a comment. Currently only the one case is used",
         "type": "text",
@@ -1418,7 +1418,7 @@
             }
         }
     },
-    "notificationMentionedInCommentOnDeletedPost": "{நடிகர், பன்மை, = 0 {Nobody mentioned you in a comment on a deleted post.} = 1 {{actors} நீக்கப்பட்ட இடுகையின் கருத்தில் உங்களை குறிப்பிட்டுள்ளனர். இடுகை.}}",
+    "notificationMentionedInCommentOnDeletedPost": "{actorCount,plural, =0{Nobody mentioned you in a comment on a deleted post.}=1{{actors} நீக்கப்பட்ட இடுகையின் கருத்தில் உங்களைக் குறிப்பிட்டுள்ளனர். }other{{actors} நீக்கப்பட்ட இடுகையின் கருத்தில் உங்களைக் குறிப்பிட்டுள்ளனர். }}",
     "@notificationMentionedInCommentOnDeletedPost": {
         "description": "Notification message for when somebody mentioned the user in in comment on a deleted post. Currently only the one case is used",
         "type": "text",
@@ -1431,7 +1431,7 @@
             }
         }
     },
-    "notificationReshared": "{ஆக்சோர்ட், பன்மை, = 0 {உங்கள் {target} = 1 {{நடிகர்கள் your உங்கள் {actors}.",
+    "notificationReshared": "{actorCount,plural, =0{யாரும் உங்கள் {target} ஐ மீண்டும் பகிரவில்லை.}=1{{actors} உங்கள் {target} ஐ மீண்டும் பகிர்ந்தனர்.}other{{actors} உங்கள் {target} ஐ மீண்டும் பகிர்ந்தனர்.}}",
     "@notificationReshared": {
         "description": "Notification message for when some people reshared the users post. The zero case is never used",
         "type": "text",
@@ -1447,7 +1447,7 @@
             }
         }
     },
-    "notificationStartedSharing": "{நடிகர் கவுன்ட், பன்மை, = 0 {யாரும் உங்களுடன் பகிரத் தொடங்கவில்லை.",
+    "notificationStartedSharing": "{actorCount,plural, =0{யாரும் உங்களுடன் பகிரத் தொடங்கவில்லை.}=1{{actors} உங்களுடன் பகிரத் தொடங்கினர்.}other{{actors} உங்களுடன் பகிரத் தொடங்கினர்.}}",
     "@notificationStartedSharing": {
         "description": "Notification message for when some people started sharing  with the user. The zero case is never used",
         "type": "text",
@@ -1496,7 +1496,7 @@
         "type": "text",
         "placeholders": {}
     },
-    "failedToBlockUser": "{பெயரைத் தடுக்கத் தவறிவிட்டது",
+    "failedToBlockUser": "{name} தடுக்கத் தவறிவிட்டது",
     "@failedToBlockUser": {
         "description": "Error message after blocking a user failed",
         "type": "text",
