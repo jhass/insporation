@@ -263,7 +263,7 @@
         "type": "text",
         "placeholders": {}
     },
-    "editProfileNsfwLabel": "சுயவிவரத்தை #NSFW ஆக குறிக்கவும்?",
+    "editProfileNsfwLabel": "சுயவிவரத்தை #nsfw ஆகக் குறிக்கவும்?",
     "@editProfileNsfwLabel": {
         "description": "Label for edit profile NSFW field",
         "type": "text",
@@ -718,7 +718,6 @@
         "placeholders": {}
     },
     "failedToOpenUrl": "முகவரி ஐ திறக்கத் தவறிவிட்டது. உங்களிடம் உலாவி நிறுவப்பட்டுள்ளதா?",
-    "@failedToOpenUrl": {},
     "insertButtonLabel": "செருகவும்",
     "@insertButtonLabel": {
         "description": "Label for a dialog insert button",
