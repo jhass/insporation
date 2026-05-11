@@ -638,6 +638,13 @@ class _PhotoSliderState extends State<_PhotoSlider> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.photos.length == 1) {
+      return GestureDetector(
+        onTap: () => Photobox.show(context, widget.photos.first.sizes.large),
+        child: RemoteImage(widget.photos.first.sizes.large),
+      );
+    }
+
     return Stack(
       children: <Widget>[
         CarouselSlider.builder(
