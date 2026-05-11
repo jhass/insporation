@@ -64,7 +64,7 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
         onTap: _canGoToTarget ? _goToTarget : null,
         child: Container(
           decoration:  BoxDecoration(
-            color: widget.notification.read ? theme.colorScheme.background : colors.unreadItemBackground(theme),
+            color: widget.notification.read ? theme.colorScheme.surface : colors.unreadItemBackground(theme),
             border: Border(
               left: widget.notification.read ? BorderSide.none : BorderSide(color: theme.colorScheme.secondary, width: 2),
               bottom: BorderSide(color: widget.notification.read ? theme.dividerColor : colors.unreadItemBottomBorder(theme))

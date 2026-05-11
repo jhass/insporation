@@ -1,0 +1,30 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build-android-debug",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"build",
+				"apk",
+				"--debug"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "build-ios-debug-no-codesign",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"build",
+				"ios",
+				"--debug",
+				"--no-codesign"
+			],
+			"isBackground": false,
+			"group": "build"
+		}
+	]
+}

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart' hide Notification, Page;
-import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:insporation/l10n/app_localizations.dart';
 
+import 'badge_service.dart';
 import 'client.dart';
 import 'localizations.dart';
 import 'widgets.dart';
@@ -164,6 +164,6 @@ class BadgeUpdater {
   }
 
   void _updateBadge() {
-    FlutterAppBadger.updateBadgeCount(_notificationsCount + _conversationsCount);
+    BadgeService.updateCount(_notificationsCount + _conversationsCount);
   }
 }

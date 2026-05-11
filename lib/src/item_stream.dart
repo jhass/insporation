@@ -290,9 +290,9 @@ abstract class ItemStreamState<T, W extends StatefulWidget> extends State<W> wit
                     child: !_upButtonVisibility || !enableUpButton ? SizedBox.shrink() : ClipRRect(
                       borderRadius: BorderRadius.circular(5),
                       child: Container(
-                        color: theme.hintColor.withOpacity(0.25),
+                        color: theme.hintColor.withValues(alpha: 0.25),
                         child: IconButton(
-                          color: Colors.white.withOpacity(0.8),
+                          color: Colors.white.withValues(alpha: 0.8),
                           padding: const EdgeInsets.all(0),
                           iconSize: 48,
                           icon: Icon(Icons.keyboard_arrow_up),

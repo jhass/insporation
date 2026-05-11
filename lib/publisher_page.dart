@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geojson/geojson.dart';
-import 'package:image_native_resizer/image_native_resizer.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:geojson_vi/geojson_vi.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -17,6 +17,41 @@ import 'src/persistence.dart';
 import 'src/search.dart';
 import 'src/utils.dart';
 import 'src/widgets.dart';
+
+GeoJSONFeatureCollection photonFeaturesFromGeoJson(String source) =>
+    GeoJSONFeatureCollection.fromJSON(source);
+
+Iterable<Location> photonLocationsFromFeatures(
+  GeoJSONFeatureCollection features,
+) sync* {
+  final locations = LinkedHashSet<Location>();
+
+  for (final feature in features.features.whereType<GeoJSONFeature>()) {
+    final geometry = feature.geometry;
+    if (geometry is! GeoJSONPoint) {
+      continue;
+    }
+
+    final coordinates = geometry.coordinates;
+    locations.add(Location(
+      address: formatPhotonAddress(feature.properties),
+      lat: coordinates[1],
+      lng: coordinates[0],
+    ));
+  }
+
+  yield* locations;
+}
+
+String formatPhotonAddress(Map<String, dynamic>? properties) {
+  return LinkedHashSet.of([
+    properties?["name"],
+    properties?["street"],
+    properties?["city"],
+    properties?["state"],
+    properties?["country"]
+  ]..removeWhere((element) => element == null)).join(', ');
+}
 
 class PublisherOptions {
   final String prefill;
@@ -125,7 +160,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
             ),
           ),
         ),
-        ButtonBar(
+        OverflowBar(
           alignment: MainAxisAlignment.start,
           children: <Widget>[
             IconButton(
@@ -152,7 +187,7 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
             )
           ],
         ),
-        ButtonBar(
+        OverflowBar(
           children: <Widget>[
             ElevatedButton.icon(
               icon: Icon(Icons.arrow_drop_down),
@@ -239,11 +274,19 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
   }
 
   _uploadPhotoUri(String uri) async {
-    final resizedImage = await ImageNativeResizer.resize(imagePath: Uri.parse(uri).path, maxWidth: _maxPhotoWidth);
-    if (resizedImage != null) {
-      _uploadPhotoFile(resizedImage);
+    final sourcePath = Uri.parse(uri).path;
+    final targetPath = '${sourcePath}_resized.jpg';
+    final resized = await FlutterImageCompress.compressAndGetFile(
+      sourcePath,
+      targetPath,
+      minWidth: _maxPhotoWidth.toInt(),
+      minHeight: 0,
+      quality: 88,
+    );
+    if (resized != null) {
+      _uploadPhotoFile(resized.path);
     } else {
-      tryShowErrorSnackBar(context, l.failedToUploadPhoto, Exception("Resizer returned null"), StackTrace.current);
+      tryShowErrorSnackBar(context, l.failedToUploadPhoto, Exception("Compressor returned null"), StackTrace.current);
     }
   }
 
@@ -627,7 +670,7 @@ class _LocationEditorState extends State<_LocationEditor> with StateLocalization
   final _controller = TextEditingController();
   final _results = <Location>[];
   bool _loading = false;
-  CancelableFuture<GeoJsonFeatureCollection>? _currentSearch;
+  CancelableFuture<GeoJSONFeatureCollection>? _currentSearch;
 
   @override
   void initState() {
@@ -708,17 +751,8 @@ class _LocationEditorState extends State<_LocationEditor> with StateLocalization
       setState(() {
         _results
           ..clear()
-          ..addAll(features
-            .collection
-            .cast<GeoJsonFeature<GeoJsonPoint>>()
-            .map((feature) => Location(
-              address: _formatAddress(feature.properties),
-              lat: feature.geometry!.geoPoint.latitude,
-              lng: feature.geometry!.geoPoint.longitude))
-            .fold<Set<Location>>(LinkedHashSet(), (locations, location) => locations..add(location))
-            .take(15)
-          );
-          _loading = false;
+          ..addAll(photonLocationsFromFeatures(features).take(15));
+        _loading = false;
       });
     } on FutureCanceledError {
       // ignore
@@ -727,23 +761,13 @@ class _LocationEditorState extends State<_LocationEditor> with StateLocalization
     }
   }
 
-  CancelableFuture<GeoJsonFeatureCollection> _fetchFeatures(String query) => CancelableFuture(
+  CancelableFuture<GeoJSONFeatureCollection> _fetchFeatures(String query) => CancelableFuture(
     http.get(_apiBase.replace(queryParameters: {"q": query}))
   ).then((response) {
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      return compute(featuresFromGeoJson, response.body);
+      return compute(photonFeaturesFromGeoJson, response.body);
     } else {
       throw ClientException.fromResponse(response);
     }
   });
-
-  _formatAddress(Map<String, dynamic>? properties) {
-    return LinkedHashSet.of([
-      properties?["name"],
-      properties?["street"],
-      properties?["city"],
-      properties?["state"],
-      properties?["country"]]
-      ..removeWhere((element) => element == null)).join(", ");
-  }
 }

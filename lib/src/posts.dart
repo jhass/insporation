@@ -1,7 +1,6 @@
 import 'dart:io' show Platform;
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Page;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -29,13 +28,13 @@ class StreamOptions {
   const StreamOptions.aspects(this.aspects) : type = StreamType.aspects, tag = null;
 
   factory StreamOptions.from(Map<String, dynamic> object) => StreamOptions(
-    type: StreamType.values.firstWhere((type) => describeEnum(type) == object["type"]),
+    type: StreamType.values.firstWhere((type) => type.name == object["type"]),
     aspects: object["aspects"] != null ? Aspect.fromList(object["aspects"].cast<Map<String, dynamic>>()) : null,
     tag: object["tag"]
   );
 
   Map<String, dynamic> toJson() => {
-    "type": describeEnum(type),
+    "type": type.name,
     "aspects": aspects,
     "tag": tag
   };
@@ -183,7 +182,7 @@ class PostView extends StatelessWidget with LocalizationHelpers {
                         child: Icon(
                             post.public ? Icons.public : Icons.lock,
                             size: 14,
-                            color: Theme.of(context).iconTheme.color?.withOpacity(0.5)
+                            color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.5)
                         ),
                       ),
                       GestureDetector(
@@ -619,7 +618,7 @@ class _PostActionsViewState extends State<PostActionsView> with StateLocalizatio
     final client = context.read<Client>(),
       hostname = client.currentUserId!.split('@').last,
       guid = widget.post.guid;
-    Share.share("https://$hostname/posts/$guid");
+    SharePlus.instance.share(ShareParams(text: "https://$hostname/posts/$guid"));
   }
 
 }
@@ -714,23 +713,25 @@ class _PollViewState extends State<_PollView> with StateLocalizationHelpers {
           padding: const EdgeInsets.all(8.0),
           child: Text(poll.question, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: poll.answers.map((answer) =>
-            poll.alreadyParticipated ?
-              ListTile(
-                title: _answerTitle(answer),
-                subtitle: _answerSubtitle(answer),
-                selected: answer.own,
-              ) :
-              RadioListTile(
-                title: _answerTitle(answer),
-                subtitle: _showAnswers ? _answerSubtitle(answer) : null,
-                value: answer.id,
-                groupValue: _currentAnswer,
-                onChanged: (int? value) => setState(() => _currentAnswer = value)
-              )
-          ).toList(),
+        RadioGroup<int?>(
+          groupValue: _currentAnswer,
+          onChanged: (int? value) => setState(() => _currentAnswer = value),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: poll.answers.map((answer) =>
+              poll.alreadyParticipated ?
+                ListTile(
+                  title: _answerTitle(answer),
+                  subtitle: _answerSubtitle(answer),
+                  selected: answer.own,
+                ) :
+                RadioListTile(
+                  title: _answerTitle(answer),
+                  subtitle: _showAnswers ? _answerSubtitle(answer) : null,
+                  value: answer.id,
+                )
+            ).toList(),
+          ),
         ),
         Row(
           mainAxisSize: MainAxisSize.max,
@@ -1031,7 +1032,7 @@ class _LocationView extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(right: 4.0, left: 2.0),
-                  child: Icon(Icons.location_on, size: 14, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5)),
+                  child: Icon(Icons.location_on, size: 14, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5)),
                 ),
                 Text(location.address, style: TextStyle(fontSize: 10)),
               ],

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/material.dart' hide Page;
 import 'package:flutter/rendering.dart';
@@ -307,15 +306,45 @@ class TextIcon extends StatelessWidget {
   }
 }
 
-class RemoteImage extends CachedNetworkImage {
-  RemoteImage(String url, {double? width, double? height, BoxFit? fit, Widget? fallback}) : super(
-    imageUrl: url,
-    width: width,
-    height: height,
-    fit: fit,
-    fadeInDuration: Duration(milliseconds: 250),
-    placeholder: (_, __) => fallback ?? Center(child: CircularProgressIndicator()),
-    errorWidget: (context, __, ___) => fallback ?? Center(child: Icon(Icons.image_not_supported, color: Theme.of(context).colorScheme.error.withOpacity(0.7))));
+class RemoteImage extends StatelessWidget {
+  const RemoteImage(
+    this.url, {
+    super.key,
+    this.width,
+    this.height,
+    this.fit,
+    this.fallback,
+  });
+
+  final String url;
+  final double? width;
+  final double? height;
+  final BoxFit? fit;
+  final Widget? fallback;
+
+  @override
+  Widget build(BuildContext context) {
+    final defaultFallback = Center(
+      child: Icon(
+        Icons.image_not_supported,
+        color: Theme.of(context).colorScheme.error.withValues(alpha: 0.7),
+      ),
+    );
+
+    return Image.network(
+      url,
+      width: width,
+      height: height,
+      fit: fit,
+      errorBuilder: (_, __, ___) => fallback ?? defaultFallback,
+      loadingBuilder: (_, child, loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        }
+        return fallback ?? const Center(child: CircularProgressIndicator());
+      },
+    );
+  }
 }
 
 class MeasureSizeRenderObject extends RenderProxyBox {

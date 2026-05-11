@@ -1,13 +1,13 @@
 import 'package:catcher_2/model/localization_options.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations_ar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations_de.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations_fr.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations_gl.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations_hr.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations_it.dart';
+import 'package:insporation/l10n/app_localizations.dart';
+import 'package:insporation/l10n/app_localizations_ar.dart';
+import 'package:insporation/l10n/app_localizations_de.dart';
+import 'package:insporation/l10n/app_localizations_en.dart';
+import 'package:insporation/l10n/app_localizations_fr.dart';
+import 'package:insporation/l10n/app_localizations_gl.dart';
+import 'package:insporation/l10n/app_localizations_hr.dart';
+import 'package:insporation/l10n/app_localizations_it.dart';
 
 import 'posts.dart';
 

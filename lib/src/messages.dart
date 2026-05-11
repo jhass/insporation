@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:gesture_zoom_box/gesture_zoom_box.dart';
 import 'package:markdown/markdown.dart' as md;
+import 'package:photo_view/photo_view.dart';
 
 import 'client.dart';
 import 'localizations.dart';
@@ -175,14 +175,14 @@ class Photobox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureZoomBox(
-      maxScale: 3,
-      doubleTapScale: 2,
-      onPressed: () => Navigator.of(context).pop(),
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: RemoteImage(imageUrl)
-      )
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: PhotoView(
+        imageProvider: NetworkImage(imageUrl),
+        maxScale: PhotoViewComputedScale.covered * 3,
+        minScale: PhotoViewComputedScale.contained,
+        backgroundDecoration: const BoxDecoration(color: Colors.transparent),
+      ),
     );
   }
 }
@@ -212,7 +212,7 @@ class _NsfwShieldState extends State<NsfwShield> with StateLocalizationHelpers {
         visible: widget.nsfwPost == true && _shieldVisible && (showNsfw != null && showNsfw.value == false),
         child: Container(
           alignment: Alignment.center,
-          color: Colors.black.withOpacity(0.95),
+          color: Colors.black.withValues(alpha: 0.95),
           padding: EdgeInsets.all(16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

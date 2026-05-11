@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_crop/image_crop.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -60,7 +60,6 @@ class _EditAvatar extends StatefulWidget {
 class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers {
   static const double _size = 196;
 
-  final _crop = GlobalKey<CropState>();
   final _imagePicker = ImagePicker();
   File? _newImage;
   bool _uploading = false;
@@ -86,12 +85,7 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
                   Image.file(_newImage!),
                   Center(child: CircularProgressIndicator())
                 ],
-              ) : Crop(
-                key: _crop,
-                aspectRatio: 1,
-                alwaysShowGrid: true,
-                image: FileImage(_newImage!),
-              )
+              ) : Image.file(_newImage!, fit: BoxFit.cover)
             ) : widget.profile.avatar != null ? ClipRRect(
               borderRadius: BorderRadius.circular(5),
               child: RemoteImage(
@@ -145,13 +139,20 @@ class _EditAvatarState extends State<_EditAvatar> with StateLocalizationHelpers 
   _upload() async {
     setState(() => _uploading = true);
     try {
-      final croppedImage = await ImageCrop.cropImage(
-        file: _newImage!,
-        area: _crop.currentState!.area!,
-        scale: _crop.currentState!.scale
+      final cropped = await ImageCropper().cropImage(
+        sourcePath: _newImage!.path,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        uiSettings: [
+          AndroidUiSettings(lockAspectRatio: true, hideBottomControls: false),
+          IOSUiSettings(aspectRatioLockEnabled: true, resetAspectRatioEnabled: false),
+        ],
       );
+      if (cropped == null) {
+        setState(() => _uploading = false);
+        return;
+      }
 
-      final photo = await context.read<Client>().uploadProfilePicture(croppedImage);
+      final photo = await context.read<Client>().uploadProfilePicture(File(cropped.path));
       setState(() {
         widget.profile.avatar = photo.sizes;
         _uploading = false;
