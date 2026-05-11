@@ -15,8 +15,8 @@ jobs:
       image: cimg/android:2026.03.1-node
       options: -u root
     steps:
-    - name: "Install SDK 35 build tools"
-      run: sdkmanager "build-tools;35.0.0"
+    - name: "Install SDK 36 build tools"
+      run: sdkmanager "build-tools;36.0.0"
     - uses: actions/checkout@v4
     - uses: subosito/flutter-action@v2
       id: flutter-action
@@ -31,9 +31,14 @@ jobs:
     - name: Build
       run: flutter build apk --debug
   build-ios:
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+    - name: Install iOS SDK
+      run: xcodebuild -downloadPlatform iOS
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.41.x'
