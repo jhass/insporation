@@ -75,6 +75,17 @@ class Message extends StatelessWidget with LocalizationHelpers {
             mde.DiasporaAutolinkSyntax()
           ],
         ),
+        style: {
+          // Override flutter_html defaults to avoid excessive spacing around markdown separators.
+          "body": Style(margin: Margins.zero),
+          "p": Style(margin: Margins.symmetric(vertical: 16, unit: Unit.px)),
+          "hr": Style(
+            margin: Margins.symmetric(vertical: 16, unit: Unit.px),
+            border: Border(
+              top: BorderSide(color: Theme.of(context).colorScheme.onSurface),
+            ),
+          ),
+        },
         onLinkTap: (url, _, __) {
           if (url == null) {
             return;
