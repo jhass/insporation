@@ -242,6 +242,7 @@ class PostView extends StatelessWidget with LocalizationHelpers {
 
     if (limitHeight) {
       return ExpandChildMaxHeight(
+        key: PageStorageKey<String>('post-expand-${post.guid}'),
         child: content
       );
     } else {

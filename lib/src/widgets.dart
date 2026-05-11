@@ -379,7 +379,7 @@ class ExpandChildMaxHeight extends StatefulWidget {
   final double maxHeight;
   final double minExpansion;
 
-  ExpandChildMaxHeight({required this.child, this.maxHeight = 400, this.minExpansion = 200});
+  const ExpandChildMaxHeight({super.key, required this.child, this.maxHeight = 400, this.minExpansion = 200});
 
   @override
   State<StatefulWidget> createState() {
@@ -391,13 +391,41 @@ class _ExpandChildMaxHeightState extends State<ExpandChildMaxHeight> {
   double? childHeight;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (childHeight != null) {
+      return;
+    }
+
+    final storedHeight = PageStorage.maybeOf(context)?.readState(context);
+    if (storedHeight is double) {
+      childHeight = storedHeight;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final childHeight = this.childHeight;
     if (childHeight == null) {
-      return Offstage(
+      // Use Opacity instead of Offstage so the widget still participates in
+      // layout at its natural size. Offstage takes zero space, which causes
+      // the ListView to allocate 0px for the item on the first frame and then
+      // jump to the real height on the second frame. This makes scrolling up
+      // jumpy because items above the viewport grow from 0 → real height,
+      // shifting the visible content. Opacity(0) keeps the item invisible for
+      // exactly one frame while the measurement callback fires, but the list
+      // has the correct height from the start so no positional jump occurs.
+      return Opacity(
+        opacity: 0,
         child: MeasurableWidget(
           onChange: (size) {
-            if (this.childHeight == null) setState(() => this.childHeight = size.height);
+            if (this.childHeight == null) {
+              setState(() {
+                this.childHeight = size.height;
+                PageStorage.maybeOf(context)?.writeState(context, size.height);
+              });
+            }
           },
           child: widget.child
         )
