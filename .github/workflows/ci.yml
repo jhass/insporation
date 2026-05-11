@@ -26,11 +26,12 @@ jobs:
     - name: Workaround flutter directory permissions
       run: |-
         git config --global --add safe.directory ${{ steps.flutter-action.outputs.CACHE-PATH }}
+        git config --global --add safe.directory ${{ steps.flutter-action.outputs.CACHE-PATH }}/flutter
         git config --global --add safe.directory $(pwd)
     - name: Build
       run: flutter build apk --debug
   build-ios:
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
     - uses: actions/checkout@v4
     - uses: subosito/flutter-action@v2
