@@ -161,7 +161,9 @@ jobs:
       with:
         xcode-version: latest-stable
     - name: Install iOS SDK
-      run: xcodebuild -downloadPlatform iOS
+      run: |
+        xcrun simctl list > /dev/null # https://github.com/actions/runner-images/issues/13459
+        xcodebuild -downloadPlatform iOS
     - uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.41.x'
