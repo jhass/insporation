@@ -79,8 +79,8 @@ jobs:
         name: Android Application bundles
         path: dist
     - id: build_sha
-      run: echo "::set-output name=BUILD_SHA::$(cat dist/BUILD_SHA)"
-    - uses: marvinpinto/action-automatic-releases@latest
+      run: echo "BUILD_SHA=$(cat dist/BUILD_SHA)" >> $GITHUB_OUTPUT
+    - uses: tomasbkk/action-automatic-releases@v1
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         automatic_release_tag: nightly
