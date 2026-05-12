@@ -13,7 +13,7 @@ jobs:
     outputs:
       build_nightly: ${{ steps.check.outputs.build_nightly }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - id: check
       run: |
         git fetch --depth=1 --no-tags origin +refs/tags/nightly:refs/tags/nightly
@@ -32,7 +32,7 @@ jobs:
     steps:
     - name: "Install SDK 36 build tools"
       run: sdkmanager "build-tools;36.0.0"
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v2
@@ -59,7 +59,7 @@ jobs:
       env:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEYSTORE_KEY_ALIAS: key
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v7
       with:
         name: Android Application bundles
         path: dist
@@ -74,7 +74,7 @@ jobs:
       LC_ALL: en_US.UTF-8
       LANG: en_US.UTF-8
     steps:
-    - uses: actions/download-artifact@v1
+    - uses: actions/download-artifact@v8
       with:
         name: Android Application bundles
         path: dist
@@ -92,7 +92,7 @@ jobs:
         release-tag: nightly
         repo-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Checkout F-Droid repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         ref: gh-pages
         path: pages
@@ -154,7 +154,7 @@ jobs:
     runs-on: macos-latest
     environment: release-build
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         ref: main # Ensure translations update is included
     - uses: maxim-lobanov/setup-xcode@v1
