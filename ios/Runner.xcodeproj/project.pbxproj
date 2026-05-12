@@ -21,7 +21,7 @@
 		65B7A7AE253CCF34006941BE /* RegistrationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B7A7AD253CCF08006941BE /* RegistrationStore.swift */; };
 		65CEA7442572303000B53DD7 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CEA7432572303000B53DD7 /* ShareViewController.swift */; };
 		65CEA7472572303000B53DD7 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65CEA7452572303000B53DD7 /* MainInterface.storyboard */; };
-		65CEA74B2572303000B53DD7 /* Insporation-Share.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 65CEA7412572303000B53DD7 /* Insporation-Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		65CEA74B2572303000B53DD7 /* insporation-share.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 65CEA7412572303000B53DD7 /* insporation-share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		65D21BF0253ADF4C009B9EA3 /* AppAuthHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D21BEF253ADF4C009B9EA3 /* AppAuthHandler.swift */; };
 		65EDF8232547F90C008DF3BA /* StateHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EDF8222547F90C008DF3BA /* StateHandler.swift */; };
 		65EDF82B2547FC0E008DF3BA /* insporationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65EDF82A2547FC0E008DF3BA /* insporationTests.swift */; };
@@ -59,7 +59,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				65CEA74B2572303000B53DD7 /* Insporation-Share.appex in Embed Foundation Extensions */,
+				65CEA74B2572303000B53DD7 /* insporation-share.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -98,7 +98,7 @@
 		65ABC375253C393B009FF783 /* Registration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
 		65B7A7AD253CCF08006941BE /* RegistrationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationStore.swift; sourceTree = "<group>"; };
 		65CEA6BF2570E11400B53DD7 /* RunnerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerRelease.entitlements; sourceTree = "<group>"; };
-		65CEA7412572303000B53DD7 /* Insporation-Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Insporation-Share.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		65CEA7412572303000B53DD7 /* insporation-share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "insporation-share.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65CEA7432572303000B53DD7 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		65CEA7462572303000B53DD7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		65CEA7482572303000B53DD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -111,9 +111,9 @@
 		7125BB3084B6DBD29C965DC2 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		7B6A15F42E03000100C0A123 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7A357B243C81C5610581CB51 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
+		7B6A15F42E03000100C0A123 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7B6A15F62E03000200C0A123 /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Profile.xcconfig; path = Flutter/Profile.xcconfig; sourceTree = "<group>"; };
 		859991A979331D9CE1A76436 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
@@ -174,7 +174,7 @@
 			path = Authentication;
 			sourceTree = "<group>";
 		};
-		65CEA7422572303000B53DD7 /* Insporation-Share */ = {
+		65CEA7422572303000B53DD7 /* insporation-share */ = {
 			isa = PBXGroup;
 			children = (
 				65CEA7A62572D7F700B53DD7 /* Insporation-Share.entitlements */,
@@ -183,7 +183,7 @@
 				65CEA7482572303000B53DD7 /* Info.plist */,
 				65276AFB257850300062EB79 /* SharedMediaFile.swift */,
 			);
-			path = "Insporation-Share";
+			path = "insporation-share";
 			sourceTree = "<group>";
 		};
 		65EDF8292547FC0E008DF3BA /* insporationTests */ = {
@@ -213,7 +213,7 @@
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				65EDF8292547FC0E008DF3BA /* insporationTests */,
-				65CEA7422572303000B53DD7 /* Insporation-Share */,
+				65CEA7422572303000B53DD7 /* insporation-share */,
 				97C146EF1CF9000F007C117D /* Products */,
 				0ACC1C228B405A36174998C3 /* Pods */,
 				FC32877D27B858AD262E1EBE /* Frameworks */,
@@ -225,7 +225,7 @@
 			children = (
 				97C146EE1CF9000F007C117D /* Runner.app */,
 				65EDF8282547FC0E008DF3BA /* insporationTests.xctest */,
-				65CEA7412572303000B53DD7 /* Insporation-Share.appex */,
+				65CEA7412572303000B53DD7 /* insporation-share.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -271,9 +271,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		65CEA7402572303000B53DD7 /* Insporation-Share */ = {
+		65CEA7402572303000B53DD7 /* insporation-share */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 65CEA74C2572303000B53DD7 /* Build configuration list for PBXNativeTarget "Insporation-Share" */;
+			buildConfigurationList = 65CEA74C2572303000B53DD7 /* Build configuration list for PBXNativeTarget "insporation-share" */;
 			buildPhases = (
 				65CEA73D2572303000B53DD7 /* Sources */,
 				65CEA73E2572303000B53DD7 /* Frameworks */,
@@ -283,9 +283,9 @@
 			);
 			dependencies = (
 			);
-			name = "Insporation-Share";
-			productName = "Insporation-Share";
-			productReference = 65CEA7412572303000B53DD7 /* Insporation-Share.appex */;
+			name = "insporation-share";
+			productName = "Insporation Share";
+			productReference = 65CEA7412572303000B53DD7 /* insporation-share.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		65EDF8272547FC0E008DF3BA /* insporationTests */ = {
@@ -338,7 +338,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1220;
-				LastUpgradeCheck = 1510;
+				LastUpgradeCheck = 2640;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					65CEA7402572303000B53DD7 = {
@@ -372,7 +372,7 @@
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
 				65EDF8272547FC0E008DF3BA /* insporationTests */,
-				65CEA7402572303000B53DD7 /* Insporation-Share */,
+				65CEA7402572303000B53DD7 /* insporation-share */,
 			);
 		};
 /* End PBXProject section */
@@ -470,9 +470,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -525,7 +529,7 @@
 /* Begin PBXTargetDependency section */
 		65CEA74A2572303000B53DD7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 65CEA7402572303000B53DD7 /* Insporation-Share */;
+			target = 65CEA7402572303000B53DD7 /* insporation-share */;
 			targetProxy = 65CEA7492572303000B53DD7 /* PBXContainerItemProxy */;
 		};
 		65EDF82E2547FC0E008DF3BA /* PBXTargetDependency */ = {
@@ -615,6 +619,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -623,9 +628,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -651,7 +657,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -679,15 +685,15 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "Insporation-Share/Insporation-Share.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "insporation-share/Insporation-Share.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5P3L26TY7P;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 5P3L26TY7P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "Insporation-Share/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				INFOPLIST_FILE = "insporation-share/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -696,7 +702,7 @@
 				MARKETING_VERSION = 1.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.share";
+				PRODUCT_BUNDLE_IDENTIFIER = eu.jhass.insporation.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development insporation-share";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore eu.jhass.insporation.share";
@@ -716,14 +722,14 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "Insporation-Share/Insporation-Share.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "insporation-share/Insporation-Share.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5P3L26TY7P;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 5P3L26TY7P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "Insporation-Share/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				INFOPLIST_FILE = "insporation-share/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -731,7 +737,7 @@
 				);
 				MARKETING_VERSION = 1.1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.share";
+				PRODUCT_BUNDLE_IDENTIFIER = eu.jhass.insporation.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore eu.jhass.insporation.share";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore eu.jhass.insporation.share";
@@ -749,15 +755,15 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "Insporation-Share/Insporation-Share.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "insporation-share/Insporation-Share.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 5P3L26TY7P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "Insporation-Share/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				INFOPLIST_FILE = "insporation-share/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -765,7 +771,7 @@
 				);
 				MARKETING_VERSION = 1.1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.share";
+				PRODUCT_BUNDLE_IDENTIFIER = eu.jhass.insporation.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore eu.jhass.insporation.share";
@@ -788,7 +794,7 @@
 				DEVELOPMENT_TEAM = 5P3L26TY7P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = insporationTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -819,7 +825,7 @@
 				DEVELOPMENT_TEAM = 5P3L26TY7P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = insporationTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -847,7 +853,7 @@
 				DEVELOPMENT_TEAM = 5P3L26TY7P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = insporationTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -897,6 +903,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -911,10 +918,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -954,6 +962,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -962,9 +971,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -992,7 +1002,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1032,7 +1042,7 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1055,7 +1065,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		65CEA74C2572303000B53DD7 /* Build configuration list for PBXNativeTarget "Insporation-Share" */ = {
+		65CEA74C2572303000B53DD7 /* Build configuration list for PBXNativeTarget "insporation-share" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65CEA74D2572303000B53DD7 /* Debug */,
