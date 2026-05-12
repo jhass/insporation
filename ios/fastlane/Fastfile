@@ -34,13 +34,6 @@ platform :ios do
         keychain_password: 'ci_keychain',
         readonly: true
       )
-      api_key = app_store_connect_api_key(
-        key_id: "7Y2672U2SB",
-        issuer_id: "30624ccb-31b2-4387-8cf8-96b21e445f29",
-        key_content: ENV["APPLE_API_KEY"],
-        duration: 1200,
-        in_house: false
-      )
     else
       # please run bundle exec fastlane match appstore manually
     end
@@ -51,14 +44,23 @@ platform :ios do
       export_method: "app-store"
     )
 
+    app_store_connect_api_key(
+      key_id: "7Y2672U2SB",
+      issuer_id: "30624ccb-31b2-4387-8cf8-96b21e445f29",
+      key_content: ENV["APPLE_API_KEY"],
+      duration: 1800,
+      in_house: false
+    )
+
     upload_to_testflight(
-      api_key: api_key,
       distribute_external: true,
       groups: "Extern",
       notify_external_testers: false,
       # TODO: CI: move automatic release step into job running prior this
       # and fetch changelog from the release notes
       changelog: "Latest nightly build changes",
+      beta_app_feedback_email: "me+insporation@jhass.eu",
+      beta_app_description: "Latest nightly build changes",
       reject_build_waiting_for_review: true
     )
   end
