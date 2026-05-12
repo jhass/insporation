@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: release-build
     container:
-      image: registry.gitlab.com/fdroid/docker-executable-fdroidserver:buildserver
+      image: registry.gitlab.com/fdroid/docker-executable-fdroidserver:master
     env:
       KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
       LC_ALL: en_US.UTF-8

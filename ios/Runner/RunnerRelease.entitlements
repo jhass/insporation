@@ -6,7 +6,7 @@
 	<string>development</string>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.eu.jhass.insporation</string>
+		<string>group.eu.jhass.insporation.v2</string>
 	</array>
 </dict>
 </plist>
