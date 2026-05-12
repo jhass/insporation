@@ -48,7 +48,7 @@ platform :ios do
       key_id: "7Y2672U2SB",
       issuer_id: "30624ccb-31b2-4387-8cf8-96b21e445f29",
       key_content: ENV["APPLE_API_KEY"],
-      duration: 1800,
+      duration: 1200,
       in_house: false
     )
 
