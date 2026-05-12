@@ -1,3 +1,5 @@
 source "https://rubygems.org"
 
 gem "fastlane"
+
+gem "pry", "~> 0.16.0"

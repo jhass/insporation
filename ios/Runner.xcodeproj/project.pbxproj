@@ -644,7 +644,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = MYEC2JCSBB;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 5P3L26TY7P;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -683,8 +683,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = MYEC2JCSBB;
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = MYEC2JCSBB;
+				DEVELOPMENT_TEAM = 5P3L26TY7P;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 5P3L26TY7P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Insporation-Share/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -696,10 +696,10 @@
 				MARKETING_VERSION = 1.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.Insporation-Share";
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.share";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match Development insporation-share";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore eu.jhass.insporation.Insporation-Share";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore eu.jhass.insporation.share";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -719,8 +719,8 @@
 				CODE_SIGN_ENTITLEMENTS = "Insporation-Share/Insporation-Share.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = MYEC2JCSBB;
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = MYEC2JCSBB;
+				DEVELOPMENT_TEAM = 5P3L26TY7P;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 5P3L26TY7P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Insporation-Share/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -731,10 +731,10 @@
 				);
 				MARKETING_VERSION = 1.1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.Insporation-Share";
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.share";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore eu.jhass.insporation.Insporation-Share";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore eu.jhass.insporation.Insporation-Share";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore eu.jhass.insporation.share";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore eu.jhass.insporation.share";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -754,7 +754,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = MYEC2JCSBB;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 5P3L26TY7P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "Insporation-Share/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -765,10 +765,10 @@
 				);
 				MARKETING_VERSION = 1.1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.Insporation-Share";
+				PRODUCT_BUNDLE_IDENTIFIER = "eu.jhass.insporation.share";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore eu.jhass.insporation.Insporation-Share";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore eu.jhass.insporation.share";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -785,7 +785,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = MYEC2JCSBB;
+				DEVELOPMENT_TEAM = 5P3L26TY7P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = insporationTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -816,7 +816,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = MYEC2JCSBB;
+				DEVELOPMENT_TEAM = 5P3L26TY7P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = insporationTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -844,7 +844,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = MYEC2JCSBB;
+				DEVELOPMENT_TEAM = 5P3L26TY7P;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = insporationTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
@@ -984,8 +984,8 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = MYEC2JCSBB;
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = MYEC2JCSBB;
+				DEVELOPMENT_TEAM = 5P3L26TY7P;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 5P3L26TY7P;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1024,8 +1024,8 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = MYEC2JCSBB;
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = MYEC2JCSBB;
+				DEVELOPMENT_TEAM = 5P3L26TY7P;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 5P3L26TY7P;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
