@@ -12,6 +12,7 @@ import 'package:timeago/timeago.dart' as timeago;
 void main() {
   testWidgets('notifications page shows relative timestamps', (tester) async {
     final createdAt = DateTime.now().subtract(const Duration(hours: 2));
+    Timeago.loadLocale(const Locale('en'));
     final notification = Notification(
       guid: 'notification-1',
       type: NotificationType.liked,
@@ -32,7 +33,7 @@ void main() {
     await tester.pumpWidget(
       MultiProvider(
         providers: [
-          Provider<Client>.value(value: _FakeClient([notification])),
+          Provider<Client>.value(value: TestClient([notification])),
           ChangeNotifierProvider(create: (_) => CurrentNavigationItemReselectedEvents()),
           ChangeNotifierProvider(create: (_) => UnreadNotificationsCount()),
           ChangeNotifierProvider(create: (_) => UnreadConversationsCount()),
@@ -48,16 +49,14 @@ void main() {
     await tester.pump();
     await tester.pumpAndSettle();
 
-    Timeago.loadLocale(const Locale('en'));
-
     expect(find.textContaining('Alice'), findsOneWidget);
     expect(find.text(timeago.format(createdAt, locale: 'en')), findsOneWidget);
     expect(find.byType(Timeago), findsOneWidget);
   });
 }
 
-class _FakeClient extends Client {
-  _FakeClient(this.notifications);
+class TestClient extends Client {
+  TestClient(this.notifications);
 
   final List<Notification> notifications;
 
