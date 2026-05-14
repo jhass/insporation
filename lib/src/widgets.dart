@@ -108,17 +108,35 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasUrl = url != null && url!.trim().isNotEmpty;
     return Container(
       width: size,
       height: size,
-      child: url != null ? ClipRRect(
+      child: hasUrl ? ClipRRect(
         borderRadius: BorderRadius.circular(5),
         child: RemoteImage(
           url!,
-          fallback: Icon(Icons.person),
+          fallback: _AvatarFallback(size: size),
           fit: BoxFit.cover,
         )
-      ) : Icon(Icons.person),
+      ) : _AvatarFallback(size: size),
+    );
+  }
+}
+
+class _AvatarFallback extends StatelessWidget {
+  const _AvatarFallback({required this.size});
+
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      color: Theme.of(context).colorScheme.surface,
+      alignment: Alignment.center,
+      child: Icon(Icons.person, size: size * 0.6),
     );
   }
 }
@@ -130,13 +148,12 @@ class AvatarStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final people = this.people.where((person) => person.avatar != null).toList(),
-      displayCount = min(3, people.length);
+    final displayCount = min(3, people.length);
 
     return SizedBox.fromSize(
       size: Size.square(54),
       child: displayCount > 0 ? Stack(
-        children: List.generate(min(3, people.length), (index) =>
+        children: List.generate(displayCount, (index) =>
           Positioned(
             top: 4.0 * (displayCount - index - 1),
             left: 4.0 * (displayCount - index - 1),
@@ -144,18 +161,27 @@ class AvatarStack extends StatelessWidget {
               borderRadius: BorderRadius.circular(5),
               child: Container(
                 color: Theme.of(context).colorScheme.surface,
-                child: RemoteImage(
-                  people[displayCount - index -1].avatar!,
-                  width: 46,
-                  height: 46,
-                  fallback: SizedBox.shrink(),
-                  fit: BoxFit.cover
-                ),
+                child: _stackedAvatar(people[displayCount - index - 1], context),
               )
             )
           )
         ),
       ) : Center(child: Icon(Icons.person, size: 46))
+    );
+  }
+
+  Widget _stackedAvatar(Person person, BuildContext context) {
+    final avatar = person.avatar;
+    if (avatar == null || avatar.trim().isEmpty) {
+      return const _AvatarFallback(size: 46);
+    }
+
+    return RemoteImage(
+      avatar,
+      width: 46,
+      height: 46,
+      fallback: const _AvatarFallback(size: 46),
+      fit: BoxFit.cover,
     );
   }
 }
