@@ -5,6 +5,7 @@ import 'src/client.dart';
 import 'src/item_stream.dart';
 import 'src/localizations.dart';
 import 'src/navigation.dart';
+import 'src/timeago.dart';
 import 'src/utils.dart';
 import 'src/widgets.dart';
 import 'src/colors.dart' as colors;
@@ -74,6 +75,14 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
           child: ListTile(
             leading: AvatarStack(people: widget.notification.eventCreators),
             title: Text(_title),
+            subtitle: Timeago(
+              widget.notification.createdAt,
+              textStyle: TextStyle(
+                fontStyle: FontStyle.italic,
+                color: theme.hintColor,
+                fontSize: 12,
+              ),
+            ),
           ),
         ),
       ),
