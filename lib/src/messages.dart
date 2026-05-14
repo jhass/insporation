@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 import 'client.dart';
 import 'localizations.dart';
@@ -166,10 +167,13 @@ class Message extends StatelessWidget with LocalizationHelpers {
   }
 }
 
-class Photobox extends StatelessWidget {
-  static show(BuildContext context, String url) => Navigator.of(context).push(
+class Photobox extends StatefulWidget {
+  static show(BuildContext context, String url, {List<String>? urls, int initialIndex = 0}) => Navigator.of(context).push(
     PageRouteBuilder(
-      pageBuilder: (context, _, __) => Photobox(url),
+      pageBuilder: (context, _, __) => Photobox(
+        imageUrls: urls ?? [url],
+        initialIndex: initialIndex,
+      ),
       opaque: false,
       transitionDuration: Duration(milliseconds: 400),
       transitionsBuilder: (context, animation, _, child) => FadeTransition(opacity: animation, child: child),
@@ -180,19 +184,87 @@ class Photobox extends StatelessWidget {
     )
   );
 
-  Photobox(this.imageUrl, {Key? key}) : super(key: key);
+  Photobox({Key? key, required this.imageUrls, this.initialIndex = 0}) : super(key: key);
 
-  final String imageUrl;
+  final List<String> imageUrls;
+  final int initialIndex;
+
+  @override
+  State<Photobox> createState() => _PhotoboxState();
+}
+
+class _PhotoboxState extends State<Photobox> {
+  late int _current;
+  late PageController _pageController;
+  bool _showIndicator = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _current = widget.initialIndex;
+    _pageController = PageController(initialPage: widget.initialIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final hasMultiple = widget.imageUrls.length > 1;
+
     return GestureDetector(
       onTap: () => Navigator.of(context).pop(),
-      child: PhotoView(
-        imageProvider: NetworkImage(imageUrl),
-        maxScale: PhotoViewComputedScale.covered * 3,
-        minScale: PhotoViewComputedScale.contained,
-        backgroundDecoration: const BoxDecoration(color: Colors.transparent),
+      child: Stack(
+        children: [
+          PhotoViewGallery.builder(
+            itemCount: widget.imageUrls.length,
+            pageController: _pageController,
+            onPageChanged: (index) => setState(() => _current = index),
+            builder: (context, index) => PhotoViewGalleryPageOptions(
+              imageProvider: NetworkImage(widget.imageUrls[index]),
+              maxScale: PhotoViewComputedScale.covered * 3,
+              minScale: PhotoViewComputedScale.contained,
+              onScaleStateChanged: (scaleState) {
+                final zoomed = scaleState != PhotoViewScaleState.initial &&
+                    scaleState != PhotoViewScaleState.zoomedOut;
+                if (mounted && _showIndicator == zoomed) {
+                  setState(() => _showIndicator = !zoomed);
+                }
+              },
+            ),
+            backgroundDecoration: const BoxDecoration(color: Colors.transparent),
+            scrollPhysics: const BouncingScrollPhysics(),
+          ),
+          if (hasMultiple)
+            Positioned(
+              bottom: 16,
+              left: 0,
+              right: 0,
+              child: AnimatedOpacity(
+                opacity: _showIndicator ? 1.0 : 0.0,
+                duration: Duration(milliseconds: 200),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(widget.imageUrls.length, (index) =>
+                    Container(
+                      width: 8,
+                      height: 8,
+                      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: index == _current
+                            ? Colors.white.withValues(alpha: 0.9)
+                            : Colors.white.withValues(alpha: 0.4),
+                      ),
+                    )
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
