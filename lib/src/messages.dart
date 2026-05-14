@@ -53,7 +53,7 @@ class Message extends StatelessWidget with LocalizationHelpers {
   @override
   Widget build(BuildContext context) {
     try {
-      return Html(
+      return SelectionArea(child: Html(
         shrinkWrap: true,
         data: md.markdownToHtml(
           body,
@@ -114,7 +114,7 @@ class Message extends StatelessWidget with LocalizationHelpers {
             builder: (extensionContext) => _renderImage(extensionContext)
           )
         ]
-      );
+      ));
     } catch (e) {
       final theme = Theme.of(context), debugInfo = this.debugInfo;
       return Container(
