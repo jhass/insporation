@@ -223,17 +223,17 @@ class _PhotoboxState extends State<Photobox> {
             itemCount: widget.imageUrls.length,
             pageController: _pageController,
             onPageChanged: (index) => setState(() => _current = index),
+            scaleStateChangedCallback: (scaleState) {
+              final zoomed = scaleState != PhotoViewScaleState.initial &&
+                  scaleState != PhotoViewScaleState.zoomedOut;
+              if (mounted && _showIndicator == zoomed) {
+                setState(() => _showIndicator = !zoomed);
+              }
+            },
             builder: (context, index) => PhotoViewGalleryPageOptions(
               imageProvider: NetworkImage(widget.imageUrls[index]),
               maxScale: PhotoViewComputedScale.covered * 3,
               minScale: PhotoViewComputedScale.contained,
-              onScaleStateChanged: (scaleState) {
-                final zoomed = scaleState != PhotoViewScaleState.initial &&
-                    scaleState != PhotoViewScaleState.zoomedOut;
-                if (mounted && _showIndicator == zoomed) {
-                  setState(() => _showIndicator = !zoomed);
-                }
-              },
             ),
             backgroundDecoration: const BoxDecoration(color: Colors.transparent),
             scrollPhysics: const BouncingScrollPhysics(),
