@@ -230,7 +230,7 @@ class _CommentInteractionsViewState extends State<_CommentInteractionsView> with
       widget.comment.likes = currentCount;
 
       if (mounted) {
-        showErrorSnackBar(scaffold, current ? l.failedToUnlikePost : l.failedToLikePost, e, s);
+        showErrorSnackBar(scaffold, current ? l.failedToUnlikeComment : l.failedToLikeComment, e, s);
         setState(() => _updatingLike = false);
       }
     }

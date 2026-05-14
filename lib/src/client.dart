@@ -208,7 +208,7 @@ class Client {
         throw e;
       }
 
-      // already disliked, ignore
+      // already unliked, ignore
     }
   }
 
