@@ -11,6 +11,7 @@ import 'persistence.dart';
 import 'search.dart';
 import 'timeago.dart';
 import 'utils.dart';
+import 'colors.dart' as colors;
 
 class CommentStream extends ItemStream<Comment> {
   CommentStream(this.post);
@@ -161,11 +162,78 @@ class CommentView extends StatelessWidget {
             body: comment.body,
             mentionedPeople: comment.mentionedPeople,
             debugInfo: "Comment ${comment.guid}"
-          )
+          ),
+          Divider(),
+          _CommentInteractionsView(comment: comment)
         ],
       ),
     ),
   );
+  }
+}
+
+class _CommentInteractionsView extends StatefulWidget {
+  _CommentInteractionsView({Key? key, required this.comment}) : super(key: key);
+
+  final Comment comment;
+
+  @override
+  State<_CommentInteractionsView> createState() => _CommentInteractionsViewState();
+}
+
+class _CommentInteractionsViewState extends State<_CommentInteractionsView> with StateLocalizationHelpers {
+  bool _updatingLike = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: TextButton.icon(
+        icon: Icon(
+          Icons.favorite,
+          size: 16,
+          color: widget.comment.liked ? colors.liked : null
+        ),
+        label: Text(widget.comment.likes.toString()),
+        style: TextButton.styleFrom(foregroundColor: colors.postInteractionIcon(theme)),
+        onPressed: _updatingLike ? null : _toggleLike
+      ),
+    );
+  }
+
+  Future<void> _toggleLike() async {
+    final scaffold = ScaffoldMessenger.of(context),
+      client = context.read<Client>(),
+      current = widget.comment.liked,
+      currentCount = widget.comment.likes;
+
+    setState(() {
+      _updatingLike = true;
+      widget.comment.liked = !current;
+      widget.comment.likes = currentCount + (current ? -1 : 1);
+    });
+
+    try {
+      if (!current) {
+        await client.likeComment(widget.comment);
+      } else {
+        await client.unlikeComment(widget.comment);
+      }
+
+      if (mounted) {
+        setState(() => _updatingLike = false);
+      }
+    } catch (e, s) {
+      widget.comment.liked = current;
+      widget.comment.likes = currentCount;
+
+      if (mounted) {
+        showErrorSnackBar(scaffold, current ? l.failedToUnlikePost : l.failedToLikePost, e, s);
+        setState(() => _updatingLike = false);
+      }
+    }
   }
 }
 
