@@ -635,14 +635,19 @@ class _PhotoSlider extends StatefulWidget {
 
 class _PhotoSliderState extends State<_PhotoSlider> {
   int _current = 0;
+  late List<String> _urls;
+
+  @override
+  void initState() {
+    super.initState();
+    _urls = widget.photos.map((p) => p.sizes.large).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final urls = widget.photos.map((p) => p.sizes.large).toList();
-
     if (widget.photos.length == 1) {
       return GestureDetector(
-        onTap: () => Photobox.show(context, urls.first, urls: urls, initialIndex: 0),
+        onTap: () => Photobox.show(context, _urls.first, urls: _urls, initialIndex: 0),
         child: RemoteImage(widget.photos.first.sizes.large),
       );
     }
@@ -652,7 +657,7 @@ class _PhotoSliderState extends State<_PhotoSlider> {
         CarouselSlider.builder(
           itemCount: widget.photos.length,
           itemBuilder: (context, index, _) => GestureDetector(
-            onTap: () => Photobox.show(context, urls[index], urls: urls, initialIndex: index),
+            onTap: () => Photobox.show(context, _urls[index], urls: _urls, initialIndex: index),
             child: RemoteImage(
               widget.photos[index].sizes.large
             )
