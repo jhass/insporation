@@ -1185,8 +1185,8 @@ class Comment {
         key: (person) => person.diasporaId
       ) : {},
       reported: object["reported"],
-      likes: interactions != null ? interactions["likes_count"] : 0,
-      liked: interactions != null ? interactions["liked"] : false,
+      likes: interactions?["likes_count"] ?? 0,
+      liked: interactions?["liked"] ?? false,
       createdAt: DateTime.parse(object["created_at"]),
       postGuid: postGuid,
       canDelete: author.diasporaId == currentUser || postAuthor == currentUser
