@@ -188,6 +188,30 @@ class Client {
     }
   }
 
+  Future<void> likeComment(Comment comment) async {
+    try {
+      await _call("POST", "posts/${comment.postGuid}/comments/${comment.guid}/likes");
+    } on ClientException catch (e) {
+      if (e.code != 409) {
+        throw e;
+      }
+
+      // already liked, ignore
+    }
+  }
+
+  Future<void> unlikeComment(Comment comment) async {
+    try {
+      await _call("DELETE", "posts/${comment.postGuid}/comments/${comment.guid}/likes");
+    } on ClientException catch (e) {
+      if (e.code != 410) {
+        throw e;
+      }
+
+      // already unliked, ignore
+    }
+  }
+
   Future<Post?> resharePost(Post post) async {
     try {
       final response = await _call("POST", "posts/${post.guid}/reshares");
@@ -1138,16 +1162,20 @@ class Comment {
   final Person author;
   final Map<String, Person> mentionedPeople;
   bool reported;
+  int likes;
+  bool liked;
   final DateTime createdAt;
   final String postGuid;
   final bool canDelete;
 
   Comment({required this.guid, required this.body, required this.author, required this.mentionedPeople,
-    required this.reported, required this.createdAt,  required this.postGuid, required this.canDelete});
+    required this.reported, required this.likes, required this.liked, required this.createdAt,
+    required this.postGuid, required this.canDelete});
 
   factory Comment.from(Map<String, dynamic> object, {required String currentUser,
     required String postGuid, required String postAuthor}) {
     var author = Person.from(object["author"]);
+    final interactions = object["interactions"];
     return Comment(
       guid: object["guid"],
       body: object["body"],
@@ -1157,6 +1185,8 @@ class Comment {
         key: (person) => person.diasporaId
       ) : {},
       reported: object["reported"],
+      likes: interactions?["likes_count"] ?? 0,
+      liked: interactions?["liked"] ?? false,
       createdAt: DateTime.parse(object["created_at"]),
       postGuid: postGuid,
       canDelete: author.diasporaId == currentUser || postAuthor == currentUser

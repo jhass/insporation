@@ -344,6 +344,18 @@
     "type": "text",
     "placeholders": {}
   },
+  "failedToLikeComment": "Failed to like the comment",
+  "@failedToLikeComment": {
+    "description": "Error message after liking a comment failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "failedToUnlikeComment": "Failed to unlike the comment",
+  "@failedToUnlikeComment": {
+    "description": "Error message after unliking a comment failed",
+    "type": "text",
+    "placeholders": {}
+  },
   "resharesHeader": "Reshares",
   "@resharesHeader": {
     "description": "Header for reshares list",
