@@ -149,6 +149,7 @@ jobs:
     - name: Publish to Play Store
       run: |
         cd android
+        gem install bundler
         bundle config set deployment 'true'
         bundle
         bundle exec fastlane supply --aab ../dist/*.aab --track internal
