@@ -73,6 +73,7 @@ class Message extends StatelessWidget with LocalizationHelpers {
               final people = mentionedPeople;
               return people != null ? people[diasporaId] : null;
             }),
+            mde.SingleNewlineBreakSyntax(),
             mde.DiasporaAutolinkSyntax()
           ],
         ),

@@ -73,3 +73,13 @@ class DiasporaAutolinkSyntax extends InlineSyntax {
     return true;
   }
 }
+
+class SingleNewlineBreakSyntax extends InlineSyntax {
+  SingleNewlineBreakSyntax() : super(r'(?<!\\)(?<! {2})\n', startCharacter: 0x0A);
+
+  @override
+  bool onMatch(InlineParser parser, Match match) {
+    parser.addNode(Element.empty('br'));
+    return true;
+  }
+}
