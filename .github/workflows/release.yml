@@ -132,8 +132,9 @@ jobs:
     needs: build-android
     runs-on: ubuntu-latest
     environment: release-build
+    permissions:
+      id-token: 'write'
     env:
-      KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
       LC_ALL: en_US.UTF-8
       LANG: en_US.UTF-8
     steps:
