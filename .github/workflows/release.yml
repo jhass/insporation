@@ -1,27 +1,15 @@
-name: Nightly
+name: Release
 
 on:
-  schedule:
-    - cron: '0 4 * * *'
+  push:
+    tags:
+      - 'v*.*.*'
   repository_dispatch:
-    types: [nightly]
+    types: [release]
   workflow_dispatch:
 
 jobs:
-  check-build-needed:
-    runs-on: ubuntu-latest
-    outputs:
-      build_nightly: ${{ steps.check.outputs.build_nightly }}
-    steps:
-    - uses: actions/checkout@v6
-    - id: check
-      run: |
-        git fetch --depth=1 --no-tags origin +refs/tags/nightly:refs/tags/nightly
-        [ "$GITHUB_EVENT_NAME" != "schedule" -o "$(git show-ref -s --head HEAD)" != "$(git show-ref -s nightly)" ] && echo build_nightly=true >> $GITHUB_OUTPUT
-        exit 0
   build-android:
-    needs: check-build-needed
-    if: ${{ needs.check-build-needed.outputs.build_nightly == 'true' }}
     runs-on: ubuntu-latest
     environment: release-build
     container:
@@ -33,8 +21,6 @@ jobs:
     - name: "Install SDK 36 build tools"
       run: sdkmanager "build-tools;36.0.0"
     - uses: actions/checkout@v6
-      with:
-        ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v2
       id: flutter-action
       with:
@@ -53,8 +39,10 @@ jobs:
     - name: Build
       run: |
         flutter build apk --release --build-number=$GITHUB_RUN_NUMBER
+        flutter build appbundle --release --build-number=$GITHUB_RUN_NUMBER
         mkdir -p dist
         cp build/app/outputs/apk/release/app-release.apk dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo $GITHUB_RUN_NUMBER).apk
+        cp build/app/outputs/bundle/release/app-release.aab dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo $GITHUB_RUN_NUMBER).aab
         git rev-parse main > dist/BUILD_SHA
       env:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -63,7 +51,7 @@ jobs:
       with:
         name: Android Application bundles
         path: dist
-  publish-android:
+  publish-android-fdroid:
     needs: build-android
     runs-on: ubuntu-latest
     environment: release-build
@@ -78,18 +66,10 @@ jobs:
       with:
         name: Android Application bundles
         path: dist
-    - id: build_sha
-      run: echo "BUILD_SHA=$(cat dist/BUILD_SHA)" >> $GITHUB_OUTPUT
-    - uses: tomasbkk/action-automatic-releases@v1.2.2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        automatic_release_tag: nightly
-      env:
-        GITHUB_SHA: ${{ steps.build_sha.outputs.BUILD_SHA }} # Ensure translations update is included
     - uses: AButler/upload-release-assets@v2.0
       with:
         files: 'dist/*'
-        release-tag: nightly
+        release-tag: ${{ github.ref_name }}
         repo-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Checkout F-Droid repository
       uses: actions/checkout@v6
@@ -114,7 +94,7 @@ jobs:
         git checkout --orphan new-pages
         git commit -m "Import previous state"
 
-        cd fdroid-nightly
+        cd fdroid
 
         # Add new build
         cp ../../dist/*.apk repo/
@@ -137,7 +117,7 @@ jobs:
 
         # Publish
         git add .
-        git commit -m "Update fdroid repository for nightly build $GITHUB_RUN_NUMBER"
+        git commit -m "Update fdroid repository for build $GITHUB_RUN_NUMBER"
         git push -f "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" new-pages:gh-pages
       shell: bash
       env:
@@ -148,3 +128,53 @@ jobs:
       with:
         workflow: pages.yml
         ref: gh-pages
+  publish-android-playstore:
+    needs: build-android
+    runs-on: ubuntu-latest
+    environment: release-build
+    env:
+      KEYSTORE_PATH: ${{ github.workspace }}/insporation.jks
+      LC_ALL: en_US.UTF-8
+      LANG: en_US.UTF-8
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/download-artifact@v8
+      with:
+        name: Android Application bundles
+    - uses: 'google-github-actions/auth@v3'
+      with:
+        service_account: "fastlane@insporation.iam.gserviceaccount.com"
+        workload_identity_provider: "projects/111601323342/locations/global/workloadIdentityPools/insporation-github-actions/providers/github"
+    - name: Publish to Play Store
+      run: |
+        cd android
+        bundle config set deployment 'true'
+        bundle
+        bundle exec fastlane supply --aab ../dist/*.aab --track internal
+  publish-ios:
+    runs-on: macos-latest
+    environment: release-build
+    steps:
+    - uses: actions/checkout@v6
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+    - name: Install iOS SDK
+      run: |
+        xcrun simctl list > /dev/null # https://github.com/actions/runner-images/issues/13459
+        xcodebuild -downloadPlatform iOS
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.41.x'
+        channel: stable
+    - name: Build
+      run: |
+        flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
+        cd ios
+        bundle config set deployment 'true'
+        bundle
+        bundle exec fastlane beta
+      env:
+        MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+        MATCH_GIT_PRIVATE_KEY: ${{ secrets.MATCH_GIT_PRIVATE_KEY }}
+        APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
