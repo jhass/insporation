@@ -139,6 +139,10 @@ jobs:
       LANG: en_US.UTF-8
     steps:
     - uses: actions/checkout@v6
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '4.0'
+        bundler-cache: true
     - uses: actions/download-artifact@v8
       with:
         name: Android Application bundles
@@ -149,7 +153,6 @@ jobs:
     - name: Publish to Play Store
       run: |
         cd android
-        gem install bundler
         bundle config set deployment 'true'
         bundle
         bundle exec fastlane supply --aab ../dist/*.aab --track internal
