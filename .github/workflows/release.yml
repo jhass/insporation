@@ -146,6 +146,7 @@ jobs:
     - uses: actions/download-artifact@v8
       with:
         name: Android Application bundles
+        path: dist
     - uses: 'google-github-actions/auth@v3'
       with:
         service_account: "fastlane@insporation.iam.gserviceaccount.com"
