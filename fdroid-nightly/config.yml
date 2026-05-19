@@ -133,7 +133,7 @@ archive_older: 1
 # repository itself. This is the same name you would give to keytool or
 # jarsigner using -alias. (Not needed in an unsigned repository).
 #
-repo_keyalias: key
+repo_keyalias: nightly
 
 # Optionally, the public key for the key defined by repo_keyalias above can
 # be specified here. There is no need to do this, as the public key can and
