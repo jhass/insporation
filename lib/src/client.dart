@@ -9,18 +9,24 @@ import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
 
 import 'app_auth.dart';
+import 'node_info_client.dart';
+import 'pod_version_support.dart';
 
 class Client {
   static final _linkHeaderPattern = RegExp(r'<([^>]+)>;\s*rel="([^"]+)"');
-  static final _nodeInfoRelPattern = RegExp(r'^http://nodeinfo\.diaspora\.software/ns/schema/(\d+\.\d+)$');
-  static const _minimumSupportedDiasporaVersion = "0.9.0";
 
-  final _client = http.Client();
-  final _appAuth = AppAuth();
+  final http.Client _client;
+  final AppAuth _appAuth;
+  final NodeInfoClient _nodeInfoClient;
   Future<Profile>? _currentUser;
   Future<List<Aspect>>? _currentUserAspects;
   bool _currentSessionActive = false;
   StreamController<bool>? _activeSessionEvents;
+
+  Client({http.Client? client, AppAuth? appAuth, NodeInfoClient? nodeInfoClient})
+      : _client = client ?? http.Client(),
+        _appAuth = appAuth ?? AppAuth(),
+        _nodeInfoClient = nodeInfoClient ?? NodeInfoClient(client: client);
 
   Stream<AuthorizationEvent> get newAuthorizations => _appAuth.newAuthorizations;
 
@@ -50,10 +56,10 @@ class Client {
     }
 
     try {
-      final serverVersion = await _fetchServerVersion(baseUri);
-      if (serverVersion != null && !_supportsRequiredVersion(serverVersion)) {
+      final serverVersion = await _nodeInfoClient.fetchServerVersion(baseUri);
+      if (serverVersion != null && !PodVersionSupport.supportsRequiredVersion(serverVersion)) {
         throw UnsupportedServerVersionException(
-            serverVersion: serverVersion, minimumSupportedVersion: _minimumSupportedDiasporaVersion);
+            serverVersion: serverVersion, minimumSupportedVersion: PodVersionSupport.minimumSupportedDiasporaVersion);
       }
     } on SocketException catch (e, s) {
       throw AuthorizationFailedException("bad_network", e.message, "$e\n$s");
@@ -62,105 +68,6 @@ class Client {
     } on http.ClientException catch (e, s) {
       throw AuthorizationFailedException("bad_network", e.message, "$e\n$s");
     }
-  }
-
-  Future<String?> _fetchServerVersion(Uri baseUri) async {
-    final nodeInfoIndexUri = baseUri.replace(path: "/.well-known/nodeinfo", queryParameters: {});
-    final nodeInfoIndexResponse = await _client.get(nodeInfoIndexUri).timeout(Duration(seconds: 12));
-    if (nodeInfoIndexResponse.statusCode < 200 || nodeInfoIndexResponse.statusCode >= 300) {
-      return null;
-    }
-
-    final nodeInfoIndexJson = jsonDecode(nodeInfoIndexResponse.body);
-    if (nodeInfoIndexJson is! Map<String, dynamic>) {
-      return null;
-    }
-
-    final nodeInfoUri = _bestNodeInfoUri(baseUri, nodeInfoIndexJson["links"]);
-    if (nodeInfoUri == null) {
-      return null;
-    }
-
-    final nodeInfoResponse = await _client.get(nodeInfoUri).timeout(Duration(seconds: 12));
-    if (nodeInfoResponse.statusCode < 200 || nodeInfoResponse.statusCode >= 300) {
-      return null;
-    }
-
-    final nodeInfoJson = jsonDecode(nodeInfoResponse.body);
-    if (nodeInfoJson is! Map<String, dynamic>) {
-      return null;
-    }
-
-    final software = nodeInfoJson["software"];
-    return software is Map<String, dynamic> ? software["version"] as String? : null;
-  }
-
-  Uri? _bestNodeInfoUri(Uri baseUri, dynamic links) {
-    if (links is! List) {
-      return null;
-    }
-
-    List<int>? bestVersion;
-    Uri? bestUri;
-    for (final entry in links) {
-      if (entry is! Map<String, dynamic>) {
-        continue;
-      }
-
-      final rel = entry["rel"];
-      final href = entry["href"];
-      if (rel is! String || href is! String) {
-        continue;
-      }
-
-      final match = _nodeInfoRelPattern.firstMatch(rel);
-      if (match == null) {
-        continue;
-      }
-
-      final schemaVersion = _parseVersion(match.group(1));
-      final resolvedUri = baseUri.resolve(href);
-      if (schemaVersion == null || (bestVersion != null && _compareVersions(schemaVersion, bestVersion) <= 0)) {
-        continue;
-      }
-
-      bestVersion = schemaVersion;
-      bestUri = resolvedUri;
-    }
-
-    return bestUri;
-  }
-
-  bool _supportsRequiredVersion(String serverVersion) {
-    final parsedServerVersion = _parseVersion(serverVersion);
-    final parsedMinimumVersion = _parseVersion(_minimumSupportedDiasporaVersion);
-    if (parsedServerVersion == null || parsedMinimumVersion == null) {
-      return true;
-    }
-
-    return _compareVersions(parsedServerVersion, parsedMinimumVersion) >= 0;
-  }
-
-  List<int>? _parseVersion(String? rawVersion) {
-    if (rawVersion == null) {
-      return null;
-    }
-
-    final normalizedVersion = rawVersion.trim().replaceFirst(RegExp(r'^[vV]'), "");
-    final components = RegExp(r'\d+').allMatches(normalizedVersion).map((m) => int.parse(m[0]!)).toList();
-    return components.isEmpty ? null : components;
-  }
-
-  int _compareVersions(List<int> left, List<int> right) {
-    for (var i = 0; i < left.length || i < right.length; i++) {
-      final leftComponent = i < left.length ? left[i] : 0;
-      final rightComponent = i < right.length ? right[i] : 0;
-      if (leftComponent != rightComponent) {
-        return leftComponent.compareTo(rightComponent);
-      }
-    }
-
-    return 0;
   }
 
   Future<void> waitForActiveSession() {
