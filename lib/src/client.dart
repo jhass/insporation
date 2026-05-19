@@ -95,6 +95,23 @@ class Client {
 
   Future<List<Session>> get allSessions => _appAuth.allSessions;
 
+  Future<String?> fetchServerVersion() async {
+    final baseUri = _appAuth.currentBaseUri;
+    if (baseUri == null) {
+      return null;
+    }
+
+    try {
+      return await _nodeInfoClient.fetchServerVersion(baseUri);
+    } on SocketException {
+      return null;
+    } on TimeoutException {
+      return null;
+    } on http.ClientException {
+      return null;
+    }
+  }
+
   Future<Profile> get currentUser {
     _fetch() async {
       final response = await _call("GET", "user");

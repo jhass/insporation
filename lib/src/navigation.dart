@@ -15,6 +15,7 @@ enum PageType {
   conversations,
   search,
   contacts,
+  about,
   edit_profile,
   sign_in,
   profile,
@@ -115,6 +116,7 @@ class NavigationBar extends StatelessWidget with LocalizationHelpers {
   List<_BarItem> _moreItems(AppLocalizations l) => <_BarItem>[
     _BarItem(PageType.contacts, null, l.navigationItemTitleContacts, "/contacts"),
     _BarItem(PageType.edit_profile, null, l.navigationItemTitleEditProfile, "/edit_profile"),
+    _BarItem(PageType.about, null, "About", "/about"),
     _BarItem(PageType.sign_in, null, l.navigationItemTitleSwitchUser, "/switch_user", resetNavigation: true)
   ];
 }

@@ -38,8 +38,9 @@ jobs:
         KEYSTORE: ${{ secrets.KEYSTORE }}
     - name: Build
       run: |
-        flutter build apk --release --build-number=$GITHUB_RUN_NUMBER
-        flutter build appbundle --release --build-number=$GITHUB_RUN_NUMBER
+        BUILD_COMMIT="$(git rev-parse HEAD)"
+        flutter build apk --release --build-number=$GITHUB_RUN_NUMBER --dart-define=BUILD_COMMIT=$BUILD_COMMIT
+        flutter build appbundle --release --build-number=$GITHUB_RUN_NUMBER --dart-define=BUILD_COMMIT=$BUILD_COMMIT
         mkdir -p dist
         cp build/app/outputs/apk/release/app-release.apk dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo $GITHUB_RUN_NUMBER).apk
         cp build/app/outputs/bundle/release/app-release.aab dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo $GITHUB_RUN_NUMBER).aab
@@ -175,7 +176,8 @@ jobs:
         channel: stable
     - name: Build
       run: |
-        flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER
+        BUILD_COMMIT="$(git rev-parse HEAD)"
+        flutter build ios --release --no-codesign --build-number=$GITHUB_RUN_NUMBER --dart-define=BUILD_COMMIT=$BUILD_COMMIT
         cd ios
         bundle config set deployment 'true'
         bundle
