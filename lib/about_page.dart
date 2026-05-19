@@ -14,6 +14,8 @@ class AboutPage extends StatefulWidget {
 class _AboutPageState extends State<AboutPage> {
   String? _version;
   String? _buildNumber;
+  String? _serverVersion;
+  bool _serverVersionLoaded = false;
 
   static const _buildCommit = String.fromEnvironment("BUILD_COMMIT", defaultValue: "unknown");
   static const _configuredBuildType = String.fromEnvironment("BUILD_TYPE");
@@ -22,6 +24,7 @@ class _AboutPageState extends State<AboutPage> {
   void initState() {
     super.initState();
     _loadPackageInfo();
+    _loadServerVersion();
   }
 
   @override
@@ -40,6 +43,7 @@ class _AboutPageState extends State<AboutPage> {
           _InfoRow(label: "Build commit", value: _buildCommit),
           _InfoRow(label: "Account", value: account),
           _InfoRow(label: "Server", value: server),
+          _InfoRow(label: "Server version", value: _serverVersionLabel(account)),
           const Divider(),
           _LinkRow(
             label: "GitHub repository",
@@ -87,6 +91,27 @@ class _AboutPageState extends State<AboutPage> {
     setState(() {
       _version = packageInfo.version;
       _buildNumber = packageInfo.buildNumber;
+    });
+  }
+
+  String _serverVersionLabel(String account) {
+    if (account == "none") {
+      return "none";
+    }
+    if (!_serverVersionLoaded) {
+      return "loading…";
+    }
+    return _serverVersion ?? "unknown";
+  }
+
+  Future<void> _loadServerVersion() async {
+    final serverVersion = await context.read<Client>().fetchServerVersion();
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _serverVersion = serverVersion;
+      _serverVersionLoaded = true;
     });
   }
 }
