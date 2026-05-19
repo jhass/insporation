@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:insporation/l10n/app_localizations.dart';
 
+import 'about_page.dart';
 import 'contacts_page.dart';
 import 'conversations_page.dart';
 import 'edit_profile_page.dart';
@@ -105,6 +106,7 @@ class _InsporationState extends State<Insporation> {
         '/search': (context) => SearchPage(),
         '/notifications': (context) => NotificationsPage(),
         '/contacts': (context) => ContactsPage(),
+        '/about': (context) => AboutPage(),
         '/edit_profile': (context) => EditProfilePage(),
         '/post': (context) {
           final argument = ModalRoute.of(context)?.settings.arguments;
