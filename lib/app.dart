@@ -88,6 +88,7 @@ class _InsporationState extends State<Insporation> {
       supportedLocales: supportedLocales,
       builder: (context, child) => SafeArea(child: child!),
       home: SignInPage(),
+      debugShowCheckedModeBanner: false,
       routes: {
         '/switch_user': (context) => SignInPage(resumeLastSession: false),
         '/stream': (context) {

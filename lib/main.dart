@@ -1,4 +1,5 @@
 import 'package:catcher_2/catcher_2.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +41,7 @@ bool _shouldReportError(Report report) {
 }
 
 void main() {
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   final app = MultiProvider(
       providers: globalProviders,
       child: Insporation(),

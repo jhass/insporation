@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PORT="${1:-8787}"
+
+dart run tool/mock_server.dart --port "$PORT"

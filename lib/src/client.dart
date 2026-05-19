@@ -12,6 +12,8 @@ import 'app_auth.dart';
 
 class Client {
   static final _linkHeaderPattern = RegExp(r'<([^>]+)>;\s*rel="([^"]+)"');
+  static const demoUserId = 'demo@mock.local';
+  static final _demoApiBaseUri = Platform.isAndroid ? Uri.parse('http://10.0.2.2:8787/api/v1') : Uri.parse('http://127.0.0.1:8787/api/v1');
 
   final _client = http.Client();
   final _appAuth = AppAuth();
@@ -36,6 +38,9 @@ class Client {
   Future<void> ensureAuthorization() async {
     assert(currentUserId != null, "Cannot ensure authorization without any session, active or not!");
     if (currentUserId != null) {
+      if (_isDemoUser(currentUserId)) {
+        return;
+      }
       await _appAuth.accessToken;
     }
   }
@@ -59,7 +64,7 @@ class Client {
 
   Future<void> destroySession(String userId) => _appAuth.destroySession(userId);
 
-  bool get hasSession => _appAuth.hasSession;
+  bool get hasSession => _isDemoUser(currentUserId) || _appAuth.hasSession;
 
   String? get currentUserId => _appAuth.currentUserId;
 
@@ -548,10 +553,12 @@ class Client {
   }
 
   Future<http.Response> _call(String method, String endpoint, {Map<String, dynamic> query = const {}, body, String? page, int? perPage}) async {
-    final token = await _appAuth.accessToken,
-      uri = _computeUri(endpoint, query: query, page: page, perPage: perPage),
+    final uri = _computeUri(endpoint, query: query, page: page, perPage: perPage),
       request = http.Request(method, uri);
-    request.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
+    if (!_isDemoUser(currentUserId)) {
+      final token = await _appAuth.accessToken;
+      request.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
+    }
 
     http.BaseRequest requestToSend = request;
     if (body != null) {
@@ -583,6 +590,9 @@ class Client {
 
     if (page != null) {
       uri = Uri.parse(page);
+    } else if (_isDemoUser(currentUserId)) {
+      final segments = _demoApiBaseUri.pathSegments.toList()..addAll(endpoint.split(r'/').where((part) => part.isNotEmpty));
+      uri = _demoApiBaseUri.replace(pathSegments: segments, queryParameters: query);
     } else {
       final newSegments = _appAuth.currentBaseUri!.pathSegments + endpoint.split(r'/');
       uri = _appAuth.currentBaseUri!.replace(pathSegments: const ['api', 'v1'] + newSegments, queryParameters: query);
@@ -596,6 +606,8 @@ class Client {
 
     return uri;
   }
+
+  bool _isDemoUser(String? userId) => userId == demoUserId;
 
   Page<T> _makePage<T>(List<T> content, http.Response response) {
     final header = response.headers["link"];

@@ -44,6 +44,40 @@ In case you want to dare anyways:
 3. Clone this repo
 4. Connect your debugging enabled device and `flutter run` :)
 
+## Demo data for local preview
+
+This repository includes a local mock API server with static demo data covering:
+
+* stream variants (main/activity/mentions/tags/liked/commented)
+* rich posts (photos, poll, location, reshare, OpenGraph/oEmbed)
+* notifications
+* conversations and messages
+* contacts/aspects and profile data
+* search (people/tags)
+
+### Start the mock server
+
+```bash
+./script/run-demo-mockserver
+```
+
+By default it listens on `http://127.0.0.1:8787`.
+
+### Sign in with the demo account
+
+Use this account on the sign in screen:
+
+* `demo@mock.local`
+
+When this user is selected, the app bypasses OAuth and uses the local mock API (`http://127.0.0.1:8787/api/v1`).
+
+### Try it locally
+
+1. Start the mock server.
+2. Launch the app with `flutter run`.
+3. Sign in as `demo@mock.local`.
+4. Browse the feed, profile, search, conversations, notifications, and publisher with realistic content.
+
 ## Contributing translations
 
 Want to use insporation\* in your favorite language? Head over to [Weblate](https://hosted.weblate.org/engage/insporation/)!
