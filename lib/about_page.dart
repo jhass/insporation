@@ -4,6 +4,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
+import 'src/utils.dart';
 
 class AboutPage extends StatefulWidget {
   @override
@@ -39,6 +40,27 @@ class _AboutPageState extends State<AboutPage> {
           _InfoRow(label: "Build commit", value: _buildCommit),
           _InfoRow(label: "Account", value: account),
           _InfoRow(label: "Server", value: server),
+          const Divider(),
+          _LinkRow(
+            label: "GitHub repository",
+            url: "https://github.com/jhass/insporation",
+            onTap: (url) => openExternalUrl(context, url),
+          ),
+          _LinkRow(
+            label: "Privacy policy",
+            url: "https://github.com/jhass/insporation/blob/main/PRIVACY_POLICY.md",
+            onTap: (url) => openExternalUrl(context, url),
+          ),
+          _LinkRow(
+            label: "Code of conduct",
+            url: "https://github.com/jhass/insporation/blob/main/CODE_OF_CONDUCT.md",
+            onTap: (url) => openExternalUrl(context, url),
+          ),
+          _LinkRow(
+            label: "Child safety",
+            url: "https://github.com/jhass/insporation/blob/main/CHILD_SAFETY.md",
+            onTap: (url) => openExternalUrl(context, url),
+          ),
         ],
       ),
     );
@@ -80,6 +102,24 @@ class _InfoRow extends StatelessWidget {
     return ListTile(
       title: Text(label),
       subtitle: Text(value),
+    );
+  }
+}
+
+class _LinkRow extends StatelessWidget {
+  const _LinkRow({required this.label, required this.url, required this.onTap});
+
+  final String label;
+  final String url;
+  final void Function(String url) onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(label),
+      subtitle: Text(url),
+      trailing: const Icon(Icons.open_in_new),
+      onTap: () => onTap(url),
     );
   }
 }
