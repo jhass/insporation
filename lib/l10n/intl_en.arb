@@ -154,6 +154,19 @@
     "type": "text",
     "placeholders": {}
   },
+  "errorPodVersionTooOld": "This pod runs diaspora* {serverVersion}, but insporation* requires at least diaspora* {minimumVersion}. Please ask your server admin to update the pod.",
+  "@errorPodVersionTooOld": {
+    "description": "Error message shown when the pod's diaspora* version is too old for this app",
+    "type": "text",
+    "placeholders": {
+      "serverVersion": {
+        "example": "0.8.0.0"
+      },
+      "minimumVersion": {
+        "example": "0.9.0"
+      }
+    }
+  },
   "deleteSessionPrompt": "Remove session for {userId} from insporation*?",
   "@deleteSessionPrompt": {
     "description": "Title for delete session prompt dialog",

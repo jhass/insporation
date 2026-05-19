@@ -9,16 +9,24 @@ import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
 
 import 'app_auth.dart';
+import 'node_info_client.dart';
+import 'pod_version_support.dart';
 
 class Client {
   static final _linkHeaderPattern = RegExp(r'<([^>]+)>;\s*rel="([^"]+)"');
 
-  final _client = http.Client();
-  final _appAuth = AppAuth();
+  final http.Client _client;
+  final AppAuth _appAuth;
+  final NodeInfoClient _nodeInfoClient;
   Future<Profile>? _currentUser;
   Future<List<Aspect>>? _currentUserAspects;
   bool _currentSessionActive = false;
   StreamController<bool>? _activeSessionEvents;
+
+  Client({http.Client? client, AppAuth? appAuth, NodeInfoClient? nodeInfoClient})
+      : _client = client ?? http.Client(),
+        _appAuth = appAuth ?? AppAuth(),
+        _nodeInfoClient = nodeInfoClient ?? NodeInfoClient(client: client);
 
   Stream<AuthorizationEvent> get newAuthorizations => _appAuth.newAuthorizations;
 
@@ -36,7 +44,29 @@ class Client {
   Future<void> ensureAuthorization() async {
     assert(currentUserId != null, "Cannot ensure authorization without any session, active or not!");
     if (currentUserId != null) {
+      await _ensureSupportedServerVersion();
       await _appAuth.accessToken;
+    }
+  }
+
+  Future<void> _ensureSupportedServerVersion() async {
+    final baseUri = _appAuth.currentBaseUri;
+    if (baseUri == null) {
+      return;
+    }
+
+    try {
+      final serverVersion = await _nodeInfoClient.fetchServerVersion(baseUri);
+      if (serverVersion != null && !PodVersionSupport.supportsRequiredVersion(serverVersion)) {
+        throw UnsupportedServerVersionException(
+            serverVersion: serverVersion, minimumSupportedVersion: PodVersionSupport.minimumSupportedDiasporaVersion);
+      }
+    } on SocketException catch (e, s) {
+      throw AuthorizationFailedException("bad_network", e.message, "$e\n$s");
+    } on TimeoutException catch (e, s) {
+      throw AuthorizationFailedException("bad_network", e.message, "$e\n$s");
+    } on http.ClientException catch (e, s) {
+      throw AuthorizationFailedException("bad_network", e.message, "$e\n$s");
     }
   }
 
@@ -708,6 +738,13 @@ class ClientException implements Exception {
   @override
   String toString() =>
     "Failed to $requestMethod $requestPath: $code - $message";
+}
+
+class UnsupportedServerVersionException implements Exception {
+  final String serverVersion;
+  final String minimumSupportedVersion;
+
+  UnsupportedServerVersionException({required this.serverVersion, required this.minimumSupportedVersion});
 }
 
 class Person {

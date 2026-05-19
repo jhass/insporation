@@ -305,6 +305,11 @@ class _SignInPageState extends State<SignInPage> with StateLocalizationHelpers {
         _lastErrorTrace = e.trace;
         _loading = false;
       });
+    } on UnsupportedServerVersionException catch (e) {
+      setState(() {
+        _lastError = l.errorPodVersionTooOld(e.serverVersion, e.minimumSupportedVersion);
+        _loading = false;
+      });
     } on Exception catch (e, s) {
       setState(() {
         _lastError = l.errorUnexpectedErrorOnAuthorization;
