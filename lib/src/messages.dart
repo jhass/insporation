@@ -81,6 +81,15 @@ class Message extends StatelessWidget with LocalizationHelpers {
           // Override flutter_html defaults to avoid excessive spacing around markdown separators.
           "body": Style(margin: Margins.zero),
           "p": Style(margin: Margins.symmetric(vertical: 16, unit: Unit.px)),
+          "blockquote": Style(
+            margin: Margins.zero,
+            padding: HtmlPaddings.only(left: 16, unit: Unit.px),
+            border: Border(
+              left: BorderSide(
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
+            ),
+          ),
           "hr": Style(
             margin: Margins.symmetric(vertical: 16, unit: Unit.px),
             border: Border(
