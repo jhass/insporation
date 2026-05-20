@@ -7,6 +7,10 @@ on:
     types: [nightly]
   workflow_dispatch:
 
+concurrency:
+  group: build-number
+  cancel-in-progress: false
+
 jobs:
   check-build-needed:
     runs-on: ubuntu-latest
@@ -19,8 +23,26 @@ jobs:
         git fetch --depth=1 --no-tags origin +refs/tags/nightly:refs/tags/nightly
         [ "$GITHUB_EVENT_NAME" != "schedule" -o "$(git show-ref -s --head HEAD)" != "$(git show-ref -s nightly)" ] && echo build_nightly=true >> $GITHUB_OUTPUT
         exit 0
-  build-android:
+  determine-build-number:
     needs: check-build-needed
+    if: ${{ needs.check-build-needed.outputs.build_nightly == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+    outputs:
+      value: ${{ steps.build_number.outputs.value }}
+    steps:
+    - name: Determine shared build number
+      id: build_number
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        nightly=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/nightly.yml/runs?status=completed&per_page=1" --jq '.total_count')
+        release=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/release.yml/runs?status=completed&per_page=1" --jq '.total_count')
+        next=$((nightly + release + 1))
+        echo "value=$next" >> "$GITHUB_OUTPUT"
+  build-android:
+    needs: [check-build-needed, determine-build-number]
     if: ${{ needs.check-build-needed.outputs.build_nightly == 'true' }}
     runs-on: ubuntu-latest
     environment: release-build
@@ -53,9 +75,9 @@ jobs:
     - name: Build
       run: |
         BUILD_COMMIT="$(git rev-parse HEAD)"
-        flutter build apk --release --build-number=$GITHUB_RUN_NUMBER --dart-define=BUILD_COMMIT=$BUILD_COMMIT
+        flutter build apk --release --build-number=${{ needs.determine-build-number.outputs.value }} --dart-define=BUILD_COMMIT=$BUILD_COMMIT
         mkdir -p dist
-        cp build/app/outputs/apk/release/app-release.apk dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo $GITHUB_RUN_NUMBER).apk
+        cp build/app/outputs/apk/release/app-release.apk dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo ${{ needs.determine-build-number.outputs.value }}).apk
         git rev-parse main > dist/BUILD_SHA
       env:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -65,7 +87,7 @@ jobs:
         name: Android Application bundles
         path: dist
   publish-android:
-    needs: build-android
+    needs: [build-android, determine-build-number]
     runs-on: ubuntu-latest
     environment: release-build
     container:
@@ -138,12 +160,13 @@ jobs:
 
         # Publish
         git add .
-        git commit -m "Update fdroid repository for nightly build $GITHUB_RUN_NUMBER"
+        git commit -m "Update fdroid repository for nightly build $BUILD_NUMBER"
         git push -f "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" new-pages:gh-pages
       shell: bash
       env:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEYSTORE_KEY_ALIAS: key
+        BUILD_NUMBER: ${{ needs.determine-build-number.outputs.value }}
     - name: Trigger Github Pages deploy
       uses: benc-uk/workflow-dispatch@v1.2.2
       with:
