@@ -25,8 +25,8 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        nightly=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/nightly.yml/runs?status=completed&per_page=1" --jq '.total_count')
-        release=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/release.yml/runs?status=completed&per_page=1" --jq '.total_count')
+        nightly=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/nightly.yml/runs?status=completed&per_page=1" --jq '.workflow_runs[0].run_number')
+        release=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/release.yml/runs?status=completed&per_page=1" --jq '.workflow_runs[0].run_number')
         next=$((nightly + release + 1))
         echo "value=$next" >> "$GITHUB_OUTPUT"
   build-android:
