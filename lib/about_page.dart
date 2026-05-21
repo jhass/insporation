@@ -18,6 +18,7 @@ class _AboutPageState extends State<AboutPage> {
   bool _serverVersionLoaded = false;
 
   static const _buildCommit = String.fromEnvironment("BUILD_COMMIT", defaultValue: "unknown");
+  static const _buildDate = String.fromEnvironment("BUILD_DATE", defaultValue: "unknown");
   static const _configuredBuildType = String.fromEnvironment("BUILD_TYPE");
 
   @override
@@ -40,6 +41,7 @@ class _AboutPageState extends State<AboutPage> {
           _InfoRow(label: "Version", value: _version ?? "loading…"),
           _InfoRow(label: "Build number", value: _buildNumber ?? "loading…"),
           _InfoRow(label: "Build type", value: _buildType),
+          _InfoRow(label: "Build date", value: _buildDate),
           _InfoRow(label: "Build commit", value: _buildCommit),
           _InfoRow(label: "Account", value: account),
           _InfoRow(label: "Server", value: server),
