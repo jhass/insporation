@@ -75,7 +75,8 @@ jobs:
     - name: Build
       run: |
         BUILD_COMMIT="$(git rev-parse HEAD)"
-        flutter build apk --release --build-number=${{ needs.determine-build-number.outputs.value }} --dart-define=BUILD_COMMIT=$BUILD_COMMIT
+        BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+        flutter build apk --release --build-number=${{ needs.determine-build-number.outputs.value }} --dart-define=BUILD_COMMIT=$BUILD_COMMIT --dart-define=BUILD_DATE=$BUILD_DATE
         mkdir -p dist
         cp build/app/outputs/apk/release/app-release.apk dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo ${{ needs.determine-build-number.outputs.value }}).apk
         git rev-parse main > dist/BUILD_SHA
