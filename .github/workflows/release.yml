@@ -12,6 +12,9 @@ concurrency:
   group: build-number
   cancel-in-progress: false
 
+permissions:
+  contents: read
+
 jobs:
   determine-build-number:
     runs-on: ubuntu-latest
@@ -80,6 +83,7 @@ jobs:
     environment: release-build
     permissions:
       contents: write
+      actions: write
     container:
       image: registry.gitlab.com/fdroid/docker-executable-fdroidserver:master
     env:
@@ -149,7 +153,7 @@ jobs:
         KEYSTORE_KEY_ALIAS: key
         BUILD_NUMBER: ${{ needs.determine-build-number.outputs.value }}
     - name: Trigger Github Pages deploy
-      uses: benc-uk/workflow-dispatch@v1.2.2
+      uses: benc-uk/workflow-dispatch@v1
       with:
         workflow: pages.yml
         ref: gh-pages
