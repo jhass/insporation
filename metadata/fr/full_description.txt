@@ -1,3 +1,7 @@
-Un client natif <a href='https://diasporafoundation.org'>diaspora*</a> fait avec Flutter.
+A native <a href='https://diasporafoundation.org'>diaspora*</a> client built with Flutter for iOS and Android.
 
-Vous aurez besoin d'un pod utilisant la version de développement pour l'utiliser. Les contributions sont les bienvenues, merci d'ouvrir une issue github si vous souhaitez contribuer afin d'éviter la duplication des efforts :)
+insporation* is designed for everyday use on diaspora* pods, including reading your stream, following conversations, and publishing posts from your phone.
+
+diaspora* is a decentralized social network: people sign up on independently run servers (pods) and can still connect across the wider network. Its core principles are decentralization, freedom, and privacy.
+
+Compatible with diaspora* 0.9 and later.

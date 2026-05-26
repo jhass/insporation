@@ -1,1 +1,1 @@
-Il client ufficiale della diaspora* - sicurezza, libertà, privacy
+Native diaspora* client for iOS and Android.

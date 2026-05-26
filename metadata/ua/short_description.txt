@@ -1,1 +1,1 @@
-Офіційний клієнт діаспори* - безпека, свобода, приватність
+Native diaspora* client for iOS and Android.
