@@ -78,6 +78,8 @@ jobs:
     needs: [build-android, determine-build-number]
     runs-on: ubuntu-latest
     environment: release-build
+    permissions:
+      contents: write
     container:
       image: registry.gitlab.com/fdroid/docker-executable-fdroidserver:master
     env:
@@ -89,11 +91,10 @@ jobs:
       with:
         name: Android Application bundles
         path: dist
-    - uses: AButler/upload-release-assets@v2.0
+    - uses: softprops/action-gh-release@v3
       with:
-        files: 'dist/*'
-        release-tag: ${{ github.ref_name }}
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        working_directory: dist
+        files: '*'
     - name: Checkout F-Droid repository
       uses: actions/checkout@v6
       with:
