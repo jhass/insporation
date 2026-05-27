@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.api.ApkVariantOutputImpl
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -21,6 +23,14 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
+
+// Official F-Droid builds pass fdroidAbiSplit=true alongside Flutter's --split-per-abi.
+def fdroidAbiSplit = project.findProperty('fdroidAbiSplit')?.toString() == 'true'
+def fdroidAbiCodes = [
+        'armeabi-v7a': 1,
+        'arm64-v8a'  : 2,
+        'x86_64'     : 3,
+]
 
 android {
     namespace 'jhass.eu.insporation'
@@ -73,8 +83,26 @@ android {
             debuggable true
         }
     }
+
     lint {
         disable 'InvalidPackage'
+    }
+}
+
+android.applicationVariants.configureEach { variant ->
+    if (!fdroidAbiSplit || variant.buildType.name != 'release') {
+        return
+    }
+
+    variant.outputs.each { output ->
+        def abiFilter = output.filters.find { filter ->
+            filter.filterType.toString() == 'ABI'
+        }
+        def abiVersionCode = abiFilter == null ? null : fdroidAbiCodes[abiFilter.identifier]
+
+        if (abiVersionCode != null) {
+            (output as ApkVariantOutputImpl).versionCodeOverride = variant.versionCode * 10 + abiVersionCode
+        }
     }
 }
 
