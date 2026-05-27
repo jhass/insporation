@@ -67,8 +67,8 @@ jobs:
         flutter build apk --release --build-number=${{ needs.determine-build-number.outputs.value }} --dart-define=BUILD_COMMIT=$BUILD_COMMIT --dart-define=BUILD_DATE=$BUILD_DATE
         flutter build appbundle --release --build-number=${{ needs.determine-build-number.outputs.value }} --dart-define=BUILD_COMMIT=$BUILD_COMMIT --dart-define=BUILD_DATE=$BUILD_DATE
         mkdir -p dist
-        cp build/app/outputs/apk/release/app-release.apk dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo ${{ needs.determine-build-number.outputs.value }}).apk
-        cp build/app/outputs/bundle/release/app-release.aab dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo ${{ needs.determine-build-number.outputs.value }}).aab
+        cp build/app/outputs/apk/release/app-release.apk dist/insporation-$(git describe --tags 2>/dev/null || echo ${{ needs.determine-build-number.outputs.value }}).apk
+        cp build/app/outputs/bundle/release/app-release.aab dist/insporation-$(git describe --tags 2>/dev/null || echo ${{ needs.determine-build-number.outputs.value }}).aab
         git rev-parse HEAD > dist/BUILD_SHA
       env:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -115,8 +115,8 @@ jobs:
 
         cd pages
 
-        git config --local user.email "me+nightly-ci@jhass.eu"
-        git config --local user.name  "Github Actions Nightly Job"
+        git config --local user.email "me+release-ci@jhass.eu"
+        git config --local user.name  "Github Actions Release Job"
 
         # Truncate history
         git checkout --orphan new-pages
@@ -138,7 +138,7 @@ jobs:
           repo="$(dirname "$(dirname "$icon")")"
           base="$(basename "$icon" .png)"
           build="$(echo "$base" | tr -Cd '0-9')"
-          if [ ! -e "$repo/insporation-nightly-$build.apk" ]; then
+          if [ ! -e "$repo/insporation-$build.apk" ]; then
             rm $repo/icons*/$base.{png,xml} || echo "No icons for $repo/$base.apk present"
           fi
         done
