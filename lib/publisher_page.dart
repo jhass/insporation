@@ -188,21 +188,28 @@ class _PublisherPageBodyState extends State<_PublisherPageBody> with StateLocali
           ],
         ),
         OverflowBar(
+          alignment: MainAxisAlignment.start,
           children: <Widget>[
             ElevatedButton.icon(
               icon: Icon(Icons.arrow_drop_down),
               label: Text(_currentTargetTitle),
               onPressed: !_submitting ? _selectTarget : null
             ),
-            Visibility(
-              visible: !_submitting,
-              replacement: CircularProgressIndicator(),
-              child: ElevatedButton(
-                child: Text(l.publishPost),
-                onPressed: _valid && !_submitting ? _submit : null
-              ),
-            )
           ],
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: Visibility(
+            visible: !_submitting,
+            replacement: Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: CircularProgressIndicator(),
+            ),
+            child: ElevatedButton(
+              child: Text(l.publishPost),
+              onPressed: _valid && !_submitting ? _submit : null
+            ),
+          ),
         ),
         ErrorMessage(_lastError)
       ],
