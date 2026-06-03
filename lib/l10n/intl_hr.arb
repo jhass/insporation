@@ -801,6 +801,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "viewProfile": "Prikaži profil",
+  "@viewProfile": {
+    "description": "Label for the view profile button on the edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
   "failedToReportPost": "Neuspjelo stvaranje izvještaja",
   "@failedToReportPost": {
     "description": "Error message after a post report couldn't be sent",

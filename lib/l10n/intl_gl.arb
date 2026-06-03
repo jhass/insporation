@@ -483,6 +483,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "viewProfile": "Ver perfil",
+  "@viewProfile": {
+    "description": "Label for the view profile button on the edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
   "profilePostsHeader": "Publicacións",
   "@profilePostsHeader": {
     "description": "Header for posts section on the profile page",

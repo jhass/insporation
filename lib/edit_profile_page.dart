@@ -37,6 +37,17 @@ class _EditProfilePageState extends State<EditProfilePage> with StateLocalizatio
           padding: const EdgeInsets.only(bottom: 48),
           child: Column(
             children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: OutlinedButton.icon(
+                    icon: Icon(Icons.person),
+                    label: Text(l.viewProfile),
+                    onPressed: () => Navigator.pushNamed(context, "/profile", arguments: _profile!.person),
+                  ),
+                ),
+              ),
               _EditAvatar(_profile!),
               Divider(),
               _EditProfile(_profile!),

@@ -1194,6 +1194,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "viewProfile": "View profile",
+  "@viewProfile": {
+    "description": "Label for the view profile button on the edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
   "mentionUser": "Mention user",
   "@mentionUser": {
     "description": "Tooltip for the mention user button",

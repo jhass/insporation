@@ -1471,6 +1471,12 @@
         "type": "text",
         "placeholders": {}
     },
+    "viewProfile": "சுயவிவரத்தை காண்க",
+    "@viewProfile": {
+        "description": "Label for the view profile button on the edit profile page",
+        "type": "text",
+        "placeholders": {}
+    },
     "mentionUser": "பயனரைக் குறிப்பிடவும்",
     "@mentionUser": {
         "description": "Tooltip for the mention user button",
