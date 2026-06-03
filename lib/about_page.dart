@@ -4,6 +4,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 import 'src/client.dart';
+import 'src/localizations.dart';
 import 'src/utils.dart';
 
 class AboutPage extends StatefulWidget {
@@ -11,7 +12,7 @@ class AboutPage extends StatefulWidget {
   State<StatefulWidget> createState() => _AboutPageState();
 }
 
-class _AboutPageState extends State<AboutPage> {
+class _AboutPageState extends State<AboutPage> with StateLocalizationHelpers {
   String? _version;
   String? _buildNumber;
   String? _serverVersion;
@@ -31,39 +32,45 @@ class _AboutPageState extends State<AboutPage> {
   @override
   Widget build(BuildContext context) {
     final client = context.read<Client>(),
-      account = client.currentUserId ?? "none",
-      server = client.currentUserId?.split("@").last ?? "none";
+      userId = client.currentUserId,
+      account = userId ?? l.aboutNoneLabel,
+      server = userId?.split("@").last ?? l.aboutNoneLabel;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("About")),
+      appBar: AppBar(title: Text(l.aboutPageTitle)),
       body: ListView(
         children: [
-          _InfoRow(label: "Version", value: _version ?? "loading…"),
-          _InfoRow(label: "Build number", value: _buildNumber ?? "loading…"),
-          _InfoRow(label: "Build type", value: _buildType),
-          _InfoRow(label: "Build date", value: _buildDate),
-          _InfoRow(label: "Build commit", value: _buildCommit),
-          _InfoRow(label: "Account", value: account),
-          _InfoRow(label: "Server", value: server),
-          _InfoRow(label: "Server version", value: _serverVersionLabel(account)),
+          _InfoRow(label: l.aboutVersionLabel, value: _version ?? l.aboutLoadingPlaceholder),
+          _InfoRow(label: l.aboutBuildNumberLabel, value: _buildNumber ?? l.aboutLoadingPlaceholder),
+          _InfoRow(label: l.aboutBuildTypeLabel, value: _buildType),
+          _InfoRow(label: l.aboutBuildDateLabel, value: _buildDate),
+          _InfoRow(label: l.aboutBuildCommitLabel, value: _buildCommit),
+          _InfoRow(label: l.aboutAccountLabel, value: account),
+          _InfoRow(label: l.aboutServerLabel, value: server),
+          _InfoRow(label: l.aboutServerVersionLabel, value: _serverVersionLabel(userId)),
           const Divider(),
           _LinkRow(
-            label: "GitHub repository",
+            label: l.aboutGithubRepositoryLabel,
             url: "https://github.com/jhass/insporation",
             onTap: (url) => openExternalUrl(context, url),
           ),
           _LinkRow(
-            label: "Privacy policy",
+            label: l.aboutHelpTranslateLabel,
+            url: "https://hosted.weblate.org/engage/insporation/",
+            onTap: (url) => openExternalUrl(context, url),
+          ),
+          _LinkRow(
+            label: l.aboutPrivacyPolicyLabel,
             url: "https://github.com/jhass/insporation/blob/main/PRIVACY_POLICY.md",
             onTap: (url) => openExternalUrl(context, url),
           ),
           _LinkRow(
-            label: "Code of conduct",
+            label: l.aboutCodeOfConductLabel,
             url: "https://github.com/jhass/insporation/blob/main/CODE_OF_CONDUCT.md",
             onTap: (url) => openExternalUrl(context, url),
           ),
           _LinkRow(
-            label: "Child safety",
+            label: l.aboutChildSafetyLabel,
             url: "https://github.com/jhass/insporation/blob/main/CHILD_SAFETY.md",
             onTap: (url) => openExternalUrl(context, url),
           ),
@@ -96,14 +103,14 @@ class _AboutPageState extends State<AboutPage> {
     });
   }
 
-  String _serverVersionLabel(String account) {
-    if (account == "none") {
-      return "none";
+  String _serverVersionLabel(String? userId) {
+    if (userId == null) {
+      return l.aboutNoneLabel;
     }
     if (!_serverVersionLoaded) {
-      return "loading…";
+      return l.aboutLoadingPlaceholder;
     }
-    return _serverVersion ?? "unknown";
+    return _serverVersion ?? l.aboutUnknownLabel;
   }
 
   Future<void> _loadServerVersion() async {
