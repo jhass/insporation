@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'client.dart';
 import 'localizations.dart';
+import 'messages.dart';
 import 'search.dart';
 import 'widgets.dart';
 
@@ -27,6 +28,7 @@ class Composer extends StatefulWidget {
 class _ComposerState extends State<Composer> with StateLocalizationHelpers {
   TextEditingController? _controller;
   TextEditingController? get _effectiveController => widget.controller ?? _controller;
+  bool _preview = false;
 
   @override
   void initState() {
@@ -34,17 +36,22 @@ class _ComposerState extends State<Composer> with StateLocalizationHelpers {
     if (widget.controller == null) {
       _controller = TextEditingController();
     }
+    _effectiveController?.addListener(_onChange);
   }
 
   @override
   void didUpdateWidget(Composer oldWidget) {
     super.didUpdateWidget(oldWidget);
+    final oldEffectiveController = oldWidget.controller ?? _controller;
+    oldEffectiveController?.removeListener(_onChange);
 
     if (widget.controller == null && oldWidget.controller != null) {
       _controller = TextEditingController.fromValue(oldWidget.controller!.value);
     } else if (widget.controller != null && oldWidget.controller == null) {
       _controller = null;
     }
+
+    _effectiveController?.addListener(_onChange);
   }
 
   @override
@@ -121,24 +128,51 @@ class _ComposerState extends State<Composer> with StateLocalizationHelpers {
               icon: TextIcon(character: "@"),
               tooltip: l.insertMention,
               onPressed: widget.enabled ? () => _insertMention() : null
+            ),
+            IconButton(
+              icon: Icon(_preview ? Icons.edit : Icons.preview),
+              color: _preview ? Theme.of(context).colorScheme.secondary : null,
+              onPressed: () => setState(() => _preview = !_preview)
             )
           ],
         ),
       ),
       Flexible(
-        child: TextFormField(
-          controller: _effectiveController,
-          focusNode: widget.focusNode, // autofocus is broken and raises
-          enabled: widget.enabled,
-          decoration: InputDecoration(
-            border: OutlineInputBorder()
+        child: _preview ? Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            border: Border.all(color: Theme.of(context).hintColor),
+            borderRadius: BorderRadius.circular(4),
           ),
-          keyboardType: TextInputType.multiline,
-          maxLines: null
-        ),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(8),
+            child: Message(body: _effectiveController?.text ?? ""),
+          ),
+        ) : TextFormField(
+            controller: _effectiveController,
+            focusNode: widget.focusNode, // autofocus is broken and raises
+            enabled: widget.enabled,
+            decoration: InputDecoration(
+              border: OutlineInputBorder()
+            ),
+            keyboardType: TextInputType.multiline,
+            maxLines: null
+          ),
       )
     ],
   );
+
+  @override
+  void dispose() {
+    _effectiveController?.removeListener(_onChange);
+    super.dispose();
+  }
+
+  _onChange() {
+    if (_preview && mounted) {
+      setState(() {});
+    }
+  }
 
   _insertInlineWrap(String delimiter) {
     final controller = _effectiveController;
