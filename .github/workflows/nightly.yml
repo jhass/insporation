@@ -116,7 +116,7 @@ jobs:
         automatic_release_tag: nightly
       env:
         GITHUB_SHA: ${{ steps.build_sha.outputs.BUILD_SHA }} # Ensure translations update is included
-    - uses: AButler/upload-release-assets@v2.0
+    - uses: AButler/upload-release-assets@v4.0
       with:
         files: 'dist/*'
         release-tag: nightly
