@@ -1551,5 +1551,107 @@
     "description": "Button label for dismissing a crash report",
     "type": "text",
     "placeholders": {}
+  },
+  "aboutPageTitle": "About",
+  "@aboutPageTitle": {
+    "description": "Title of the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutVersionLabel": "Version",
+  "@aboutVersionLabel": {
+    "description": "Label for the app version info row on the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutBuildNumberLabel": "Build number",
+  "@aboutBuildNumberLabel": {
+    "description": "Label for the build number info row on the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutBuildTypeLabel": "Build type",
+  "@aboutBuildTypeLabel": {
+    "description": "Label for the build type info row on the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutBuildDateLabel": "Build date",
+  "@aboutBuildDateLabel": {
+    "description": "Label for the build date info row on the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutBuildCommitLabel": "Build commit",
+  "@aboutBuildCommitLabel": {
+    "description": "Label for the build commit info row on the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutAccountLabel": "Account",
+  "@aboutAccountLabel": {
+    "description": "Label for the account info row on the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutServerLabel": "Server",
+  "@aboutServerLabel": {
+    "description": "Label for the server info row on the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutServerVersionLabel": "Server version",
+  "@aboutServerVersionLabel": {
+    "description": "Label for the server version info row on the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutLoadingPlaceholder": "loading\u2026",
+  "@aboutLoadingPlaceholder": {
+    "description": "Placeholder shown while a value is still being loaded on the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutNoneLabel": "none",
+  "@aboutNoneLabel": {
+    "description": "Displayed on the about page when no account is signed in",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutUnknownLabel": "unknown",
+  "@aboutUnknownLabel": {
+    "description": "Displayed on the about page when a value cannot be determined",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutGithubRepositoryLabel": "GitHub repository",
+  "@aboutGithubRepositoryLabel": {
+    "description": "Label for the GitHub repository link on the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutPrivacyPolicyLabel": "Privacy policy",
+  "@aboutPrivacyPolicyLabel": {
+    "description": "Label for the privacy policy link on the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutCodeOfConductLabel": "Code of conduct",
+  "@aboutCodeOfConductLabel": {
+    "description": "Label for the code of conduct link on the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutChildSafetyLabel": "Child safety",
+  "@aboutChildSafetyLabel": {
+    "description": "Label for the child safety link on the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutHelpTranslateLabel": "Help translate",
+  "@aboutHelpTranslateLabel": {
+    "description": "Label for the Weblate translation contribution link on the about page",
+    "type": "text",
+    "placeholders": {}
   }
 }
