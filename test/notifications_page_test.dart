@@ -53,14 +53,83 @@ void main() {
     expect(find.text(timeago.format(createdAt, locale: 'en')), findsOneWidget);
     expect(find.byType(Timeago), findsOneWidget);
   });
+
+  testWidgets('notifications page shows post body preview', (tester) async {
+    final createdAt = DateTime.now().subtract(const Duration(hours: 1));
+    Timeago.loadLocale(const Locale('en'));
+
+    final author = Person(
+      guid: 'person-1',
+      diasporaId: 'alice@example.org',
+      name: 'Alice',
+      avatar: null,
+    );
+    final post = Post(
+      guid: 'post-1',
+      type: PostType.status,
+      body: 'Hello from the test post!',
+      author: author,
+      public: true,
+      nsfw: false,
+      root: null,
+      photos: [],
+      poll: null,
+      mentionedPeople: {},
+      interactions: PostInteractions(),
+      oEmbed: null,
+      openGraphObject: null,
+      location: null,
+      createdAt: createdAt,
+      ownPost: false,
+      mock: false,
+    );
+    final notification = Notification(
+      guid: 'notification-2',
+      type: NotificationType.liked,
+      read: true,
+      targetGuid: 'post-1',
+      targetAuthor: author,
+      eventCreators: [author],
+      createdAt: createdAt,
+    );
+
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          Provider<Client>.value(value: TestClient([notification], post: post)),
+          ChangeNotifierProvider(create: (_) => CurrentNavigationItemReselectedEvents()),
+          ChangeNotifierProvider(create: (_) => UnreadNotificationsCount()),
+          ChangeNotifierProvider(create: (_) => UnreadConversationsCount()),
+        ],
+        child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: supportedLocales,
+          home: NotificationsPage(),
+        ),
+      ),
+    );
+
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    expect(find.text('Hello from the test post!'), findsOneWidget);
+  });
 }
 
 class TestClient extends Client {
-  TestClient(this.notifications);
+  TestClient(this.notifications, {this.post});
 
   final List<Notification> notifications;
+  final Post? post;
 
   @override
   Future<Page<Notification>> fetchNotifications({bool onlyUnread = false, String? page, int? perPage}) async =>
       Page(content: notifications);
+
+  @override
+  Future<Post> fetchPost(String guid) async {
+    final p = post;
+    if (p != null) return p;
+    throw UnsupportedError('No test post configured');
+  }
 }

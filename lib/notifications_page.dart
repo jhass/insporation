@@ -47,6 +47,38 @@ class _NotificationListItem extends StatefulWidget {
 }
 
 class _NotificationListItemState extends State<_NotificationListItem> with StateLocalizationHelpers {
+  String? _previewBody;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _fetchPreview());
+  }
+
+  Future<void> _fetchPreview() async {
+    if (widget.notification.targetGuid == null || !_hasContentPreview) return;
+
+    try {
+      final client = context.read<Client>();
+      final post = await client.fetchPost(widget.notification.targetGuid!);
+      if (mounted && post.body.isNotEmpty) {
+        setState(() => _previewBody = post.body);
+      }
+    } catch (_) {
+      // Preview is optional, silently ignore errors
+    }
+  }
+
+  bool get _hasContentPreview {
+    switch (widget.notification.type) {
+      case NotificationType.startedSharing:
+      case NotificationType.contactsBirthday:
+        return false;
+      default:
+        return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -75,13 +107,31 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
           child: ListTile(
             leading: AvatarStack(people: widget.notification.eventCreators),
             title: Text(_title),
-            subtitle: Timeago(
-              widget.notification.createdAt,
-              textStyle: TextStyle(
-                fontStyle: FontStyle.italic,
-                color: theme.hintColor,
-                fontSize: 12,
-              ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Timeago(
+                  widget.notification.createdAt,
+                  textStyle: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: theme.hintColor,
+                    fontSize: 12,
+                  ),
+                ),
+                if (_previewBody != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      _previewBody!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: theme.hintColor,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
         ),
