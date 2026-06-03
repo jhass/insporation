@@ -51,6 +51,10 @@ android {
         jvmTarget = '17'
     }
 
+    buildFeatures {
+        buildConfig true
+    }
+
     defaultConfig {
         applicationId "jhass.eu.insporation"
         minSdkVersion 26
