@@ -116,6 +116,68 @@ void main() {
     expect(find.textContaining('**'), findsNothing);
     expect(find.textContaining('*'), findsNothing);
   });
+
+  testWidgets('notification preview uses heading when post starts with ATX header', (tester) async {
+    final createdAt = DateTime.now().subtract(const Duration(hours: 1));
+    Timeago.loadLocale(const Locale('en'));
+
+    final author = Person(
+      guid: 'person-1',
+      diasporaId: 'alice@example.org',
+      name: 'Alice',
+      avatar: null,
+    );
+    final post = Post(
+      guid: 'post-2',
+      type: PostType.status,
+      body: '# My Great Post\n\nThis is the body text that should not appear.',
+      author: author,
+      public: true,
+      nsfw: false,
+      root: null,
+      photos: [],
+      poll: null,
+      mentionedPeople: {},
+      interactions: PostInteractions(),
+      oEmbed: null,
+      openGraphObject: null,
+      location: null,
+      createdAt: createdAt,
+      ownPost: false,
+      mock: false,
+    );
+    final notification = Notification(
+      guid: 'notification-3',
+      type: NotificationType.liked,
+      read: true,
+      targetGuid: 'post-2',
+      targetAuthor: author,
+      eventCreators: [author],
+      createdAt: createdAt,
+    );
+
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          Provider<Client>.value(value: TestClient([notification], post: post)),
+          ChangeNotifierProvider(create: (_) => CurrentNavigationItemReselectedEvents()),
+          ChangeNotifierProvider(create: (_) => UnreadNotificationsCount()),
+          ChangeNotifierProvider(create: (_) => UnreadConversationsCount()),
+        ],
+        child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: supportedLocales,
+          home: NotificationsPage(),
+        ),
+      ),
+    );
+
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    expect(find.text('My Great Post'), findsOneWidget);
+    expect(find.textContaining('body text'), findsNothing);
+  });
 }
 
 class TestClient extends Client {

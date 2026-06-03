@@ -62,7 +62,7 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
       final client = context.read<Client>();
       final post = await client.fetchPost(widget.notification.targetGuid!);
       if (mounted && post.body.isNotEmpty) {
-        setState(() => _previewBody = _stripMarkdown(post.body));
+        setState(() => _previewBody = _notificationBodyPreview(post.body));
       }
     } catch (_) {
       // Preview is optional, silently ignore errors
@@ -250,6 +250,33 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
         break;
     }
   }
+}
+
+/// Returns a plain-text preview for a notification body, mirroring the
+/// algorithm used by the Diaspora server in `MessageRenderer#title`.
+///
+/// Attempts to extract a heading from the first line:
+/// - Setext style: text on one line followed by `===` or `---`
+/// - ATX style: line starting with one or more `#` characters
+///
+/// Falls back to stripping markdown from the full body.
+String _notificationBodyPreview(String body) {
+  final trimmed = body.trimLeft();
+
+  // Setext heading: up to 200-char line followed by === or --- line
+  final setext = RegExp(r'^(.{1,200})\n[=\-]{2,}(?:\r?\n|$)').firstMatch(trimmed);
+  if (setext != null) {
+    return _stripMarkdown(setext[1]!);
+  }
+
+  // ATX heading: # / ## / … up to ######
+  final atx = RegExp(r'^#{1,6}\s+(.{1,200}?)(?:\s+#+)?\s*(?:\r?\n|$)').firstMatch(trimmed);
+  if (atx != null) {
+    return _stripMarkdown(atx[1]!);
+  }
+
+  // Fallback: strip markdown from the entire body
+  return _stripMarkdown(body);
 }
 
 /// Strips Markdown syntax from [text] and returns plain text with
