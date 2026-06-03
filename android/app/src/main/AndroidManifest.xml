@@ -54,6 +54,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="net.openid.appauth.RedirectUriReceiverActivity"
+            android:theme="@style/Theme.AppCompat.Translucent.NoTitleBar" />
+
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
