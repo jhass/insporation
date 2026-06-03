@@ -268,6 +268,8 @@ class _ComposerState extends State<Composer> with StateLocalizationHelpers {
           ],
         ),
       ),
+      if (_searchingMentions || _mentionSuggestions.isNotEmpty)
+        _buildMentionSuggestions(),
       Flexible(
         child: TextFormField(
           controller: _effectiveController,
@@ -280,14 +282,12 @@ class _ComposerState extends State<Composer> with StateLocalizationHelpers {
           maxLines: null
         ),
       ),
-      if (_searchingMentions || _mentionSuggestions.isNotEmpty)
-        _buildMentionSuggestions(),
     ],
   );
 
   Widget _buildMentionSuggestions() {
     return Card(
-      margin: const EdgeInsets.only(top: 2),
+      margin: const EdgeInsets.only(bottom: 2),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
