@@ -228,6 +228,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "viewProfile": "Profil anzeigen",
+  "@viewProfile": {
+    "description": "Label for the view profile button on the edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
   "editProfileBirthdayLabel": "Geburtstag",
   "@editProfileBirthdayLabel": {
     "description": "Label for edit profile birthday field",

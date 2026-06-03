@@ -744,6 +744,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "viewProfile": "عرض الملف الشخصي",
+  "@viewProfile": {
+    "description": "Label for the view profile button on the edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
   "profilePostsHeader": "المشاركات",
   "@profilePostsHeader": {
     "description": "Header for posts section on the profile page",

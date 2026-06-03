@@ -427,6 +427,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "viewProfile": "Voir le profil",
+  "@viewProfile": {
+    "description": "Label for the view profile button on the edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
   "profilePostsHeader": "Publications",
   "@profilePostsHeader": {
     "description": "Header for posts section on the profile page",

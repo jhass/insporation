@@ -1168,6 +1168,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "viewProfile": "Переглянути профіль",
+  "@viewProfile": {
+    "description": "Label for the view profile button on the edit profile page",
+    "type": "text",
+    "placeholders": {}
+  },
   "mentionUser": "Згадати користувача",
   "@mentionUser": {
     "description": "Tooltip for the mention user button",
