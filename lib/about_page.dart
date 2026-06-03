@@ -53,6 +53,11 @@ class _AboutPageState extends State<AboutPage> {
             onTap: (url) => openExternalUrl(context, url),
           ),
           _LinkRow(
+            label: "Help translate",
+            url: "https://hosted.weblate.org/engage/insporation/",
+            onTap: (url) => openExternalUrl(context, url),
+          ),
+          _LinkRow(
             label: "Privacy policy",
             url: "https://github.com/jhass/insporation/blob/main/PRIVACY_POLICY.md",
             onTap: (url) => openExternalUrl(context, url),
