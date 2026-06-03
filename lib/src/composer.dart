@@ -59,6 +59,22 @@ class _ComposerState extends State<Composer> with StateLocalizationHelpers {
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
+      Align(
+        alignment: Alignment.centerRight,
+        child: Padding(
+          padding: EdgeInsets.only(right: 8),
+          child: ToggleButtons(
+            isSelected: [!_preview, _preview],
+            constraints: BoxConstraints(minHeight: 36, minWidth: 44),
+            onPressed: widget.enabled ? (index) => setState(() => _preview = index == 1) : null,
+            children: const <Widget>[
+              Icon(Icons.edit),
+              Icon(Icons.preview),
+            ],
+          ),
+        ),
+      ),
+      if (!_preview)
       SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         physics: PageScrollPhysics(),
@@ -132,23 +148,8 @@ class _ComposerState extends State<Composer> with StateLocalizationHelpers {
           ],
         ),
       ),
-      Align(
-        alignment: Alignment.centerRight,
-        child: Padding(
-          padding: EdgeInsets.only(right: 8),
-          child: ToggleButtons(
-            isSelected: [!_preview, _preview],
-            constraints: BoxConstraints(minHeight: 36, minWidth: 44),
-            onPressed: widget.enabled ? (index) => setState(() => _preview = index == 1) : null,
-            children: const <Widget>[
-              Icon(Icons.edit),
-              Icon(Icons.preview),
-            ],
-          ),
-        ),
-      ),
-      Divider(height: 1),
-      SizedBox(height: 8),
+      if (!_preview) Divider(height: 1),
+      if (!_preview) SizedBox(height: 8),
       Flexible(
         child: _preview ? Container(
           width: double.infinity,

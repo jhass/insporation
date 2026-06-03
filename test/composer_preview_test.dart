@@ -20,12 +20,14 @@ void main() {
 
     expect(find.byType(TextFormField), findsOneWidget);
     expect(find.byType(Message), findsNothing);
+    expect(find.byIcon(Icons.format_bold), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.preview).first);
     await tester.pumpAndSettle();
 
     expect(find.byType(TextFormField), findsNothing);
     expect(find.byType(Message), findsOneWidget);
+    expect(find.byIcon(Icons.format_bold), findsNothing);
     expect(tester.widget<Message>(find.byType(Message)).body, '**hello**');
 
     controller.text = '*updated*';
@@ -37,5 +39,6 @@ void main() {
 
     expect(find.byType(TextFormField), findsOneWidget);
     expect(find.byType(Message), findsNothing);
+    expect(find.byIcon(Icons.format_bold), findsOneWidget);
   });
 }

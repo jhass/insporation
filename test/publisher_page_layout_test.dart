@@ -8,7 +8,7 @@ import 'package:insporation/src/persistence.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  testWidgets('publish button is placed below target selector', (tester) async {
+  testWidgets('publish button is grouped with target selector', (tester) async {
     await tester.pumpWidget(
       MultiProvider(
         providers: [
@@ -30,6 +30,9 @@ void main() {
 
     expect(publishButton, findsOneWidget);
     expect(targetButton, findsOneWidget);
-    expect(tester.getTopLeft(publishButton).dy, greaterThan(tester.getTopLeft(targetButton).dy));
+    final publishTopLeft = tester.getTopLeft(publishButton);
+    final targetTopLeft = tester.getTopLeft(targetButton);
+    expect(publishTopLeft.dx, greaterThan(targetTopLeft.dx));
+    expect((publishTopLeft.dy - targetTopLeft.dy).abs(), lessThan(20));
   });
 }
