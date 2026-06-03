@@ -57,7 +57,7 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
 
   @override
   Widget buildItem(BuildContext context, Comment comment) =>
-    CommentView(comment: comment);
+    CommentView(comment: comment, onReply: widget.post.canComment ? () => _replyToComment(comment) : null);
 
   @override
   Widget buildHeader(BuildContext context) => Padding(
@@ -116,12 +116,32 @@ class CommentListViewState extends ItemStreamState<Comment, CommentListView> {
       return false;
     }
   }
+
+  void _replyToComment(Comment comment) {
+    final mention = "@{${comment.author.diasporaId}}",
+      quotedBody = comment.body.split("\n").map((line) => "> $line").join("\n"),
+      text = "$mention \n$quotedBody\n\n";
+    _newComment.value = TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (scrollController.hasClients) {
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
 }
 
 class CommentView extends StatelessWidget {
-  CommentView({Key? key, required this.comment}) : super(key: key);
+  CommentView({Key? key, required this.comment, this.onReply}) : super(key: key);
 
   final Comment comment;
+  final VoidCallback? onReply;
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +184,7 @@ class CommentView extends StatelessWidget {
             debugInfo: "Comment ${comment.guid}"
           ),
           Divider(),
-          _CommentInteractionsView(comment: comment)
+          _CommentInteractionsView(comment: comment, onReply: onReply)
         ],
       ),
     ),
@@ -173,9 +193,10 @@ class CommentView extends StatelessWidget {
 }
 
 class _CommentInteractionsView extends StatefulWidget {
-  _CommentInteractionsView({Key? key, required this.comment}) : super(key: key);
+  _CommentInteractionsView({Key? key, required this.comment, this.onReply}) : super(key: key);
 
   final Comment comment;
+  final VoidCallback? onReply;
 
   @override
   State<_CommentInteractionsView> createState() => _CommentInteractionsViewState();
@@ -190,15 +211,27 @@ class _CommentInteractionsViewState extends State<_CommentInteractionsView> with
 
     return Align(
       alignment: Alignment.centerLeft,
-      child: TextButton.icon(
-        icon: Icon(
-          Icons.favorite,
-          size: 16,
-          color: widget.comment.liked ? colors.liked : null
-        ),
-        label: Text(widget.comment.likes.toString()),
-        style: TextButton.styleFrom(foregroundColor: colors.postInteractionIcon(theme)),
-        onPressed: _updatingLike ? null : _toggleLike
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextButton.icon(
+            icon: Icon(
+              Icons.favorite,
+              size: 16,
+              color: widget.comment.liked ? colors.liked : null
+            ),
+            label: Text(widget.comment.likes.toString()),
+            style: TextButton.styleFrom(foregroundColor: colors.postInteractionIcon(theme)),
+            onPressed: _updatingLike ? null : _toggleLike
+          ),
+          if (widget.onReply != null)
+            TextButton.icon(
+              icon: Icon(Icons.reply, size: 16),
+              label: Text(l.replyToComment),
+              style: TextButton.styleFrom(foregroundColor: colors.postInteractionIcon(theme)),
+              onPressed: widget.onReply,
+            ),
+        ],
       ),
     );
   }

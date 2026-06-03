@@ -369,6 +369,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "replyToComment": "Reply",
+  "@replyToComment": {
+    "description": "Tooltip for reply to comment button",
+    "type": "text",
+    "placeholders": {}
+  },
   "resharesHeader": "Reshares",
   "@resharesHeader": {
     "description": "Header for reshares list",
