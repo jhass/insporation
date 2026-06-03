@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'client.dart';
 import 'localizations.dart';
@@ -28,23 +31,168 @@ class _ComposerState extends State<Composer> with StateLocalizationHelpers {
   TextEditingController? _controller;
   TextEditingController? get _effectiveController => widget.controller ?? _controller;
 
+  List<Person> _mentionSuggestions = [];
+  int? _mentionAtIndex;
+  bool _searchingMentions = false;
+  Timer? _mentionSearchDebounce;
+
   @override
   void initState() {
     super.initState();
     if (widget.controller == null) {
       _controller = TextEditingController();
     }
+    _effectiveController?.addListener(_onControllerChanged);
   }
 
   @override
   void didUpdateWidget(Composer oldWidget) {
     super.didUpdateWidget(oldWidget);
 
+    oldWidget.controller?.removeListener(_onControllerChanged);
+    _controller?.removeListener(_onControllerChanged);
+
     if (widget.controller == null && oldWidget.controller != null) {
       _controller = TextEditingController.fromValue(oldWidget.controller!.value);
     } else if (widget.controller != null && oldWidget.controller == null) {
       _controller = null;
     }
+
+    _effectiveController?.addListener(_onControllerChanged);
+
+    if (!widget.enabled && oldWidget.enabled) {
+      _clearMentionSuggestions();
+    }
+  }
+
+  @override
+  void dispose() {
+    _effectiveController?.removeListener(_onControllerChanged);
+    _mentionSearchDebounce?.cancel();
+    super.dispose();
+  }
+
+  void _onControllerChanged() {
+    if (!widget.enabled) {
+      _clearMentionSuggestions();
+      return;
+    }
+
+    final controller = _effectiveController;
+    if (controller == null) return;
+
+    final cursor = controller.selection.baseOffset;
+    if (cursor < 0) {
+      _clearMentionSuggestions();
+      return;
+    }
+
+    final textBeforeCursor = controller.text.substring(0, cursor);
+    // Match @ preceded by start-of-text or whitespace, followed by non-space non-@ non-{ characters
+    final atMatch = RegExp(r'@([^\s@{]*)$').firstMatch(textBeforeCursor);
+
+    if (atMatch == null) {
+      _clearMentionSuggestions();
+      return;
+    }
+
+    // Ensure @ is at the start of text or preceded by whitespace
+    final atIndex = atMatch.start;
+    if (atIndex > 0 && !RegExp(r'\s').hasMatch(textBeforeCursor[atIndex - 1])) {
+      _clearMentionSuggestions();
+      return;
+    }
+
+    final query = atMatch.group(1)!;
+
+    _mentionSearchDebounce?.cancel();
+    _mentionSearchDebounce = Timer(const Duration(milliseconds: 300), () {
+      _searchMentions(query, atIndex);
+    });
+  }
+
+  void _clearMentionSuggestions() {
+    _mentionSearchDebounce?.cancel();
+    if (_mentionSuggestions.isNotEmpty || _mentionAtIndex != null || _searchingMentions) {
+      setState(() {
+        _mentionSuggestions = [];
+        _mentionAtIndex = null;
+        _searchingMentions = false;
+      });
+    }
+  }
+
+  Future<void> _searchMentions(String query, int atIndex) async {
+    final people = widget.mentionablePeople;
+
+    // Skip if we can't find any people
+    if (people.list?.isEmpty == true) return;
+
+    if (people.list != null) {
+      // Synchronous search through local list
+      final q = query.toLowerCase();
+      final results = people.list!.where((person) =>
+        person.nameOrId.toLowerCase().contains(q) ||
+        person.diasporaId.toLowerCase().contains(q)
+      ).take(5).toList();
+
+      if (mounted) {
+        setState(() {
+          _mentionAtIndex = atIndex;
+          _mentionSuggestions = results;
+          _searchingMentions = false;
+        });
+      }
+      return;
+    }
+
+    // Remote search: require at least one character
+    if (query.isEmpty) return;
+
+    if (!mounted) return;
+    setState(() {
+      _mentionAtIndex = atIndex;
+      _searchingMentions = true;
+    });
+
+    List<Person> results;
+    try {
+      final client = context.read<Client>();
+      final page = await client.searchPeopleByName(query, filters: people.filters);
+      results = page.content.take(5).toList();
+    } catch (_) {
+      results = [];
+    }
+
+    if (mounted && _mentionAtIndex == atIndex) {
+      setState(() {
+        _mentionSuggestions = results;
+        _searchingMentions = false;
+      });
+    }
+  }
+
+  void _selectMentionSuggestion(Person person) {
+    final controller = _effectiveController;
+    if (controller == null) return;
+
+    final atIndex = _mentionAtIndex;
+    if (atIndex == null) return;
+
+    final cursor = controller.selection.baseOffset;
+    if (cursor < 0) return;
+
+    final mention = "@{${person.diasporaId}}";
+    final newText = controller.text.replaceRange(atIndex, cursor, mention);
+    controller.value = controller.value.copyWith(
+      text: newText,
+      selection: TextSelection.collapsed(offset: atIndex + mention.length),
+    );
+
+    setState(() {
+      _mentionSuggestions = [];
+      _mentionAtIndex = null;
+    });
   }
 
   @override
@@ -117,14 +265,11 @@ class _ComposerState extends State<Composer> with StateLocalizationHelpers {
               tooltip: l.insertHashtag,
               onPressed: widget.enabled ? () => _insertHashtag() : null
             ),
-            IconButton(
-              icon: TextIcon(character: "@"),
-              tooltip: l.insertMention,
-              onPressed: widget.enabled ? () => _insertMention() : null
-            )
           ],
         ),
       ),
+      if (_searchingMentions || _mentionSuggestions.isNotEmpty)
+        _buildMentionSuggestions(),
       Flexible(
         child: TextFormField(
           controller: _effectiveController,
@@ -136,9 +281,29 @@ class _ComposerState extends State<Composer> with StateLocalizationHelpers {
           keyboardType: TextInputType.multiline,
           maxLines: null
         ),
-      )
+      ),
     ],
   );
+
+  Widget _buildMentionSuggestions() {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 2),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (_searchingMentions)
+            const LinearProgressIndicator(),
+          ..._mentionSuggestions.map((person) => ListTile(
+            dense: true,
+            leading: Avatar(person: person, size: 32),
+            title: Text(person.nameOrId),
+            subtitle: Text(person.diasporaId),
+            onTap: () => _selectMentionSuggestion(person),
+          )),
+        ],
+      ),
+    );
+  }
 
   _insertInlineWrap(String delimiter) {
     final controller = _effectiveController;
@@ -361,39 +526,6 @@ class _ComposerState extends State<Composer> with StateLocalizationHelpers {
       controller.value = controller.value.copyWith(
         text:  text.replaceRange(selection.start, selection.end, tag),
         selection: TextSelection.collapsed(offset: selection.start + tag.length)
-      );
-    }
-  }
-
-  _insertMention() async {
-    final controller = _effectiveController;
-    if (controller == null) {
-      return;
-    }
-
-    final selection = controller.selection,
-      initialValue = !selection.isCollapsed ? selection.textInside(controller.text) : null;
-    final Person? response = await showDialog(context: context, builder: (context) => PeopleSearchDialog(
-      initialValue: initialValue,
-      people: widget.mentionablePeople,
-    ));
-
-    if (response == null) {
-      return; // user canceled dialog
-    }
-
-    final mention = "@{${response.diasporaId}}", text = controller.text;
-
-    if (selection.start < 0) {
-      final newText = "$text$mention";
-      controller.value  = controller.value.copyWith(
-        text: newText,
-        selection: TextSelection.collapsed(offset: newText.length)
-      );
-    } else {
-      controller.value = controller.value.copyWith(
-        text:  text.replaceRange(selection.start, selection.end, mention),
-        selection: TextSelection.collapsed(offset: selection.start + mention.length)
       );
     }
   }
