@@ -62,7 +62,7 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
       final client = context.read<Client>();
       final post = await client.fetchPost(widget.notification.targetGuid!);
       if (mounted && post.body.isNotEmpty) {
-        setState(() => _previewBody = post.body);
+        setState(() => _previewBody = _stripMarkdown(post.body));
       }
     } catch (_) {
       // Preview is optional, silently ignore errors
@@ -250,4 +250,44 @@ class _NotificationListItemState extends State<_NotificationListItem> with State
         break;
     }
   }
+}
+
+/// Strips Markdown syntax from [text] and returns plain text with
+/// whitespace squished. Mirrors the behaviour of Redcarpet::Render::StripDown
+/// used by the Diaspora server.
+String _stripMarkdown(String text) {
+  return text
+    // Diaspora @mentions: @{Name; diaspora@id} → @Name
+    .replaceAllMapped(RegExp(r'@\{(?:([^};]+);\s*)?([^}]+)\}'), (m) {
+      final name = m[1]?.trim() ?? m[2]!.trim();
+      return '@$name';
+    })
+    // Images: ![alt](url) → alt
+    .replaceAllMapped(RegExp(r'!\[([^\]]*)\]\([^)]+\)'), (m) => m[1] ?? '')
+    // Links: [text](url) → text
+    .replaceAllMapped(RegExp(r'\[([^\]]*)\]\([^)]+\)'), (m) => m[1] ?? '')
+    // Fenced code blocks: ```lang\n...\n``` → content
+    .replaceAllMapped(RegExp(r'```[^\n]*\n([\s\S]*?)```', multiLine: true), (m) => m[1] ?? '')
+    // Inline code: `code` → code
+    .replaceAllMapped(RegExp(r'`+([^`\n]+)`+'), (m) => m[1] ?? '')
+    // ATX headers: # heading → heading
+    .replaceAllMapped(RegExp(r'^#{1,6}\s+(.*?)(?:\s+#+)?\s*$', multiLine: true), (m) => m[1] ?? '')
+    // Setext underlines (=== or ---) — already exposed the heading text above
+    .replaceAll(RegExp(r'^[=\-]{2,}\s*$', multiLine: true), '')
+    // Bold+italic / bold / italic with *
+    .replaceAllMapped(RegExp(r'\*{1,3}([^*\n]+)\*{1,3}'), (m) => m[1] ?? '')
+    // Bold+italic / bold / italic with _
+    .replaceAllMapped(RegExp(r'_{1,3}([^_\n]+)_{1,3}'), (m) => m[1] ?? '')
+    // Strikethrough: ~~text~~
+    .replaceAllMapped(RegExp(r'~~([^~\n]+)~~'), (m) => m[1] ?? '')
+    // Blockquotes: > text → text
+    .replaceAll(RegExp(r'^>\s?', multiLine: true), '')
+    // Horizontal rules
+    .replaceAll(RegExp(r'^(?:[-*_] *){3,}\s*$', multiLine: true), '')
+    // List items: - item / * item / + item / 1. item → item
+    .replaceAll(RegExp(r'^[ \t]*(?:[-*+]|\d+\.)\s+', multiLine: true), '')
+    // Squish: collapse all whitespace to a single space
+    .replaceAll(RegExp(r'[ \t]+'), ' ')
+    .replaceAll(RegExp(r'\n+'), ' ')
+    .trim();
 }

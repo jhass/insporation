@@ -67,7 +67,7 @@ void main() {
     final post = Post(
       guid: 'post-1',
       type: PostType.status,
-      body: 'Hello from the test post!',
+      body: '**Hello** from the *test post*!',
       author: author,
       public: true,
       nsfw: false,
@@ -113,6 +113,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Hello from the test post!'), findsOneWidget);
+    expect(find.textContaining('**'), findsNothing);
+    expect(find.textContaining('*'), findsNothing);
   });
 }
 
