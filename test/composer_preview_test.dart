@@ -21,7 +21,7 @@ void main() {
     expect(find.byType(TextFormField), findsOneWidget);
     expect(find.byType(Message), findsNothing);
 
-    await tester.tap(find.byIcon(Icons.preview));
+    await tester.tap(find.byIcon(Icons.preview).first);
     await tester.pumpAndSettle();
 
     expect(find.byType(TextFormField), findsNothing);
@@ -32,7 +32,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.widget<Message>(find.byType(Message)).body, '*updated*');
 
-    await tester.tap(find.byIcon(Icons.edit));
+    await tester.tap(find.byIcon(Icons.edit).first);
     await tester.pumpAndSettle();
 
     expect(find.byType(TextFormField), findsOneWidget);

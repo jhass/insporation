@@ -59,11 +59,15 @@ class _ComposerState extends State<Composer> with StateLocalizationHelpers {
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        physics: PageScrollPhysics(),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: PageScrollPhysics(),
               child: Row(
-          children: <Widget>[
+                children: <Widget>[
             IconButton(
               icon: Icon(Icons.format_italic),
               tooltip: l.formatItalic,
@@ -128,15 +132,27 @@ class _ComposerState extends State<Composer> with StateLocalizationHelpers {
               icon: TextIcon(character: "@"),
               tooltip: l.insertMention,
               onPressed: widget.enabled ? () => _insertMention() : null
-            ),
-            IconButton(
-              icon: Icon(_preview ? Icons.edit : Icons.preview),
-              color: _preview ? Theme.of(context).colorScheme.secondary : null,
-              onPressed: () => setState(() => _preview = !_preview)
             )
-          ],
-        ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 8),
+            child: ToggleButtons(
+              isSelected: [!_preview, _preview],
+              constraints: BoxConstraints(minHeight: 40, minWidth: 44),
+              onPressed: widget.enabled ? (index) => setState(() => _preview = index == 1) : null,
+              children: const <Widget>[
+                Icon(Icons.edit),
+                Icon(Icons.preview),
+              ],
+            ),
+          )
+        ],
       ),
+      Divider(height: 1),
+      SizedBox(height: 8),
       Flexible(
         child: _preview ? Container(
           width: double.infinity,
