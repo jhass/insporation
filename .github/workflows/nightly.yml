@@ -20,7 +20,7 @@ jobs:
     outputs:
       build_nightly: ${{ steps.check.outputs.build_nightly }}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - id: check
       run: |
         git fetch --depth=1 --no-tags origin +refs/tags/nightly:refs/tags/nightly
@@ -57,7 +57,7 @@ jobs:
     steps:
     - name: "Install SDK 36 build tools"
       run: sdkmanager "build-tools;36.0.0"
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         ref: main # Ensure translations update is included
     - uses: subosito/flutter-action@v2
@@ -122,7 +122,7 @@ jobs:
         release-tag: nightly
         repo-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Checkout F-Droid repository
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         ref: gh-pages
         path: pages
