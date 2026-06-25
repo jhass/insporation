@@ -1,8 +1,5 @@
-import com.android.build.gradle.internal.api.ApkVariantOutputImpl
-
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
     id 'dev.flutter.flutter-gradle-plugin'
 }
 
@@ -51,10 +48,14 @@ android {
         jvmTarget = '17'
     }
 
+    buildFeatures {
+        buildConfig true
+    }
+
     defaultConfig {
         applicationId "jhass.eu.insporation"
-        minSdkVersion 26
-        targetSdkVersion 36
+        minSdk 26
+        targetSdk 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         manifestPlaceholders += [
@@ -89,19 +90,21 @@ android {
     }
 }
 
-android.applicationVariants.configureEach { variant ->
-    if (!fdroidAbiSplit || variant.buildType.name != 'release') {
-        return
-    }
-
-    variant.outputs.each { output ->
-        def abiFilter = output.filters.find { filter ->
-            filter.filterType.toString() == 'ABI'
+androidComponents {
+    onVariants(selector().withBuildType('release')) { variant ->
+        if (!fdroidAbiSplit) {
+            return
         }
-        def abiVersionCode = abiFilter == null ? null : fdroidAbiCodes[abiFilter.identifier]
 
-        if (abiVersionCode != null) {
-            (output as ApkVariantOutputImpl).versionCodeOverride = variant.versionCode * 10 + abiVersionCode
+        variant.outputs.each { output ->
+            def abiFilter = output.filters.find { filter ->
+                filter.filterType.toString() == 'ABI'
+            }
+            def abiVersionCode = abiFilter == null ? null : fdroidAbiCodes[abiFilter.identifier]
+
+            if (abiVersionCode != null) {
+                output.versionCode.set(output.versionCode.get() * 10 + abiVersionCode)
+            }
         }
     }
 }
