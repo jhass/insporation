@@ -17,7 +17,7 @@ dependencies:
   collection: ^1.18.0
   expand_widget: ^3.1.1
   flutter_html: ^3.0.0
-  flutter_image_compress: ^2.4.0
+  flutter_image_compress: ^2.5.1
   flutter_plugin_android_lifecycle: ^2.0.35
   flutter_slidable: ^4.0.3
   geojson_vi: ^2.2.5
