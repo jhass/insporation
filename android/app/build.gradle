@@ -1,8 +1,7 @@
-import com.android.build.gradle.internal.api.ApkVariantOutputImpl
+
 
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
     id 'dev.flutter.flutter-gradle-plugin'
 }
 
@@ -47,10 +46,6 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = '17'
-    }
-
     defaultConfig {
         applicationId "jhass.eu.insporation"
         minSdkVersion 26
@@ -74,7 +69,7 @@ android {
 
     buildTypes {
         release {
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard.txt'
             signingConfig signingConfigs.release
         }
 
@@ -86,6 +81,16 @@ android {
 
     lint {
         disable 'InvalidPackage'
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
     }
 }
 
@@ -101,7 +106,7 @@ android.applicationVariants.configureEach { variant ->
         def abiVersionCode = abiFilter == null ? null : fdroidAbiCodes[abiFilter.identifier]
 
         if (abiVersionCode != null) {
-            (output as ApkVariantOutputImpl).versionCodeOverride = variant.versionCode * 10 + abiVersionCode
+            output.versionCodeOverride = variant.versionCode * 10 + abiVersionCode
         }
     }
 }
