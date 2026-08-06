@@ -36,6 +36,9 @@
 # Web related
 lib/generated_plugin_registrant.dart
 
+# Android related
+/android/build/
+
 # iOS/XCode related
 /ios/**/*.mode1v3
 /ios/**/*.mode2v3
