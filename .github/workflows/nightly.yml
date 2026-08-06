@@ -79,9 +79,12 @@ jobs:
       run: |
         BUILD_COMMIT="$(git rev-parse HEAD)"
         BUILD_DATE="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-        flutter build apk --release --build-number=${{ needs.determine-build-number.outputs.value }} --dart-define=BUILD_COMMIT=$BUILD_COMMIT --dart-define=BUILD_DATE=$BUILD_DATE
+        flutter build apk --release --split-per-abi --build-number=${{ needs.determine-build-number.outputs.value }} --dart-define=BUILD_COMMIT=$BUILD_COMMIT --dart-define=BUILD_DATE=$BUILD_DATE
         mkdir -p dist
-        cp build/app/outputs/apk/release/app-release.apk dist/insporation-nightly-$(git describe --tags 2>/dev/null || echo ${{ needs.determine-build-number.outputs.value }}).apk
+        for apk in build/app/outputs/apk/release/app-*-release.apk; do
+          abi="$(echo "$apk" | sed 's|.*app-\(.*\)-release\.apk|\1|')"
+          cp "$apk" "dist/insporation-nightly-${{ needs.determine-build-number.outputs.value }}-${abi}.apk"
+        done
         git rev-parse main > dist/BUILD_SHA
       env:
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -150,18 +153,19 @@ jobs:
         cp ../../dist/*.apk repo/
 
         # Cleanup archive
-        find archive -name '*.apk' | sort -V | head -n-2 | xargs -r rm
+        find archive -name '*.apk' | sort -V | head -n-6 | xargs -r rm
 
         # Rebuild repos
         ${fdroidserver}/fdroid update
 
         # Cleanup icons
         for icon in {repo,archive}/icons/*.*.png; do
-          repo="$(dirname "$(dirname "$icon")")"
+          icon_dir="$(dirname "$(dirname "$icon")")"
           base="$(basename "$icon" .png)"
-          build="$(echo "$base" | tr -Cd '0-9')"
-          if [ ! -e "$repo/insporation-nightly-$build.apk" ]; then
-            rm $repo/icons*/$base.{png,xml} || echo "No icons for $repo/$base.apk present"
+          versioncode="$(echo "$base" | tr -Cd '0-9')"
+          base_build=$(( versioncode / 1000 ))
+          if [ -z "$(ls "$icon_dir"/insporation-nightly-${base_build}-*.apk 2>/dev/null | head -1)" ]; then
+            rm "$icon_dir"/icons*/"$base".{png,xml} 2>/dev/null || echo "No icons for $icon_dir/$base.apk present"
           fi
         done
 
