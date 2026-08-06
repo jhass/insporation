@@ -48,7 +48,7 @@ jobs:
     - uses: subosito/flutter-action@v2
       id: flutter-action
       with:
-        flutter-version: '3.41.x'
+        flutter-version: '3.44.x'
         channel: stable
     - name: Workaround flutter directory permissions
       run: |-
@@ -201,7 +201,7 @@ jobs:
         xcodebuild -downloadPlatform iOS
     - uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.41.x'
+        flutter-version: '3.44.x'
         channel: stable
     - name: Build
       run: |
