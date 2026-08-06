@@ -1526,5 +1526,138 @@
         "description": "Label for add contact button",
         "type": "text",
         "placeholders": {}
+    },
+    "replyToComment": "",
+    "@replyToComment": {
+        "description": "Tooltip for reply to comment button",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutBuildDateLabel": "",
+    "@aboutBuildDateLabel": {
+        "description": "Label for the build date info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutBuildNumberLabel": "",
+    "@aboutBuildNumberLabel": {
+        "description": "Label for the build number info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "failedToLikeComment": "",
+    "@failedToLikeComment": {
+        "description": "Error message after liking a comment failed",
+        "type": "text",
+        "placeholders": {}
+    },
+    "failedToUnlikeComment": "",
+    "@failedToUnlikeComment": {
+        "description": "Error message after unliking a comment failed",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutServerLabel": "",
+    "@aboutServerLabel": {
+        "description": "Label for the server info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutCodeOfConductLabel": "",
+    "@aboutCodeOfConductLabel": {
+        "description": "Label for the code of conduct link on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutVersionLabel": "",
+    "@aboutVersionLabel": {
+        "description": "Label for the app version info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutServerVersionLabel": "",
+    "@aboutServerVersionLabel": {
+        "description": "Label for the server version info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutChildSafetyLabel": "",
+    "@aboutChildSafetyLabel": {
+        "description": "Label for the child safety link on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutAccountLabel": "",
+    "@aboutAccountLabel": {
+        "description": "Label for the account info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "errorPodVersionTooOld": "",
+    "@errorPodVersionTooOld": {
+        "description": "Error message shown when the pod's diaspora* version is too old for this app",
+        "type": "text",
+        "placeholders": {
+            "serverVersion": {
+                "example": "0.8.0.0"
+            },
+            "minimumVersion": {
+                "example": "0.9.0"
+            }
+        }
+    },
+    "aboutLoadingPlaceholder": "",
+    "@aboutLoadingPlaceholder": {
+        "description": "Placeholder shown while a value is still being loaded on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutNoneLabel": "",
+    "@aboutNoneLabel": {
+        "description": "Displayed on the about page when no account is signed in",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutPrivacyPolicyLabel": "",
+    "@aboutPrivacyPolicyLabel": {
+        "description": "Label for the privacy policy link on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutUnknownLabel": "",
+    "@aboutUnknownLabel": {
+        "description": "Displayed on the about page when a value cannot be determined",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutBuildCommitLabel": "",
+    "@aboutBuildCommitLabel": {
+        "description": "Label for the build commit info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutPageTitle": "",
+    "@aboutPageTitle": {
+        "description": "Title of the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutHelpTranslateLabel": "",
+    "@aboutHelpTranslateLabel": {
+        "description": "Label for the Weblate translation contribution link on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutBuildTypeLabel": "",
+    "@aboutBuildTypeLabel": {
+        "description": "Label for the build type info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutGithubRepositoryLabel": "",
+    "@aboutGithubRepositoryLabel": {
+        "description": "Label for the GitHub repository link on the about page",
+        "type": "text",
+        "placeholders": {}
     }
 }
