@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:insporation/l10n/app_localizations.dart';
 import 'package:insporation/src/composer.dart';
+import 'package:insporation/src/localizations.dart';
 import 'package:insporation/src/messages.dart';
 
 void main() {
@@ -9,6 +11,8 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: supportedLocales,
         home: Scaffold(
           body: SizedBox(
             height: 300,

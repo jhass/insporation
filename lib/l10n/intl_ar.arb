@@ -1590,7 +1590,8 @@
         "type": "text",
         "placeholders": {
             "actorCount": {
-                "example": "1, 2, 3, ..."
+                "example": "1, 2, 3, ...",
+                "type": "num"
             },
             "actors": {
                 "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
