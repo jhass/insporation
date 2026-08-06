@@ -1117,5 +1117,547 @@
         "description": "Label for a retry button",
         "type": "text",
         "placeholders": {}
+    },
+    "contactStatusReceiving": "",
+    "@contactStatusReceiving": {
+        "description": "Contact status message for a contact that is sharing with the user, but the user is not sharing with the contact",
+        "type": "text",
+        "placeholders": {}
+    },
+    "replyToComment": "",
+    "@replyToComment": {
+        "description": "Tooltip for reply to comment button",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutBuildDateLabel": "",
+    "@aboutBuildDateLabel": {
+        "description": "Label for the build date info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "failedToRenderMessage": "",
+    "@failedToRenderMessage": {
+        "description": "Failure message after rendering some content failed.",
+        "type": "text",
+        "placeholders": {}
+    },
+    "notificationMentionedInPost": "",
+    "@notificationMentionedInPost": {
+        "description": "Notification message for when somebody mentioned the user in a post. Currently only the one case is used",
+        "type": "text",
+        "placeholders": {
+            "actorCount": {
+                "example": "1, 2, 3, ..."
+            },
+            "actors": {
+                "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+            },
+            "target": {
+                "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+            }
+        }
+    },
+    "aboutBuildNumberLabel": "",
+    "@aboutBuildNumberLabel": {
+        "description": "Label for the build number info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "failedToLikeComment": "",
+    "@failedToLikeComment": {
+        "description": "Error message after liking a comment failed",
+        "type": "text",
+        "placeholders": {}
+    },
+    "catcherLocalizationDialogReportModeDescription": "",
+    "@catcherLocalizationDialogReportModeDescription": {
+        "description": "Description for crash report page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "contactStatusMutual": "",
+    "@contactStatusMutual": {
+        "description": "Contact status message for a contact that is sharing with the user and that the user is sharing with",
+        "type": "text",
+        "placeholders": {}
+    },
+    "failedToUnlikeComment": "",
+    "@failedToUnlikeComment": {
+        "description": "Error message after unliking a comment failed",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutServerLabel": "",
+    "@aboutServerLabel": {
+        "description": "Label for the server info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutCodeOfConductLabel": "",
+    "@aboutCodeOfConductLabel": {
+        "description": "Label for the code of conduct link on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "contactStatusSharing": "",
+    "@contactStatusSharing": {
+        "description": "Contact status message for a contact that the user is sharing with, but the contact is not sharing with the user",
+        "type": "text",
+        "placeholders": {}
+    },
+    "failedToOpenUrl": "",
+    "errorAuthorizationFailed": "",
+    "@errorAuthorizationFailed": {
+        "description": "Error message after authorization failed",
+        "type": "text",
+        "placeholders": {
+            "userId": {
+                "example": "user@example.org"
+            }
+        }
+    },
+    "publishTargetAspects": "",
+    "@publishTargetAspects": {
+        "description": "Publish target label for a post to a list of aspects. The zero and one cases are never used",
+        "type": "text",
+        "placeholders": {
+            "count": {
+                "example": "2, 3, 4, ..."
+            }
+        }
+    },
+    "errorNetworkErrorOnAuthorization": "",
+    "@errorNetworkErrorOnAuthorization": {
+        "description": "Error message after a network error occurred during authorization",
+        "type": "text",
+        "placeholders": {}
+    },
+    "contactAspectsPrompt": "",
+    "@contactAspectsPrompt": {
+        "description": "Title for the contact aspects prompt dialog",
+        "type": "text",
+        "placeholders": {
+            "name": {
+                "example": "Alice"
+            }
+        }
+    },
+    "failedToAddConversationParticipant": "",
+    "@failedToAddConversationParticipant": {
+        "description": "Error message after adding a conversation participant failed for a general reason",
+        "type": "text",
+        "placeholders": {}
+    },
+    "notificationBirthday": "",
+    "@notificationBirthday": {
+        "description": "Notification message for when a contact of the user has their birthday. Currently only the one case is used",
+        "type": "text",
+        "placeholders": {
+            "actorCount": {
+                "example": "1, 2, 3, ..."
+            },
+            "actors": {
+                "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+            }
+        }
+    },
+    "aboutVersionLabel": "",
+    "@aboutVersionLabel": {
+        "description": "Label for the app version info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutServerVersionLabel": "",
+    "@aboutServerVersionLabel": {
+        "description": "Label for the server version info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutChildSafetyLabel": "",
+    "@aboutChildSafetyLabel": {
+        "description": "Label for the child safety link on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "notificationActorsForMoreThanThreePeople": "",
+    "@notificationActorsForMoreThanThreePeople": {
+        "description": "Actors part of a notification message with more than three actors. The first two are given, the count is the count of how many more (at least two) there are. So the zero and one cases never come into use",
+        "type": "text",
+        "placeholders": {
+            "first": {
+                "example": "Alice"
+            },
+            "second": {
+                "example": "Bob"
+            },
+            "othersCount": {
+                "example": "2, 3, 4, ..."
+            }
+        }
+    },
+    "stoppedSharing": "",
+    "@stoppedSharing": {
+        "description": "Success message after the user stopped sharing with somebody",
+        "type": "text",
+        "placeholders": {
+            "name": {
+                "example": "Alice"
+            }
+        }
+    },
+    "failedToAddConversationParticipantNotSharing": "",
+    "@failedToAddConversationParticipantNotSharing": {
+        "description": "Error message after adding a conversation participant failed due to them not sharing with the user",
+        "type": "text",
+        "placeholders": {
+            "name": {
+                "example": "Charlotte Idol"
+            }
+        }
+    },
+    "aboutAccountLabel": "",
+    "@aboutAccountLabel": {
+        "description": "Label for the account info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "errorPodVersionTooOld": "",
+    "@errorPodVersionTooOld": {
+        "description": "Error message shown when the pod's diaspora* version is too old for this app",
+        "type": "text",
+        "placeholders": {
+            "serverVersion": {
+                "example": "0.8.0.0"
+            },
+            "minimumVersion": {
+                "example": "0.9.0"
+            }
+        }
+    },
+    "failedToMarkConversationAsRead": "",
+    "@failedToMarkConversationAsRead": {
+        "description": "Error message after marking a conversation as read failed",
+        "type": "text",
+        "placeholders": {}
+    },
+    "notificationStartedSharing": "",
+    "@notificationStartedSharing": {
+        "description": "Notification message for when some people started sharing  with the user. The zero case is never used",
+        "type": "text",
+        "placeholders": {
+            "actorCount": {
+                "example": "1, 2, 3, ..."
+            },
+            "actors": {
+                "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+            }
+        }
+    },
+    "notificationAlsoCommented": "",
+    "@notificationAlsoCommented": {
+        "description": "Notification message for when some people also commented on a post. The zero case is never used",
+        "type": "text",
+        "placeholders": {
+            "actorCount": {
+                "example": "1, 2, 3, ..."
+            },
+            "actors": {
+                "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+            },
+            "target": {
+                "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+            }
+        }
+    },
+    "notificationCommented": "",
+    "@notificationCommented": {
+        "description": "Notification message for when some people commented on the users post. The zero case is never used",
+        "type": "text",
+        "placeholders": {
+            "actorCount": {
+                "example": "1, 2, 3, ..."
+            },
+            "actors": {
+                "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+            },
+            "target": {
+                "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+            }
+        }
+    },
+    "errorUnexpectedErrorOnAuthorization": "",
+    "@errorUnexpectedErrorOnAuthorization": {
+        "description": "Error message after an unexpected error happened during authorization",
+        "type": "text",
+        "placeholders": {}
+    },
+    "notificationTargetComment": "",
+    "@notificationTargetComment": {
+        "description": "Target part of a notification message for a comment",
+        "type": "text",
+        "placeholders": {}
+    },
+    "nsfwShieldTitle": "",
+    "@nsfwShieldTitle": {
+        "description": "Title on the NSFW shield",
+        "type": "text",
+        "placeholders": {
+            "author": {
+                "example": "Alice"
+            }
+        }
+    },
+    "aboutLoadingPlaceholder": "",
+    "@aboutLoadingPlaceholder": {
+        "description": "Placeholder shown while a value is still being loaded on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aspectStreamSelectorAspects": "",
+    "@aspectStreamSelectorAspects": {
+        "description": "Aspect stream selector label for a list of aspects. The zero and one cases are never used",
+        "type": "text",
+        "placeholders": {
+            "count": {
+                "example": "2, 3, 4, ..."
+            }
+        }
+    },
+    "failedToMarkConversationAsUnread": "",
+    "@failedToMarkConversationAsUnread": {
+        "description": "Error message after marking a conversation  as unread failed",
+        "type": "text",
+        "placeholders": {}
+    },
+    "notificationMentionedInCommentOnDeletedPost": "",
+    "@notificationMentionedInCommentOnDeletedPost": {
+        "description": "Notification message for when somebody mentioned the user in in comment on a deleted post. Currently only the one case is used",
+        "type": "text",
+        "placeholders": {
+            "actorCount": {
+                "example": "1, 2, 3, ..."
+            },
+            "actors": {
+                "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+            }
+        }
+    },
+    "failedToAddConversationParticipantNotSharingWith": "",
+    "@failedToAddConversationParticipantNotSharingWith": {
+        "description": "Error message after adding a conversation participant failed due to the user not sharing with them",
+        "type": "text",
+        "placeholders": {
+            "name": {
+                "example": "Stranger"
+            }
+        }
+    },
+    "notificationLiked": "",
+    "@notificationLiked": {
+        "description": "Notification message for when some people liked the users post. The zero case is never used",
+        "type": "text",
+        "placeholders": {
+            "actorCount": {
+                "example": "1, 2, 3, ..."
+            },
+            "actors": {
+                "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+            },
+            "target": {
+                "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+            }
+        }
+    },
+    "notificationReshared": "",
+    "@notificationReshared": {
+        "description": "Notification message for when some people reshared the users post. The zero case is never used",
+        "type": "text",
+        "placeholders": {
+            "actorCount": {
+                "example": "1, 2, 3, ..."
+            },
+            "actors": {
+                "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+            },
+            "target": {
+                "example": "Either the result of notificationTargetPost or notificationTargetDeletedPost"
+            }
+        }
+    },
+    "startedSharing": "",
+    "@startedSharing": {
+        "description": "Success message after the user started sharing with somebody",
+        "type": "text",
+        "placeholders": {
+            "name": {
+                "example": "Alice"
+            }
+        }
+    },
+    "aboutNoneLabel": "",
+    "@aboutNoneLabel": {
+        "description": "Displayed on the about page when no account is signed in",
+        "type": "text",
+        "placeholders": {}
+    },
+    "manageContact": "",
+    "@manageContact": {
+        "description": "Label for manage contact button. The zero case and one is never used",
+        "type": "text",
+        "placeholders": {
+            "count": {
+                "example": "2, 3, 4, ..."
+            }
+        }
+    },
+    "aboutPrivacyPolicyLabel": "",
+    "@aboutPrivacyPolicyLabel": {
+        "description": "Label for the privacy policy link on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "notificationLikedComment": "",
+    "@notificationLikedComment": {
+        "description": "Notification message for when some people liked the users comment. The zero case is never used",
+        "type": "text",
+        "placeholders": {
+            "actorCount": {
+                "example": "1, 2, 3, ..."
+            },
+            "actors": {
+                "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+            },
+            "target": {
+                "example": "Either the result of notificationTargetComment or notificationTargetDeletedComment"
+            }
+        }
+    },
+    "catcherLocalizationDialogReportModeTitle": "",
+    "@catcherLocalizationDialogReportModeTitle": {
+        "description": "Title for crash report dialog",
+        "type": "text",
+        "placeholders": {}
+    },
+    "failedToCreateConversation": "",
+    "@failedToCreateConversation": {
+        "description": "Error message after sending a conversation failed",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutUnknownLabel": "",
+    "@aboutUnknownLabel": {
+        "description": "Displayed on the about page when a value cannot be determined",
+        "type": "text",
+        "placeholders": {}
+    },
+    "notificationTargetDeletedComment": "",
+    "@notificationTargetDeletedComment": {
+        "description": "Target part of a notification message for a deleted comment",
+        "type": "text",
+        "placeholders": {}
+    },
+    "notificationMentionedInComment": "",
+    "@notificationMentionedInComment": {
+        "description": "Notification message for when somebody mentioned the user in a comment. Currently only the one case is used",
+        "type": "text",
+        "placeholders": {
+            "actorCount": {
+                "example": "1, 2, 3, ..."
+            },
+            "actors": {
+                "example": "With actorCount being 1 a name such as Alice, being 2 the result of notificationActorsForTwoPeople, being 3 the result of notificationActorsForThreePeople or being 4 or higher the result of notificationActorsForMoreThanThreePeople"
+            }
+        }
+    },
+    "failedToLoadContent": "",
+    "@failedToLoadContent": {
+        "description": "Generic failure message after loading some content failed due to an unknown reason.",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutBuildCommitLabel": "",
+    "@aboutBuildCommitLabel": {
+        "description": "Label for the build commit info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutPageTitle": "",
+    "@aboutPageTitle": {
+        "description": "Title of the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "voteCount": "",
+    "@voteCount": {
+        "description": "Label for how many votes are registered on a poll",
+        "type": "text",
+        "placeholders": {
+            "count": {}
+        }
+    },
+    "failedToAddConversationParticipantDuplicate": "",
+    "@failedToAddConversationParticipantDuplicate": {
+        "description": "Error message after adding a conversation participant failed due to them already being part of the participants",
+        "type": "text",
+        "placeholders": {
+            "name": {
+                "example": "Alice McBoss"
+            }
+        }
+    },
+    "contactStatusNotSharing": "",
+    "@contactStatusNotSharing": {
+        "description": "Contact status message for somebody that is not sharing with the user nor the user is sharing with",
+        "type": "text",
+        "placeholders": {}
+    },
+    "showAllNsfwPostsButtonLabel": "",
+    "@showAllNsfwPostsButtonLabel": {
+        "description": "Label on show all NSFW posts button",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutHelpTranslateLabel": "",
+    "@aboutHelpTranslateLabel": {
+        "description": "Label for the Weblate translation contribution link on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "detailsOnErrorCopied": "",
+    "@detailsOnErrorCopied": {
+        "description": "Success message after error details were copied to clipboard",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutBuildTypeLabel": "",
+    "@aboutBuildTypeLabel": {
+        "description": "Label for the build type info row on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "aboutGithubRepositoryLabel": "",
+    "@aboutGithubRepositoryLabel": {
+        "description": "Label for the GitHub repository link on the about page",
+        "type": "text",
+        "placeholders": {}
+    },
+    "detailsOnErrorDescription": "",
+    "@detailsOnErrorDescription": {
+        "description": "Label for the show details button in error messages",
+        "type": "text",
+        "placeholders": {}
+    },
+    "editProfileNsfwLabel": "",
+    "@editProfileNsfwLabel": {
+        "description": "Label for edit profile NSFW field",
+        "type": "text",
+        "placeholders": {}
+    },
+    "failedToOpenInvalidUrl": "",
+    "@failedToOpenInvalidUrl": {
+        "description": "Error message after trying to open an invalid URL",
+        "type": "text",
+        "placeholders": {}
     }
 }
