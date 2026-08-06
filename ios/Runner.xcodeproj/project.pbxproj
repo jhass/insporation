@@ -348,7 +348,7 @@
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			packageReferences = (
-				781AD8BD2B33823900A9FFBB /* XCRemoteSwiftPackageReference "https://github.com/openid/AppAuth-iOS" */,
+				781AD8BD2B33823900A9FFBB /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
 				781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */,
 			);
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
@@ -1049,8 +1049,15 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
-		781AD8BD2B33823900A9FFBB /* XCRemoteSwiftPackageReference "https://github.com/openid/AppAuth-iOS" */ = {
+		781AD8BD2B33823900A9FFBB /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/openid/AppAuth-iOS";
 			requirement = {
@@ -1060,22 +1067,15 @@
 		};
 /* End XCRemoteSwiftPackageReference section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		781AD8BC2B33823900A9FFBB /* XCLocalSwiftPackageReference "FlutterGeneratedPluginSwiftPackage" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		781AD8BE2B33823900A9FFBB /* AppAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 781AD8BD2B33823900A9FFBB /* XCRemoteSwiftPackageReference "https://github.com/openid/AppAuth-iOS" */;
+			package = 781AD8BD2B33823900A9FFBB /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
 			productName = AppAuth;
 		};
 		781AD8BF2B33823900A9FFBB /* AppAuthCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 781AD8BD2B33823900A9FFBB /* XCRemoteSwiftPackageReference "https://github.com/openid/AppAuth-iOS" */;
+			package = 781AD8BD2B33823900A9FFBB /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
 			productName = AppAuthCore;
 		};
 		78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */ = {

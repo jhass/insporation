@@ -11,6 +11,7 @@ import 'package:mime/mime.dart';
 import 'app_auth.dart';
 import 'node_info_client.dart';
 import 'pod_version_support.dart';
+import 'http_client_factory.dart';
 
 class Client {
   static final _linkHeaderPattern = RegExp(r'<([^>]+)>;\s*rel="([^"]+)"');
@@ -24,7 +25,7 @@ class Client {
   StreamController<bool>? _activeSessionEvents;
 
   Client({http.Client? client, AppAuth? appAuth, NodeInfoClient? nodeInfoClient})
-      : _client = client ?? http.Client(),
+      : _client = client ?? createHttpClient(),
         _appAuth = appAuth ?? AppAuth(),
         _nodeInfoClient = nodeInfoClient ?? NodeInfoClient(client: client);
 

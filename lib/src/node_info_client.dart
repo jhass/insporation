@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'pod_version_support.dart';
+import 'http_client_factory.dart';
 
 class NodeInfoClient {
-  NodeInfoClient({http.Client? client}) : _client = client ?? http.Client();
+  NodeInfoClient({http.Client? client}) : _client = client ?? createHttpClient();
 
   final http.Client _client;
 

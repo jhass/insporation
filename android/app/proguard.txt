@@ -1,3 +1,8 @@
 # Workaround crash by backporting the fix from https://github.com/flutter/plugins/pull/3746
 # TODO: revert this once the fix is released upstream
 -keep class androidx.lifecycle.DefaultLifecycleObserver
+
+# JNI rules for cronet_http and package:jni
+-keep class com.github.dart_lang.jni.** { *; }
+-keep class io.flutter.plugins.cronet_http.** { *; }
+-keep interface io.flutter.plugins.cronet_http.** { *; }
