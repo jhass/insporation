@@ -163,7 +163,8 @@ jobs:
           icon_dir="$(dirname "$(dirname "$icon")")"
           base="$(basename "$icon" .png)"
           versioncode="$(echo "$base" | tr -Cd '0-9')"
-          base_build=$(( versioncode / 1000 ))
+          # Version codes are buildNumber*10+ABI index (see fdroidAbiSplit in build.gradle)
+          base_build=$(( versioncode / 10 ))
           if [ -z "$(ls "$icon_dir"/insporation-nightly-${base_build}-*.apk 2>/dev/null | head -1)" ]; then
             rm "$icon_dir"/icons*/"$base".{png,xml} 2>/dev/null || echo "No icons for $icon_dir/$base.apk present"
           fi

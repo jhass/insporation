@@ -23,7 +23,10 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-// Official F-Droid builds pass fdroidAbiSplit=true alongside Flutter's --split-per-abi.
+// Give split APKs unique version codes using the F-Droid scheme (versionCode*10+ABI index)
+// instead of Flutter's native ABI-prefixed scheme, which F-Droid archives as duplicates.
+// Enabled via android/gradle.properties, and also passed by the official F-Droid builds,
+// alongside Flutter's --split-per-abi.
 def fdroidAbiSplit = project.findProperty('fdroidAbiSplit')?.toString() == 'true'
 def fdroidAbiCodes = [
         'armeabi-v7a': 1,
@@ -103,10 +106,15 @@ android.applicationVariants.configureEach { variant ->
         def abiFilter = output.filters.find { filter ->
             filter.filterType.toString() == 'ABI'
         }
-        def abiVersionCode = abiFilter == null ? null : fdroidAbiCodes[abiFilter.identifier]
 
-        if (abiVersionCode != null) {
-            output.versionCodeOverride = variant.versionCode * 10 + abiVersionCode
+        if (abiFilter != null) {
+            def abiVersionCode = fdroidAbiCodes[abiFilter.identifier]
+            if (abiVersionCode == null) {
+                logger.warn("Unknown ABI '${abiFilter.identifier}' for split APK, " +
+                        "falling back to Flutter's default version code scheme")
+            } else {
+                output.versionCodeOverride = variant.versionCode * 10 + abiVersionCode
+            }
         }
     }
 }
