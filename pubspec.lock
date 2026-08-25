@@ -45,10 +45,10 @@ packages:
     dependency: "direct main"
     description:
       name: catcher_2
-      sha256: c0e21edc0fdb2fd91644ec8bb6870db5823ae2a6fed2cc8cf3f3500e5b295d4e
+      sha256: "56f681cb9ef9ea7341a13508f06aabf900cda8e800310b7be130518812a88c0c"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.11"
+    version: "2.1.12"
   characters:
     dependency: transitive
     description:
