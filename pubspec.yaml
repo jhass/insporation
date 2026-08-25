@@ -15,7 +15,7 @@ dependencies:
   cupertino_http: 3.0.2
   app_badge_plus: ^1.3.4
   carousel_slider: ^5.1.2
-  catcher_2: ^2.1.11
+  catcher_2: ^2.1.12
   collection: ^1.18.0
   expand_widget: ^3.1.1
   flutter_html: ^3.0.0
