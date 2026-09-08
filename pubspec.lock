@@ -117,10 +117,10 @@ packages:
     dependency: "direct main"
     description:
       name: cupertino_http
-      sha256: "3c8c69cc1b94b9c7570d9454bf1e11fa7010b248547a0760843adc71f0c08fbe"
+      sha256: d57188b07349a373bec9a78997a80c00e1de08dab0fe454b3f86c84661ac457c
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.2"
+    version: "3.1.0"
   device_info_plus:
     dependency: transitive
     description:
