@@ -6,7 +6,7 @@ import 'package:cupertino_http/cupertino_http.dart';
 
 http.Client createHttpClient() {
   if (Platform.environment.containsKey('FLUTTER_TEST')) {
-    return http.Client();
+    return _UserAgentClient(http.Client());
   }
 
   if (!kIsWeb && Platform.isAndroid) {
@@ -14,10 +14,27 @@ http.Client createHttpClient() {
       enableHttp2: true,
       enableQuic: true,
     );
-    return CronetClient.fromCronetEngine(engine);
+    return _UserAgentClient(CronetClient.fromCronetEngine(engine));
   }
   if (!kIsWeb && (Platform.isIOS || Platform.isMacOS)) {
-    return CupertinoClient.defaultSessionConfiguration();
+    return _UserAgentClient(CupertinoClient.defaultSessionConfiguration());
   }
-  return http.Client();
+  return _UserAgentClient(http.Client());
+}
+
+class _UserAgentClient extends http.BaseClient {
+  _UserAgentClient(this._inner);
+
+  final http.Client _inner;
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) {
+    request.headers['user-agent'] = 'Insporation';
+    return _inner.send(request);
+  }
+
+  @override
+  void close() {
+    _inner.close();
+  }
 }
