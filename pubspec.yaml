@@ -25,7 +25,7 @@ dependencies:
   geojson_vi: ^2.2.5
   http: ^1.6.0
   image_cropper: ^12.2.1
-  image_picker: ^1.2.3
+  image_picker: ^1.2.4
   intl: ^0.20.2
   markdown: ^7.0.0
   mime: ^2.1.0
