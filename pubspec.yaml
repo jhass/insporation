@@ -24,7 +24,7 @@ dependencies:
   flutter_slidable: ^4.0.3
   geojson_vi: ^2.2.5
   http: ^1.6.0
-  image_cropper: ^12.2.1
+  image_cropper: ^13.0.0
   image_picker: ^1.2.4
   intl: ^0.20.2
   markdown: ^7.0.0
