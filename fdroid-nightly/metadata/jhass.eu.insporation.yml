@@ -1,0 +1,15 @@
+Categories:
+  - Internet
+License: Unknown
+AuthorName: The insporation* developers
+WebSite: https://github.com/jhass/insporation
+SourceCode: https://github.com/jhass/insporation
+IssueTracker: https://github.com/jhass/insporation/issues
+Translation: https://hosted.weblate.org/engage/insporation
+
+Name: insporation*
+Summary: A flutter based client for diaspora*
+
+AutoUpdateMode: None
+UpdateCheckMode: None
+CurrentVersionCode: 2147483647
